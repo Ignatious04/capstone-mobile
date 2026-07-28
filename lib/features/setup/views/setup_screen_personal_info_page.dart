@@ -1,0 +1,373 @@
+import 'package:capstone/core/shared/widgets/custom_dropdown_button.dart';
+import 'package:capstone/core/shared/widgets/custom_text_field.dart';
+import 'package:capstone/core/shared/widgets/text/text_body_small.dart';
+import 'package:capstone/core/shared/widgets/text/text_title_small.dart';
+import 'package:capstone/core/shared/providers/user_provider.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
+
+class SetupScreenPersonalInfoPage extends ConsumerStatefulWidget {
+  const SetupScreenPersonalInfoPage({super.key});
+
+  @override
+  ConsumerState<SetupScreenPersonalInfoPage> createState() => _SetupScreenPersonalInfoPage();
+}
+
+class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfoPage> {
+  TextEditingController firstNameController = TextEditingController();
+  TextEditingController middleNameController = TextEditingController();
+  TextEditingController lastNameController = TextEditingController();
+  TextEditingController birthDateController = TextEditingController();
+  TextEditingController sexController = TextEditingController();
+  TextEditingController contactNumController = TextEditingController();
+  TextEditingController addressController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    final user = ref.read(userProvider);
+    firstNameController.text = user.firstName;
+    middleNameController.text = user.middleName;
+    lastNameController.text = user.lastName;
+    birthDateController.text = user.birthDate == 0 ? "" : user.birthDate.toString();
+    sexController.text = user.sex;
+    contactNumController.text = user.contactNumber;
+    addressController.text = user.address;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final user = ref.watch(userProvider);
+
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            Align(
+              alignment: Alignment.centerLeft,
+              child: TextTitleSmall(
+                title: "PERSONAL INFORMATION",
+                color: Colors.black54,
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            CircleAvatar(
+              radius: 75.0,
+              // backgroundImage: user.profileImage != null
+              //     ? FileImage(user.profileImage!)
+              //     : null,
+              // child: user.profileImage == null
+              //     ? Icon(
+              //         Icons.person,
+              //         size: 75,
+              //       )
+              //     : null,
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton(
+                onPressed: () async {
+                  ref.read(userProvider.notifier).addProfilePicture(ImageSource.gallery);
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.deepOrange,
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadiusGeometry.circular(10),
+                  ),
+                ),
+                child: Text("Tap to upload photo"),
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            TextBodySmall(
+              title: "NOTE: REQUIRED FIELDS ARE DENOTED BY AN ASTERISK (*)",
+              isBold: false,
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Row(
+              children: [
+                Expanded(
+                  flex: 3,
+                  child: CustomTextField(
+                    title: "FIRST NAME *",
+                    controller: firstNameController,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "First name is required";
+                      }
+
+                      return null;
+                    },
+                    onChanged: (value) {
+                      ref.read(userProvider.notifier).setFirstName(value);
+                    },
+                  ),
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Expanded(
+                  flex: 2,
+                  child: CustomTextField(
+                    title: "MIDDLE NAME",
+                    controller: middleNameController,
+                    validator: (value) {
+                      return null;
+                    },
+                    onChanged: (value) {
+                      ref.read(userProvider.notifier).setMiddleName(value);
+                    },
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            CustomTextField(
+              title: "LAST NAME *",
+              controller: lastNameController,
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return "Last name is required";
+                }
+
+                return null;
+              },
+              onChanged: (value) {
+                ref.read(userProvider.notifier).setLastName(value);
+              },
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Row(
+              children: [
+                Expanded(
+                  flex: 3,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      TextBodySmall(title: "DATE OF BIRTH *"),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      TextFormField(
+                        controller: birthDateController,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Birth date is required";
+                          }
+
+                          return null;
+                        },
+                        readOnly: true,
+                        style: TextStyle(fontSize: 14),
+                        decoration: InputDecoration(
+                          errorStyle: TextStyle(fontSize: 0),
+                          isDense: true,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          contentPadding: EdgeInsets.symmetric(
+                            vertical: 10,
+                            horizontal: 10,
+                          ),
+                          suffixIconConstraints: BoxConstraints(
+                            minWidth: 36,
+                            minHeight: 36,
+                          ),
+                          suffixIcon: Icon(Icons.calendar_today),
+                        ),
+                        onTap: () async {
+                          final date = await showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime(1900),
+                            lastDate: DateTime.now(),
+                          );
+
+                          if (date != null) {
+                            final formattedDate = DateFormat(
+                              "MM/dd/yy",
+                            ).format(date);
+                            birthDateController.text = formattedDate;
+                            ref.read(userProvider.notifier).setBirthDate(date.millisecondsSinceEpoch);
+                          }
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Expanded(
+                  flex: 2,
+                  child: CustomDropdownButton(
+                    title: "SEX *",
+                    value: user.sex.isEmpty ? null : user.sex,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Sex is required";
+                      }
+
+                      return null;
+                    },
+                    items: [
+                      DropdownMenuItem(value: "Male", child: Text("Male")),
+                      DropdownMenuItem(value: "Female", child: Text("Female")),
+                    ],
+                    onChanged: (value) {
+                      ref.read(userProvider.notifier).setSex(value!);
+                    },
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            CustomTextField(
+              title: "CONTACT NUMBER *",
+              controller: contactNumController,
+              keyboardType: TextInputType.numberWithOptions(decimal: false),
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return "Contact number is required";
+                }
+
+                return null;
+              },
+              onChanged: (value) {
+                ref.read(userProvider.notifier).setContactNumber(value);
+              },
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            CustomTextField(
+              title: "HOME ADDRESS *",
+              controller: addressController,
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return "Home address is required";
+                }
+
+                return null;
+              },
+              onChanged: (value) {
+                ref.read(userProvider.notifier).setAddress(value);
+              },
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Row(
+              children: [
+                Expanded(
+                  flex: 3,
+                  child: CustomDropdownButton(
+                    title: "NATIONALITY *",
+                    value: user.nationality.isEmpty ? null : user.nationality,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Sex is required";
+                      }
+
+                      return null;
+                    },
+                    items: [
+                      DropdownMenuItem(
+                        value: "Filipino",
+                        child: Text("Filipino"),
+                      ),
+                    ],
+                    onChanged: (value) {
+                      ref.read(userProvider.notifier).setNationality(value!);
+                    },
+                  ),
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Expanded(
+                  flex: 2,
+                  child: CustomDropdownButton(
+                    title: "CIVIL STATUS *",
+                    value: user.civilStatus.isEmpty ? null : user.civilStatus,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return "Sex is required";
+                      }
+
+                      return null;
+                    },
+                    items: [
+                      DropdownMenuItem(
+                        value: "Single",
+                        child: Text("Single"),
+                      ),
+                      DropdownMenuItem(
+                        value: "Married",
+                        child: Text("Married"),
+                      ),
+                    ],
+                    onChanged: (value) {
+                      ref.read(userProvider.notifier).setCivilStatus(value!);
+                    },
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            CustomDropdownButton(
+              title: "RELIGION *",
+              value: user.religion.isEmpty ? null : user.religion,
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return "Sex is required";
+                }
+
+                return null;
+              },
+              items: [
+                DropdownMenuItem(
+                  value: "Catholic",
+                  child: Text("Catholic"),
+                ),
+                DropdownMenuItem(
+                  value: "Iglesia ni Cristo",
+                  child: Text("Iglesia ni Cristo"),
+                ),
+              ],
+              onChanged: (value) {
+                ref.read(userProvider.notifier).setReligion(value!);
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
