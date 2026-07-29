@@ -7,11 +7,13 @@ class CustomDropdownButton<T> extends StatelessWidget {
     required this.title,
     required this.items,
     this.validator,
+    this.hideErrorText = true,
     this.onChanged,
     this.value,
   });
 
   final String title;
+  final bool hideErrorText;
   final List<DropdownMenuItem<T>> items;
 
   final String? Function(T?)? validator;
@@ -30,14 +32,15 @@ class CustomDropdownButton<T> extends StatelessWidget {
           initialValue: value,
           validator: validator,
           decoration: InputDecoration(
-            errorStyle: const TextStyle(fontSize: 0),
+            errorStyle: hideErrorText
+                ? const TextStyle(
+                    fontSize: 0,
+                  )
+                : null,
             isDense: true,
             contentPadding: const EdgeInsets.symmetric(
               horizontal: 10,
               vertical: 10,
-            ),
-            constraints: BoxConstraints.tight(
-              const Size.fromHeight(45),
             ),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),

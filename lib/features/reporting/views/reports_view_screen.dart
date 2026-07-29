@@ -30,6 +30,7 @@ class ReportsViewScreen extends StatelessWidget {
           title: "Back",
           color: Colors.white,
         ),
+        titleSpacing: 0,
       ),
       body: SafeArea(
         child: Column(

@@ -1,3 +1,4 @@
+import 'package:capstone/core/shared/widgets/custom_circular_progress_indicator.dart';
 import 'package:capstone/core/shared/widgets/custom_header_widget.dart';
 import 'package:capstone/core/shared/widgets/report_card_widget.dart';
 import 'package:capstone/core/shared/widgets/text/text_title_small.dart';
@@ -15,6 +16,14 @@ class ReportsScreen extends ConsumerStatefulWidget {
 }
 
 class _ReportsScreenState extends ConsumerState<ReportsScreen> {
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final reports = ref.watch(reportsStreamProvider);
@@ -38,6 +47,7 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
                     );
                   }
                   return ListView.builder(
+                    controller: _scrollController,
                     padding: const EdgeInsets.all(20),
                     itemCount: reports.length,
                     itemBuilder: (context, index) {
@@ -56,7 +66,7 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
                   );
                 },
                 loading: () => const Center(
-                  child: CircularProgressIndicator(),
+                  child: CustomCircularProgressIndicator(),
                 ),
                 error: (e, _) => Center(
                   child: Text(e.toString()),
@@ -68,15 +78,21 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         heroTag: "reportsFAB",
-        onPressed: () {
-          Navigator.push(
+        onPressed: () async {
+          final submitted = await Navigator.push<bool>(
             context,
             MaterialPageRoute(
-              builder: (context) {
-                return ReportsFormScreen();
-              },
+              builder: (_) => const ReportsFormScreen(),
             ),
           );
+
+          if (submitted == true && mounted) {
+            _scrollController.animateTo(
+              0,
+              duration: const Duration(milliseconds: 300),
+              curve: Curves.easeOut,
+            );
+          }
         },
         backgroundColor: Colors.deepOrange,
         foregroundColor: Colors.white,
