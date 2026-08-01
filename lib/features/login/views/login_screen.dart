@@ -1,10 +1,12 @@
 import 'package:capstone/core/exceptions/auth_exception.dart';
 import 'package:capstone/core/shared/widgets/auth_wrapper.dart';
 import 'package:capstone/core/shared/widgets/custom_text_field.dart';
+import 'package:capstone/core/shared/widgets/text/text_body_medium.dart';
 import 'package:capstone/core/shared/widgets/text/text_body_small.dart';
 import 'package:capstone/core/shared/widgets/text/text_title_medium.dart';
 import 'package:capstone/core/shared/widgets/text/text_title_small.dart';
 import 'package:capstone/core/shared/providers/firebase_auth_provider.dart';
+import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/register/register_screen.dart';
 import 'package:capstone/features/login/views/reset_password_screen.dart';
 import 'package:flutter/material.dart';
@@ -53,11 +55,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                TextTitleMedium(
+                const TextTitleMedium(
                   title: "MEAS",
                   color: Colors.white,
                 ),
-                TextTitleSmall(
+                const TextTitleSmall(
                   title: "Mobile Emergency Access System",
                   color: Colors.white,
                   isBold: false,
@@ -70,211 +72,195 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(20.0),
-          child: GestureDetector(
-            onTap: () {
-              FocusScope.of(context).unfocus();
-            },
-            child: Form(
-              key: loginKey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  TextTitleSmall(title: "Welcome!"),
-                  TextBodySmall(title: "Log in to your account"),
-                  SizedBox(
-                    height: 30.0,
-                  ),
-                  CustomTextField(
-                    title: "EMAIL ADDRESS",
-                    controller: emailController,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Email is required";
-                      }
+          child: Form(
+            key: loginKey,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const TextTitleSmall(title: "Welcome!"),
+                const TextBodySmall(
+                  title: "Log in to your account",
+                  isBold: false,
+                ),
+                const SizedBox(
+                  height: 30.0,
+                ),
+                CustomTextField(
+                  title: "EMAIL ADDRESS",
+                  controller: emailController,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Email is required";
+                    }
 
-                      return null;
-                    },
-                    hideErrorText: false,
-                    onChanged: (value) {},
-                  ),
-                  SizedBox(
-                    height: 10.0,
-                  ),
-                  CustomTextField(
-                    title: "PASSWORD",
-                    controller: passwordController,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return "Password is required";
-                      }
+                    return null;
+                  },
+                  hideErrorText: false,
+                  onChanged: (value) {},
+                ),
+                const SizedBox(
+                  height: 10.0,
+                ),
+                CustomTextField(
+                  title: "PASSWORD",
+                  controller: passwordController,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Password is required";
+                    }
 
-                      return null;
-                    },
-                    hideErrorText: false,
-                    onChanged: (value) {},
+                    return null;
+                  },
+                  obscureText: true,
+                  hideErrorText: false,
+                  onChanged: (value) {},
+                ),
+                if (errorMessage != null) ...[
+                  TextBodySmall(
+                    title: errorMessage!,
+                    color: Colors.red,
+                    isBold: false,
                   ),
-                  if (errorMessage != null) ...[
-                    TextBodySmall(
-                      title: errorMessage!,
-                      color: Colors.red,
+                ],
+                const SizedBox(
+                  height: 20,
+                ),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return ResetPasswordScreen();
+                          },
+                        ),
+                      );
+                    },
+                    child: const TextBodySmall(
+                      title: "Forgot password?",
                       isBold: false,
                     ),
-                  ],
-                  SizedBox(
-                    height: 20,
                   ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: GestureDetector(
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.deepOrange,
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    onPressed: () async {
+                      try {
+                        setState(() {
+                          errorMessage = null;
+                        });
+
+                        if (!loginKey.currentState!.validate()) {
+                          return;
+                        }
+
+                        final firebaseAuthRepository = ref.read(
+                          firebaseAuthRepositoryProvider,
+                        );
+
+                        await firebaseAuthRepository.signIn(
+                          email: emailController.text.trim(),
+                          password: passwordController.text,
+                        );
+
+                        if (!context.mounted) {
+                          return;
+                        }
+
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return AuthWrapper();
+                            },
+                          ),
+                          (route) => false,
+                        );
+                      } on AuthException catch (e) {
+                        setState(() {
+                          errorMessage = e.message;
+                        });
+                      }
+                    },
+                    child: const Text("Log In"),
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Container(
+                        height: 1,
+                        color: Colors.black.withValues(alpha: 0.2),
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    const TextBodyMedium(
+                      title: "OR",
+                      color: AppColors.lighterBlack,
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    Expanded(
+                      child: Container(
+                        height: 1,
+                        color: Colors.black.withValues(alpha: 0.2),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const TextBodySmall(
+                      title: "Didn't have an account?",
+                      isBold: false,
+                    ),
+                    GestureDetector(
                       onTap: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) {
-                              return ResetPasswordScreen();
+                              return RegisterScreen();
                             },
                           ),
                         );
                       },
-                      child: Text(
-                        "Forgot password?",
-                        textAlign: TextAlign.end,
-                        style:
-                            Theme.of(
-                              context,
-                            ).textTheme.bodySmall?.copyWith(
-                              color: Colors.deepOrange,
-                            ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 8.0),
+                        child: TextBodySmall(
+                          title: "Create one",
+                          color: Colors.deepOrange,
+                          isBold: false,
+                        ),
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.deepOrange,
-                        foregroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                      onPressed: () async {
-                        try {
-                          setState(() {
-                            errorMessage = null;
-                          });
-
-                          if (!loginKey.currentState!.validate()) {
-                            return;
-                          }
-
-                          final firebaseAuthRepository = ref.read(
-                            firebaseAuthRepositoryProvider,
-                          );
-
-                          await firebaseAuthRepository.signIn(
-                            email: emailController.text.trim(),
-                            password: passwordController.text,
-                          );
-
-                          if (!context.mounted) {
-                            return;
-                          }
-
-                          Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return AuthWrapper();
-                              },
-                            ),
-                            (route) => false,
-                          );
-                        } on AuthException catch (e) {
-                          setState(() {
-                            errorMessage = e.message;
-                          });
-                        }
-                      },
-                      child: Text("Log In"),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Container(
-                          height: 1,
-                          color: Colors.black.withValues(alpha: 0.2),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Text(
-                        "OR",
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: Colors.black.withValues(alpha: 0.2),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Expanded(
-                        child: Container(
-                          height: 1,
-                          color: Colors.black.withValues(alpha: 0.2),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Didn't have an account?",
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: Colors.black54,
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return RegisterScreen();
-                              },
-                            ),
-                          );
-                        },
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 8.0),
-                          child: Text(
-                            "Create one",
-                            textAlign: TextAlign.end,
-                            style:
-                                Theme.of(
-                                  context,
-                                ).textTheme.bodySmall?.copyWith(
-                                  color: Colors.deepOrange,
-                                ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+                  ],
+                ),
+              ],
             ),
           ),
         ),

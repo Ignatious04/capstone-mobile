@@ -1,4 +1,4 @@
-import 'package:capstone/core/shared/widgets/text/text_body_small.dart';
+import 'package:capstone/core/themes/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class CustomDropdownButton<T> extends StatelessWidget {
@@ -10,23 +10,43 @@ class CustomDropdownButton<T> extends StatelessWidget {
     this.hideErrorText = true,
     this.onChanged,
     this.value,
+    this.isRequired = false,
   });
 
   final String title;
   final bool hideErrorText;
   final List<DropdownMenuItem<T>> items;
-
   final String? Function(T?)? validator;
-
   final ValueChanged<T?>? onChanged;
   final T? value;
+  final bool isRequired;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        TextBodySmall(title: title),
+        RichText(
+          text: TextSpan(
+            style:
+                Theme.of(
+                  context,
+                ).textTheme.bodyMedium?.copyWith(
+                  color: AppColors.darkerGrey,
+                  fontWeight: FontWeight.bold,
+                ),
+            children: [
+              TextSpan(text: title),
+              if (isRequired)
+                const TextSpan(
+                  text: ' *',
+                  style: TextStyle(
+                    color: Colors.red,
+                  ),
+                ),
+            ],
+          ),
+        ),
         const SizedBox(height: 10),
         DropdownButtonFormField<T>(
           initialValue: value,

@@ -1,10 +1,11 @@
+import 'package:capstone/core/themes/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class TextBodySmall extends StatelessWidget {
   const TextBodySmall({
     super.key,
     required this.title,
-    this.color = Colors.black54,
+    this.color = AppColors.darkerGrey,
     this.isBold = true,
   });
 

@@ -103,7 +103,7 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> {
                           ),
                           const SizedBox(height: 10),
                           CustomDropdownButton(
-                            title: "EMERGENCY TYPE *",
+                            title: "EMERGENCY TYPE",
                             validator: (value) {
                               if (value == null) {
                                 return "Emergency type is required";
@@ -129,12 +129,13 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> {
                             onChanged: (value) {
                               ref.read(reportProvider.notifier).setEmergencyType(value!);
                             },
+                            isRequired: true,
                           ),
                           const SizedBox(
                             height: 10,
                           ),
                           CustomTextField(
-                            title: "DESCRIPTION *",
+                            title: "DESCRIPTION",
                             controller: incidentDescriptionController,
                             validator: (value) {
                               if (value == null || value.trim().isEmpty) {
@@ -147,6 +148,7 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> {
                             keyboardType: TextInputType.multiline,
                             maxLines: 5,
                             vertical: 20,
+                            isRequired: true,
                           ),
                           const SizedBox(
                             height: 10,

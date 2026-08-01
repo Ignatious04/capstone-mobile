@@ -5,13 +5,14 @@ class CustomSnackbarHelper {
   static void show(
     BuildContext context, {
     required String text,
+    Color? color,
   }) {
     final messenger = ScaffoldMessenger.of(context);
 
     messenger
       ..clearSnackBars()
       ..showSnackBar(
-        CustomSnackbar(text: text),
+        CustomSnackbar(text: text, color: color,),
       );
   }
 }

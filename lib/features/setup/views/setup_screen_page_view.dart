@@ -1,6 +1,7 @@
 import 'package:capstone/core/shared/providers/firebase_auth_provider.dart';
 import 'package:capstone/core/shared/providers/user_repository_provider.dart';
 import 'package:capstone/core/shared/providers/user_provider.dart';
+import 'package:capstone/core/shared/widgets/custom_header_widget.dart';
 import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/setup/views/setup_screen_user_card_page.dart';
 import 'package:capstone/features/setup/views/setup_screen_personal_info_page.dart';
@@ -22,8 +23,8 @@ class _SetupScreenPageView extends ConsumerState<SetupScreenPageView> {
   final userInfoPageKey = GlobalKey<FormState>();
   final userCardPageKey = GlobalKey<FormState>();
   final pageController = PageController(initialPage: 0);
-
   int currentPage = 0;
+  final numberOfPages = 4;
 
   @override
   void dispose() {
@@ -49,13 +50,10 @@ class _SetupScreenPageView extends ConsumerState<SetupScreenPageView> {
 
   @override
   Widget build(BuildContext context) {
-    final user = ref.watch(userProvider);
-    debugPrint("SetupScreen userID: '${user.userID}'");
     final formKeys = [
       userInfoPageKey,
       userCardPageKey,
     ];
-    final numberOfPages = 4;
 
     return PopScope(
       canPop: false,
@@ -71,39 +69,13 @@ class _SetupScreenPageView extends ConsumerState<SetupScreenPageView> {
           body: SafeArea(
             child: Column(
               children: [
-                Container(
-                  height: 75,
-                  width: double.infinity,
-                  color: Colors.deepOrange,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Create Account",
-                          style: Theme.of(
-                            context,
-                          ).textTheme.titleSmall?.copyWith(color: Colors.white),
-                          textAlign: TextAlign.left,
-                        ),
-                        Text(
-                          "User Information - Safety Profile",
-                          style: Theme.of(
-                            context,
-                          ).textTheme.bodySmall?.copyWith(color: Colors.white),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        LinearProgressIndicator(
-                          value: (currentPage + 1) / numberOfPages,
-                          color: Colors.white,
-                          backgroundColor: Colors.white30,
-                        ),
-                      ],
-                    ),
+                CustomHeaderWidget(
+                  title: "Create Account",
+                  body: "Set up your safety profile",
+                  progressIndicator: LinearProgressIndicator(
+                    value: (currentPage + 1) / numberOfPages,
+                    color: Colors.white,
+                    backgroundColor: Colors.white30,
                   ),
                 ),
                 Expanded(

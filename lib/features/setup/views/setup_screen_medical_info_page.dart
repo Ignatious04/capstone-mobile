@@ -26,28 +26,28 @@ class _SetupScreenMedicalInfoPage extends ConsumerState<SetupScreenMedicalInfoPa
     return SingleChildScrollView(
       child: Column(
         children: [
-          Align(
+          const Align(
             alignment: Alignment.centerLeft,
             child: TextTitleSmall(
               title: "MEDICAL INFORMATION (OPTIONAL)",
-              color: Colors.black54,
+              color: Colors.black,
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
-          TextBodySmall(
+          const TextBodySmall(
             title: "This information helps emergency responders provide better care. All fields are optional.",
             isBold: false,
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           CustomDropdownButton(
             title: "BLOOD TYPE",
             value: user.bloodType.isEmpty ? null : user.bloodType,
             items: [
-              DropdownMenuItem(
+              const DropdownMenuItem(
                 value: "O",
                 child: Text("O"),
               ),
@@ -56,7 +56,7 @@ class _SetupScreenMedicalInfoPage extends ConsumerState<SetupScreenMedicalInfoPa
               ref.read(userProvider.notifier).setBloodType(value!);
             },
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           Row(
@@ -71,7 +71,7 @@ class _SetupScreenMedicalInfoPage extends ConsumerState<SetupScreenMedicalInfoPa
                   },
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 10,
               ),
               Expanded(
@@ -86,18 +86,18 @@ class _SetupScreenMedicalInfoPage extends ConsumerState<SetupScreenMedicalInfoPa
               ),
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           CustomDropdownButton(
             title: "ARE YOU VACINNATED?",
             value: user.isVaccinated == true ? "Yes" : "No",
             items: [
-              DropdownMenuItem(
+              const DropdownMenuItem(
                 value: "Yes",
                 child: Text("Yes"),
               ),
-              DropdownMenuItem(
+              const DropdownMenuItem(
                 value: "No",
                 child: Text("No"),
               ),
@@ -110,7 +110,7 @@ class _SetupScreenMedicalInfoPage extends ConsumerState<SetupScreenMedicalInfoPa
               }
             },
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           Row(
@@ -121,8 +121,8 @@ class _SetupScreenMedicalInfoPage extends ConsumerState<SetupScreenMedicalInfoPa
                   value: user.vaccineType.isEmpty ? null : user.vaccineType,
                   items: [
                     DropdownMenuItem(
-                      value: "O",
-                      child: Text("O"),
+                      value: "Anti-Rabies",
+                      child: Text("Anti-Rabies"),
                     ),
                   ],
                   onChanged: (value) {
@@ -130,7 +130,7 @@ class _SetupScreenMedicalInfoPage extends ConsumerState<SetupScreenMedicalInfoPa
                   },
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 width: 10,
               ),
               Expanded(

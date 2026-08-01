@@ -5,13 +5,15 @@ class CustomSnackbar extends SnackBar {
   CustomSnackbar({
     super.key,
     required String text,
+    Color? color,
   }) : super(
          backgroundColor: Colors.deepOrange,
          behavior: SnackBarBehavior.floating,
          showCloseIcon: true,
          content: TextBodySmall(
            title: text,
-           color: Colors.white,
+           color: color ?? Colors.white,
+           isBold: false,
          ),
        );
 }

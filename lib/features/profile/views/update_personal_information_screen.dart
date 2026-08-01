@@ -63,13 +63,9 @@ class _UpdatePersonalInformationScreenState extends ConsumerState<UpdatePersonal
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 40,
-        title: Column(
-          children: [
-            TextTitleSmall(
-              title: "Back",
-              color: Colors.white,
-            ),
-          ],
+        title: TextTitleSmall(
+          title: "Back",
+          color: Colors.white,
         ),
         titleSpacing: 0,
       ),
@@ -90,21 +86,22 @@ class _UpdatePersonalInformationScreenState extends ConsumerState<UpdatePersonal
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CustomTextField(
-                        title: "Date of Birth",
+                        title: "DATE OF BIRTH",
                         controller: birthDateController,
                         isReadOnly: true,
                         color: Colors.black54,
                       ),
                       const SizedBox(height: 10),
                       CustomTextField(
-                        title: "SEX *",
+                        title: "SEX",
                         controller: sexController,
                         isReadOnly: true,
                         color: Colors.black54,
+                        isRequired: true,
                       ),
                       const SizedBox(height: 10),
                       CustomTextField(
-                        title: "CONTACT NUMBER *",
+                        title: "CONTACT NUMBER",
                         controller: contactNumController,
                         keyboardType: TextInputType.numberWithOptions(decimal: false),
                         inputFormatters: [FilteringTextInputFormatter.digitsOnly],
@@ -115,10 +112,11 @@ class _UpdatePersonalInformationScreenState extends ConsumerState<UpdatePersonal
 
                           return null;
                         },
+                        isRequired: true,
                       ),
                       const SizedBox(height: 10),
                       CustomTextField(
-                        title: "HOME ADDRESS *",
+                        title: "HOME ADDRESS",
                         controller: addressController,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -127,14 +125,15 @@ class _UpdatePersonalInformationScreenState extends ConsumerState<UpdatePersonal
 
                           return null;
                         },
+                        isRequired: true,
                       ),
                       const SizedBox(height: 10),
                       CustomDropdownButton(
-                        title: "NATIONALITY *",
+                        title: "NATIONALITY",
                         value: nationality,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Sex is required";
+                            return "Nationality is required";
                           }
 
                           return null;
@@ -150,14 +149,15 @@ class _UpdatePersonalInformationScreenState extends ConsumerState<UpdatePersonal
                             nationality = value!;
                           });
                         },
+                        isRequired: true,
                       ),
                       const SizedBox(height: 10),
                       CustomDropdownButton(
-                        title: "CIVIL STATUS *",
+                        title: "CIVIL STATUS",
                         value: civilStatus,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Sex is required";
+                            return "Civil status is required";
                           }
 
                           return null;
@@ -177,14 +177,15 @@ class _UpdatePersonalInformationScreenState extends ConsumerState<UpdatePersonal
                             civilStatus = value!;
                           });
                         },
+                        isRequired: true,
                       ),
                       const SizedBox(height: 10),
                       CustomDropdownButton(
-                        title: "RELIGION *",
+                        title: "RELIGION",
                         value: religion,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Sex is required";
+                            return "Religion is required";
                           }
 
                           return null;
@@ -202,6 +203,7 @@ class _UpdatePersonalInformationScreenState extends ConsumerState<UpdatePersonal
                         onChanged: (value) {
                           religion = value!;
                         },
+                        isRequired: true,
                       ),
                       const SizedBox(height: 10),
                       SizedBox(

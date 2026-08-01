@@ -7,12 +7,14 @@ class TextTitleSmall extends StatelessWidget {
     this.alignment = TextAlign.center,
     this.color = Colors.black,
     this.isBold = false,
+    this.isRequired = false,
   });
 
   final String title;
   final TextAlign alignment;
   final Color? color;
   final bool? isBold;
+  final bool? isRequired;
 
   @override
   Widget build(BuildContext context) {

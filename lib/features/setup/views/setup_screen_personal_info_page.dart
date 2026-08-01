@@ -50,14 +50,14 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
       child: SingleChildScrollView(
         child: Column(
           children: [
-            Align(
+            const Align(
               alignment: Alignment.centerLeft,
               child: TextTitleSmall(
                 title: "PERSONAL INFORMATION",
-                color: Colors.black54,
+                color: Colors.black,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             CircleAvatar(
@@ -72,7 +72,7 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
               //       )
               //     : null,
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             SizedBox(
@@ -88,17 +88,18 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
                     borderRadius: BorderRadiusGeometry.circular(10),
                   ),
                 ),
-                child: Text("Tap to upload photo"),
+                child: const Text("Tap to upload photo"),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
-            TextBodySmall(
+            const TextBodySmall(
               title: "NOTE: REQUIRED FIELDS ARE DENOTED BY AN ASTERISK (*)",
+              color: Colors.red,
               isBold: false,
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Row(
@@ -106,7 +107,7 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
                 Expanded(
                   flex: 3,
                   child: CustomTextField(
-                    title: "FIRST NAME *",
+                    title: "FIRST NAME",
                     controller: firstNameController,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -120,7 +121,7 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
                     },
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 10,
                 ),
                 Expanded(
@@ -134,15 +135,16 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
                     onChanged: (value) {
                       ref.read(userProvider.notifier).setMiddleName(value);
                     },
+                    isRequired: true,
                   ),
                 ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             CustomTextField(
-              title: "LAST NAME *",
+              title: "LAST NAME",
               controller: lastNameController,
               validator: (value) {
                 if (value == null || value.isEmpty) {
@@ -154,8 +156,9 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
               onChanged: (value) {
                 ref.read(userProvider.notifier).setLastName(value);
               },
+              isRequired: true,
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Row(
@@ -165,7 +168,7 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      TextBodySmall(title: "DATE OF BIRTH *"),
+                      TextBodySmall(title: "DATE OF BIRTH"),
                       SizedBox(
                         height: 10,
                       ),
@@ -216,13 +219,13 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
                     ],
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 10,
                 ),
                 Expanded(
                   flex: 2,
                   child: CustomDropdownButton(
-                    title: "SEX *",
+                    title: "SEX",
                     value: user.sex.isEmpty ? null : user.sex,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -232,21 +235,22 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
                       return null;
                     },
                     items: [
-                      DropdownMenuItem(value: "Male", child: Text("Male")),
-                      DropdownMenuItem(value: "Female", child: Text("Female")),
+                      const DropdownMenuItem(value: "Male", child: Text("Male")),
+                      const DropdownMenuItem(value: "Female", child: Text("Female")),
                     ],
                     onChanged: (value) {
                       ref.read(userProvider.notifier).setSex(value!);
                     },
+                    isRequired: true,
                   ),
                 ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             CustomTextField(
-              title: "CONTACT NUMBER *",
+              title: "CONTACT NUMBER",
               controller: contactNumController,
               keyboardType: TextInputType.numberWithOptions(decimal: false),
               inputFormatters: [FilteringTextInputFormatter.digitsOnly],
@@ -260,12 +264,13 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
               onChanged: (value) {
                 ref.read(userProvider.notifier).setContactNumber(value);
               },
+              isRequired: true,
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             CustomTextField(
-              title: "HOME ADDRESS *",
+              title: "HOME ADDRESS",
               controller: addressController,
               validator: (value) {
                 if (value == null || value.isEmpty) {
@@ -277,8 +282,9 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
               onChanged: (value) {
                 ref.read(userProvider.notifier).setAddress(value);
               },
+              isRequired: true,
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Row(
@@ -286,7 +292,7 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
                 Expanded(
                   flex: 3,
                   child: CustomDropdownButton(
-                    title: "NATIONALITY *",
+                    title: "NATIONALITY",
                     value: user.nationality.isEmpty ? null : user.nationality,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -296,7 +302,7 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
                       return null;
                     },
                     items: [
-                      DropdownMenuItem(
+                      const DropdownMenuItem(
                         value: "Filipino",
                         child: Text("Filipino"),
                       ),
@@ -304,15 +310,16 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
                     onChanged: (value) {
                       ref.read(userProvider.notifier).setNationality(value!);
                     },
+                    isRequired: true,
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 10,
                 ),
                 Expanded(
                   flex: 2,
                   child: CustomDropdownButton(
-                    title: "CIVIL STATUS *",
+                    title: "CIVIL STATUS",
                     value: user.civilStatus.isEmpty ? null : user.civilStatus,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
@@ -322,11 +329,11 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
                       return null;
                     },
                     items: [
-                      DropdownMenuItem(
+                      const DropdownMenuItem(
                         value: "Single",
                         child: Text("Single"),
                       ),
-                      DropdownMenuItem(
+                      const DropdownMenuItem(
                         value: "Married",
                         child: Text("Married"),
                       ),
@@ -334,15 +341,16 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
                     onChanged: (value) {
                       ref.read(userProvider.notifier).setCivilStatus(value!);
                     },
+                    isRequired: true,
                   ),
                 ),
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             CustomDropdownButton(
-              title: "RELIGION *",
+              title: "RELIGION",
               value: user.religion.isEmpty ? null : user.religion,
               validator: (value) {
                 if (value == null || value.isEmpty) {
@@ -352,11 +360,11 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
                 return null;
               },
               items: [
-                DropdownMenuItem(
+                const DropdownMenuItem(
                   value: "Catholic",
                   child: Text("Catholic"),
                 ),
-                DropdownMenuItem(
+                const DropdownMenuItem(
                   value: "Iglesia ni Cristo",
                   child: Text("Iglesia ni Cristo"),
                 ),
@@ -364,6 +372,7 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
               onChanged: (value) {
                 ref.read(userProvider.notifier).setReligion(value!);
               },
+              isRequired: true,
             ),
           ],
         ),

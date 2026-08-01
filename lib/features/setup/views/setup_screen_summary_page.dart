@@ -1,6 +1,7 @@
 import 'package:capstone/core/shared/widgets/text/form_body_medium.dart';
 import 'package:capstone/core/shared/widgets/text/text_body_small.dart';
 import 'package:capstone/core/shared/providers/user_provider.dart';
+import 'package:capstone/core/shared/widgets/text/text_title_small.dart';
 import 'package:capstone/core/themes/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -14,8 +15,15 @@ class SetupScreenSummaryPage extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          const TextTitleSmall(
+            title: "PERSONAL PROFILE SUMMARY",
+            color: Colors.deepOrange,
+          ),
+          const SizedBox(
+            height: 10,
+          ),
           Card(
-            color: AppColors.lighterBlack,
+            color: Colors.white,
             child: SizedBox(
               width: double.infinity,
               child: Padding(
@@ -23,19 +31,6 @@ class SetupScreenSummaryPage extends ConsumerWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      "PERSONAL PROFILE SUMMARY",
-                      style:
-                          Theme.of(
-                            context,
-                          ).textTheme.titleSmall?.copyWith(
-                            color: Colors.deepOrange,
-                            fontWeight: FontWeight.bold,
-                          ),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -43,21 +38,21 @@ class SetupScreenSummaryPage extends ConsumerWidget {
                           title: "FIRST NAME",
                           body: ref.read(userProvider).firstName,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                         FormBodyMedium(
                           title: "MIDDLE NAME",
                           body: ref.read(userProvider).middleName,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                         FormBodyMedium(
                           title: "LAST NAME",
                           body: ref.read(userProvider).lastName,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                         FormBodyMedium(
@@ -66,49 +61,49 @@ class SetupScreenSummaryPage extends ConsumerWidget {
                             ref.read(userProvider).birthDate,
                           ).toString(),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                         FormBodyMedium(
                           title: "SEX",
                           body: ref.read(userProvider).sex,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                         FormBodyMedium(
                           title: "CONTACT NUMBER",
                           body: ref.read(userProvider).contactNumber,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                         FormBodyMedium(
                           title: "HOME ADDRESS",
                           body: ref.read(userProvider).address,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                         FormBodyMedium(
                           title: "NATIONALITY",
                           body: ref.read(userProvider).nationality,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                         FormBodyMedium(
                           title: "CIVIL STATUS",
                           body: ref.read(userProvider).civilStatus,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                         FormBodyMedium(
                           title: "RELIGION",
                           body: ref.read(userProvider).religion,
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                         FormBodyMedium(
@@ -122,18 +117,12 @@ class SetupScreenSummaryPage extends ConsumerWidget {
               ),
             ),
           ),
-          SizedBox(height: 10),
-          Text(
-            "SYSTEM TERMS AND CONDITIONS",
-            style:
-                Theme.of(
-                  context,
-                ).textTheme.titleSmall?.copyWith(
-                  color: Colors.black54,
-                  fontWeight: FontWeight.bold,
-                ),
+          const SizedBox(height: 10),
+          const TextTitleSmall(
+            title: "SYSTEM TERMS AND CONDITIONS",
+            color: Colors.deepOrange,
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Container(
             decoration: BoxDecoration(
               color: AppColors.lighterDeepOrange,
@@ -146,19 +135,19 @@ class SetupScreenSummaryPage extends ConsumerWidget {
                 padding: const EdgeInsets.all(20.0),
                 child: Row(
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.warning,
-                      color: Colors.deepOrange,
+                      color: Colors.red,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 20,
                     ),
-                    Expanded(
-                      child: Text(
-                        "MEAS is a guidance and reporting tool only. It does not replace direct emergency calls to 911 or local hotlines.",
-                        style: Theme.of(
-                          context,
-                        ).textTheme.bodySmall?.copyWith(color: Colors.red),
+                    const Expanded(
+                      child: TextBodySmall(
+                        title:
+                            "MEAS is a guidance and reporting tool only. It does not replace direct emergency calls to 911 or local hotlines.",
+                        color: Colors.red,
+                        isBold: false,
                       ),
                     ),
                   ],
@@ -166,9 +155,9 @@ class SetupScreenSummaryPage extends ConsumerWidget {
               ),
             ),
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Card(
-            color: AppColors.lighterBlack,
+            color: Colors.white,
             child: SizedBox(
               width: double.infinity,
               child: Padding(
@@ -176,24 +165,18 @@ class SetupScreenSummaryPage extends ConsumerWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      "DATA PRIVACY",
-                      style:
-                          Theme.of(
-                            context,
-                          ).textTheme.titleSmall?.copyWith(
-                            color: Colors.deepOrange,
-                            fontWeight: FontWeight.bold,
-                          ),
+                    const TextTitleSmall(
+                      title: "DATA PRIVACY",
+                      color: Colors.deepOrange,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
                     Text.rich(
                       TextSpan(
                         text: "In compliance with the ",
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: Colors.black54,
+                          color: AppColors.darkerGrey,
                           fontWeight: FontWeight.bold,
                         ),
                         children: [
@@ -207,20 +190,20 @@ class SetupScreenSummaryPage extends ConsumerWidget {
                         ],
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 10,
                     ),
-                    TextBodySmall(
+                    const TextBodySmall(
                       title: "• All personal data shall be encrypted and stored securely",
                     ),
-                    TextBodySmall(
+                    const TextBodySmall(
                       title:
                           "• Your data is only shared with authorized emergency responders and personnel during an active incident",
                     ),
-                    TextBodySmall(
+                    const TextBodySmall(
                       title: "• Your location is only transmitted once an emergency report has been triggered",
                     ),
-                    TextBodySmall(
+                    const TextBodySmall(
                       title:
                           "• Your data will never be sold or shared with third parties (e.g. non-government agencies, private entities)",
                     ),

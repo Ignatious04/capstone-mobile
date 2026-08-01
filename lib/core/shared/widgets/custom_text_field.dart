@@ -1,4 +1,4 @@
-import 'package:capstone/core/shared/widgets/text/text_body_small.dart';
+import 'package:capstone/core/themes/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -11,12 +11,14 @@ class CustomTextField extends StatelessWidget {
     this.keyboardType,
     this.inputFormatters,
     this.isReadOnly = false,
-    this.color = Colors.black,
+    this.color = AppColors.darkerGrey,
+    this.obscureText = false,
     this.hideErrorText = true,
     this.vertical = 10,
     this.horizontal = 10,
     this.maxLines = 1,
     this.onChanged,
+    this.isRequired = false,
   });
 
   final String title;
@@ -26,18 +28,40 @@ class CustomTextField extends StatelessWidget {
   final List<TextInputFormatter>? inputFormatters;
   final bool isReadOnly;
   final Color color;
+  final bool obscureText;
   final bool hideErrorText;
   final double vertical;
   final double horizontal;
   final int maxLines;
   final ValueChanged<String>? onChanged;
+  final bool isRequired;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        TextBodySmall(title: title),
+        RichText(
+          text: TextSpan(
+            style:
+                Theme.of(
+                  context,
+                ).textTheme.bodyMedium?.copyWith(
+                  color: color,
+                  fontWeight: FontWeight.bold,
+                ),
+            children: [
+              TextSpan(text: title),
+              if (isRequired)
+                const TextSpan(
+                  text: ' *',
+                  style: TextStyle(
+                    color: Colors.red,
+                  ),
+                ),
+            ],
+          ),
+        ),
         SizedBox(
           height: 10,
         ),
@@ -48,7 +72,8 @@ class CustomTextField extends StatelessWidget {
           maxLines: maxLines,
           inputFormatters: inputFormatters,
           readOnly: isReadOnly,
-          style: TextStyle(fontSize: 14, color: color),
+          style: TextStyle(fontSize: 14, color: Colors.black),
+          obscureText: obscureText,
           decoration: InputDecoration(
             errorStyle: hideErrorText
                 ? const TextStyle(

@@ -153,7 +153,7 @@ class ProfileScreen extends ConsumerWidget {
                           ),
                         );
                       } on FirebaseAuthException catch (e) {
-                        print(e.message);
+                        debugPrint(e.message);
                       }
                     },
                     style: ElevatedButton.styleFrom(

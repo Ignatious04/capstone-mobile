@@ -1,6 +1,5 @@
 import 'package:capstone/core/exceptions/auth_exception.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 
 class FirebaseAuthRepository {
   final FirebaseAuth firebaseAuth;
@@ -13,10 +12,14 @@ class FirebaseAuthRepository {
     required String email,
     required String password,
   }) async {
-    return firebaseAuth.createUserWithEmailAndPassword(
-      email: email,
-      password: password,
-    );
+    try {
+      return await firebaseAuth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+    } on FirebaseAuthException catch (e) {
+      throw _mapAuthError(e);
+    }
   }
 
   Future<UserCredential> signIn({
@@ -29,9 +32,6 @@ class FirebaseAuthRepository {
         password: password,
       );
     } on FirebaseAuthException catch (e) {
-      debugPrint('Firebase code: ${e.code}');
-      debugPrint('Firebase message: ${e.message}');
-      debugPrint('Firebase exception: $e');
       throw _mapAuthError(e);
     }
   }

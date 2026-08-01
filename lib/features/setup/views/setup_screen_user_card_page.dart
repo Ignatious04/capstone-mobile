@@ -49,18 +49,18 @@ class _SetupScreenUserCardPage extends ConsumerState<SetupScreenUserCardPage> {
     return SingleChildScrollView(
       child: Column(
         children: [
-          Align(
+          const Align(
             alignment: Alignment.centerLeft,
             child: TextTitleSmall(
               title: "USER VALIDATION",
-              color: Colors.black54,
+              color: Colors.black,
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           CustomDropdownButton(
-            title: "DOCUMENT ID TYPE *",
+            title: "DOCUMENT ID TYPE",
             value: user.idType.isEmpty ? null : user.idType,
             validator: (value) {
               if (value == null || value.isEmpty) {
@@ -69,16 +69,17 @@ class _SetupScreenUserCardPage extends ConsumerState<SetupScreenUserCardPage> {
 
               return null;
             },
+            hideErrorText: false,
             items: [
-              DropdownMenuItem(
+              const DropdownMenuItem(
                 value: "National ID (PhilSys)",
                 child: Text("National ID (PhilSys)"),
               ),
-              DropdownMenuItem(
+              const DropdownMenuItem(
                 value: "Driver's License",
                 child: Text("Driver's License"),
               ),
-              DropdownMenuItem(
+              const DropdownMenuItem(
                 value: "Passport",
                 child: Text("Passport"),
               ),
@@ -86,8 +87,9 @@ class _SetupScreenUserCardPage extends ConsumerState<SetupScreenUserCardPage> {
             onChanged: (value) {
               ref.read(userProvider.notifier).setIDType(value!);
             },
+            isRequired: true,
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           ClipRRect(
@@ -106,7 +108,7 @@ class _SetupScreenUserCardPage extends ConsumerState<SetupScreenUserCardPage> {
                       child: Container(),
                     ),
                   ),
-                  Positioned(
+                  const Positioned(
                     top: 75,
                     left: 20,
                     right: 20,
@@ -127,7 +129,7 @@ class _SetupScreenUserCardPage extends ConsumerState<SetupScreenUserCardPage> {
               ),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           ElevatedButton(
@@ -141,7 +143,7 @@ class _SetupScreenUserCardPage extends ConsumerState<SetupScreenUserCardPage> {
                 borderRadius: BorderRadiusGeometry.circular(12),
               ),
             ),
-            child: Text("Start camera"),
+            child: const Text("Start camera"),
           ),
         ],
       ),
