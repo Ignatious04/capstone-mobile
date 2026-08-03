@@ -1,5 +1,6 @@
 import 'package:capstone/core/enums/map_mode_enum.dart';
 import 'package:capstone/core/shared/providers/location_provider.dart';
+import 'package:capstone/core/shared/widgets/custom_circular_progress_indicator.dart';
 import 'package:capstone/core/shared/widgets/custom_header_widget.dart';
 import 'package:capstone/core/shared/widgets/text/text_body_medium.dart';
 import 'package:capstone/features/map/widgets/map_tile_widget.dart';
@@ -66,7 +67,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           initialLocation: latLng,
                           mode: MapModeEnum.view,
                         ),
-                        loading: () => Center(child: const CircularProgressIndicator()),
+                        loading: () => Center(child: const CustomCircularProgressIndicator()),
                         error: (e, _) => Text(e.toString()),
                       ),
                     ),

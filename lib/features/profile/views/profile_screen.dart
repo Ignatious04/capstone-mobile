@@ -1,7 +1,6 @@
 import 'package:capstone/core/shared/widgets/custom_circular_progress_indicator.dart';
 import 'package:capstone/core/shared/widgets/text/text_title_large.dart';
 import 'package:capstone/core/shared/widgets/text/text_title_small.dart';
-import 'package:capstone/features/login/views/login_screen.dart';
 import 'package:capstone/core/shared/providers/firebase_auth_provider.dart';
 import 'package:capstone/core/shared/providers/user_provider.dart';
 import 'package:capstone/features/profile/views/personal_information_screen.dart';
@@ -19,6 +18,11 @@ class ProfileScreen extends ConsumerWidget {
     final userAsync = ref.watch(currentAuthenticatedUserProvider);
     return userAsync.when(
       data: (data) {
+        if (data == null) {
+          return const Center(
+            child: CustomCircularProgressIndicator(),
+          );
+        }
         return SafeArea(
           child: Padding(
             padding: const EdgeInsets.all(20),
@@ -140,18 +144,7 @@ class ProfileScreen extends ConsumerWidget {
                           firebaseAuthRepositoryProvider,
                         );
 
-                        firebaseAuthRepository.signOut();
-                        if (!context.mounted) {
-                          return;
-                        }
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return LoginScreen();
-                            },
-                          ),
-                        );
+                        await firebaseAuthRepository.signOut();
                       } on FirebaseAuthException catch (e) {
                         debugPrint(e.message);
                       }

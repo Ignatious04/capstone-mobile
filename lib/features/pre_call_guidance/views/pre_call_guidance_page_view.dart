@@ -35,7 +35,7 @@ class _PreCallGuidancePageViewState extends ConsumerState<PreCallGuidancePageVie
         curve: Curves.easeIn,
       );
     } else {
-      Navigator.push(
+      Navigator.pushReplacement(
         context,
         MaterialPageRoute(
           builder: (context) {

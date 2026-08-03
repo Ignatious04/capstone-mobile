@@ -1,4 +1,5 @@
 import 'package:capstone/core/shared/providers/user_provider.dart';
+import 'package:capstone/core/shared/widgets/custom_circular_progress_indicator.dart';
 import 'package:capstone/features/login/views/login_screen.dart';
 import 'package:capstone/core/shared/providers/firebase_auth_provider.dart';
 import 'package:capstone/features/main/main_screen.dart';
@@ -40,18 +41,16 @@ class AuthWrapper extends ConsumerWidget {
             return const MainScreen();
           },
           loading: () => const Scaffold(
-            body: Center(child: CircularProgressIndicator()),
+            body: Center(child: CustomCircularProgressIndicator()),
           ),
           error: (e, _) => Scaffold(
             body: Center(child: Text(e.toString())),
           ),
         );
       },
-      loading: () => Scaffold(
+      loading: () => const Scaffold(
         body: Center(
-          child: CircularProgressIndicator(
-            color: Colors.deepOrange,
-          ),
+          child: CustomCircularProgressIndicator(),
         ),
       ),
       error: (error, stack) => Scaffold(
