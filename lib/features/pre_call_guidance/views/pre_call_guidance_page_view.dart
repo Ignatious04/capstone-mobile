@@ -35,13 +35,10 @@ class _PreCallGuidancePageViewState extends ConsumerState<PreCallGuidancePageVie
         curve: Curves.easeIn,
       );
     } else {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) {
-            return PreCallGuidanceSummaryScreen();
-          },
-        ),
+      pageController.animateToPage(
+        questionCount,
+        duration: const Duration(milliseconds: 500),
+        curve: Curves.easeIn,
       );
     }
   }
@@ -85,8 +82,14 @@ class _PreCallGuidancePageViewState extends ConsumerState<PreCallGuidancePageVie
                 child: PageView.builder(
                   controller: pageController,
                   physics: const NeverScrollableScrollPhysics(),
-                  itemCount: state.questions.length,
+                  itemCount: state.questions.length + 1,
                   itemBuilder: (context, index) {
+                    if (index == state.questions.length) {
+                      return PreCallGuidanceSummaryScreen(
+                        pageController: pageController,
+                      );
+                    }
+
                     return PreCallGuidancePage(
                       question: state.questions[index],
                       index: index,

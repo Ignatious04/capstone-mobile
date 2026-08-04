@@ -24,6 +24,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    
     final location = ref.watch(locationStreamProvider);
 
     return SafeArea(

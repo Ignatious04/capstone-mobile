@@ -1,5 +1,6 @@
 import 'package:capstone/core/shared/providers/user_provider.dart';
 import 'package:capstone/core/shared/widgets/custom_circular_progress_indicator.dart';
+import 'package:capstone/core/shared/widgets/location_gate.dart';
 import 'package:capstone/features/login/views/login_screen.dart';
 import 'package:capstone/core/shared/providers/firebase_auth_provider.dart';
 import 'package:capstone/features/main/main_screen.dart';
@@ -12,16 +13,12 @@ class AuthWrapper extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // final firebaseAuthRepository = ref.read(
-    //   firebaseAuthRepositoryProvider,
-    // );
-
-    // firebaseAuthRepository.signOut();
     final authState = ref.watch(authStateProvider);
-    debugPrint(authState.toString());
+    debugPrint("AuthWrapper rebuilt");
 
     return authState.when(
       data: (user) {
+        debugPrint("Auth user: ${user?.uid}");
         if (user == null) {
           return const LoginScreen();
         }
@@ -38,7 +35,7 @@ class AuthWrapper extends ConsumerWidget {
               return const WelcomeScreen();
             }
 
-            return const MainScreen();
+            return const LocationGate();
           },
           loading: () => const Scaffold(
             body: Center(child: CustomCircularProgressIndicator()),

@@ -47,7 +47,7 @@ class ProfileScreen extends ConsumerWidget {
                   height: 10,
                 ),
                 TextTitleLarge(
-                  title: "${data!.firstName} ${data.lastName}",
+                  title: "${data.firstName} ${data.lastName}",
                 ),
                 SizedBox(
                   height: 10,

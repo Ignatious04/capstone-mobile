@@ -16,6 +16,15 @@ class GuidanceNotifier extends Notifier<QuestionState> {
     );
   }
 
+  void resetAnswers() {
+    state = state.copyWith(
+      currentPage: 0,
+      questions: [
+        for (final question in state.questions) question.copyWith(answer: null),
+      ],
+    );
+  }
+
   void loadQuestions(GuidanceTypeEnum type) {
     switch (type) {
       case GuidanceTypeEnum.medical:

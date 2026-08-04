@@ -1,5 +1,6 @@
 import 'package:capstone/core/exceptions/auth_exception.dart';
 import 'package:capstone/core/shared/widgets/auth_wrapper.dart';
+import 'package:capstone/core/shared/widgets/custom_snackbar_helper.dart';
 import 'package:capstone/core/shared/widgets/custom_text_field.dart';
 import 'package:capstone/core/shared/widgets/text/text_body_medium.dart';
 import 'package:capstone/core/shared/widgets/text/text_body_small.dart';
@@ -180,6 +181,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         if (!context.mounted) {
                           return;
                         }
+
+                        CustomSnackbarHelper.show(context, text: "Logged in successfully!");
 
                         Navigator.pushAndRemoveUntil(
                           context,
