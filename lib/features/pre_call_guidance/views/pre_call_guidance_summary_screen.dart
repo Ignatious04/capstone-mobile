@@ -1,12 +1,10 @@
-import 'package:capstone/core/shared/widgets/custom_header_widget.dart';
+
 import 'package:capstone/core/shared/widgets/text/text_body_medium.dart';
 import 'package:capstone/core/shared/widgets/text/text_title_small.dart';
 import 'package:capstone/core/themes/app_colors.dart';
-import 'package:capstone/features/main/main_screen.dart';
 import 'package:capstone/features/pre_call_guidance/providers/guidance_provider.dart';
 import 'package:capstone/features/pre_call_guidance/widgets/pre_call_guidance_summary_card_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class PreCallGuidanceSummaryScreen extends ConsumerWidget {
@@ -59,20 +57,23 @@ class PreCallGuidanceSummaryScreen extends ConsumerWidget {
                 ),
               ),
               SizedBox(height: 10),
-              ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: state.questions.length,
-                itemBuilder: (_, index) {
-                  final question = state.questions[index];
-
-                  return PreCallGuidanceSummaryCardWidget(
-                    question: question.question,
-                    answer: question.answer.toString(),
-                  );
-                },
+              Card(
+                color: Colors.white,
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: state.questions.length,
+                  itemBuilder: (_, index) {
+                    final question = state.questions[index];
+                
+                    return PreCallGuidanceSummaryCardWidget(
+                      question: question.question,
+                      answer: question.answer.toString(),
+                    );
+                  },
+                ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               ElevatedButton(
                 onPressed: () {},
                 style: ElevatedButton.styleFrom(
@@ -82,7 +83,7 @@ class PreCallGuidanceSummaryScreen extends ConsumerWidget {
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-                child: Text(
+                child: const Text(
                   "Submit report",
                 ),
               ),

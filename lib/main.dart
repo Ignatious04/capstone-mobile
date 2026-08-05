@@ -11,6 +11,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  GoogleFonts.config.allowRuntimeFetching = false;
   runApp(ProviderScope(child: const MyApp()));
 }
 
