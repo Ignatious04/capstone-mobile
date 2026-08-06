@@ -13,23 +13,15 @@ class PreCallGuidanceSummaryCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(12),
-          color: Colors.white,
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              TextBodyMedium(title: question, isBold: false,),
-              const SizedBox(height: 10),
-              TextBodyMedium(title: answer),
-            ],
-          ),
-        ),
+    return Padding(
+      padding: const EdgeInsets.all(20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          TextBodyMedium(title: question, isBold: false,),
+          const SizedBox(height: 10),
+          TextBodyMedium(title: answer),
+        ],
       ),
     );
   }

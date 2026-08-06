@@ -7,22 +7,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class ReportModel {
   final String reportID;
   final String referenceNumber;
-
   final String userID;
-
   final GuidanceTypeEnum? type;
   final String description;
-
   final List<VictimModel> victims;
   final List<String> attachments;
   final String additionalInformation;
-
   final ReportStatusEnum? status;
-
   final GeoPoint? location;
-
-  final String assignedAgencyID;
-
   final DateTime? createdAt;
   final DateTime? resolvedAt;
 
@@ -37,7 +29,6 @@ class ReportModel {
     this.additionalInformation = "",
     this.status,
     this.location,
-    this.assignedAgencyID = '',
     this.createdAt,
     this.resolvedAt,
   });
@@ -54,7 +45,6 @@ class ReportModel {
     ReportStatusEnum? status,
     ReportPriorityEnum? priority,
     GeoPoint? location,
-    String? assignedAgencyID,
     String? dispatcherID,
     DateTime? createdAt,
     DateTime? resolvedAt,
@@ -70,7 +60,6 @@ class ReportModel {
       additionalInformation: additionalInformation ?? this.additionalInformation,
       status: status ?? this.status,
       location: location ?? this.location,
-      assignedAgencyID: assignedAgencyID ?? this.assignedAgencyID,
       createdAt: createdAt ?? this.createdAt,
       resolvedAt: resolvedAt ?? this.resolvedAt,
     );
@@ -88,7 +77,6 @@ class ReportModel {
       "additionalInformation": additionalInformation,
       'status': status!.name,
       'location': location,
-      'assignedAgencyID': assignedAgencyID,
       'createdAt': createdAt,
       'resolvedAt': resolvedAt,
     };
@@ -122,7 +110,6 @@ class ReportModel {
             )
           : null,
       location: map['location'],
-      assignedAgencyID: map['assignedAgencyID'] ?? '',
       createdAt: (map['createdAt'] as Timestamp?)?.toDate(),
       resolvedAt: (map['resolvedAt'] as Timestamp?)?.toDate(),
     );

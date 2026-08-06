@@ -67,7 +67,10 @@ class _SetupScreenMedicalInfoPage extends ConsumerState<SetupScreenMedicalInfoPa
                   controller: heightController,
                   keyboardType: TextInputType.numberWithOptions(decimal: true),
                   onChanged: (value) {
-                    ref.read(userProvider.notifier).setHeight(double.tryParse(value)!);
+                    final height = double.tryParse(value);
+                    if (height != null) {
+                      ref.read(userProvider.notifier).setHeight(height);
+                    }
                   },
                 ),
               ),
@@ -80,7 +83,10 @@ class _SetupScreenMedicalInfoPage extends ConsumerState<SetupScreenMedicalInfoPa
                   controller: weightController,
                   keyboardType: TextInputType.numberWithOptions(decimal: true),
                   onChanged: (value) {
-                    ref.read(userProvider.notifier).setWeight(double.tryParse(value)!);
+                    final weight = double.tryParse(value);
+                    if (weight != null) {
+                      ref.read(userProvider.notifier).setWeight(weight);
+                    }
                   },
                 ),
               ),

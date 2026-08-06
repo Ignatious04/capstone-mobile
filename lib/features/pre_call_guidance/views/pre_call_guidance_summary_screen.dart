@@ -56,20 +56,23 @@ class PreCallGuidanceSummaryScreen extends ConsumerWidget {
                 ),
               ),
               SizedBox(height: 10),
-              ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: state.questions.length,
-                itemBuilder: (_, index) {
-                  final question = state.questions[index];
+              Card(
+                color: Colors.white,
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: state.questions.length,
+                  itemBuilder: (_, index) {
+                    final question = state.questions[index];
 
-                  return PreCallGuidanceSummaryCardWidget(
-                    question: question.question,
-                    answer: question.answer.toString(),
-                  );
-                },
+                    return PreCallGuidanceSummaryCardWidget(
+                      question: question.question,
+                      answer: question.answer.toString(),
+                    );
+                  },
+                ),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               ElevatedButton(
                 onPressed: () {},
                 style: ElevatedButton.styleFrom(
@@ -79,7 +82,7 @@ class PreCallGuidanceSummaryScreen extends ConsumerWidget {
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-                child: Text(
+                child: const Text(
                   "Submit report",
                 ),
               ),

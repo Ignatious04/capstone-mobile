@@ -119,6 +119,7 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
                     onChanged: (value) {
                       ref.read(userProvider.notifier).setFirstName(value);
                     },
+                    isRequired: true,
                   ),
                 ),
                 const SizedBox(
@@ -135,7 +136,6 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
                     onChanged: (value) {
                       ref.read(userProvider.notifier).setMiddleName(value);
                     },
-                    isRequired: true,
                   ),
                 ),
               ],
