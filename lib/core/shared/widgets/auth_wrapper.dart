@@ -3,7 +3,6 @@ import 'package:capstone/core/shared/widgets/custom_circular_progress_indicator.
 import 'package:capstone/core/shared/widgets/location_gate.dart';
 import 'package:capstone/features/login/views/login_screen.dart';
 import 'package:capstone/core/shared/providers/firebase_auth_provider.dart';
-import 'package:capstone/features/main/main_screen.dart';
 import 'package:capstone/features/setup/views/welcome_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

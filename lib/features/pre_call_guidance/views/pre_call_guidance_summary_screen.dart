@@ -1,12 +1,9 @@
-import 'package:capstone/core/shared/widgets/custom_header_widget.dart';
 import 'package:capstone/core/shared/widgets/text/text_body_medium.dart';
 import 'package:capstone/core/shared/widgets/text/text_title_small.dart';
 import 'package:capstone/core/themes/app_colors.dart';
-import 'package:capstone/features/main/main_screen.dart';
 import 'package:capstone/features/pre_call_guidance/providers/guidance_provider.dart';
 import 'package:capstone/features/pre_call_guidance/widgets/pre_call_guidance_summary_card_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class PreCallGuidanceSummaryScreen extends ConsumerWidget {
