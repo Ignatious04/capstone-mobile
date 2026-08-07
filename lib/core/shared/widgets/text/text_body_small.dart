@@ -5,11 +5,13 @@ class TextBodySmall extends StatelessWidget {
   const TextBodySmall({
     super.key,
     required this.title,
+    this.alignment = TextAlign.left,
     this.color = AppColors.darkerGrey,
     this.isBold = true,
   });
 
   final String title;
+  final TextAlign alignment;
   final Color color;
   final bool isBold;
 
@@ -17,6 +19,7 @@ class TextBodySmall extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       title,
+      textAlign: alignment,
       style:
           Theme.of(
             context,

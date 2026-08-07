@@ -1,0 +1,1 @@
+enum ReportTypeEnum { normal, preCallGuidance }

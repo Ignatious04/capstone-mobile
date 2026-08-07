@@ -117,7 +117,7 @@ class _LocationGateState extends ConsumerState<LocationGate> with WidgetsBinding
                   _message!,
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: 10),
                 ElevatedButton(
                   onPressed: _checkLocation,
                   child: const Text("Try Again"),

@@ -1,7 +1,7 @@
-import 'package:capstone/features/pre_call_guidance/models/question_model.dart';
+import 'package:capstone/features/pre_call_guidance/models/pre_call_guidance_model.dart';
 
 class QuestionState {
-  final List<QuestionModel> questions;
+  final List<PreCallGuidanceModel> questions;
   final int currentPage;
 
   const QuestionState({
@@ -10,7 +10,7 @@ class QuestionState {
   });
 
   QuestionState copyWith({
-    List<QuestionModel>? questions,
+    List<PreCallGuidanceModel>? questions,
     int? currentPage,
   }) {
     return QuestionState(

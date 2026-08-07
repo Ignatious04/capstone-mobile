@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -11,7 +10,6 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  GoogleFonts.config.allowRuntimeFetching = false;
   runApp(ProviderScope(child: const MyApp()));
 }
 
@@ -51,7 +49,7 @@ class _MyAppState extends State<MyApp> {
           ),
         ),
         scaffoldBackgroundColor: const Color(0xFFF8F8F8),
-        textTheme: GoogleFonts.interTextTheme(),
+        fontFamily: 'Inter',
       ),
       home: AuthWrapper(),
     );

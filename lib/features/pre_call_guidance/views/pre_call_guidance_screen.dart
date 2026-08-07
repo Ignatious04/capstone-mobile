@@ -5,6 +5,7 @@ import 'package:capstone/core/shared/widgets/text/text_title_medium.dart';
 import 'package:capstone/features/pre_call_guidance/providers/guidance_provider.dart';
 import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/pre_call_guidance/views/pre_call_guidance_page_view.dart';
+import 'package:capstone/features/reporting/providers/report_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -52,6 +53,7 @@ class _PreCallGuidanceScreenState extends ConsumerState<PreCallGuidanceScreen> {
                     children: [
                       ElevatedButton(
                         onPressed: () {
+                          ref.read(reportProvider.notifier).setIncidentType(GuidanceTypeEnum.medical);
                           ref.read(guidanceProvider.notifier).loadQuestions(GuidanceTypeEnum.medical);
 
                           Navigator.push(
@@ -95,6 +97,7 @@ class _PreCallGuidanceScreenState extends ConsumerState<PreCallGuidanceScreen> {
                       ),
                       ElevatedButton(
                         onPressed: () {
+                          ref.read(reportProvider.notifier).setIncidentType(GuidanceTypeEnum.police);
                           ref.read(guidanceProvider.notifier).loadQuestions(GuidanceTypeEnum.police);
 
                           Navigator.push(
@@ -138,6 +141,7 @@ class _PreCallGuidanceScreenState extends ConsumerState<PreCallGuidanceScreen> {
                       ),
                       ElevatedButton(
                         onPressed: () {
+                          ref.read(reportProvider.notifier).setIncidentType(GuidanceTypeEnum.fire);
                           ref.read(guidanceProvider.notifier).loadQuestions(GuidanceTypeEnum.fire);
 
                           Navigator.push(

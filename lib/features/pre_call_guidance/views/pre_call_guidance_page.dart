@@ -1,6 +1,6 @@
 import 'package:capstone/core/shared/widgets/text/text_body_large.dart';
 import 'package:capstone/core/shared/widgets/text/text_title_large.dart';
-import 'package:capstone/features/pre_call_guidance/models/question_model.dart';
+import 'package:capstone/features/pre_call_guidance/models/pre_call_guidance_model.dart';
 import 'package:capstone/features/pre_call_guidance/providers/guidance_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -13,7 +13,7 @@ class PreCallGuidancePage extends ConsumerWidget {
     required this.onNext,
   });
 
-  final QuestionModel question;
+  final PreCallGuidanceModel question;
   final int index;
   final VoidCallback onNext;
 

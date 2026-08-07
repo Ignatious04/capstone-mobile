@@ -56,7 +56,7 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
                         padding: const EdgeInsets.only(bottom: 10),
                         child: ReportCardWidget(
                           referenceNumber: report.referenceNumber,
-                          emergencyType: report.type!.name,
+                          emergencyType: report.incidentType!.name,
                           createdAt: DateFormat("MMMM dd, yyyy").format(report.createdAt!),
                           status: report.status!.name,
                           report: report,

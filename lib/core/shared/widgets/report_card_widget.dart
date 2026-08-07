@@ -1,7 +1,11 @@
+import 'package:capstone/core/enums/report_type_enum.dart';
 import 'package:capstone/core/shared/widgets/text/text_body_medium.dart';
 import 'package:capstone/core/shared/widgets/text/text_body_small.dart';
+import 'package:capstone/core/shared/widgets/text/text_title_medium.dart';
+import 'package:capstone/core/shared/widgets/text/text_title_small.dart';
 import 'package:capstone/features/reporting/models/report_model.dart';
-import 'package:capstone/features/reporting/views/reports_view_screen.dart';
+import 'package:capstone/features/reporting/views/pre_call_guidance_report_view_screen.dart';
+import 'package:capstone/features/reporting/views/normal_reports_view_screen.dart';
 import 'package:flutter/material.dart';
 
 class ReportCardWidget extends StatelessWidget {
@@ -40,35 +44,55 @@ class ReportCardWidget extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      TextBodyMedium(title: referenceNumber.toString()),
-                      TextBodySmall(title: "Emergency Type: $emergencyType"),
-                      TextBodySmall(title: createdAt),
-                      TextBodySmall(title: "Status: $status"),
+                      TextTitleMedium(
+                        title: referenceNumber.toString(),
+                        isBold: true,
+                      ),
+                      TextBodyMedium(
+                        title: "Emergency Type: $emergencyType",
+                        isBold: false,
+                      ),
+                      TextBodyMedium(title: createdAt, isBold: false),
+                      TextBodyMedium(title: "Status: $status", isBold: false),
                     ],
                   ),
                 ),
                 SizedBox(
                   width: 10,
                 ),
-                Container(
+                VerticalDivider(
                   width: 1,
-                  color: Colors.black,
                 ),
                 SizedBox(
                   width: 10,
                 ),
                 GestureDetector(
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return ReportsViewScreen(report: report);
-                        },
-                      ),
-                    );
+                    if (report.reportType == ReportTypeEnum.normal) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return NormalReportsViewScreen(report: report);
+                          },
+                        ),
+                      );
+                    } else {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return PreCallGuidanceReportViewScreen(report: report);
+                          },
+                        ),
+                      );
+                    }
                   },
-                  child: Icon(Icons.arrow_right, size: 50, color: Colors.deepOrange,),
+                  child: Icon(
+                    Icons.arrow_right,
+                    size: 50,
+                    color: Colors.deepOrange,
+                  ),
                 ),
               ],
             ),

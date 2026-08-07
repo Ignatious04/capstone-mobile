@@ -18,18 +18,18 @@ class ReportNotifier extends Notifier<ReportModel> {
     return const ReportModel();
   }
 
-  void setEmergencyType(GuidanceTypeEnum value) {
-    state = state.copyWith(type: value);
+  void setIncidentType(GuidanceTypeEnum value) {
+    state = state.copyWith(incidentType: value);
   }
 
   void setLocation(LatLng location) {
-  state = state.copyWith(
-    location: GeoPoint(
-      location.latitude,
-      location.longitude,
-    ),
-  );
-}
+    state = state.copyWith(
+      location: GeoPoint(
+        location.latitude,
+        location.longitude,
+      ),
+    );
+  }
 
   void addVictim() {
     state = state.copyWith(

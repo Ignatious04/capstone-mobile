@@ -1,8 +1,17 @@
+import 'dart:math';
+import 'package:capstone/core/enums/report_status_enum.dart';
+import 'package:capstone/core/enums/report_type_enum.dart';
+import 'package:capstone/core/shared/providers/firebase_auth_provider.dart';
+import 'package:capstone/core/shared/providers/location_provider.dart';
+import 'package:capstone/core/shared/widgets/custom_snackbar.dart';
 import 'package:capstone/core/shared/widgets/text/text_body_medium.dart';
 import 'package:capstone/core/shared/widgets/text/text_title_small.dart';
 import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/pre_call_guidance/providers/guidance_provider.dart';
 import 'package:capstone/features/pre_call_guidance/widgets/pre_call_guidance_summary_card_widget.dart';
+import 'package:capstone/features/reporting/providers/report_provider.dart';
+import 'package:capstone/features/reporting/providers/report_repository_provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -15,6 +24,7 @@ class PreCallGuidanceSummaryScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(guidanceProvider);
+    final location = ref.watch(locationStreamProvider);
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -74,7 +84,45 @@ class PreCallGuidanceSummaryScreen extends ConsumerWidget {
               ),
               const SizedBox(height: 10),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () async {
+                  final reportID = ref.read(reportRepositoryProvider).getReportID();
+                  final now = DateTime.now();
+                  final date =
+                      '${now.year}'
+                      '${now.month.toString().padLeft(2, '0')}'
+                      '${now.day.toString().padLeft(2, '0')}';
+
+                  if (!location.hasValue) {
+                    CustomSnackbar(text: "Unable to get your current location.");
+                    return;
+                  }
+
+                  final currentLocation = location.value!;
+
+                  final report = ref
+                      .read(reportProvider)
+                      .copyWith(
+                        reportID: reportID,
+                        referenceNumber: "RPT-$date-${Random().nextInt(900000) + 100000}",
+                        userID: ref.read(firebaseAuthProvider).currentUser!.uid.toString(),
+                        reportType: ReportTypeEnum.preCallGuidance,
+                        guidanceAnswers: state.questions,
+                        status: ReportStatusEnum.pending,
+                        location: GeoPoint(
+                          currentLocation.latitude,
+                          currentLocation.longitude,
+                        ),
+                        createdAt: now,
+                      );
+
+                  await ref.read(reportRepositoryProvider).createReport(report);
+
+                  ref.read(guidanceProvider.notifier).resetAnswers();
+
+                  if (context.mounted) {
+                    Navigator.pop(context);
+                  }
+                },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.deepOrange,
                   foregroundColor: Colors.white,

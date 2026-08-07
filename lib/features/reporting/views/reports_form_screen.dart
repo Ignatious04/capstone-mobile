@@ -127,7 +127,7 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> {
                               ),
                             ],
                             onChanged: (value) {
-                              ref.read(reportProvider.notifier).setEmergencyType(value!);
+                              ref.read(reportProvider.notifier).setIncidentType(value!);
                             },
                             isRequired: true,
                           ),

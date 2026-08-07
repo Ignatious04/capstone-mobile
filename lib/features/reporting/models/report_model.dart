@@ -1,6 +1,8 @@
 import 'package:capstone/core/enums/guidance_type_enum.dart';
 import 'package:capstone/core/enums/report_priority_enum.dart';
 import 'package:capstone/core/enums/report_status_enum.dart';
+import 'package:capstone/core/enums/report_type_enum.dart';
+import 'package:capstone/features/pre_call_guidance/models/pre_call_guidance_model.dart';
 import 'package:capstone/features/reporting/models/victim_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -8,10 +10,12 @@ class ReportModel {
   final String reportID;
   final String referenceNumber;
   final String userID;
-  final GuidanceTypeEnum? type;
+  final ReportTypeEnum reportType;
+  final GuidanceTypeEnum? incidentType;
   final String description;
   final List<VictimModel> victims;
   final List<String> attachments;
+  final List<PreCallGuidanceModel> guidanceAnswers;
   final String additionalInformation;
   final ReportStatusEnum? status;
   final GeoPoint? location;
@@ -22,12 +26,14 @@ class ReportModel {
     this.reportID = '',
     this.referenceNumber = '',
     this.userID = '',
-    this.type,
+    this.reportType = ReportTypeEnum.normal,
+    this.incidentType,
     this.description = '',
     this.victims = const [],
     this.attachments = const [],
-    this.additionalInformation = "",
-    this.status,
+    this.guidanceAnswers = const [],
+    this.additionalInformation = '',
+    this.status = ReportStatusEnum.pending,
     this.location,
     this.createdAt,
     this.resolvedAt,
@@ -37,10 +43,12 @@ class ReportModel {
     String? reportID,
     String? referenceNumber,
     String? userID,
-    GuidanceTypeEnum? type,
+    ReportTypeEnum? reportType,
+    GuidanceTypeEnum? incidentType,
     String? description,
     List<VictimModel>? victims,
     List<String>? attachments,
+    List<PreCallGuidanceModel>? guidanceAnswers,
     String? additionalInformation,
     ReportStatusEnum? status,
     ReportPriorityEnum? priority,
@@ -53,10 +61,12 @@ class ReportModel {
       reportID: reportID ?? this.reportID,
       referenceNumber: referenceNumber ?? this.referenceNumber,
       userID: userID ?? this.userID,
-      type: type ?? this.type,
+      reportType: reportType ?? this.reportType,
+      incidentType: incidentType ?? this.incidentType,
       description: description ?? this.description,
       victims: victims ?? this.victims,
       attachments: attachments ?? this.attachments,
+      guidanceAnswers: guidanceAnswers ?? this.guidanceAnswers,
       additionalInformation: additionalInformation ?? this.additionalInformation,
       status: status ?? this.status,
       location: location ?? this.location,
@@ -70,10 +80,12 @@ class ReportModel {
       "reportID": reportID,
       'referenceNumber': referenceNumber,
       'userID': userID,
-      'type': type?.name,
+      'reportType': reportType.name,
+      'incidentType': incidentType?.name,
       'description': description,
       'victims': victims.map((v) => v.toMap()).toList(),
       'attachments': attachments,
+      'guidanceAnswers': guidanceAnswers.map((e) => e.toMap()).toList(),
       "additionalInformation": additionalInformation,
       'status': status!.name,
       'location': location,
@@ -89,9 +101,14 @@ class ReportModel {
       reportID: map["reportID"] ?? "",
       referenceNumber: map['referenceNumber'] ?? '',
       userID: map['userID'] ?? '',
-      type: map['type'] != null
+      reportType: map['reportType'] != null
+          ? ReportTypeEnum.values.firstWhere(
+              (e) => e.name == map['reportType'],
+            )
+          : ReportTypeEnum.normal,
+      incidentType: map['incidentType'] != null
           ? GuidanceTypeEnum.values.firstWhere(
-              (e) => e.name == map['type'],
+              (e) => e.name == map['incidentType'],
             )
           : null,
       description: map['description'] ?? '',
@@ -103,6 +120,13 @@ class ReportModel {
           )
           .toList(),
       attachments: (map['attachments'] as List<dynamic>? ?? []).cast<String>(),
+      guidanceAnswers: (map['guidanceAnswers'] as List<dynamic>? ?? [])
+          .map(
+            (e) => PreCallGuidanceModel.fromMap(
+              Map<String, dynamic>.from(e),
+            ),
+          )
+          .toList(),
       additionalInformation: map["additionalInformation"] ?? "",
       status: map['status'] != null
           ? ReportStatusEnum.values.firstWhere(

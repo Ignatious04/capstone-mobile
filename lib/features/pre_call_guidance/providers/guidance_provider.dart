@@ -1,6 +1,6 @@
 import 'package:capstone/core/enums/guidance_type_enum.dart';
-import 'package:capstone/features/pre_call_guidance/models/question_model.dart';
-import 'package:capstone/core/states/question_state.dart';
+import 'package:capstone/features/pre_call_guidance/models/pre_call_guidance_model.dart';
+import 'package:capstone/features/pre_call_guidance/models/question_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final guidanceProvider = NotifierProvider<GuidanceNotifier, QuestionState>(
@@ -31,9 +31,9 @@ class GuidanceNotifier extends Notifier<QuestionState> {
         state = QuestionState(
           currentPage: 0,
           questions: [
-            QuestionModel(question: "Is the person conscious?"),
-            QuestionModel(question: "Is there life threatening injuries?"),
-            QuestionModel(question: "Is their current condition intentional?"),
+            PreCallGuidanceModel(question: "Is the person conscious?"),
+            PreCallGuidanceModel(question: "Is there life threatening injuries?"),
+            PreCallGuidanceModel(question: "Is their current condition intentional?"),
           ],
         );
         break;
@@ -42,9 +42,9 @@ class GuidanceNotifier extends Notifier<QuestionState> {
         state = QuestionState(
           currentPage: 0,
           questions: [
-            QuestionModel(question: "Is the suspect present?"),
-            QuestionModel(question: "Are there weapons involved?"),
-            QuestionModel(question: "Is someone injured?"),
+            PreCallGuidanceModel(question: "Is the suspect present?"),
+            PreCallGuidanceModel(question: "Are there weapons involved?"),
+            PreCallGuidanceModel(question: "Is someone injured?"),
           ],
         );
         break;
@@ -53,8 +53,8 @@ class GuidanceNotifier extends Notifier<QuestionState> {
         state = QuestionState(
           currentPage: 0,
           questions: [
-            QuestionModel(question: "Are there people trapped inside?"),
-            QuestionModel(question: "Is the fire spreading?"),
+            PreCallGuidanceModel(question: "Are there people trapped inside?"),
+            PreCallGuidanceModel(question: "Is the fire spreading?"),
           ],
         );
         break;

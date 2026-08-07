@@ -1,4 +1,8 @@
-import 'package:capstone/features/main/main_screen.dart';
+import 'package:capstone/core/shared/widgets/location_gate.dart';
+import 'package:capstone/core/shared/widgets/text/text_body_small.dart';
+import 'package:capstone/core/shared/widgets/text/text_title_medium.dart';
+import 'package:capstone/core/shared/widgets/text/text_title_small.dart';
+import 'package:capstone/core/themes/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -19,33 +23,24 @@ class OnboardingScreen extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
-                    "MEAS",
-                    style:
-                        Theme.of(
-                          context,
-                        ).textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
+                  const TextTitleMedium(
+                    title: "MEAS",
+                    isBold: true,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
-                  Text(
-                    "Account and Safety Profile Created",
-                    style: Theme.of(context).textTheme.titleSmall,
-                  ),
-                  SizedBox(
+                  const TextTitleSmall(title: "Account and Safety Profile Saved"),
+                  const SizedBox(
                     height: 20,
                   ),
-                  Text(
-                    "Your personal information has been successfully saved and secured. You're now ready to access emergency services through the application.",
-                    textAlign: TextAlign.center,
-                    style: Theme.of(
-                      context,
-                    ).textTheme.bodySmall?.copyWith(color: Colors.black54),
+                  const TextBodySmall(
+                    title:
+                        "Your personal information has been successfully saved and secured. You're now ready to access emergency services through the application.",
+                    alignment: TextAlign.center,
+                    color: AppColors.darkerGrey,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   SizedBox(
@@ -59,13 +54,13 @@ class OnboardingScreen extends StatelessWidget {
                           context,
                           MaterialPageRoute(
                             builder: (context) {
-                              return MainScreen();
+                              return LocationGate();
                             },
                           ),
                           (route) => false,
                         );
                       },
-                      child: Text("Proceed to Home"),
+                      child: const Text("Proceed to Home"),
                     ),
                   ),
                 ],
