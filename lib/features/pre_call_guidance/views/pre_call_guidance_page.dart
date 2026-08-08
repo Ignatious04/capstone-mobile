@@ -1,5 +1,5 @@
-import 'package:capstone/core/shared/widgets/text/deprecated/text_body_large.dart';
-import 'package:capstone/core/shared/widgets/text/deprecated/text_title_large.dart';
+import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
+import 'package:capstone/core/shared/widgets/text/screen_title_text.dart';
 import 'package:capstone/features/pre_call_guidance/models/pre_call_guidance_model.dart';
 import 'package:capstone/features/pre_call_guidance/providers/guidance_provider.dart';
 import 'package:flutter/material.dart';
@@ -22,48 +22,38 @@ class PreCallGuidancePage extends ConsumerWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        TextTitleLarge(title: question.question),
+        ScreenTitleText(
+          value: question.question,
+          alignment: TextAlign.center,
+        ),
         const SizedBox(
           height: 10,
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            ElevatedButton(
+            CustomElevatedButton(
               onPressed: () {
                 ref.read(guidanceProvider.notifier).answerQuestion(index, false);
-
                 onNext();
               },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.deepOrange,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-              child: const Padding(
-                padding: EdgeInsets.all(20.0),
-                child: TextBodyLarge(title: "No", color: Colors.white),
-              ),
+              value: "No",
+              color: Colors.white,
+              backgroundColor: Colors.deepOrange,
+              hasPadding: true,
             ),
             const SizedBox(
               width: 10,
             ),
-            ElevatedButton(
+            CustomElevatedButton(
               onPressed: () {
                 ref.read(guidanceProvider.notifier).answerQuestion(index, true);
                 onNext();
               },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.deepOrange,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-              child: const Padding(
-                padding: EdgeInsets.all(20.0),
-                child: TextBodyLarge(title: "Yes", color: Colors.white),
-              ),
+              value: "Yes",
+              color: Colors.white,
+              backgroundColor: Colors.deepOrange,
+              hasPadding: true,
             ),
           ],
         ),

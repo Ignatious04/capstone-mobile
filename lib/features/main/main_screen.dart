@@ -31,9 +31,9 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final labelStyle = Theme.of(
-      context,
-    ).textTheme.bodySmall?.copyWith(color: Colors.white);
+    final labelStyle = Theme.of(context).textTheme.labelMedium?.copyWith(
+      color: Colors.white,
+    );
 
     final pages = const [
       MapScreen(),

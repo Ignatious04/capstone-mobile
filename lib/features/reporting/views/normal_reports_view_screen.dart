@@ -1,15 +1,11 @@
 import 'package:capstone/core/shared/classes/formatter.dart';
 import 'package:capstone/core/shared/widgets/custom_app_bar.dart';
-import 'package:capstone/core/shared/widgets/custom_circular_progress_indicator.dart';
 import 'package:capstone/core/shared/widgets/text/data_label_text.dart';
 import 'package:capstone/core/shared/widgets/text/data_value_text.dart';
-import 'package:capstone/core/shared/widgets/text/deprecated/text_body_medium.dart';
 import 'package:capstone/core/shared/widgets/text/paragraph_text.dart';
-import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/reporting/models/report_model.dart';
 import 'package:capstone/features/reporting/widgets/additional_information_card.dart';
 import 'package:capstone/features/reporting/widgets/attachments_card.dart';
-import 'package:capstone/features/reporting/widgets/empty_card.dart';
 import 'package:capstone/features/reporting/widgets/location_card.dart';
 import 'package:capstone/features/reporting/widgets/report_status_widget.dart';
 import 'package:capstone/features/reporting/widgets/section_title.dart';
@@ -30,7 +26,7 @@ class NormalReportsViewScreen extends StatelessWidget {
     final location = report.location;
     final information = report.additionalInformation.trim();
     return Scaffold(
-      appBar: const CustomAppBar(),
+      appBar: const CustomAppBar(value: "View Report"),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(

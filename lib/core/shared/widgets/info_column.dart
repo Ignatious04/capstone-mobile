@@ -1,6 +1,5 @@
-import 'package:capstone/core/shared/widgets/text/deprecated/text_body_medium.dart';
-import 'package:capstone/core/shared/widgets/text/deprecated/text_title_medium.dart';
-import 'package:capstone/core/shared/widgets/text/deprecated/text_title_small.dart';
+import 'package:capstone/core/shared/widgets/text/data_label_text.dart';
+import 'package:capstone/core/shared/widgets/text/data_value_text.dart';
 import 'package:flutter/material.dart';
 
 class InfoColumn extends StatelessWidget {
@@ -18,12 +17,11 @@ class InfoColumn extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        TextBodyMedium(
-          title: title,
-          isBold: false,
+        DataLabelText(
+          value: title,
         ),
-        TextTitleMedium(
-          title: value,
+        DataValueText(
+          value: value,
           isBold: false,
         ),
       ],

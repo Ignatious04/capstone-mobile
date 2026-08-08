@@ -1,6 +1,4 @@
 import 'package:capstone/core/shared/classes/formatter.dart';
-import 'package:capstone/core/shared/widgets/text/deprecated/text_body_medium.dart';
-import 'package:capstone/core/shared/widgets/text/deprecated/text_body_small.dart';
 import 'package:capstone/core/shared/widgets/text/supporting_info_text.dart';
 import 'package:capstone/core/themes/app_colors.dart';
 import 'package:flutter/material.dart';

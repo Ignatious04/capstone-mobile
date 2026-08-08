@@ -1,15 +1,17 @@
-import 'package:capstone/core/shared/widgets/text/deprecated/text_title_medium.dart';
+import 'package:capstone/core/shared/widgets/text/screen_title_text.dart';
 import 'package:flutter/material.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const CustomAppBar({super.key});
+  const CustomAppBar({super.key, required this.value});
+
+  final String value;
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
       toolbarHeight: 56,
-      title: const TextTitleMedium(
-        title: "Back",
+      title: ScreenTitleText(
+        value: value,
         color: Colors.white,
       ),
       titleSpacing: 0,

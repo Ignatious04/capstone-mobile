@@ -2,11 +2,13 @@ import 'package:capstone/core/enums/map_mode_enum.dart';
 import 'package:capstone/core/shared/providers/location_provider.dart';
 import 'package:capstone/core/shared/widgets/custom_circular_progress_indicator.dart';
 import 'package:capstone/core/shared/widgets/custom_header_widget.dart';
-import 'package:capstone/core/shared/widgets/text/deprecated/text_body_medium.dart';
+import 'package:capstone/core/shared/widgets/text/button_text.dart';
+import 'package:capstone/core/shared/widgets/text/section_title_text.dart';
+import 'package:capstone/core/shared/widgets/service_button.dart';
 import 'package:capstone/features/map/widgets/map_tile_widget.dart';
 import 'package:capstone/core/shared/widgets/nearby_services.dart';
-import 'package:capstone/core/shared/widgets/text/deprecated/text_title_small.dart';
 import 'package:capstone/core/themes/app_colors.dart';
+import 'package:capstone/features/reporting/widgets/section_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -24,7 +26,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    
     final location = ref.watch(locationStreamProvider);
 
     return SafeArea(
@@ -56,168 +57,106 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
-                  SizedBox(
-                    height: 250,
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(radius),
+                  Card(
+                    color: Colors.white,
+                    elevation: 1,
+                    margin: EdgeInsets.zero,
+                    clipBehavior: Clip.antiAlias,
+                    child: SizedBox(
+                      height: 250,
                       child: location.when(
                         data: (latLng) => MapTileWidget(
                           initialLocation: latLng,
                           mode: MapModeEnum.view,
                         ),
-                        loading: () => Center(child: const CustomCircularProgressIndicator()),
+                        loading: () => const Center(
+                          child: CustomCircularProgressIndicator(),
+                        ),
                         error: (e, _) => Text(e.toString()),
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
-                  TextTitleSmall(
-                    title: "SELECT EMERGENCY TYPE",
-                    isBold: true,
+                  const SectionTitle(
+                    icon: Icons.select_all,
+                    title: "Select Emergency Type",
                   ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      ElevatedButton(
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                          iconColor: Colors.red,
-                          backgroundColor: AppColors.lighterRed,
-                          padding: EdgeInsets.all(0),
-                          fixedSize: const Size(95, 100),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(radius),
-                          ),
-                          side: BorderSide(
-                            color: Colors.red,
-                            width: 1,
-                          ),
-                        ),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(Icons.fire_truck),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Text(
-                              "Fire",
-                              style: TextStyle(
-                                color: Colors.red,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      ElevatedButton(
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.lighterBlue,
-                          // backgroundColor: Colors.blue.withValues(
-                          //   alpha: 0.2,
-                          // ),
-                          iconColor: Colors.blue,
-                          padding: EdgeInsets.all(0),
-                          fixedSize: const Size(95, 100),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(radius),
-                          ),
-                          side: BorderSide(
-                            color: Colors.blue,
-                            width: 1,
-                          ),
-                        ),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(Icons.local_police),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Text(
-                              "Crime",
-                              style: TextStyle(
-                                color: Colors.blue,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      ElevatedButton(
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.lighterGreen,
-                          iconColor: Colors.green,
-                          padding: EdgeInsets.all(0),
-                          fixedSize: const Size(95, 100),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(radius),
-                          ),
-                          side: BorderSide(
-                            color: Colors.green,
-                            width: 1,
-                          ),
-                        ),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(Icons.medical_services),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Text(
-                              "Medical",
-                              style: TextStyle(
-                                color: Colors.green,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   Row(
                     children: [
                       Expanded(
-                        child: Container(
-                          height: 1,
-                          color: Colors.black.withValues(alpha: 0.2),
+                        child: ServiceButton(
+                          onPressed: () {
+                            
+                          },
+                          value: "Fire",
+                          icon: Icons.fire_truck,
+                          color: Colors.red,
+                          backgroundColor: AppColors.lighterRed,
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: ServiceButton(
+                          onPressed: () {
+                            
+                          },
+                          value: "Crime",
+                          icon: Icons.local_police,
+                          color: Colors.blue,
+                          backgroundColor: AppColors.lighterBlue,
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: ServiceButton(
+                          onPressed: () {
+                            
+                          },
+                          value: "Medical",
+                          icon: Icons.medical_services,
+                          color: Colors.green,
+                          backgroundColor: AppColors.lighterGreen,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    children: [
+                      const Expanded(
+                        child: Divider(
+                          height: 1,
+                        ),
+                      ),
+                      const SizedBox(
                         width: 10,
                       ),
-                      TextBodyMedium(
-                        title: "OR",
-                        color: Colors.black.withValues(alpha: 0.2),
+                      const SectionTitleText(
+                        value: "OR",
+                        color: AppColors.lighterBlack,
                         isBold: false,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 10,
                       ),
-                      Expanded(
-                        child: Container(
+                      const Expanded(
+                        child: Divider(
                           height: 1,
-                          color: Colors.black.withValues(alpha: 0.2),
                         ),
                       ),
                     ],
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   SizedBox(
@@ -227,41 +166,37 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.red,
                         iconColor: Colors.white,
-                        padding: EdgeInsets.all(0),
                         fixedSize: const Size(95, 100),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(radius),
                         ),
                       ),
-                      child: Column(
+                      child: const Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Icon(Icons.call),
+                          Icon(
+                            Icons.call,
+                            size: 30,
+                          ),
                           SizedBox(
                             height: 10,
                           ),
-                          Text(
-                            "CALL 911",
-                            style:
-                                Theme.of(
-                                  context,
-                                ).textTheme.titleLarge?.copyWith(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                          ButtonText(
+                            value: "CALL 911",
+                            color: Colors.white,
                           ),
                         ],
                       ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
-                  TextTitleSmall(
-                    title: "NEARBY SERVICES",
-                    isBold: true,
+                  const SectionTitle(
+                    icon: Icons.miscellaneous_services,
+                    title: "Nearby Services",
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   ...List.generate(

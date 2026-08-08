@@ -1,6 +1,6 @@
 import 'package:capstone/core/shared/widgets/custom_circular_progress_indicator.dart';
 import 'package:capstone/core/shared/widgets/custom_header_widget.dart';
-import 'package:capstone/core/shared/widgets/report_card_widget.dart';
+import 'package:capstone/features/reporting/widgets/report_card.dart';
 import 'package:capstone/core/shared/widgets/text/deprecated/text_title_small.dart';
 import 'package:capstone/features/reporting/providers/report_repository_provider.dart';
 import 'package:capstone/features/reporting/views/reports_form_screen.dart';
@@ -54,7 +54,7 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
                       final report = reports[index];
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 10),
-                        child: ReportCardWidget(
+                        child: ReportCard(
                           referenceNumber: report.referenceNumber,
                           emergencyType: report.incidentType!.name,
                           createdAt: DateFormat("MMMM dd, yyyy").format(report.createdAt!),

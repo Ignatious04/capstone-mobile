@@ -1,5 +1,5 @@
-import 'package:capstone/core/shared/widgets/text/deprecated/text_body_small.dart';
-import 'package:capstone/core/shared/widgets/text/deprecated/text_title_small.dart';
+import 'package:capstone/core/shared/widgets/text/sub_title_text.dart';
+import 'package:capstone/core/shared/widgets/text/screen_title_text.dart';
 import 'package:flutter/material.dart';
 
 class CustomHeaderWidget extends StatelessWidget {
@@ -18,14 +18,14 @@ class CustomHeaderWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            TextTitleSmall(
-              title: title,
+            ScreenTitleText(
+              value: title,
               color: Colors.white,
               isBold: true,
             ),
             if (body != null)
-              TextBodySmall(
-                title: body!,
+              SubtitleText(
+                value: body!,
                 color: Colors.white,
                 isBold: false,
               ),

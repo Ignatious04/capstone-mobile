@@ -1,8 +1,13 @@
+import 'package:capstone/core/shared/classes/formatter.dart';
+import 'package:capstone/core/shared/widgets/custom_app_bar.dart';
 import 'package:capstone/core/shared/widgets/info_column.dart';
-import 'package:capstone/core/shared/widgets/text/deprecated/text_body_medium.dart';
-import 'package:capstone/core/shared/widgets/text/deprecated/text_title_medium.dart';
-import 'package:capstone/core/shared/widgets/text/deprecated/text_title_small.dart';
+import 'package:capstone/core/shared/widgets/text/card_title_text.dart';
+import 'package:capstone/core/shared/widgets/text/data_label_text.dart';
+import 'package:capstone/core/shared/widgets/text/data_value_text.dart';
+import 'package:capstone/core/shared/widgets/text/paragraph_text.dart';
 import 'package:capstone/features/reporting/models/report_model.dart';
+import 'package:capstone/features/reporting/widgets/report_status_widget.dart';
+import 'package:capstone/features/reporting/widgets/section_title.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -16,15 +21,11 @@ class PreCallGuidanceReportViewScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final status = report.status!.name;
+    // final location = report.location;
+    // final information = report.additionalInformation.trim();
     return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 40,
-        title: const TextTitleSmall(
-          title: "Back",
-          color: Colors.white,
-        ),
-        titleSpacing: 0,
-      ),
+      appBar: const CustomAppBar(value: "View Report"),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(20),
@@ -33,29 +34,84 @@ class PreCallGuidanceReportViewScreen extends StatelessWidget {
             children: [
               Card(
                 color: Colors.white,
+                elevation: 1,
+                margin: EdgeInsets.zero,
                 child: Padding(
                   padding: const EdgeInsets.all(20),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Icon(
-                        Icons.assignment_turned_in,
-                        color: Colors.green,
-                        size: 50,
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            width: 50,
+                            height: 50,
+                            decoration: BoxDecoration(
+                              color: Colors.deepOrange,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: const Icon(
+                              Icons.emergency_outlined,
+                              size: 30,
+                              color: Colors.white,
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const DataLabelText(
+                                  value: 'EMERGENCY TYPE',
+                                ),
+                                DataValueText(
+                                  value: Formatter.formatEnumName(report.incidentType!.name),
+                                  isBold: true,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                       ),
                       const SizedBox(height: 10),
-                      const TextTitleMedium(
-                        title: "Pre-Call Guidance",
-                        isBold: true,
+                      ReportStatusWidget(
+                        status: status,
                       ),
                       const SizedBox(height: 10),
-                      const TextBodyMedium(
-                        title: "This report was submitted through the pre-call guidance module.",
+                      Divider(
+                        height: 1,
+                      ),
+                      const SizedBox(height: 10),
+                      Align(
+                        alignment: Alignment.center,
+                        child: const Icon(
+                          Icons.assignment_turned_in,
+                          color: Colors.green,
+                          size: 50,
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      Align(
+                        alignment: Alignment.center,
+                        child: const CardTitleText(
+                          value: "Pre-Call Guidance",
+                          isBold: true,
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      const ParagraphText(
+                        value: "This report was submitted through the pre-call guidance module.",
                         alignment: TextAlign.center,
-                        isBold: false,
                       ),
                     ],
                   ),
                 ),
+              ),
+              const SizedBox(height: 10),
+              SectionTitle(
+                icon: Icons.info,
+                title: 'Incident Information',
               ),
               const SizedBox(height: 10),
               Card(
@@ -66,22 +122,22 @@ class PreCallGuidanceReportViewScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       InfoColumn(
-                        title: "Reference Number",
+                        title: "REFERENCE NUMBER",
                         value: report.referenceNumber,
                       ),
                       const SizedBox(height: 10),
                       InfoColumn(
-                        title: "Status",
+                        title: "STATUS",
                         value: report.status?.name.toUpperCase() ?? "-",
                       ),
                       const SizedBox(height: 10),
                       InfoColumn(
-                        title: "Incident Type",
+                        title: "INCIDENT TYPE",
                         value: report.incidentType?.name ?? "-",
                       ),
                       const SizedBox(height: 10),
                       InfoColumn(
-                        title: "Submitted",
+                        title: "SUBMITTED",
                         value: report.createdAt != null
                             ? DateFormat(
                                 "MMMM dd, yyyy • hh:mm a",
@@ -93,9 +149,9 @@ class PreCallGuidanceReportViewScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 10),
-              const TextTitleSmall(
-                title: "Questions & Answers",
-                isBold: true,
+              SectionTitle(
+                icon: Icons.question_answer,
+                title: "Questions and Answers",
               ),
               const SizedBox(height: 10),
               Card(
@@ -108,12 +164,11 @@ class PreCallGuidanceReportViewScreen extends StatelessWidget {
                   itemBuilder: (_, index) {
                     final item = report.guidanceAnswers[index];
                     return ListTile(
-                      title: TextBodyMedium(
-                        title: item.question,
-                        isBold: false,
+                      title: DataLabelText(
+                        value: item.question,
                       ),
-                      subtitle: TextTitleMedium(
-                        title: item.answer == null
+                      subtitle: DataValueText(
+                        value: item.answer == null
                             ? "Not answered"
                             : item.answer!
                             ? "Yes"

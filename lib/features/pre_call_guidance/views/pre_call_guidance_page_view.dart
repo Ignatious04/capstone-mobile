@@ -1,5 +1,7 @@
+import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
 import 'package:capstone/core/shared/widgets/custom_header_widget.dart';
 import 'package:capstone/core/shared/widgets/text/deprecated/text_title_small.dart';
+import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/pre_call_guidance/providers/guidance_provider.dart';
 import 'package:capstone/features/pre_call_guidance/views/pre_call_guidance_page.dart';
 import 'package:capstone/features/pre_call_guidance/views/pre_call_guidance_summary_screen.dart';
@@ -52,7 +54,6 @@ class _PreCallGuidancePageViewState extends ConsumerState<PreCallGuidancePageVie
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(guidanceProvider);
-
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 40,
@@ -68,17 +69,20 @@ class _PreCallGuidancePageViewState extends ConsumerState<PreCallGuidancePageVie
               width: double.infinity,
               child: CustomHeaderWidget(
                 title: "Pre-Call Guidance",
-                body: "Help us route you to the right service",
+                body: "Please answer these questions carefully",
                 progressIndicator: LinearProgressIndicator(
                   value: (state.currentPage + 1) / state.questions.length,
                   color: Colors.white,
-                  backgroundColor: Colors.white30,
+                  backgroundColor: AppColors.darkerGrey,
                 ),
               ),
             ),
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.all(20.0),
+                padding: const EdgeInsets.only(
+                  left: 20,
+                  right: 20,
+                ),
                 child: PageView.builder(
                   controller: pageController,
                   physics: const NeverScrollableScrollPhysics(),
@@ -87,6 +91,12 @@ class _PreCallGuidancePageViewState extends ConsumerState<PreCallGuidancePageVie
                     if (index == state.questions.length) {
                       return PreCallGuidanceSummaryScreen(
                         pageController: pageController,
+                        onCancel: () {
+                          Navigator.pop(context);
+                          WidgetsBinding.instance.addPostFrameCallback((_) {
+                            ref.read(guidanceProvider.notifier).resetAnswers();
+                          });
+                        },
                       );
                     }
 
@@ -102,16 +112,16 @@ class _PreCallGuidancePageViewState extends ConsumerState<PreCallGuidancePageVie
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: FilledButton(
-                onPressed: () {},
-                style: FilledButton.styleFrom(
+            if (state.currentPage < state.questions.length)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 20.0),
+                child: CustomElevatedButton(
+                  onPressed: () {},
+                  value: "Call nearest related service",
+                  color: Colors.white,
                   backgroundColor: Colors.deepOrange,
                 ),
-                child: const Text("Call nearest related service"),
               ),
-            ),
           ],
         ),
       ),

@@ -1,3 +1,4 @@
+import 'package:capstone/core/shared/widgets/custom_circular_progress_indicator.dart';
 import 'package:flutter/material.dart';
 
 class LoadingOverlayWidget extends StatelessWidget {
@@ -8,7 +9,7 @@ class LoadingOverlayWidget extends StatelessWidget {
     return ColoredBox(
       color: Colors.black45,
       child: const Center(
-        child: CircularProgressIndicator(),
+        child: CustomCircularProgressIndicator(),
       ),
     );
   }

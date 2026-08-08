@@ -22,7 +22,7 @@ class LocationCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           SizedBox(
-            height: 260,
+            height: 250,
             child: MapTileWidget(
               initialLocation: LatLng(
                 location.latitude,
