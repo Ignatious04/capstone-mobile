@@ -1,5 +1,5 @@
 import 'package:capstone/core/enums/map_mode_enum.dart';
-import 'package:capstone/core/shared/widgets/text/text_title_small.dart';
+import 'package:capstone/core/shared/widgets/text/deprecated/text_title_small.dart';
 import 'package:capstone/features/map/widgets/map_tile_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';

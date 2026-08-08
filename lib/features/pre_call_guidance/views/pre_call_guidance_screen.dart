@@ -1,7 +1,7 @@
 import 'package:capstone/core/enums/guidance_type_enum.dart';
 import 'package:capstone/core/shared/widgets/custom_header_widget.dart';
-import 'package:capstone/core/shared/widgets/text/text_body_large.dart';
-import 'package:capstone/core/shared/widgets/text/text_title_medium.dart';
+import 'package:capstone/core/shared/widgets/text/deprecated/text_body_large.dart';
+import 'package:capstone/core/shared/widgets/text/deprecated/text_title_medium.dart';
 import 'package:capstone/features/pre_call_guidance/providers/guidance_provider.dart';
 import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/pre_call_guidance/views/pre_call_guidance_page_view.dart';

@@ -48,7 +48,7 @@ class _MyAppState extends State<MyApp> {
             overlayColor: Colors.transparent,
           ),
         ),
-        scaffoldBackgroundColor: const Color(0xFFF8F8F8),
+        scaffoldBackgroundColor: const Color(0xFFF0F0F0),
         fontFamily: 'Inter',
       ),
       home: AuthWrapper(),

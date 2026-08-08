@@ -1,6 +1,6 @@
-import 'package:capstone/core/shared/widgets/text/text_body_medium.dart';
-import 'package:capstone/core/shared/widgets/text/text_title_medium.dart';
-import 'package:capstone/core/shared/widgets/text/text_title_small.dart';
+import 'package:capstone/core/shared/widgets/text/deprecated/text_body_medium.dart';
+import 'package:capstone/core/shared/widgets/text/deprecated/text_title_medium.dart';
+import 'package:capstone/core/shared/widgets/text/deprecated/text_title_small.dart';
 import 'package:flutter/material.dart';
 
 class InfoColumn extends StatelessWidget {

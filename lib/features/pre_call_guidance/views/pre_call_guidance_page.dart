@@ -1,5 +1,5 @@
-import 'package:capstone/core/shared/widgets/text/text_body_large.dart';
-import 'package:capstone/core/shared/widgets/text/text_title_large.dart';
+import 'package:capstone/core/shared/widgets/text/deprecated/text_body_large.dart';
+import 'package:capstone/core/shared/widgets/text/deprecated/text_title_large.dart';
 import 'package:capstone/features/pre_call_guidance/models/pre_call_guidance_model.dart';
 import 'package:capstone/features/pre_call_guidance/providers/guidance_provider.dart';
 import 'package:flutter/material.dart';

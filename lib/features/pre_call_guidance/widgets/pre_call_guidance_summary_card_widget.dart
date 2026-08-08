@@ -1,4 +1,4 @@
-import 'package:capstone/core/shared/widgets/text/text_body_medium.dart';
+import 'package:capstone/core/shared/widgets/text/deprecated/text_body_medium.dart';
 import 'package:flutter/material.dart';
 
 class PreCallGuidanceSummaryCardWidget extends StatelessWidget {

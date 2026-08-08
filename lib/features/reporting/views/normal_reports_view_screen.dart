@@ -1,174 +1,134 @@
-import 'package:capstone/core/enums/map_mode_enum.dart';
+import 'package:capstone/core/shared/classes/formatter.dart';
+import 'package:capstone/core/shared/widgets/custom_app_bar.dart';
 import 'package:capstone/core/shared/widgets/custom_circular_progress_indicator.dart';
-import 'package:capstone/core/shared/widgets/loading_overlay_widget.dart';
-import 'package:capstone/core/shared/widgets/text/text_body_medium.dart';
-import 'package:capstone/core/shared/widgets/text/text_body_small.dart';
-import 'package:capstone/core/shared/widgets/text/text_title_medium.dart';
-import 'package:capstone/core/shared/widgets/text/text_title_small.dart';
+import 'package:capstone/core/shared/widgets/text/data_label_text.dart';
+import 'package:capstone/core/shared/widgets/text/data_value_text.dart';
+import 'package:capstone/core/shared/widgets/text/deprecated/text_body_medium.dart';
+import 'package:capstone/core/shared/widgets/text/paragraph_text.dart';
 import 'package:capstone/core/themes/app_colors.dart';
-import 'package:capstone/features/map/widgets/map_tile_widget.dart';
 import 'package:capstone/features/reporting/models/report_model.dart';
+import 'package:capstone/features/reporting/widgets/additional_information_card.dart';
+import 'package:capstone/features/reporting/widgets/attachments_card.dart';
+import 'package:capstone/features/reporting/widgets/empty_card.dart';
+import 'package:capstone/features/reporting/widgets/location_card.dart';
+import 'package:capstone/features/reporting/widgets/report_status_widget.dart';
+import 'package:capstone/features/reporting/widgets/section_title.dart';
+import 'package:capstone/features/reporting/widgets/victims_card.dart';
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class NormalReportsViewScreen extends StatelessWidget {
-  const NormalReportsViewScreen({super.key, required this.report});
+  const NormalReportsViewScreen({
+    super.key,
+    required this.report,
+  });
 
   final ReportModel report;
 
-  Widget showLoadingOverlay() {
-    return LoadingOverlayWidget();
-  }
-
   @override
   Widget build(BuildContext context) {
-    debugPrint(report.attachments.toString());
+    final status = report.status!.name;
+    final location = report.location;
+    final information = report.additionalInformation.trim();
     return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 40,
-        title: const TextTitleSmall(
-          title: "Back",
-          color: Colors.white,
-        ),
-        titleSpacing: 0,
-      ),
+      appBar: const CustomAppBar(),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.all(20.0),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const TextTitleMedium(
-                  title: "Required Information",
-                  isBold: true,
-                ),
-                const SizedBox(height: 10),
-                const TextBodySmall(title: "Emergency Type"),
-                TextBodyMedium(
-                  title: report.incidentType!.name,
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                const TextBodySmall(title: "Description"),
-                TextBodyMedium(
-                  title: report.description,
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                const TextBodySmall(title: "Location"),
-                Align(
-                  alignment: Alignment.center,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
-                    child: SizedBox(
-                      width: double.infinity,
-                      height: 250,
-                      child: MapTileWidget(
-                        initialLocation: LatLng(
-                          report.location!.latitude,
-                          report.location!.longitude,
-                        ),
-                        mode: MapModeEnum.view,
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                const TextTitleMedium(
-                  title: "Optional Information",
-                  isBold: true,
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                TextBodySmall(title: "Victims"),
-                if (report.victims.isEmpty) ...[
-                  const TextBodyMedium(title: "No victim information provided."),
-                ] else
-                  Container(
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: AppColors.lighterBlack,
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          for (int i = 0; i < report.victims.length; i++) ...[
-                            TextBodyMedium(
-                              title: "Name: ${report.victims[i].name}",
+                Card(
+                  color: Colors.white,
+                  elevation: 1,
+                  margin: EdgeInsets.zero,
+                  child: Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(
+                              width: 50,
+                              height: 50,
+                              decoration: BoxDecoration(
+                                color: Colors.deepOrange,
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: const Icon(
+                                Icons.emergency_outlined,
+                                size: 30,
+                                color: Colors.white,
+                              ),
                             ),
-                            TextBodyMedium(
-                              title: "Description: ${report.victims[i].description}",
-                            ),
-                            if (i != report.victims.length - 1) const SizedBox(height: 10),
-                          ],
-                        ],
-                      ),
-                    ),
-                  ),
-                const SizedBox(
-                  height: 10,
-                ),
-                const TextBodySmall(title: "Attachments"),
-                if (report.attachments.isEmpty) ...[
-                  const TextBodyMedium(
-                    title: "No attachments provided.",
-                  ),
-                ] else
-                  Column(
-                    children: [
-                      for (final url in report.attachments) ...[
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(12),
-                          child: Container(
-                            width: 300,
-                            height: 300,
-                            color: AppColors.lighterBlack,
-                            child: Image.network(
-                              url,
-                              fit: BoxFit.cover,
-                              loadingBuilder: (context, child, loadingProgress) {
-                                if (loadingProgress == null) {
-                                  return child;
-                                }
-              
-                                return const Center(
-                                  child: CustomCircularProgressIndicator(),
-                                );
-                              },
-                              errorBuilder: (context, error, stackTrace) {
-                                return const Center(
-                                  child: Icon(
-                                    Icons.broken_image,
-                                    size: 50,
+                            const SizedBox(width: 10),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const DataLabelText(
+                                    value: 'EMERGENCY TYPE',
                                   ),
-                                );
-                              },
+                                  DataValueText(
+                                    value: Formatter.formatEnumName(report.incidentType!.name),
+                                    isBold: true,
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
+                          ],
                         ),
                         const SizedBox(height: 10),
+                        ReportStatusWidget(
+                          status: status,
+                        ),
+                        const SizedBox(height: 10),
+                        const DataLabelText(
+                          value: 'DESCRIPTION',
+                        ),
+                        ParagraphText(
+                          value: report.description.isEmpty ? 'No description provided.' : report.description,
+                        ),
                       ],
-                    ],
+                    ),
                   ),
-                const SizedBox(
-                  height: 10,
                 ),
-                const TextBodySmall(
-                  title: "Additional Information",
+                const SizedBox(height: 10),
+                SectionTitle(
+                  icon: Icons.location_on_outlined,
+                  title: 'Incident Location',
                 ),
-                if (report.additionalInformation.isEmpty) ...[
-                  const TextBodyMedium(title: "No additional information provided."),
-                ] else
-                  TextBodyMedium(title: report.additionalInformation),
+                const SizedBox(height: 10),
+                LocationCard(location: location!),
+                const SizedBox(height: 10),
+                SectionTitle(
+                  icon: Icons.people_outline,
+                  title: 'Victims',
+                ),
+                const SizedBox(height: 10),
+                VictimsCard(
+                  victims: report.victims,
+                ),
+                const SizedBox(height: 10),
+                SectionTitle(
+                  icon: Icons.attach_file,
+                  title: 'Attachments',
+                ),
+                const SizedBox(height: 10),
+                AttachmentsCard(
+                  attachments: report.attachments,
+                ),
+                const SizedBox(height: 10),
+                SectionTitle(
+                  icon: Icons.notes_outlined,
+                  title: 'Additional Information',
+                ),
+                const SizedBox(height: 10),
+                AdditionalInformationCard(
+                  additionalInfo: information,
+                ),
               ],
             ),
           ),

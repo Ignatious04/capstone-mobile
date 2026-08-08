@@ -1,5 +1,5 @@
 import 'package:capstone/core/shared/widgets/custom_header_widget.dart';
-import 'package:capstone/core/shared/widgets/text/text_title_small.dart';
+import 'package:capstone/core/shared/widgets/text/deprecated/text_title_small.dart';
 import 'package:capstone/features/pre_call_guidance/providers/guidance_provider.dart';
 import 'package:capstone/features/pre_call_guidance/views/pre_call_guidance_page.dart';
 import 'package:capstone/features/pre_call_guidance/views/pre_call_guidance_summary_screen.dart';

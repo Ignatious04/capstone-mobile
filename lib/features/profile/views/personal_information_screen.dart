@@ -1,8 +1,8 @@
 import 'package:capstone/core/shared/widgets/custom_circular_progress_indicator.dart';
 import 'package:capstone/core/shared/widgets/custom_header_widget.dart';
-import 'package:capstone/core/shared/widgets/text/text_body_medium.dart';
-import 'package:capstone/core/shared/widgets/text/text_body_small.dart';
-import 'package:capstone/core/shared/widgets/text/text_title_small.dart';
+import 'package:capstone/core/shared/widgets/text/deprecated/text_body_medium.dart';
+import 'package:capstone/core/shared/widgets/text/deprecated/text_body_small.dart';
+import 'package:capstone/core/shared/widgets/text/deprecated/text_title_small.dart';
 import 'package:capstone/core/shared/providers/user_provider.dart';
 import 'package:capstone/features/profile/views/update_personal_information_screen.dart';
 import 'package:flutter/material.dart';

@@ -1,7 +1,7 @@
 import 'package:camera/camera.dart';
 import 'package:capstone/core/shared/widgets/custom_dropdown_button.dart';
 import 'package:capstone/core/shared/widgets/scanner_overlay_painter.dart';
-import 'package:capstone/core/shared/widgets/text/text_title_small.dart';
+import 'package:capstone/core/shared/widgets/text/deprecated/text_title_small.dart';
 import 'package:capstone/core/shared/providers/user_provider.dart';
 import 'package:capstone/core/services/camera_service.dart';
 import 'package:capstone/core/themes/app_colors.dart';

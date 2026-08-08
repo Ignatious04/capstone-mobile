@@ -1,7 +1,7 @@
 import 'package:capstone/core/shared/widgets/location_gate.dart';
-import 'package:capstone/core/shared/widgets/text/text_body_small.dart';
-import 'package:capstone/core/shared/widgets/text/text_title_medium.dart';
-import 'package:capstone/core/shared/widgets/text/text_title_small.dart';
+import 'package:capstone/core/shared/widgets/text/deprecated/text_body_small.dart';
+import 'package:capstone/core/shared/widgets/text/deprecated/text_title_medium.dart';
+import 'package:capstone/core/shared/widgets/text/deprecated/text_title_small.dart';
 import 'package:capstone/core/themes/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

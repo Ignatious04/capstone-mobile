@@ -1,21 +1,25 @@
+import 'package:capstone/core/themes/app_colors.dart';
 import 'package:flutter/material.dart';
 
-class TextTitleMedium extends StatelessWidget {
-  const TextTitleMedium({
+class CardTitleText extends StatelessWidget {
+  const CardTitleText({
     super.key,
-    required this.title,
+    required this.value,
+    this.alignment = TextAlign.left,
     this.color = Colors.black,
-    this.isBold = true,
+    this.isBold = false,
   });
 
-  final String title;
+  final String value;
+  final TextAlign alignment;
   final Color color;
   final bool isBold;
 
   @override
   Widget build(BuildContext context) {
     return Text(
-      title,
+      value,
+      textAlign: alignment,
       style:
           Theme.of(
             context,

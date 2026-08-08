@@ -1,4 +1,4 @@
-import 'package:capstone/core/shared/widgets/text/text_title_small.dart';
+import 'package:capstone/core/shared/widgets/text/deprecated/text_title_small.dart';
 import 'package:flutter/material.dart';
 
 class LocationWidget extends StatelessWidget {
