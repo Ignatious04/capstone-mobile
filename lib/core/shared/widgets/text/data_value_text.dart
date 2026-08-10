@@ -22,7 +22,7 @@ class DataValueText extends StatelessWidget {
       style:
           Theme.of(
             context,
-          ).textTheme.titleLarge?.copyWith(
+          ).textTheme.titleMedium?.copyWith(
             color: color,
             fontWeight: isBold ? FontWeight.bold : null,
           ),

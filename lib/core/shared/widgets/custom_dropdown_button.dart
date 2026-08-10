@@ -26,15 +26,11 @@ class CustomDropdownButton<T> extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        RichText(
-          text: TextSpan(
-            style:
-                Theme.of(
-                  context,
-                ).textTheme.bodyMedium?.copyWith(
-                  color: AppColors.darkerGrey,
-                  fontWeight: FontWeight.bold,
-                ),
+        Text.rich(
+          TextSpan(
+            style: Theme.of(context).textTheme.labelMedium?.copyWith(
+              color: AppColors.darkerGrey,
+            ),
             children: [
               TextSpan(text: title),
               if (isRequired)

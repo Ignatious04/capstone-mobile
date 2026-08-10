@@ -1,12 +1,13 @@
 import 'package:capstone/core/exceptions/auth_exception.dart';
 import 'package:capstone/core/shared/widgets/auth_wrapper.dart';
+import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
 import 'package:capstone/core/shared/widgets/custom_snackbar_helper.dart';
 import 'package:capstone/core/shared/widgets/custom_text_field.dart';
-import 'package:capstone/core/shared/widgets/text/deprecated/text_body_medium.dart';
-import 'package:capstone/core/shared/widgets/text/deprecated/text_body_small.dart';
-import 'package:capstone/core/shared/widgets/text/deprecated/text_title_medium.dart';
-import 'package:capstone/core/shared/widgets/text/deprecated/text_title_small.dart';
+import 'package:capstone/core/shared/widgets/text/card_title_text.dart';
 import 'package:capstone/core/shared/providers/firebase_auth_provider.dart';
+import 'package:capstone/core/shared/widgets/text/section_title_text.dart';
+import 'package:capstone/core/shared/widgets/text/sub_title_text.dart';
+import 'package:capstone/core/shared/widgets/text/supporting_info_text.dart';
 import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/register/register_screen.dart';
 import 'package:capstone/features/login/views/reset_password_screen.dart';
@@ -56,14 +57,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const TextTitleMedium(
-                  title: "MEAS",
+                const CardTitleText(
+                  value: "MEAS",
                   color: Colors.white,
                 ),
-                const TextTitleSmall(
-                  title: "Mobile Emergency Access System",
+                const SubtitleText(
+                  value: "Mobile Emergency Access System",
                   color: Colors.white,
-                  isBold: false,
                 ),
               ],
             ),
@@ -79,13 +79,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const TextTitleSmall(title: "Welcome!"),
-                const TextBodySmall(
-                  title: "Log in to your account",
-                  isBold: false,
+                const SectionTitleText(value: "Welcome!"),
+                const SupportingInfoText(
+                  value: "Log in to your account",
+                  color: AppColors.darkerGrey,
                 ),
                 const SizedBox(
-                  height: 30.0,
+                  height: 10.0,
                 ),
                 CustomTextField(
                   title: "EMAIL ADDRESS",
@@ -118,14 +118,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   onChanged: (value) {},
                 ),
                 if (errorMessage != null) ...[
-                  TextBodySmall(
-                    title: errorMessage!,
-                    color: Colors.red,
-                    isBold: false,
+                  SupportingInfoText(
+                    value: errorMessage!,
+                    color: Colors.red[700]!,
                   ),
                 ],
                 const SizedBox(
-                  height: 20,
+                  height: 10,
                 ),
                 Align(
                   alignment: Alignment.centerRight,
@@ -140,25 +139,18 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         ),
                       );
                     },
-                    child: const TextBodySmall(
-                      title: "Forgot password?",
-                      isBold: false,
+                    child: const SupportingInfoText(
+                      value: "Forgot password?",
+                      color: Colors.red,
                     ),
                   ),
                 ),
                 const SizedBox(
-                  height: 20,
+                  height: 10,
                 ),
                 SizedBox(
                   width: double.infinity,
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.deepOrange,
-                      foregroundColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
+                  child: CustomElevatedButton(
                     onPressed: () async {
                       try {
                         setState(() {
@@ -199,7 +191,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         });
                       }
                     },
-                    child: const Text("Log In"),
+                    value: "Log In",
                   ),
                 ),
                 const SizedBox(
@@ -216,8 +208,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     const SizedBox(
                       width: 10,
                     ),
-                    const TextBodyMedium(
-                      title: "OR",
+                    const SectionTitleText(
+                      value: "OR",
                       color: AppColors.lighterBlack,
                     ),
                     const SizedBox(
@@ -237,10 +229,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const TextBodySmall(
-                      title: "Didn't have an account?",
-                      isBold: false,
-                    ),
+                    const SupportingInfoText(value: "Didn't have an account?", color: AppColors.darkerGrey),
                     GestureDetector(
                       onTap: () {
                         Navigator.push(
@@ -254,10 +243,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       },
                       child: Padding(
                         padding: const EdgeInsets.only(left: 8.0),
-                        child: TextBodySmall(
-                          title: "Create one",
+                        child: SupportingInfoText(
+                          value: "Create one",
                           color: Colors.deepOrange,
-                          isBold: false,
                         ),
                       ),
                     ),

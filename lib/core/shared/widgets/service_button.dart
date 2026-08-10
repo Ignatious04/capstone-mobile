@@ -22,6 +22,7 @@ class ServiceButton extends StatelessWidget {
     return ElevatedButton(
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
+        elevation: 1,
         iconColor: color,
         backgroundColor: backgroundColor,
         padding: EdgeInsets.all(0),

@@ -1,5 +1,5 @@
 import 'package:capstone/core/enums/map_mode_enum.dart';
-import 'package:capstone/core/shared/widgets/text/deprecated/text_title_small.dart';
+import 'package:capstone/core/shared/widgets/custom_app_bar.dart';
 import 'package:capstone/features/map/widgets/map_tile_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -28,14 +28,7 @@ class _SelectLocationScreenState extends State<SelectLocationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 40,
-        title: const TextTitleSmall(
-          title: "Back",
-          color: Colors.white,
-        ),
-        titleSpacing: 0,
-      ),
+      appBar: CustomAppBar(value: "Select location"),
       body: MapTileWidget(
         initialLocation: _selectedLocation,
         mode: MapModeEnum.selectLocation,

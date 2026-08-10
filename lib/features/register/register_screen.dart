@@ -1,4 +1,6 @@
 import 'package:capstone/core/exceptions/auth_exception.dart';
+import 'package:capstone/core/shared/widgets/custom_app_bar.dart';
+import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
 import 'package:capstone/core/shared/widgets/custom_header_widget.dart';
 import 'package:capstone/core/shared/widgets/custom_snackbar_helper.dart';
 import 'package:capstone/core/shared/widgets/custom_text_field.dart';
@@ -6,6 +8,7 @@ import 'package:capstone/core/shared/widgets/text/deprecated/text_title_small.da
 import 'package:capstone/core/shared/providers/firebase_auth_provider.dart';
 import 'package:capstone/core/shared/providers/user_repository_provider.dart';
 import 'package:capstone/core/shared/providers/user_provider.dart';
+import 'package:capstone/features/reporting/widgets/section_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -39,33 +42,22 @@ class _RegisterScreenPage extends ConsumerState<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 40,
-        title: const TextTitleSmall(
-          title: "Back",
-          color: Colors.white,
-        ),
-        titleSpacing: 0,
-      ),
+      appBar: CustomAppBar(value: "Register"),
       body: SafeArea(
         child: Form(
           key: registerScreenKey,
           child: SingleChildScrollView(
             child: Column(
               children: [
-                SizedBox(
-                  width: double.infinity,
-                  child: const CustomHeaderWidget(title: "Register", body: "Initialize your account"),
-                ),
                 Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: Column(
                     children: [
                       Align(
                         alignment: Alignment.centerLeft,
-                        child: const TextTitleSmall(
+                        child: const SectionTitle(
+                          icon: Icons.app_registration,
                           title: "USER CREDENTIALS",
-                          color: Colors.black,
                         ),
                       ),
                       const SizedBox(height: 10),
@@ -118,7 +110,7 @@ class _RegisterScreenPage extends ConsumerState<RegisterScreen> {
                       const SizedBox(height: 10),
                       SizedBox(
                         width: double.infinity,
-                        child: ElevatedButton(
+                        child: CustomElevatedButton(
                           onPressed: () async {
                             try {
                               if (!registerScreenKey.currentState!.validate()) {
@@ -159,14 +151,7 @@ class _RegisterScreenPage extends ConsumerState<RegisterScreen> {
                               CustomSnackbarHelper.show(context, text: errorMessage);
                             }
                           },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.deepOrange,
-                            foregroundColor: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                          ),
-                          child: const Text("Sign Up"),
+                          value: "Sign Up",
                         ),
                       ),
                       const SizedBox(height: 10),

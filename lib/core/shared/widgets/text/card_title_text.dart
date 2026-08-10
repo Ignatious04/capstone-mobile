@@ -22,7 +22,7 @@ class CardTitleText extends StatelessWidget {
       style:
           Theme.of(
             context,
-          ).textTheme.titleMedium?.copyWith(
+          ).textTheme.titleLarge?.copyWith(
             color: color,
             fontWeight: isBold ? FontWeight.bold : null,
           ),

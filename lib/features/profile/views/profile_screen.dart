@@ -1,8 +1,9 @@
 import 'package:capstone/core/shared/widgets/custom_circular_progress_indicator.dart';
-import 'package:capstone/core/shared/widgets/text/deprecated/text_title_large.dart';
+import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
 import 'package:capstone/core/shared/widgets/text/deprecated/text_title_small.dart';
 import 'package:capstone/core/shared/providers/firebase_auth_provider.dart';
 import 'package:capstone/core/shared/providers/user_provider.dart';
+import 'package:capstone/core/shared/widgets/text/screen_title_text.dart';
 import 'package:capstone/features/profile/views/personal_information_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -43,18 +44,19 @@ class ProfileScreen extends ConsumerWidget {
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
-                TextTitleLarge(
-                  title: "${data.firstName} ${data.lastName}",
+                ScreenTitleText(
+                  value: "${data.firstName} ${data.lastName}",
+                  isBold: true,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 SizedBox(
                   width: double.infinity,
-                  child: ElevatedButton(
+                  child: CustomElevatedButton(
                     onPressed: () {
                       Navigator.push(
                         context,
@@ -65,37 +67,19 @@ class ProfileScreen extends ConsumerWidget {
                         ),
                       );
                     },
-                    style: ElevatedButton.styleFrom(
-                      alignment: Alignment.centerLeft,
-                      backgroundColor: Colors.white,
-                      foregroundColor: Colors.black,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(radius),
-                      ),
-                    ),
-                    child: const Text(
-                      "Personal Information",
-                    ),
+                    value: "Personal Information",
                   ),
                 ),
                 SizedBox(
                   width: double.infinity,
-                  child: ElevatedButton(
+                  child: CustomElevatedButton(
                     onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      alignment: Alignment.centerLeft,
-                      backgroundColor: Colors.white,
-                      foregroundColor: Colors.black,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(radius),
-                      ),
-                    ),
-                    child: const Text("Settings"),
+                    value: "Settings",
                   ),
                 ),
                 SizedBox(
                   width: double.infinity,
-                  child: ElevatedButton(
+                  child: CustomElevatedButton(
                     onPressed: () async {
                       final dialog = await showDialog<bool>(
                         context: context,
@@ -103,32 +87,19 @@ class ProfileScreen extends ConsumerWidget {
                           return AlertDialog(
                             title: const TextTitleSmall(title: "Do you wish to log out?"),
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                            backgroundColor: Colors.white,
                             actions: [
-                              ElevatedButton(
+                              CustomElevatedButton(
                                 onPressed: () {
                                   Navigator.pop(context, false);
                                 },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.deepOrange,
-                                  foregroundColor: Colors.white,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                ),
-                                child: Text("No"),
+                                value: "No",
                               ),
-                              ElevatedButton(
+                              CustomElevatedButton(
                                 onPressed: () {
                                   Navigator.pop(context, true);
                                 },
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Colors.deepOrange,
-                                  foregroundColor: Colors.white,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                ),
-                                child: const Text("Yes"),
+                                value: "Yes",
                               ),
                             ],
                           );
@@ -149,15 +120,9 @@ class ProfileScreen extends ConsumerWidget {
                         debugPrint(e.message);
                       }
                     },
-                    style: ElevatedButton.styleFrom(
-                      alignment: Alignment.centerLeft,
-                      backgroundColor: Colors.white,
-                      foregroundColor: Colors.black,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(radius),
-                      ),
-                    ),
-                    child: const Text("Log Out"),
+                    color: Colors.red,
+                    backgroundColor: Colors.white,
+                    value: "Log Out",
                   ),
                 ),
               ],

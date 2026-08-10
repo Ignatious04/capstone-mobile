@@ -1,4 +1,6 @@
 import 'package:capstone/core/exceptions/auth_exception.dart';
+import 'package:capstone/core/shared/widgets/custom_app_bar.dart';
+import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
 import 'package:capstone/core/shared/widgets/custom_header_widget.dart';
 import 'package:capstone/core/shared/widgets/custom_snackbar_helper.dart';
 import 'package:capstone/core/shared/widgets/custom_text_field.dart';
@@ -29,22 +31,11 @@ class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 40,
-        title: const TextTitleSmall(
-          title: "Back",
-          color: Colors.white,
-        ),
-        titleSpacing: 0,
-      ),
+      appBar: CustomAppBar(value: "Reset Password"),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
             children: [
-              SizedBox(
-                width: double.infinity,
-                child: const CustomHeaderWidget(title: "Reset Password"),
-              ),
               Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: Form(
@@ -52,7 +43,7 @@ class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
                   child: Column(
                     children: [
                       CustomTextField(
-                        title: "EMAIL ADDRESS *",
+                        title: "EMAIL ADDRESS",
                         controller: emailController,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -69,7 +60,7 @@ class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
                       const SizedBox(height: 10),
                       SizedBox(
                         width: double.infinity,
-                        child: ElevatedButton(
+                        child: CustomElevatedButton(
                           onPressed: () async {
                             try {
                               setState(() {
@@ -101,14 +92,7 @@ class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
                               CustomSnackbarHelper.show(context, text: errorMessage!);
                             }
                           },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.deepOrange,
-                            foregroundColor: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                          ),
-                          child: const Text("Reset"),
+                          value: "Reset",
                         ),
                       ),
                     ],

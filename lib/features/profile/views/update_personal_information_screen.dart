@@ -1,9 +1,9 @@
 import 'package:capstone/core/shared/models/user_model.dart';
 import 'package:capstone/core/shared/providers/user_repository_provider.dart';
+import 'package:capstone/core/shared/widgets/custom_app_bar.dart';
 import 'package:capstone/core/shared/widgets/custom_dropdown_button.dart';
-import 'package:capstone/core/shared/widgets/custom_header_widget.dart';
+import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
 import 'package:capstone/core/shared/widgets/custom_text_field.dart';
-import 'package:capstone/core/shared/widgets/text/deprecated/text_title_small.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -61,23 +61,10 @@ class _UpdatePersonalInformationScreenState extends ConsumerState<UpdatePersonal
   Widget build(BuildContext context) {
     debugPrint("User ID: ${widget.user.userID}");
     return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 40,
-        title: TextTitleSmall(
-          title: "Back",
-          color: Colors.white,
-        ),
-        titleSpacing: 0,
-      ),
+      appBar: CustomAppBar(value: "Update Information"),
       body: SafeArea(
         child: Column(
           children: [
-            const SizedBox(
-              width: double.infinity,
-              child: CustomHeaderWidget(
-                title: "Update Information",
-              ),
-            ),
             Expanded(
               child: SingleChildScrollView(
                 child: Padding(
@@ -208,7 +195,7 @@ class _UpdatePersonalInformationScreenState extends ConsumerState<UpdatePersonal
                       const SizedBox(height: 10),
                       SizedBox(
                         width: double.infinity,
-                        child: ElevatedButton(
+                        child: CustomElevatedButton(
                           onPressed: () async {
                             await ref.read(userRepositoryProvider).updateUser(
                               widget.user.userID,
@@ -228,12 +215,7 @@ class _UpdatePersonalInformationScreenState extends ConsumerState<UpdatePersonal
 
                             Navigator.pop(context);
                           },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.deepOrange,
-                            foregroundColor: Colors.white,
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                          ),
-                          child: const Text("Confirm"),
+                          value: "Confirm",
                         ),
                       ),
                     ],

@@ -4,15 +4,17 @@ import 'package:capstone/core/controllers/victim_controllers.dart';
 import 'package:capstone/core/enums/guidance_type_enum.dart';
 import 'package:capstone/core/enums/map_mode_enum.dart';
 import 'package:capstone/core/enums/report_status_enum.dart';
+import 'package:capstone/core/shared/widgets/custom_app_bar.dart';
 import 'package:capstone/core/shared/widgets/custom_circular_progress_indicator.dart';
 import 'package:capstone/core/shared/widgets/custom_dropdown_button.dart';
-import 'package:capstone/core/shared/widgets/custom_header_widget.dart';
+import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
 import 'package:capstone/core/shared/widgets/custom_snackbar_helper.dart';
 import 'package:capstone/core/shared/widgets/custom_text_field.dart';
 import 'package:capstone/core/shared/widgets/loading_overlay_widget.dart';
-import 'package:capstone/core/shared/widgets/text/deprecated/text_title_medium.dart';
+import 'package:capstone/core/shared/widgets/text/button_text.dart';
+import 'package:capstone/core/shared/widgets/text/data_label_text.dart';
+import 'package:capstone/core/shared/widgets/text/supporting_info_text.dart';
 import 'package:capstone/features/map/widgets/map_tile_widget.dart';
-import 'package:capstone/core/shared/widgets/text/deprecated/text_body_small.dart';
 import 'package:capstone/core/shared/widgets/text/deprecated/text_title_small.dart';
 import 'package:capstone/features/reporting/providers/pending_attachments_provider.dart';
 import 'package:capstone/core/shared/providers/firebase_auth_provider.dart';
@@ -22,6 +24,7 @@ import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/reporting/providers/report_repository_provider.dart';
 import 'package:capstone/features/reporting/providers/storage_repository_provider.dart';
 import 'package:capstone/features/reporting/views/select_location_screen.dart';
+import 'package:capstone/features/reporting/widgets/section_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -63,21 +66,10 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> {
     final location = ref.watch(locationStreamProvider);
 
     return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 40,
-        title: const TextTitleSmall(
-          title: "Back",
-          color: Colors.white,
-        ),
-        titleSpacing: 0,
-      ),
+      appBar: CustomAppBar(value: "Emergency Report"),
       body: SafeArea(
         child: Column(
           children: [
-            const SizedBox(
-              width: double.infinity,
-              child: CustomHeaderWidget(title: "Emergency Report", body: "Describe your situation and let us know"),
-            ),
             Expanded(
               child: GestureDetector(
                 onTap: () {
@@ -86,363 +78,350 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> {
                 child: Form(
                   key: reportsFormKey,
                   child: SingleChildScrollView(
-                    child: Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const TextTitleMedium(
-                            title: "Required Information",
-                            isBold: false,
-                          ),
-                          const SizedBox(height: 10),
-                          TextBodySmall(
-                            title: "NOTE: REQUIRED FIELDS ARE DENOTED BY AN ASTERISK (*)",
-                            color: Colors.red,
-                            isBold: false,
-                          ),
-                          const SizedBox(height: 10),
-                          CustomDropdownButton(
-                            title: "EMERGENCY TYPE",
-                            validator: (value) {
-                              if (value == null) {
-                                return "Emergency type is required";
-                              }
-
-                              return null;
-                            },
-                            hideErrorText: false,
-                            items: [
-                              const DropdownMenuItem(
-                                value: GuidanceTypeEnum.medical,
-                                child: Text("Medical"),
-                              ),
-                              const DropdownMenuItem(
-                                value: GuidanceTypeEnum.police,
-                                child: Text("Police"),
-                              ),
-                              const DropdownMenuItem(
-                                value: GuidanceTypeEnum.fire,
-                                child: Text("Fire"),
-                              ),
-                            ],
-                            onChanged: (value) {
-                              ref.read(reportProvider.notifier).setIncidentType(value!);
-                            },
-                            isRequired: true,
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          CustomTextField(
-                            title: "DESCRIPTION",
-                            controller: incidentDescriptionController,
-                            validator: (value) {
-                              if (value == null || value.trim().isEmpty) {
-                                return "Description is required";
-                              }
-
-                              return null;
-                            },
-                            hideErrorText: false,
-                            keyboardType: TextInputType.multiline,
-                            maxLines: 5,
-                            vertical: 20,
-                            isRequired: true,
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          const TextBodySmall(title: "LOCATION"),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          location.when(
-                            loading: () => const SizedBox(
-                              height: 250,
-                              child: Center(
-                                child: CustomCircularProgressIndicator(),
-                              ),
-                            ),
-                            error: (error, stack) => SizedBox(
-                              height: 250,
-                              child: Center(
-                                child: Text(error.toString()),
-                              ),
-                            ),
-                            data: (latLng) {
-                              _selectedLocation ??= latLng;
-                              return Align(
-                                alignment: Alignment.center,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(12),
-                                  child: SizedBox(
-                                    width: double.infinity,
-                                    height: 250,
-                                    child: InkWell(
-                                      borderRadius: BorderRadius.circular(12),
-                                      onTap: () async {
-                                        final LatLng? location = await Navigator.push<LatLng>(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (_) => SelectLocationScreen(
-                                              initialLocation: _selectedLocation!,
-                                            ),
-                                          ),
-                                        );
-                                        if (location != null) {
-                                          setState(() {
-                                            _selectedLocation = location;
-                                          });
-
-                                          _mapController?.animateCamera(CameraUpdate.newLatLng(location));
-                                        }
-                                      },
-                                      child: Stack(
-                                        children: [
-                                          MapTileWidget(
-                                            initialLocation: _selectedLocation!,
-                                            mode: MapModeEnum.view,
-                                            onMapCreated: (controller) {
-                                              _mapController = controller;
-                                            },
-                                          ),
-                                          Positioned(
-                                            right: 12,
-                                            top: 12,
-                                            child: const Chip(
-                                              avatar: Icon(
-                                                Icons.edit_location_alt,
-                                                size: 18,
-                                                color: Colors.white,
-                                              ),
-                                              label: Text(
-                                                "Change location",
-                                                style: TextStyle(color: Colors.white),
-                                              ),
-                                              backgroundColor: Colors.deepOrange,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          const TextTitleMedium(
-                            title: "Optional Information",
-                            isBold: false,
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          ExpansionTile(
-                            title: const Align(
-                              alignment: Alignment.centerLeft,
-                              child: TextTitleSmall(
-                                title: "Victim Information",
-                                isBold: false,
-                              ),
-                            ),
-                            tilePadding: EdgeInsets.all(0),
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(top: 20.0, left: 20, right: 20),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Align(
-                                alignment: Alignment.centerLeft,
-                                child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: AppColors.lighterBlack,
-                                    foregroundColor: Colors.black,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(12),
-                                    ),
-                                  ),
-                                  onPressed: () {
-                                    ref.read(reportProvider.notifier).addVictim();
-
-                                    setState(() {
-                                      _controllers.add(VictimControllers());
-                                    });
-                                  },
-                                  child: const Text("Add"),
-                                ),
+                              const SectionTitle(
+                                icon: Icons.perm_device_information,
+                                title: "Required Information",
                               ),
                               const SizedBox(height: 10),
-                              ...List.generate(
-                                victimsList.length,
-                                (index) {
-                                  return Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        height: 1,
-                                        color: Colors.black,
-                                      ),
-                                      const SizedBox(height: 10),
-                                      CustomTextField(
-                                        title: "VICTIM NAME",
-                                        controller: _controllers[index].victimNameController,
-                                        onChanged: (value) {
-                                          ref.read(reportProvider.notifier).updateVictimName(index, value);
-                                        },
-                                      ),
-                                      const SizedBox(height: 10),
-                                      CustomTextField(
-                                        title: "DESCRIPTION",
-                                        keyboardType: TextInputType.multiline,
-                                        maxLines: 5,
-                                        vertical: 30,
-                                        controller: _controllers[index].victimDescriptionController,
-                                        onChanged: (value) {
-                                          ref
-                                              .read(reportProvider.notifier)
-                                              .updateVictimDescription(
-                                                index,
-                                                value,
-                                              );
-                                        },
-                                      ),
-                                      const SizedBox(height: 10),
-                                      ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor: AppColors.lighterBlack,
-                                          foregroundColor: Colors.black,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(
-                                              12,
-                                            ),
-                                          ),
-                                        ),
-                                        onPressed: () {
-                                          _controllers[index].dispose();
-
-                                          setState(() {
-                                            _controllers.removeAt(index);
-                                          });
-
-                                          ref.read(reportProvider.notifier).removeVictim(index);
-                                        },
-                                        child: const Text("Remove"),
-                                      ),
-                                      const SizedBox(height: 10),
-                                    ],
-                                  );
-                                },
-                              ),
-                            ],
-                          ),
-                          ExpansionTile(
-                            title: const Align(
-                              alignment: Alignment.centerLeft,
-                              child: TextTitleSmall(
-                                title: "Attachments",
+                              const SupportingInfoText(
+                                value: "NOTE: REQUIRED FIELDS ARE DENOTED BY AN ASTERISK (*)",
+                                color: Colors.red,
                                 isBold: false,
                               ),
-                            ),
-                            tilePadding: EdgeInsets.all(0),
-                            childrenPadding: EdgeInsets.all(0),
-                            children: [
-                              Align(
-                                alignment: Alignment.centerLeft,
-                                child: ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: AppColors.lighterBlack,
-                                    foregroundColor: Colors.black,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(12),
-                                    ),
+                              const SizedBox(height: 10),
+                              CustomDropdownButton(
+                                title: "EMERGENCY TYPE",
+                                validator: (value) {
+                                  if (value == null) {
+                                    return "Emergency type is required";
+                                  }
+
+                                  return null;
+                                },
+                                hideErrorText: false,
+                                items: [
+                                  const DropdownMenuItem(
+                                    value: GuidanceTypeEnum.medical,
+                                    child: Text("Medical"),
                                   ),
-                                  onPressed: () async {
-                                    ref.read(reportProvider.notifier).addAttachment(ImageSource.gallery);
-                                  },
-                                  child: const Text("Add attachment"),
-                                ),
-                              ),
-                              SizedBox(height: 10),
-                              ...List.generate(
-                                attachmentsList.length,
-                                (index) {
-                                  final attachment = attachmentsList[index];
-                                  return Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Container(
-                                        height: 1,
-                                        color: Colors.black,
-                                      ),
-                                      const SizedBox(
-                                        height: 10,
-                                      ),
-                                      ClipRRect(
-                                        borderRadius: BorderRadius.circular(
-                                          12,
-                                        ),
-                                        child: Container(
-                                          color: AppColors.lighterBlack,
-                                          width: 300,
-                                          height: 300,
-                                          child: Image.file(
-                                            attachment,
-                                            fit: BoxFit.cover,
-                                          ),
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        height: 10,
-                                      ),
-                                      ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor: AppColors.lighterBlack,
-                                          foregroundColor: Colors.black,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(
-                                              12,
-                                            ),
-                                          ),
-                                        ),
-                                        onPressed: () {
-                                          ref.read(reportProvider.notifier).removeAttachment(index);
-                                        },
-                                        child: const Text(
-                                          "Remove attachment",
-                                        ),
-                                      ),
-                                      const SizedBox(
-                                        height: 10,
-                                      ),
-                                    ],
-                                  );
+                                  const DropdownMenuItem(
+                                    value: GuidanceTypeEnum.police,
+                                    child: Text("Police"),
+                                  ),
+                                  const DropdownMenuItem(
+                                    value: GuidanceTypeEnum.fire,
+                                    child: Text("Fire"),
+                                  ),
+                                ],
+                                onChanged: (value) {
+                                  ref.read(reportProvider.notifier).setIncidentType(value!);
                                 },
+                                isRequired: true,
                               ),
-                            ],
-                          ),
-                          ExpansionTile(
-                            title: const Align(
-                              alignment: Alignment.centerLeft,
-                              child: TextTitleSmall(
-                                title: "Additional Information",
-                                isBold: false,
+                              const SizedBox(
+                                height: 10,
                               ),
-                            ),
-                            tilePadding: EdgeInsets.all(0),
-                            children: [
                               CustomTextField(
                                 title: "DESCRIPTION",
-                                controller: additionalInformationController,
+                                controller: incidentDescriptionController,
+                                validator: (value) {
+                                  if (value == null || value.trim().isEmpty) {
+                                    return "Description is required";
+                                  }
+
+                                  return null;
+                                },
+                                hideErrorText: false,
                                 keyboardType: TextInputType.multiline,
                                 maxLines: 5,
                                 vertical: 20,
+                                isRequired: true,
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              const DataLabelText(value: "LOCATION"),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              location.when(
+                                loading: () => const SizedBox(
+                                  height: 250,
+                                  child: Center(
+                                    child: CustomCircularProgressIndicator(),
+                                  ),
+                                ),
+                                error: (error, stack) => SizedBox(
+                                  height: 250,
+                                  child: Center(
+                                    child: Text(error.toString()),
+                                  ),
+                                ),
+                                data: (latLng) {
+                                  _selectedLocation ??= latLng;
+                                  return Align(
+                                    alignment: Alignment.center,
+                                    child: Card(
+                                      color: Colors.white,
+                                      elevation: 1,
+                                      margin: EdgeInsets.zero,
+                                      clipBehavior: Clip.antiAlias,
+                                      child: SizedBox(
+                                        width: double.infinity,
+                                        height: 250,
+                                        child: InkWell(
+                                          borderRadius: BorderRadius.circular(12),
+                                          onTap: () async {
+                                            final LatLng? location = await Navigator.push<LatLng>(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (_) => SelectLocationScreen(
+                                                  initialLocation: _selectedLocation!,
+                                                ),
+                                              ),
+                                            );
+                                            if (location != null) {
+                                              setState(() {
+                                                _selectedLocation = location;
+                                              });
+
+                                              _mapController?.animateCamera(CameraUpdate.newLatLng(location));
+                                            }
+                                          },
+                                          child: Stack(
+                                            children: [
+                                              MapTileWidget(
+                                                initialLocation: _selectedLocation!,
+                                                mode: MapModeEnum.view,
+                                                onMapCreated: (controller) {
+                                                  _mapController = controller;
+                                                },
+                                              ),
+                                              Positioned(
+                                                right: 12,
+                                                top: 12,
+                                                child: const Chip(
+                                                  avatar: Icon(
+                                                    Icons.edit_location_alt,
+                                                    size: 20,
+                                                    color: Colors.white,
+                                                  ),
+                                                  label: ButtonText(
+                                                    value: "Change location",
+                                                    color: Colors.white,
+                                                  ),
+                                                  backgroundColor: Colors.deepOrange,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              const SectionTitle(
+                                icon: Icons.question_mark,
+                                title: "Optional Information",
                               ),
                               const SizedBox(
                                 height: 10,
                               ),
                             ],
                           ),
-                          SizedBox(
+                        ),
+                        ExpansionTile(
+                          title: const Align(
+                            alignment: Alignment.centerLeft,
+                            child: ButtonText(
+                              value: 'Victim Information',
+                            ),
+                          ),
+                          tilePadding: EdgeInsets.symmetric(horizontal: 20),
+                          childrenPadding: EdgeInsets.symmetric(horizontal: 20),
+                          children: [
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: CustomElevatedButton(
+                                onPressed: () {
+                                  ref.read(reportProvider.notifier).addVictim();
+
+                                  setState(() {
+                                    _controllers.add(VictimControllers());
+                                  });
+                                },
+                                value: "Add",
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            ...List.generate(
+                              victimsList.length,
+                              (index) {
+                                return Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      height: 1,
+                                      color: Colors.black,
+                                    ),
+                                    const SizedBox(height: 10),
+                                    CustomTextField(
+                                      title: "VICTIM NAME",
+                                      controller: _controllers[index].victimNameController,
+                                      onChanged: (value) {
+                                        ref.read(reportProvider.notifier).updateVictimName(index, value);
+                                      },
+                                    ),
+                                    const SizedBox(height: 10),
+                                    CustomTextField(
+                                      title: "DESCRIPTION",
+                                      keyboardType: TextInputType.multiline,
+                                      maxLines: 5,
+                                      vertical: 30,
+                                      controller: _controllers[index].victimDescriptionController,
+                                      onChanged: (value) {
+                                        ref
+                                            .read(reportProvider.notifier)
+                                            .updateVictimDescription(
+                                              index,
+                                              value,
+                                            );
+                                      },
+                                    ),
+                                    const SizedBox(height: 10),
+                                    CustomElevatedButton(
+                                      onPressed: () {
+                                        _controllers[index].dispose();
+
+                                        setState(() {
+                                          _controllers.removeAt(index);
+                                        });
+
+                                        ref.read(reportProvider.notifier).removeVictim(index);
+                                      },
+                                      value: "Remove",
+                                    ),
+                                    const SizedBox(height: 10),
+                                  ],
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                        ExpansionTile(
+                          title: const Align(
+                            alignment: Alignment.centerLeft,
+                            child: ButtonText(
+                              value: 'Attachments',
+                            ),
+                          ),
+                          tilePadding: EdgeInsets.symmetric(horizontal: 20),
+                          childrenPadding: EdgeInsets.symmetric(horizontal: 20),
+                          children: [
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: CustomElevatedButton(
+                                onPressed: () async {
+                                  ref.read(reportProvider.notifier).addAttachment(ImageSource.gallery);
+                                },
+                                value: "Add attachment",
+                              ),
+                            ),
+                            SizedBox(height: 10),
+                            ...List.generate(
+                              attachmentsList.length,
+                              (index) {
+                                final attachment = attachmentsList[index];
+                                return Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      height: 1,
+                                      color: Colors.black,
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    ClipRRect(
+                                      borderRadius: BorderRadius.circular(
+                                        12,
+                                      ),
+                                      child: Container(
+                                        color: AppColors.lighterBlack,
+                                        width: 300,
+                                        height: 300,
+                                        child: Image.file(
+                                          attachment,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: AppColors.lighterBlack,
+                                        foregroundColor: Colors.black,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(
+                                            12,
+                                          ),
+                                        ),
+                                      ),
+                                      onPressed: () {
+                                        ref.read(reportProvider.notifier).removeAttachment(index);
+                                      },
+                                      child: const Text(
+                                        "Remove attachment",
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                  ],
+                                );
+                              },
+                            ),
+                          ],
+                        ),
+                        ExpansionTile(
+                          title: const Align(
+                            alignment: Alignment.centerLeft,
+                            child: ButtonText(
+                              value: "Additional Information",
+                              isBold: false,
+                            ),
+                          ),
+                          tilePadding: EdgeInsets.symmetric(horizontal: 20),
+                          childrenPadding: EdgeInsets.symmetric(horizontal: 20),
+                          children: [
+                            CustomTextField(
+                              title: "DESCRIPTION",
+                              controller: additionalInformationController,
+                              keyboardType: TextInputType.multiline,
+                              maxLines: 5,
+                              vertical: 20,
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                          ],
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(20),
+                          child: SizedBox(
                             width: double.infinity,
                             child: ElevatedButton(
                               onPressed: () async {
@@ -557,11 +536,14 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> {
                                   borderRadius: BorderRadius.circular(12),
                                 ),
                               ),
-                              child: const Text("Submit Report"),
+                              child: ButtonText(
+                                value: "Submit Report",
+                                color: Colors.white,
+                              ),
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
                   ),
                 ),

@@ -8,11 +8,15 @@ class SectionTitle extends StatelessWidget {
     required this.icon,
     required this.title,
     this.mainAxisAlignment = MainAxisAlignment.start,
+    this.size = 25,
+    this.isBold = true,
   });
 
   final IconData icon;
   final String title;
+  final double size;
   final MainAxisAlignment mainAxisAlignment;
+  final bool isBold;
 
   @override
   Widget build(BuildContext context) {
@@ -21,13 +25,13 @@ class SectionTitle extends StatelessWidget {
       children: [
         Icon(
           icon,
-          size: 22,
+          size: size,
           color: AppColors.darkerGrey,
         ),
-        const SizedBox(width: 8),
+        const SizedBox(width: 10),
         SectionTitleText(
           value: title,
-          isBold: true,
+          isBold: isBold,
         ),
       ],
     );
