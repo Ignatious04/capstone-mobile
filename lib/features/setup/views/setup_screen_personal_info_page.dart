@@ -1,8 +1,10 @@
 import 'package:capstone/core/shared/widgets/custom_dropdown_button.dart';
+import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
 import 'package:capstone/core/shared/widgets/custom_text_field.dart';
-import 'package:capstone/core/shared/widgets/text/deprecated/text_body_small.dart';
-import 'package:capstone/core/shared/widgets/text/deprecated/text_title_small.dart';
+import 'package:capstone/core/shared/widgets/text/data_label_text.dart';
 import 'package:capstone/core/shared/providers/user_provider.dart';
+import 'package:capstone/core/shared/widgets/text/supporting_info_text.dart';
+import 'package:capstone/features/reporting/widgets/section_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -52,9 +54,9 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
           children: [
             const Align(
               alignment: Alignment.centerLeft,
-              child: TextTitleSmall(
+              child: SectionTitle(
+                icon: Icons.person,
                 title: "PERSONAL INFORMATION",
-                color: Colors.black,
               ),
             ),
             const SizedBox(
@@ -77,25 +79,18 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
             ),
             SizedBox(
               width: double.infinity,
-              child: ElevatedButton(
+              child: CustomElevatedButton(
                 onPressed: () async {
                   ref.read(userProvider.notifier).addProfilePicture(ImageSource.gallery);
                 },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.deepOrange,
-                  foregroundColor: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadiusGeometry.circular(10),
-                  ),
-                ),
-                child: const Text("Tap to upload photo"),
+                value: "Tap to upload photo",
               ),
             ),
             const SizedBox(
               height: 10,
             ),
-            const TextBodySmall(
-              title: "NOTE: REQUIRED FIELDS ARE DENOTED BY AN ASTERISK (*)",
+            const SupportingInfoText(
+              value: "NOTE: REQUIRED FIELDS ARE DENOTED BY AN ASTERISK (*)",
               color: Colors.red,
               isBold: false,
             ),
@@ -168,7 +163,7 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      TextBodySmall(title: "DATE OF BIRTH"),
+                      DataLabelText(value: "DATE OF BIRTH"),
                       SizedBox(
                         height: 10,
                       ),

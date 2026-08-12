@@ -3,6 +3,7 @@ import 'package:capstone/core/enums/report_priority_enum.dart';
 import 'package:capstone/core/enums/report_status_enum.dart';
 import 'package:capstone/core/enums/report_type_enum.dart';
 import 'package:capstone/features/pre_call_guidance/models/pre_call_guidance_model.dart';
+import 'package:capstone/features/reporting/models/attachment_model.dart';
 import 'package:capstone/features/reporting/models/victim_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -14,7 +15,7 @@ class ReportModel {
   final GuidanceTypeEnum? incidentType;
   final String description;
   final List<VictimModel> victims;
-  final List<String> attachments;
+  final List<AttachmentModel> attachments;
   final List<PreCallGuidanceModel> guidanceAnswers;
   final String additionalInformation;
   final ReportStatusEnum? status;
@@ -47,7 +48,7 @@ class ReportModel {
     GuidanceTypeEnum? incidentType,
     String? description,
     List<VictimModel>? victims,
-    List<String>? attachments,
+    List<AttachmentModel>? attachments,
     List<PreCallGuidanceModel>? guidanceAnswers,
     String? additionalInformation,
     ReportStatusEnum? status,
@@ -67,7 +68,8 @@ class ReportModel {
       victims: victims ?? this.victims,
       attachments: attachments ?? this.attachments,
       guidanceAnswers: guidanceAnswers ?? this.guidanceAnswers,
-      additionalInformation: additionalInformation ?? this.additionalInformation,
+      additionalInformation:
+          additionalInformation ?? this.additionalInformation,
       status: status ?? this.status,
       location: location ?? this.location,
       createdAt: createdAt ?? this.createdAt,
@@ -77,17 +79,17 @@ class ReportModel {
 
   Map<String, dynamic> toMap() {
     return {
-      "reportID": reportID,
+      'reportID': reportID,
       'referenceNumber': referenceNumber,
       'userID': userID,
       'reportType': reportType.name,
       'incidentType': incidentType?.name,
       'description': description,
       'victims': victims.map((v) => v.toMap()).toList(),
-      'attachments': attachments,
+      'attachments': attachments.map((a) => a.toMap()).toList(),
       'guidanceAnswers': guidanceAnswers.map((e) => e.toMap()).toList(),
-      "additionalInformation": additionalInformation,
-      'status': status!.name,
+      'additionalInformation': additionalInformation,
+      'status': status?.name,
       'location': location,
       'createdAt': createdAt,
       'resolvedAt': resolvedAt,
@@ -98,20 +100,24 @@ class ReportModel {
     Map<String, dynamic> map,
   ) {
     return ReportModel(
-      reportID: map["reportID"] ?? "",
+      reportID: map['reportID'] ?? '',
       referenceNumber: map['referenceNumber'] ?? '',
       userID: map['userID'] ?? '',
+
       reportType: map['reportType'] != null
           ? ReportTypeEnum.values.firstWhere(
               (e) => e.name == map['reportType'],
             )
           : ReportTypeEnum.normal,
+
       incidentType: map['incidentType'] != null
           ? GuidanceTypeEnum.values.firstWhere(
               (e) => e.name == map['incidentType'],
             )
           : null,
+
       description: map['description'] ?? '',
+
       victims: (map['victims'] as List<dynamic>? ?? [])
           .map(
             (v) => VictimModel.fromMap(
@@ -119,7 +125,15 @@ class ReportModel {
             ),
           )
           .toList(),
-      attachments: (map['attachments'] as List<dynamic>? ?? []).cast<String>(),
+
+      attachments: (map['attachments'] as List<dynamic>? ?? [])
+          .map(
+            (a) => AttachmentModel.fromMap(
+              Map<String, dynamic>.from(a),
+            ),
+          )
+          .toList(),
+
       guidanceAnswers: (map['guidanceAnswers'] as List<dynamic>? ?? [])
           .map(
             (e) => PreCallGuidanceModel.fromMap(
@@ -127,14 +141,19 @@ class ReportModel {
             ),
           )
           .toList(),
-      additionalInformation: map["additionalInformation"] ?? "",
+
+      additionalInformation: map['additionalInformation'] ?? '',
+
       status: map['status'] != null
           ? ReportStatusEnum.values.firstWhere(
               (e) => e.name == map['status'],
             )
           : null,
+
       location: map['location'],
+
       createdAt: (map['createdAt'] as Timestamp?)?.toDate(),
+
       resolvedAt: (map['resolvedAt'] as Timestamp?)?.toDate(),
     );
   }

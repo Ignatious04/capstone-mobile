@@ -1,7 +1,7 @@
 import 'package:capstone/core/shared/widgets/custom_circular_progress_indicator.dart';
 import 'package:capstone/core/shared/widgets/custom_header_widget.dart';
+import 'package:capstone/core/shared/widgets/text/supporting_info_text.dart';
 import 'package:capstone/features/reporting/widgets/report_card.dart';
-import 'package:capstone/core/shared/widgets/text/deprecated/text_title_small.dart';
 import 'package:capstone/features/reporting/providers/report_repository_provider.dart';
 import 'package:capstone/features/reporting/views/reports_form_screen.dart';
 import 'package:flutter/material.dart';
@@ -41,8 +41,8 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
                 data: (reports) {
                   if (reports.isEmpty) {
                     return const Center(
-                      child: TextTitleSmall(
-                        title: "No reports yet.",
+                      child: SupportingInfoText(
+                        value: "No reports yet.",
                       ),
                     );
                   }

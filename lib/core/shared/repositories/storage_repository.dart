@@ -1,41 +1,51 @@
 import 'dart:io';
+import 'package:capstone/core/enums/attachment_type_enum.dart';
+import 'package:capstone/features/reporting/models/attachment_model.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:path/path.dart' as path;
 
 class StorageRepository {
   StorageRepository(this._storage);
 
   final FirebaseStorage _storage;
 
-  Future<String> uploadAttachment({
+  Future<AttachmentModel> uploadAttachment({
     required File file,
     required String reportID,
     required String fileName,
   }) async {
-    final ref = _storage.ref().child(
-      'reports/$reportID/$fileName',
-    );
+    final extension = path.extension(fileName);
+    final storageFileName = '${DateTime.now().millisecondsSinceEpoch}$extension';
+    final ref = _storage.ref().child('reports/$reportID/$storageFileName');
 
     await ref.putFile(file);
+    final url = await ref.getDownloadURL();
 
-    return await ref.getDownloadURL();
+    return AttachmentModel(
+      fileName: fileName,
+      url: url,
+      type: AttachmentTypeEnum.image.name,
+    );
   }
 
-  Future<List<String>> uploadAttachments({
+  Future<List<AttachmentModel>> uploadAttachments({
     required String reportID,
     required List<File> files,
   }) async {
-    final urls = <String>[];
+    final attachments = <AttachmentModel>[];
 
-    for (int i = 0; i < files.length; i++) {
-      final url = await uploadAttachment(
-        file: files[i],
+    for (final file in files) {
+      final fileName = path.basename(file.path);
+
+      final attachment = await uploadAttachment(
+        file: file,
         reportID: reportID,
-        fileName: "${DateTime.now().millisecondsSinceEpoch}_$i.jpg",
+        fileName: fileName,
       );
 
-      urls.add(url);
+      attachments.add(attachment);
     }
 
-    return urls;
+    return attachments;
   }
 }

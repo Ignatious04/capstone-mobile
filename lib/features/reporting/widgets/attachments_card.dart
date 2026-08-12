@@ -1,15 +1,16 @@
+import 'package:capstone/features/reporting/models/attachment_model.dart';
 import 'package:capstone/features/reporting/widgets/attachments_card_item.dart';
 import 'package:capstone/features/reporting/widgets/empty_card.dart';
 import 'package:flutter/material.dart';
 
 class AttachmentsCard extends StatelessWidget {
-  const AttachmentsCard({super.key, this.attachments});
+  const AttachmentsCard({super.key, required this.attachments});
 
-  final List<String>? attachments;
+  final List<AttachmentModel> attachments;
 
   @override
   Widget build(BuildContext context) {
-    if (attachments?.isEmpty ?? true) {
+    if (attachments.isEmpty) {
       return EmptyCard(
         icon: Icons.image_not_supported_outlined,
         message: 'No attachments provided.',
@@ -28,15 +29,15 @@ class AttachmentsCard extends StatelessWidget {
         child: GridView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          itemCount: attachments!.length,
+          itemCount: attachments.length,
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3,
-            crossAxisSpacing: 8,
-            mainAxisSpacing: 8,
+            crossAxisCount: 2,
+            crossAxisSpacing: 10,
+            mainAxisSpacing: 10,
           ),
           itemBuilder: (context, index) {
             return AttachmentsCardItem(
-              url: attachments![index],
+              attachment: attachments[index],
             );
           },
         ),

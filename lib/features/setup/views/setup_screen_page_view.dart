@@ -1,8 +1,8 @@
 import 'package:capstone/core/shared/providers/firebase_auth_provider.dart';
 import 'package:capstone/core/shared/providers/user_repository_provider.dart';
 import 'package:capstone/core/shared/providers/user_provider.dart';
+import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
 import 'package:capstone/core/shared/widgets/custom_header_widget.dart';
-import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/setup/views/setup_screen_user_card_page.dart';
 import 'package:capstone/features/setup/views/setup_screen_personal_info_page.dart';
 import 'package:capstone/features/setup/views/setup_screen_medical_info_page.dart';
@@ -116,34 +116,19 @@ class _SetupScreenPageView extends ConsumerState<SetupScreenPageView> {
                     children: [
                       if (currentPage > 0) ...[
                         Expanded(
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: AppColors.lighterBlack,
-                              foregroundColor: Colors.black,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                            ),
+                          child: CustomElevatedButton(
                             onPressed: () {
                               navigateFromPage();
                             },
-
-                            child: Text("Previous"),
+                            value: "Previous",
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 10,
                         ),
                       ],
                       Expanded(
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.deepOrange,
-                            foregroundColor: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                          ),
+                        child: CustomElevatedButton(
                           onPressed: () async {
                             if (currentPage < 2) {
                               if (!formKeys[currentPage].currentState!.validate()) {
@@ -186,9 +171,7 @@ class _SetupScreenPageView extends ConsumerState<SetupScreenPageView> {
                             }
                           },
 
-                          child: Text(
-                            currentPage == numberOfPages - 1 ? "Create" : "Next",
-                          ),
+                          value: currentPage == numberOfPages - 1 ? "Create" : "Next",
                         ),
                       ),
                     ],

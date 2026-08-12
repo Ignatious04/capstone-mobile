@@ -1,10 +1,11 @@
 import 'package:camera/camera.dart';
 import 'package:capstone/core/shared/widgets/custom_dropdown_button.dart';
 import 'package:capstone/core/shared/widgets/scanner_overlay_painter.dart';
-import 'package:capstone/core/shared/widgets/text/deprecated/text_title_small.dart';
 import 'package:capstone/core/shared/providers/user_provider.dart';
 import 'package:capstone/core/services/camera_service.dart';
+import 'package:capstone/core/shared/widgets/text/supporting_info_text.dart';
 import 'package:capstone/core/themes/app_colors.dart';
+import 'package:capstone/features/reporting/widgets/section_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -51,9 +52,9 @@ class _SetupScreenUserCardPage extends ConsumerState<SetupScreenUserCardPage> {
         children: [
           const Align(
             alignment: Alignment.centerLeft,
-            child: TextTitleSmall(
+            child: SectionTitle(
+              icon: Icons.credit_card,
               title: "USER VALIDATION",
-              color: Colors.black,
             ),
           ),
           const SizedBox(
@@ -116,10 +117,9 @@ class _SetupScreenUserCardPage extends ConsumerState<SetupScreenUserCardPage> {
                       children: [
                         SizedBox(height: 8),
                         Center(
-                          child: TextTitleSmall(
-                            title: "Align your ID inside the frame",
-                            isBold: false,
-                            color: AppColors.lighterBlack,
+                          child: SupportingInfoText(
+                            value: "Align your ID inside the frame",
+                            color: AppColors.darkerGrey,
                           ),
                         ),
                       ],

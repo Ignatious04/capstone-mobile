@@ -1,4 +1,4 @@
-import 'package:capstone/core/shared/widgets/text/deprecated/text_body_small.dart';
+import 'package:capstone/core/shared/widgets/text/supporting_info_text.dart';
 import 'package:flutter/material.dart';
 
 class CustomSnackbar extends SnackBar {
@@ -10,10 +10,9 @@ class CustomSnackbar extends SnackBar {
          backgroundColor: Colors.deepOrange,
          behavior: SnackBarBehavior.floating,
          showCloseIcon: true,
-         content: TextBodySmall(
-           title: text,
+         content: SupportingInfoText(
+           value: text,
            color: color ?? Colors.white,
-           isBold: false,
          ),
        );
 }

@@ -4,5 +4,4 @@ enum ReportStatusEnum {
   dispatched,
   onScene,
   resolved,
-  cancelled,
 }

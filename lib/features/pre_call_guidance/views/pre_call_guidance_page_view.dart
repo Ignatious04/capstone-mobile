@@ -1,6 +1,5 @@
+import 'package:capstone/core/shared/widgets/custom_app_bar.dart';
 import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
-import 'package:capstone/core/shared/widgets/custom_header_widget.dart';
-import 'package:capstone/core/shared/widgets/text/deprecated/text_title_small.dart';
 import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/pre_call_guidance/providers/guidance_provider.dart';
 import 'package:capstone/features/pre_call_guidance/views/pre_call_guidance_page.dart';
@@ -55,27 +54,14 @@ class _PreCallGuidancePageViewState extends ConsumerState<PreCallGuidancePageVie
   Widget build(BuildContext context) {
     final state = ref.watch(guidanceProvider);
     return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 40,
-        title: TextTitleSmall(
-          title: "Back",
-          color: Colors.white,
-        ),
-      ),
+      appBar: CustomAppBar(value: "Pre-Call Guidance"),
       body: SafeArea(
         child: Column(
           children: [
-            SizedBox(
-              width: double.infinity,
-              child: CustomHeaderWidget(
-                title: "Pre-Call Guidance",
-                body: "Please answer these questions carefully",
-                progressIndicator: LinearProgressIndicator(
-                  value: (state.currentPage + 1) / state.questions.length,
-                  color: Colors.white,
-                  backgroundColor: AppColors.darkerGrey,
-                ),
-              ),
+            LinearProgressIndicator(
+              value: (state.currentPage + 1) / state.questions.length,
+              color: Colors.white,
+              backgroundColor: AppColors.darkerGrey,
             ),
             Expanded(
               child: Padding(

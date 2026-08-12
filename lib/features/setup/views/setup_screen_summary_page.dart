@@ -1,8 +1,9 @@
-import 'package:capstone/core/shared/widgets/text/form_body_medium.dart';
-import 'package:capstone/core/shared/widgets/text/deprecated/text_body_small.dart';
+import 'package:capstone/core/shared/widgets/info_column.dart';
+import 'package:capstone/core/shared/widgets/text/card_title_text.dart';
 import 'package:capstone/core/shared/providers/user_provider.dart';
-import 'package:capstone/core/shared/widgets/text/deprecated/text_title_small.dart';
+import 'package:capstone/core/shared/widgets/text/paragraph_text.dart';
 import 'package:capstone/core/themes/app_colors.dart';
+import 'package:capstone/features/reporting/widgets/section_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -15,9 +16,9 @@ class SetupScreenSummaryPage extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const TextTitleSmall(
+          const SectionTitle(
+            icon: Icons.note,
             title: "PERSONAL PROFILE SUMMARY",
-            color: Colors.deepOrange,
           ),
           const SizedBox(
             height: 10,
@@ -34,81 +35,81 @@ class SetupScreenSummaryPage extends ConsumerWidget {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        FormBodyMedium(
+                        InfoColumn(
                           title: "FIRST NAME",
-                          body: ref.read(userProvider).firstName,
+                          value: ref.read(userProvider).firstName,
                         ),
                         const SizedBox(
                           height: 10,
                         ),
-                        FormBodyMedium(
+                        InfoColumn(
                           title: "MIDDLE NAME",
-                          body: ref.read(userProvider).middleName,
+                          value: ref.read(userProvider).middleName,
                         ),
                         const SizedBox(
                           height: 10,
                         ),
-                        FormBodyMedium(
+                        InfoColumn(
                           title: "LAST NAME",
-                          body: ref.read(userProvider).lastName,
+                          value: ref.read(userProvider).lastName,
                         ),
                         const SizedBox(
                           height: 10,
                         ),
-                        FormBodyMedium(
+                        InfoColumn(
                           title: "DATE OF BIRTH",
-                          body: DateTime.fromMillisecondsSinceEpoch(
+                          value: DateTime.fromMillisecondsSinceEpoch(
                             ref.read(userProvider).birthDate,
                           ).toString(),
                         ),
                         const SizedBox(
                           height: 10,
                         ),
-                        FormBodyMedium(
+                        InfoColumn(
                           title: "SEX",
-                          body: ref.read(userProvider).sex,
+                          value: ref.read(userProvider).sex,
                         ),
                         const SizedBox(
                           height: 10,
                         ),
-                        FormBodyMedium(
+                        InfoColumn(
                           title: "CONTACT NUMBER",
-                          body: ref.read(userProvider).contactNumber,
+                          value: ref.read(userProvider).contactNumber,
                         ),
                         const SizedBox(
                           height: 10,
                         ),
-                        FormBodyMedium(
+                        InfoColumn(
                           title: "HOME ADDRESS",
-                          body: ref.read(userProvider).address,
+                          value: ref.read(userProvider).address,
                         ),
                         const SizedBox(
                           height: 10,
                         ),
-                        FormBodyMedium(
+                        InfoColumn(
                           title: "NATIONALITY",
-                          body: ref.read(userProvider).nationality,
+                          value: ref.read(userProvider).nationality,
                         ),
                         const SizedBox(
                           height: 10,
                         ),
-                        FormBodyMedium(
+                        InfoColumn(
                           title: "CIVIL STATUS",
-                          body: ref.read(userProvider).civilStatus,
+                          value: ref.read(userProvider).civilStatus,
                         ),
                         const SizedBox(
                           height: 10,
                         ),
-                        FormBodyMedium(
+                        InfoColumn(
                           title: "RELIGION",
-                          body: ref.read(userProvider).religion,
+                          value: ref.read(userProvider).religion,
                         ),
                         const SizedBox(
                           height: 10,
                         ),
-                        FormBodyMedium(
+                        InfoColumn(
                           title: "ID TYPE",
-                          body: ref.read(userProvider).idType,
+                          value: ref.read(userProvider).idType,
                         ),
                       ],
                     ),
@@ -118,9 +119,9 @@ class SetupScreenSummaryPage extends ConsumerWidget {
             ),
           ),
           const SizedBox(height: 10),
-          const TextTitleSmall(
+          const SectionTitle(
+            icon: Icons.rule,
             title: "SYSTEM TERMS AND CONDITIONS",
-            color: Colors.deepOrange,
           ),
           const SizedBox(height: 10),
           Container(
@@ -143,11 +144,10 @@ class SetupScreenSummaryPage extends ConsumerWidget {
                       width: 20,
                     ),
                     const Expanded(
-                      child: TextBodySmall(
-                        title:
+                      child: ParagraphText(
+                        value:
                             "MEAS is a guidance and reporting tool only. It does not replace direct emergency calls to 911 or local hotlines.",
                         color: Colors.red,
-                        isBold: false,
                       ),
                     ),
                   ],
@@ -165,8 +165,8 @@ class SetupScreenSummaryPage extends ConsumerWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const TextTitleSmall(
-                      title: "DATA PRIVACY",
+                    const CardTitleText(
+                      value: "DATA PRIVACY",
                       color: Colors.deepOrange,
                     ),
                     const SizedBox(
@@ -175,15 +175,11 @@ class SetupScreenSummaryPage extends ConsumerWidget {
                     Text.rich(
                       TextSpan(
                         text: "In compliance with the ",
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: AppColors.darkerGrey,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        style: Theme.of(context).textTheme.bodyLarge,
                         children: [
                           TextSpan(
                             text: "Data Privacy Act of 2012 (RA 10173): ",
-                            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: Colors.black,
+                            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                               fontWeight: FontWeight.bold,
                             ),
                           ),
@@ -193,18 +189,18 @@ class SetupScreenSummaryPage extends ConsumerWidget {
                     const SizedBox(
                       height: 10,
                     ),
-                    const TextBodySmall(
-                      title: "• All personal data shall be encrypted and stored securely",
+                    const ParagraphText(
+                      value: "• All personal data shall be encrypted and stored securely",
                     ),
-                    const TextBodySmall(
-                      title:
+                    const ParagraphText(
+                      value:
                           "• Your data is only shared with authorized emergency responders and personnel during an active incident",
                     ),
-                    const TextBodySmall(
-                      title: "• Your location is only transmitted once an emergency report has been triggered",
+                    const ParagraphText(
+                      value: "• Your location is only transmitted once an emergency report has been triggered",
                     ),
-                    const TextBodySmall(
-                      title:
+                    const ParagraphText(
+                      value:
                           "• Your data will never be sold or shared with third parties (e.g. non-government agencies, private entities)",
                     ),
                   ],

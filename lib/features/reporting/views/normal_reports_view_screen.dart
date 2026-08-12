@@ -118,7 +118,7 @@ class NormalReportsViewScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 10),
                 SectionTitle(
-                  icon: Icons.notes_outlined,
+                  icon: Icons.notes,
                   title: 'Additional Information',
                 ),
                 const SizedBox(height: 10),

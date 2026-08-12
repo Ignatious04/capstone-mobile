@@ -1,9 +1,9 @@
 import 'package:capstone/core/shared/widgets/custom_circular_progress_indicator.dart';
 import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
-import 'package:capstone/core/shared/widgets/text/deprecated/text_title_small.dart';
 import 'package:capstone/core/shared/providers/firebase_auth_provider.dart';
 import 'package:capstone/core/shared/providers/user_provider.dart';
 import 'package:capstone/core/shared/widgets/text/screen_title_text.dart';
+import 'package:capstone/core/shared/widgets/text/supporting_info_text.dart';
 import 'package:capstone/features/profile/views/personal_information_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -67,6 +67,8 @@ class ProfileScreen extends ConsumerWidget {
                         ),
                       );
                     },
+                    backgroundColor: Colors.white,
+                    color: Colors.black,
                     value: "Personal Information",
                   ),
                 ),
@@ -74,6 +76,8 @@ class ProfileScreen extends ConsumerWidget {
                   width: double.infinity,
                   child: CustomElevatedButton(
                     onPressed: () {},
+                    backgroundColor: Colors.white,
+                    color: Colors.black,
                     value: "Settings",
                   ),
                 ),
@@ -85,7 +89,7 @@ class ProfileScreen extends ConsumerWidget {
                         context: context,
                         builder: (context) {
                           return AlertDialog(
-                            title: const TextTitleSmall(title: "Do you wish to log out?"),
+                            title: const SupportingInfoText(value: "Do you wish to log out?"),
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                             backgroundColor: Colors.white,
                             actions: [

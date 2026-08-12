@@ -15,7 +15,6 @@ import 'package:capstone/core/shared/widgets/text/button_text.dart';
 import 'package:capstone/core/shared/widgets/text/data_label_text.dart';
 import 'package:capstone/core/shared/widgets/text/supporting_info_text.dart';
 import 'package:capstone/features/map/widgets/map_tile_widget.dart';
-import 'package:capstone/core/shared/widgets/text/deprecated/text_title_small.dart';
 import 'package:capstone/features/reporting/providers/pending_attachments_provider.dart';
 import 'package:capstone/core/shared/providers/firebase_auth_provider.dart';
 import 'package:capstone/core/shared/providers/location_provider.dart';
@@ -436,8 +435,8 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> {
                                   context: context,
                                   builder: (context) {
                                     return AlertDialog(
-                                      title: const TextTitleSmall(
-                                        title: "Are you sure that you wish to submit this report?",
+                                      title: const SupportingInfoText(
+                                        value: "Are you sure that you wish to submit this report?",
                                       ),
                                       content: const Text("Put disclaimer here..."),
                                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -493,7 +492,7 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> {
 
                                   ref.read(reportProvider.notifier).setLocation(_selectedLocation!);
 
-                                  final attachmentUrls = await ref
+                                  final attachments = await ref
                                       .read(storageRepositoryProvider)
                                       .uploadAttachments(
                                         reportID: reportID,
@@ -507,7 +506,7 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> {
                                         referenceNumber: "RPT-$date-${Random().nextInt(900000) + 100000}",
                                         userID: ref.read(firebaseAuthProvider).currentUser!.uid.toString(),
                                         description: incidentDescriptionController.text,
-                                        attachments: attachmentUrls,
+                                        attachments: attachments,
                                         additionalInformation: additionalInformationController.text,
                                         status: ReportStatusEnum.pending,
                                         createdAt: now,
