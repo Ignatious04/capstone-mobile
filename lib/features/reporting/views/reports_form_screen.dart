@@ -1,9 +1,10 @@
 import 'dart:math';
 
 import 'package:capstone/core/controllers/victim_controllers.dart';
-import 'package:capstone/core/enums/guidance_type_enum.dart';
+import 'package:capstone/core/enums/service_type_enum.dart';
 import 'package:capstone/core/enums/map_mode_enum.dart';
 import 'package:capstone/core/enums/report_status_enum.dart';
+import 'package:capstone/core/shared/providers/realtime_database_repository_provider.dart';
 import 'package:capstone/core/shared/widgets/custom_app_bar.dart';
 import 'package:capstone/core/shared/widgets/custom_circular_progress_indicator.dart';
 import 'package:capstone/core/shared/widgets/custom_dropdown_button.dart';
@@ -15,6 +16,7 @@ import 'package:capstone/core/shared/widgets/text/button_text.dart';
 import 'package:capstone/core/shared/widgets/text/data_label_text.dart';
 import 'package:capstone/core/shared/widgets/text/supporting_info_text.dart';
 import 'package:capstone/features/map/widgets/map_tile_widget.dart';
+import 'package:capstone/features/reporting/models/realtime_report_model.dart';
 import 'package:capstone/features/reporting/providers/pending_attachments_provider.dart';
 import 'package:capstone/core/shared/providers/firebase_auth_provider.dart';
 import 'package:capstone/core/shared/providers/location_provider.dart';
@@ -107,15 +109,15 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> {
                                 hideErrorText: false,
                                 items: [
                                   const DropdownMenuItem(
-                                    value: GuidanceTypeEnum.medical,
+                                    value: ServiceTypeEnum.medical,
                                     child: Text("Medical"),
                                   ),
                                   const DropdownMenuItem(
-                                    value: GuidanceTypeEnum.police,
+                                    value: ServiceTypeEnum.police,
                                     child: Text("Police"),
                                   ),
                                   const DropdownMenuItem(
-                                    value: GuidanceTypeEnum.fire,
+                                    value: ServiceTypeEnum.fire,
                                     child: Text("Fire"),
                                   ),
                                 ],
@@ -513,6 +515,19 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> {
                                       );
 
                                   await ref.read(reportRepositoryProvider).createReport(report);
+
+                                  final realtimeReport = RealtimeReportModel(
+                                    reportID: report.reportID,
+                                    referenceNumber: report.referenceNumber,
+                                    status: report.status ?? ReportStatusEnum.pending,
+                                    latitude: report.location?.latitude ?? 0,
+                                    longitude: report.location?.longitude ?? 0,
+                                    updatedAt: DateTime.now(),
+                                  );
+
+                                  await ref
+                                      .read(realtimeDatabaseRepositoryProvider)
+                                      .create(path: "activeReports/${report.reportID}", data: realtimeReport.toMap());
 
                                   ref.read(pendingAttachmentsProvider.notifier).state = [];
 

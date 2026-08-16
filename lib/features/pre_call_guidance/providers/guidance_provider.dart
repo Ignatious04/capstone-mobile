@@ -1,4 +1,4 @@
-import 'package:capstone/core/enums/guidance_type_enum.dart';
+import 'package:capstone/core/enums/service_type_enum.dart';
 import 'package:capstone/features/pre_call_guidance/models/pre_call_guidance_model.dart';
 import 'package:capstone/features/pre_call_guidance/models/question_state.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -25,9 +25,9 @@ class GuidanceNotifier extends Notifier<QuestionState> {
     );
   }
 
-  void loadQuestions(GuidanceTypeEnum type) {
+  void loadQuestions(ServiceTypeEnum type) {
     switch (type) {
-      case GuidanceTypeEnum.medical:
+      case ServiceTypeEnum.medical:
         state = QuestionState(
           currentPage: 0,
           questions: [
@@ -38,7 +38,7 @@ class GuidanceNotifier extends Notifier<QuestionState> {
         );
         break;
 
-      case GuidanceTypeEnum.police:
+      case ServiceTypeEnum.police:
         state = QuestionState(
           currentPage: 0,
           questions: [
@@ -49,7 +49,7 @@ class GuidanceNotifier extends Notifier<QuestionState> {
         );
         break;
 
-      case GuidanceTypeEnum.fire:
+      case ServiceTypeEnum.fire:
         state = QuestionState(
           currentPage: 0,
           questions: [

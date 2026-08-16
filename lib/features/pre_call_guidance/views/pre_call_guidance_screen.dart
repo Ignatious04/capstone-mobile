@@ -1,4 +1,4 @@
-import 'package:capstone/core/enums/guidance_type_enum.dart';
+import 'package:capstone/core/enums/service_type_enum.dart';
 import 'package:capstone/core/shared/widgets/custom_header_widget.dart';
 import 'package:capstone/core/shared/widgets/service_button.dart';
 import 'package:capstone/features/pre_call_guidance/providers/guidance_provider.dart';
@@ -52,8 +52,8 @@ class _PreCallGuidanceScreenState extends ConsumerState<PreCallGuidanceScreen> {
                     children: [
                       ServiceButton(
                         onPressed: () {
-                          ref.read(reportProvider.notifier).setIncidentType(GuidanceTypeEnum.medical);
-                          ref.read(guidanceProvider.notifier).loadQuestions(GuidanceTypeEnum.medical);
+                          ref.read(reportProvider.notifier).setIncidentType(ServiceTypeEnum.medical);
+                          ref.read(guidanceProvider.notifier).loadQuestions(ServiceTypeEnum.medical);
 
                           Navigator.push(
                             context,
@@ -74,8 +74,8 @@ class _PreCallGuidanceScreenState extends ConsumerState<PreCallGuidanceScreen> {
                       ),
                       ServiceButton(
                         onPressed: () {
-                          ref.read(reportProvider.notifier).setIncidentType(GuidanceTypeEnum.police);
-                          ref.read(guidanceProvider.notifier).loadQuestions(GuidanceTypeEnum.police);
+                          ref.read(reportProvider.notifier).setIncidentType(ServiceTypeEnum.police);
+                          ref.read(guidanceProvider.notifier).loadQuestions(ServiceTypeEnum.police);
 
                           Navigator.push(
                             context,
@@ -96,8 +96,8 @@ class _PreCallGuidanceScreenState extends ConsumerState<PreCallGuidanceScreen> {
                       ),
                       ServiceButton(
                         onPressed: () {
-                          ref.read(reportProvider.notifier).setIncidentType(GuidanceTypeEnum.fire);
-                          ref.read(guidanceProvider.notifier).loadQuestions(GuidanceTypeEnum.fire);
+                          ref.read(reportProvider.notifier).setIncidentType(ServiceTypeEnum.fire);
+                          ref.read(guidanceProvider.notifier).loadQuestions(ServiceTypeEnum.fire);
                           
                           Navigator.push(
                             context,

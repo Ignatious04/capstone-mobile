@@ -7,4 +7,5 @@ class AppColors {
   static const Color lighterDeepOrange = Color.fromARGB(255, 255, 217, 200);
   static const Color lighterBlack = Color.fromARGB(255, 200, 200, 200);
   static const Color darkerGrey = Color.fromARGB(255, 125, 125, 125);
+  static const Color darkerGreen = Color.fromARGB(255, 10, 125, 0);
 }

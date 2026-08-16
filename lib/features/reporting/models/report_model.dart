@@ -1,4 +1,4 @@
-import 'package:capstone/core/enums/guidance_type_enum.dart';
+import 'package:capstone/core/enums/service_type_enum.dart';
 import 'package:capstone/core/enums/report_priority_enum.dart';
 import 'package:capstone/core/enums/report_status_enum.dart';
 import 'package:capstone/core/enums/report_type_enum.dart';
@@ -12,7 +12,7 @@ class ReportModel {
   final String referenceNumber;
   final String userID;
   final ReportTypeEnum reportType;
-  final GuidanceTypeEnum? incidentType;
+  final ServiceTypeEnum? incidentType;
   final String description;
   final List<VictimModel> victims;
   final List<AttachmentModel> attachments;
@@ -45,7 +45,7 @@ class ReportModel {
     String? referenceNumber,
     String? userID,
     ReportTypeEnum? reportType,
-    GuidanceTypeEnum? incidentType,
+    ServiceTypeEnum? incidentType,
     String? description,
     List<VictimModel>? victims,
     List<AttachmentModel>? attachments,
@@ -111,7 +111,7 @@ class ReportModel {
           : ReportTypeEnum.normal,
 
       incidentType: map['incidentType'] != null
-          ? GuidanceTypeEnum.values.firstWhere(
+          ? ServiceTypeEnum.values.firstWhere(
               (e) => e.name == map['incidentType'],
             )
           : null,

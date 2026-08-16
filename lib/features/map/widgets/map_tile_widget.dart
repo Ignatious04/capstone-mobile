@@ -1,4 +1,6 @@
 import 'package:capstone/core/enums/map_mode_enum.dart';
+import 'package:capstone/core/enums/service_type_enum.dart';
+import 'package:capstone/features/map/models/emergency_service_model.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -8,6 +10,7 @@ class MapTileWidget extends StatefulWidget {
     this.onMapCreated,
     this.onLocationChanged,
     required this.initialLocation,
+    this.services = const [],
     this.mode = MapModeEnum.view,
     this.gesturesEnabled,
   });
@@ -15,6 +18,7 @@ class MapTileWidget extends StatefulWidget {
   final void Function(GoogleMapController controller)? onMapCreated;
   final void Function(LatLng latlng)? onLocationChanged;
   final LatLng initialLocation;
+  final List<EmergencyServiceModel> services;
   final MapModeEnum mode;
   final bool? gesturesEnabled;
 
@@ -29,6 +33,46 @@ class _MapTileWidgetState extends State<MapTileWidget> {
   bool get _showCenterPin => widget.mode == MapModeEnum.selectLocation;
   bool get _gesturesEnabled => widget.gesturesEnabled ?? (widget.mode != MapModeEnum.view);
 
+  Set<Marker> _buildMarkers() {
+    final markers = <Marker>{};
+
+    if (widget.mode == MapModeEnum.explore) {
+      for (final service in widget.services) {
+        markers.add(
+          Marker(
+            markerId: MarkerId(service.name),
+            position: LatLng(
+              service.location.latitude,
+              service.location.longitude,
+            ),
+            icon: _serviceMarkerIcon(service),
+          ),
+        );
+      }
+    }
+
+    return markers;
+  }
+
+  BitmapDescriptor _serviceMarkerIcon(EmergencyServiceModel service) {
+    switch (service.type) {
+      case ServiceTypeEnum.medical:
+        return BitmapDescriptor.defaultMarkerWithHue(
+          BitmapDescriptor.hueGreen,
+        );
+
+      case ServiceTypeEnum.police:
+        return BitmapDescriptor.defaultMarkerWithHue(
+          BitmapDescriptor.hueBlue,
+        );
+
+      case ServiceTypeEnum.fire:
+        return BitmapDescriptor.defaultMarkerWithHue(
+          BitmapDescriptor.hueRed,
+        );
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -37,25 +81,6 @@ class _MapTileWidgetState extends State<MapTileWidget> {
       target: widget.initialLocation,
       zoom: 15,
     );
-  }
-
-  BitmapDescriptor _markerIcon() {
-    switch (widget.mode) {
-      case MapModeEnum.view:
-        return BitmapDescriptor.defaultMarkerWithHue(
-          BitmapDescriptor.hueRed,
-        );
-
-      case MapModeEnum.explore:
-        return BitmapDescriptor.defaultMarkerWithHue(
-          BitmapDescriptor.hueAzure,
-        );
-
-      case MapModeEnum.selectLocation:
-        return BitmapDescriptor.defaultMarkerWithHue(
-          BitmapDescriptor.hueRed,
-        );
-    }
   }
 
   @override
@@ -72,6 +97,7 @@ class _MapTileWidgetState extends State<MapTileWidget> {
           rotateGesturesEnabled: _gesturesEnabled,
           tiltGesturesEnabled: _gesturesEnabled,
           zoomControlsEnabled: false,
+          myLocationEnabled: true,
           myLocationButtonEnabled: false,
           compassEnabled: false,
           mapToolbarEnabled: false,
@@ -79,15 +105,7 @@ class _MapTileWidgetState extends State<MapTileWidget> {
             _controller = controller;
             widget.onMapCreated?.call(controller);
           },
-          markers: _showCenterPin
-              ? {}
-              : {
-                  Marker(
-                    markerId: const MarkerId("location"),
-                    position: widget.initialLocation,
-                    icon: _markerIcon(),
-                  ),
-                },
+          markers: _showCenterPin ? {} : _buildMarkers(),
           onCameraIdle: () {
             if (_cameraPosition != null) {
               widget.onLocationChanged?.call(_cameraPosition!.target);

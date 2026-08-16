@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:capstone/core/enums/guidance_type_enum.dart';
+import 'package:capstone/core/enums/service_type_enum.dart';
 import 'package:capstone/features/reporting/models/report_model.dart';
 import 'package:capstone/features/reporting/models/victim_model.dart';
 import 'package:capstone/features/reporting/providers/pending_attachments_provider.dart';
@@ -18,7 +18,7 @@ class ReportNotifier extends Notifier<ReportModel> {
     return const ReportModel();
   }
 
-  void setIncidentType(GuidanceTypeEnum value) {
+  void setIncidentType(ServiceTypeEnum value) {
     state = state.copyWith(incidentType: value);
   }
 

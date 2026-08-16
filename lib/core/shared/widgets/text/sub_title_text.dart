@@ -7,18 +7,24 @@ class SubtitleText extends StatelessWidget {
     this.alignment = TextAlign.left,
     this.color = Colors.black,
     this.isBold = false,
+    this.maxLines = 1,
+    this.overflow = TextOverflow.ellipsis,
   });
 
   final String value;
   final TextAlign alignment;
   final Color color;
   final bool isBold;
+  final int maxLines;
+  final TextOverflow overflow;
 
   @override
   Widget build(BuildContext context) {
     return Text(
       value,
       textAlign: alignment,
+      maxLines: maxLines,
+      overflow: overflow,
       style:
           Theme.of(
             context,
