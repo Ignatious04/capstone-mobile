@@ -41,7 +41,9 @@ class _MapScreenState extends ConsumerState<MapScreen> {
                         services: services,
                         mode: MapModeEnum.explore,
                         onMapCreated: (controller) {
-                          _mapController = controller;
+                          setState(() {
+                            _mapController = controller;
+                          });
                         },
                       ),
                     ),
@@ -50,7 +52,7 @@ class _MapScreenState extends ConsumerState<MapScreen> {
                       left: 0,
                       right: 0,
                       child: CustomHeaderWidget(
-                        title: 'Map Screen',
+                        title: 'Service Map',
                         body: 'Find nearby emergency services',
                       ),
                     ),
@@ -91,10 +93,12 @@ class _MapScreenState extends ConsumerState<MapScreen> {
                         ),
                       ),
                     ),
-                    EmergencyServicesPanel(
-                      currentLocation: latLng,
-                      services: services,
-                    ),
+                    if (_mapController != null)
+                      EmergencyServicesPanel(
+                        currentLocation: latLng,
+                        services: services,
+                        mapController: _mapController!,
+                      ),
                   ],
                 );
               },

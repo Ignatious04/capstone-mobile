@@ -27,7 +27,7 @@ class MapTileWidget extends StatefulWidget {
 }
 
 class _MapTileWidgetState extends State<MapTileWidget> {
-  GoogleMapController? _controller;
+  GoogleMapController? _mapController;
   CameraPosition? _cameraPosition;
 
   bool get _showCenterPin => widget.mode == MapModeEnum.selectLocation;
@@ -102,7 +102,7 @@ class _MapTileWidgetState extends State<MapTileWidget> {
           compassEnabled: false,
           mapToolbarEnabled: false,
           onMapCreated: (controller) {
-            _controller = controller;
+            _mapController = controller;
             widget.onMapCreated?.call(controller);
           },
           markers: _showCenterPin ? {} : _buildMarkers(),

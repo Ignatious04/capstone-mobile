@@ -8,17 +8,22 @@ class EmergencyServiceCard extends StatelessWidget {
   const EmergencyServiceCard({
     super.key,
     required this.icon,
+    required this.iconColor,
     required this.title,
     required this.subtitle,
     required this.distance,
     required this.status,
+    required this.onTap,
   });
 
   final IconData icon;
+  final Color iconColor;
   final String title;
   final String subtitle;
   final String distance;
   final String status;
+  final VoidCallback onTap;
+
 
   @override
   Widget build(BuildContext context) {
@@ -34,10 +39,7 @@ class EmergencyServiceCard extends StatelessWidget {
       ),
       child: InkWell(
         borderRadius: BorderRadius.circular(12),
-        onTap: () {
-          // Later:
-          // Move map to this emergency service.
-        },
+        onTap: onTap,
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Row(
@@ -51,7 +53,7 @@ class EmergencyServiceCard extends StatelessWidget {
                 ),
                 child: Icon(
                   icon,
-                  color: Colors.deepOrange,
+                  color: iconColor,
                   size: 50,
                 ),
               ),
@@ -100,9 +102,9 @@ class EmergencyServiceCard extends StatelessWidget {
                 ),
               ),
               const Icon(
-                Icons.chevron_right,
-                color: Colors.grey,
-                size: 25,
+                Icons.arrow_right,
+                color: Colors.deepOrange,
+                size: 50,
               ),
             ],
           ),

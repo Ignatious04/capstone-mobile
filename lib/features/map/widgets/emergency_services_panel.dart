@@ -8,15 +8,24 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-class EmergencyServicesPanel extends StatelessWidget {
+class EmergencyServicesPanel extends StatefulWidget {
   const EmergencyServicesPanel({
     super.key,
     required this.currentLocation,
     required this.services,
+    required this.mapController,
   });
 
   final LatLng currentLocation;
   final List<EmergencyServiceModel> services;
+  final GoogleMapController mapController;
+
+  @override
+  State<EmergencyServicesPanel> createState() => _EmergencyServicesPanelState();
+}
+
+class _EmergencyServicesPanelState extends State<EmergencyServicesPanel> {
+  final DraggableScrollableController _panelController = DraggableScrollableController();
 
   IconData _getServiceIcon(EmergencyServiceModel service) {
     switch (service.type) {
@@ -31,10 +40,23 @@ class EmergencyServicesPanel extends StatelessWidget {
     }
   }
 
+  Color _getServiceColor(EmergencyServiceModel service) {
+    switch (service.type) {
+      case ServiceTypeEnum.fire:
+        return Colors.red;
+
+      case ServiceTypeEnum.police:
+        return Colors.blue;
+
+      case ServiceTypeEnum.medical:
+        return Colors.green;
+    }
+  }
+
   double _getDistance(EmergencyServiceModel service) {
     return Geolocator.distanceBetween(
-      currentLocation.latitude,
-      currentLocation.longitude,
+      widget.currentLocation.latitude,
+      widget.currentLocation.longitude,
       service.location.latitude,
       service.location.longitude,
     );
@@ -50,15 +72,45 @@ class EmergencyServicesPanel extends StatelessWidget {
     return '${(distance / 1000).toStringAsFixed(1)} km';
   }
 
+  void _moveToService(LatLng location) {
+    _panelController.animateTo(
+      0.18,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeOut,
+    );
+
+    widget.mapController.animateCamera(
+      CameraUpdate.newCameraPosition(
+        CameraPosition(
+          target: location,
+          zoom: 16,
+        ),
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _panelController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final sortedServices = [...widget.services];
+
+    sortedServices.sort((a, b) {
+      return _getDistance(a).compareTo(_getDistance(b));
+    });
+
     return DraggableScrollableSheet(
-      initialChildSize: 0.15,
-      minChildSize: 0.15,
+      controller: _panelController,
+      initialChildSize: 0.30,
+      minChildSize: 0.10,
       maxChildSize: 0.75,
       snap: true,
       snapSizes: const [
-        0.15,
+        0.10,
         0.75,
       ],
       builder:
@@ -86,55 +138,62 @@ class EmergencyServicesPanel extends StatelessWidget {
                   SliverToBoxAdapter(
                     child: Column(
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.only(
-                            top: 10,
-                            bottom: 10,
-                          ),
-                          child: Container(
-                            width: 50,
-                            height: 5,
-                            decoration: BoxDecoration(
-                              color: AppColors.lighterBlack,
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(
-                            20,
-                            10,
-                            20,
-                            10,
-                          ),
-                          child: Row(
-                            children: [
-                              const Expanded(
-                                child: SectionTitleText(
-                                  value: 'Nearby Emergency Services',
-                                  isBold: true,
+                        Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                top: 10,
+                              ),
+                              child: Container(
+                                width: 50,
+                                height: 5,
+                                decoration: BoxDecoration(
+                                  color: AppColors.lighterBlack,
+                                  borderRadius: BorderRadius.circular(12),
                                 ),
                               ),
-                              SupportingInfoText(
-                                value: "${services.length} location(s)",
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(
+                                20,
+                                10,
+                                20,
+                                20,
                               ),
-                            ],
-                          ),
+                              child: Row(
+                                children: [
+                                  const Expanded(
+                                    child: SectionTitleText(
+                                      value: 'Nearby Emergency Services',
+                                      isBold: true,
+                                    ),
+                                  ),
+                                  SupportingInfoText(
+                                    value: "${widget.services.length} location(s)",
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
                   ),
                   SliverList.builder(
-                    itemCount: services.length,
+                    itemCount: sortedServices.length,
                     itemBuilder: (context, index) {
-                      final service = services[index];
+                      final service = sortedServices[index];
 
                       return EmergencyServiceCard(
                         icon: _getServiceIcon(service),
+                        iconColor: _getServiceColor(service),
                         title: service.name,
                         subtitle: service.address,
                         distance: _formatDistance(service),
                         status: service.isActive ? 'Open' : 'Unavailable',
+                        onTap: () {
+                          _moveToService(LatLng(service.location.latitude, service.location.longitude));
+                        },
                       );
                     },
                   ),
