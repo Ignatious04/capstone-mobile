@@ -1,14 +1,19 @@
 import 'package:capstone/core/enums/service_type_enum.dart';
+import 'package:capstone/core/shared/widgets/custom_text_field.dart';
+import 'package:capstone/core/shared/widgets/text/button_text.dart';
 import 'package:capstone/core/shared/widgets/text/section_title_text.dart';
 import 'package:capstone/core/shared/widgets/text/supporting_info_text.dart';
 import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/map/models/emergency_service_model.dart';
+import 'package:capstone/features/map/providers/emergency_service_filter_provider.dart';
+import 'package:capstone/features/map/providers/emergency_service_search_provider.dart';
 import 'package:capstone/features/map/widgets/emergency_service_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-class EmergencyServicesPanel extends StatefulWidget {
+class EmergencyServicesPanel extends ConsumerStatefulWidget {
   const EmergencyServicesPanel({
     super.key,
     required this.currentLocation,
@@ -21,10 +26,10 @@ class EmergencyServicesPanel extends StatefulWidget {
   final GoogleMapController mapController;
 
   @override
-  State<EmergencyServicesPanel> createState() => _EmergencyServicesPanelState();
+  ConsumerState<EmergencyServicesPanel> createState() => _EmergencyServicesPanelState();
 }
 
-class _EmergencyServicesPanelState extends State<EmergencyServicesPanel> {
+class _EmergencyServicesPanelState extends ConsumerState<EmergencyServicesPanel> {
   final DraggableScrollableController _panelController = DraggableScrollableController();
 
   IconData _getServiceIcon(EmergencyServiceModel service) {
@@ -106,11 +111,11 @@ class _EmergencyServicesPanelState extends State<EmergencyServicesPanel> {
     return DraggableScrollableSheet(
       controller: _panelController,
       initialChildSize: 0.30,
-      minChildSize: 0.10,
+      minChildSize: 0.09,
       maxChildSize: 0.75,
       snap: true,
       snapSizes: const [
-        0.10,
+        0.09,
         0.75,
       ],
       builder:
@@ -160,16 +165,52 @@ class _EmergencyServicesPanelState extends State<EmergencyServicesPanel> {
                                 20,
                                 20,
                               ),
-                              child: Row(
+                              child: Column(
                                 children: [
-                                  const Expanded(
-                                    child: SectionTitleText(
-                                      value: 'Nearby Emergency Services',
-                                      isBold: true,
-                                    ),
+                                  Row(
+                                    children: [
+                                      const Expanded(
+                                        child: SectionTitleText(
+                                          value: 'Nearby Emergency Services',
+                                          isBold: true,
+                                        ),
+                                      ),
+                                      SupportingInfoText(
+                                        value: "${widget.services.length} location(s)",
+                                      ),
+                                    ],
                                   ),
-                                  SupportingInfoText(
-                                    value: "${widget.services.length} location(s)",
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  CustomTextField(
+                                    title: "Search",
+                                    onChanged: (value) {
+                                      ref.read(emergencyServiceSearchProvider.notifier).setQuery(value);
+                                    },
+                                  ),
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                  Wrap(
+                                    spacing: 8,
+                                    children: ServiceTypeEnum.values.map((type) {
+                                      final isSelected = ref.watch(emergencyServiceFilterProvider) == type;
+
+                                      return ChoiceChip(
+                                        label: ButtonText(
+                                          value: type.name,
+                                        ),
+                                        selected: isSelected,
+                                        onSelected: (_) {
+                                          ref.read(emergencyServiceFilterProvider.notifier).setType(type);
+                                        },
+                                        selectedColor: Colors.deepOrange,
+                                        labelStyle: TextStyle(
+                                          color: isSelected ? Colors.white : Colors.black,
+                                        ),
+                                      );
+                                    }).toList(),
                                   ),
                                 ],
                               ),

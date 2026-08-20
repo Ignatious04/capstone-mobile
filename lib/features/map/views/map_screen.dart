@@ -2,7 +2,7 @@ import 'package:capstone/core/enums/map_mode_enum.dart';
 import 'package:capstone/core/shared/providers/location_provider.dart';
 import 'package:capstone/core/shared/widgets/custom_circular_progress_indicator.dart';
 import 'package:capstone/core/shared/widgets/custom_header_widget.dart';
-import 'package:capstone/features/map/providers/emergency_service_provider.dart';
+import 'package:capstone/features/map/providers/filtered_emergency_service_provider.dart';
 import 'package:capstone/features/map/widgets/emergency_services_panel.dart';
 import 'package:capstone/features/map/widgets/map_tile_widget.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +23,7 @@ class _MapScreenState extends ConsumerState<MapScreen> {
   @override
   Widget build(BuildContext context) {
     final locationAsync = ref.watch(locationStreamProvider);
-    final servicesAsync = ref.watch(emergencyServicesProvider);
+    final servicesAsync = ref.watch(filteredEmergencyServicesProvider);
 
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
