@@ -1,4 +1,4 @@
-import 'package:capstone/core/shared/classes/formatter.dart';
+import 'package:capstone/core/utilities/formatter.dart';
 import 'package:capstone/core/shared/widgets/custom_app_bar.dart';
 import 'package:capstone/core/shared/widgets/text/data_label_text.dart';
 import 'package:capstone/core/shared/widgets/text/data_value_text.dart';

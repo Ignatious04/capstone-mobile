@@ -1,14 +1,11 @@
-import 'dart:math';
-
 import 'package:capstone/core/controllers/victim_controllers.dart';
 import 'package:capstone/core/enums/service_type_enum.dart';
 import 'package:capstone/core/enums/map_mode_enum.dart';
-import 'package:capstone/core/enums/report_status_enum.dart';
-import 'package:capstone/core/shared/providers/realtime_database_repository_provider.dart';
 import 'package:capstone/core/shared/widgets/custom_app_bar.dart';
 import 'package:capstone/core/shared/widgets/custom_circular_progress_indicator.dart';
 import 'package:capstone/core/shared/widgets/custom_dropdown_button.dart';
 import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
+import 'package:capstone/core/shared/widgets/custom_snackbar.dart';
 import 'package:capstone/core/shared/widgets/custom_snackbar_helper.dart';
 import 'package:capstone/core/shared/widgets/custom_text_field.dart';
 import 'package:capstone/core/shared/widgets/loading_overlay_widget.dart';
@@ -16,14 +13,10 @@ import 'package:capstone/core/shared/widgets/text/button_text.dart';
 import 'package:capstone/core/shared/widgets/text/data_label_text.dart';
 import 'package:capstone/core/shared/widgets/text/supporting_info_text.dart';
 import 'package:capstone/features/map/widgets/map_tile_widget.dart';
-import 'package:capstone/features/reporting/models/realtime_report_model.dart';
 import 'package:capstone/features/reporting/providers/pending_attachments_provider.dart';
-import 'package:capstone/core/shared/providers/firebase_auth_provider.dart';
 import 'package:capstone/core/shared/providers/location_provider.dart';
 import 'package:capstone/features/reporting/providers/report_provider.dart';
 import 'package:capstone/core/themes/app_colors.dart';
-import 'package:capstone/features/reporting/providers/report_repository_provider.dart';
-import 'package:capstone/features/reporting/providers/storage_repository_provider.dart';
 import 'package:capstone/features/reporting/views/select_location_screen.dart';
 import 'package:capstone/features/reporting/widgets/section_title.dart';
 import 'package:flutter/material.dart';
@@ -58,6 +51,49 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> {
 
   Widget showLoadingOverlay() {
     return LoadingOverlayWidget();
+  }
+
+  Future<bool?> _showConfirmDialog(BuildContext context) {
+    return showDialog<bool>(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const SupportingInfoText(
+            value: "Are you sure that you wish to submit this report?",
+          ),
+          content: const Text("Put disclaimer here..."),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context, false);
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.deepOrange,
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+              child: const Text("No"),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context, true);
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.deepOrange,
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+              child: const Text("Yes"),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -188,6 +224,7 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> {
                                                 ),
                                               ),
                                             );
+
                                             if (location != null) {
                                               setState(() {
                                                 _selectedLocation = location;
@@ -433,103 +470,31 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> {
                                   return;
                                 }
 
-                                final confirmed = await showDialog<bool>(
-                                  context: context,
-                                  builder: (context) {
-                                    return AlertDialog(
-                                      title: const SupportingInfoText(
-                                        value: "Are you sure that you wish to submit this report?",
-                                      ),
-                                      content: const Text("Put disclaimer here..."),
-                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                                      actions: [
-                                        ElevatedButton(
-                                          onPressed: () {
-                                            Navigator.pop(context, false);
-                                          },
-                                          style: ElevatedButton.styleFrom(
-                                            backgroundColor: Colors.deepOrange,
-                                            foregroundColor: Colors.white,
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(12),
-                                            ),
-                                          ),
-                                          child: const Text("No"),
-                                        ),
-                                        ElevatedButton(
-                                          onPressed: () {
-                                            Navigator.pop(context, true);
-                                          },
-                                          style: ElevatedButton.styleFrom(
-                                            backgroundColor: Colors.deepOrange,
-                                            foregroundColor: Colors.white,
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(12),
-                                            ),
-                                          ),
-                                          child: const Text("Yes"),
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                );
+                                final confirmed = await _showConfirmDialog(context);
 
                                 if (confirmed != true) {
                                   return;
                                 }
 
                                 showDialog(
-                                  context: this.context,
+                                  context: context,
                                   barrierDismissible: false,
                                   builder: (context) => showLoadingOverlay(),
                                 );
 
+                                if (!location.hasValue) {
+                                  CustomSnackbar(text: "Unable to get your current location.");
+                                  return;
+                                }
+
                                 try {
-                                  final reportID = ref.read(reportRepositoryProvider).getReportID();
-                                  final now = DateTime.now();
-                                  final date =
-                                      '${now.year}'
-                                      '${now.month.toString().padLeft(2, '0')}'
-                                      '${now.day.toString().padLeft(2, '0')}';
-
-                                  ref.read(reportProvider.notifier).setLocation(_selectedLocation!);
-
-                                  final attachments = await ref
-                                      .read(storageRepositoryProvider)
-                                      .uploadAttachments(
-                                        reportID: reportID,
-                                        files: ref.read(pendingAttachmentsProvider),
-                                      );
-
-                                  final report = ref
-                                      .read(reportProvider)
-                                      .copyWith(
-                                        reportID: reportID,
-                                        referenceNumber: "RPT-$date-${Random().nextInt(900000) + 100000}",
-                                        userID: ref.read(firebaseAuthProvider).currentUser!.uid.toString(),
-                                        description: incidentDescriptionController.text,
-                                        attachments: attachments,
-                                        additionalInformation: additionalInformationController.text,
-                                        status: ReportStatusEnum.pending,
-                                        createdAt: now,
-                                      );
-
-                                  await ref.read(reportRepositoryProvider).createReport(report);
-
-                                  final realtimeReport = RealtimeReportModel(
-                                    reportID: report.reportID,
-                                    referenceNumber: report.referenceNumber,
-                                    status: report.status ?? ReportStatusEnum.pending,
-                                    latitude: report.location?.latitude ?? 0,
-                                    longitude: report.location?.longitude ?? 0,
-                                    updatedAt: DateTime.now(),
-                                  );
-
                                   await ref
-                                      .read(realtimeDatabaseRepositoryProvider)
-                                      .create(path: "activeReports/${report.reportID}", data: realtimeReport.toMap());
-
-                                  ref.read(pendingAttachmentsProvider.notifier).state = [];
+                                      .read(reportProvider.notifier)
+                                      .submitReport(
+                                        description: incidentDescriptionController.text,
+                                        additionalInformation: additionalInformationController.text,
+                                        selectedLocation: _selectedLocation!,
+                                      );
 
                                   if (!context.mounted) {
                                     return;
@@ -541,6 +506,10 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> {
                                 } catch (e, stack) {
                                   debugPrint("ERROR: $e");
                                   debugPrintStack(stackTrace: stack);
+                                  CustomSnackbarHelper.show(
+                                    context,
+                                    text: "An error has occurred while trying to send your report!",
+                                  );
                                 }
                               },
                               style: ElevatedButton.styleFrom(

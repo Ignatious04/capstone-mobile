@@ -1,19 +1,12 @@
-import 'dart:math';
-import 'package:capstone/core/enums/report_status_enum.dart';
-import 'package:capstone/core/enums/report_type_enum.dart';
-import 'package:capstone/core/shared/providers/firebase_auth_provider.dart';
 import 'package:capstone/core/shared/providers/location_provider.dart';
 import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
-import 'package:capstone/core/shared/widgets/custom_snackbar.dart';
+import 'package:capstone/core/shared/widgets/custom_snackbar_helper.dart';
 import 'package:capstone/core/shared/widgets/text/card_title_text.dart';
 import 'package:capstone/core/shared/widgets/text/data_label_text.dart';
 import 'package:capstone/core/shared/widgets/text/data_value_text.dart';
 import 'package:capstone/core/shared/widgets/text/paragraph_text.dart';
 import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/pre_call_guidance/providers/guidance_provider.dart';
-import 'package:capstone/features/reporting/providers/report_provider.dart';
-import 'package:capstone/features/reporting/providers/report_repository_provider.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -98,42 +91,31 @@ class PreCallGuidanceSummaryScreen extends ConsumerWidget {
           const SizedBox(height: 10),
           CustomElevatedButton(
             onPressed: () async {
-              final reportID = ref.read(reportRepositoryProvider).getReportID();
-              final now = DateTime.now();
-              final date =
-                  '${now.year}'
-                  '${now.month.toString().padLeft(2, '0')}'
-                  '${now.day.toString().padLeft(2, '0')}';
+              final currentLocation = location.value;
 
-              if (!location.hasValue) {
-                CustomSnackbar(text: "Unable to get your current location.");
+              if (currentLocation == null) {
+                CustomSnackbarHelper.show(
+                  context,
+                  text: "Location unavailable!",
+                );
                 return;
               }
 
-              final currentLocation = location.value!;
-              final report = ref
-                  .read(reportProvider)
-                  .copyWith(
-                    reportID: reportID,
-                    referenceNumber: "RPT-$date-${Random().nextInt(900000) + 100000}",
-                    userID: ref.read(firebaseAuthProvider).currentUser!.uid.toString(),
-                    reportType: ReportTypeEnum.preCallGuidance,
-                    guidanceAnswers: state.questions,
-                    status: ReportStatusEnum.pending,
-                    location: GeoPoint(
-                      currentLocation.latitude,
-                      currentLocation.longitude,
-                    ),
-                    createdAt: now,
-                  );
+              try {
+                await ref.read(guidanceProvider.notifier).submitGuidanceReport(location: currentLocation);
 
-              await ref.read(reportRepositoryProvider).createReport(report);
+                if (context.mounted) {
+                  Navigator.pop(context);
 
-              if (context.mounted) {
-                Navigator.pop(context);
+                  ref.read(guidanceProvider.notifier).resetAnswers();
+                }
+              } catch (e) {
+                debugPrint("ERROR: $e");
+                CustomSnackbarHelper.show(
+                  context,
+                  text: "An error has occurred while trying to send your report!",
+                );
               }
-
-              ref.read(guidanceProvider.notifier).resetAnswers();
             },
             value: "Submit Report",
             color: Colors.white,

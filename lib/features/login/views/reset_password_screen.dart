@@ -3,8 +3,8 @@ import 'package:capstone/core/shared/widgets/custom_app_bar.dart';
 import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
 import 'package:capstone/core/shared/widgets/custom_snackbar_helper.dart';
 import 'package:capstone/core/shared/widgets/custom_text_field.dart';
-import 'package:capstone/core/shared/providers/firebase_auth_provider.dart';
 import 'package:capstone/core/shared/providers/user_provider.dart';
+import 'package:capstone/features/login/providers/reset_password_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -28,6 +28,23 @@ class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
 
   @override
   Widget build(BuildContext context) {
+    ref.listen(resetPasswordProvider, (previous, next) {
+      next.whenOrNull(
+        error: (error, _) {
+          setState(() {
+            errorMessage = error is AuthException ? error.message : "Something went wrong";
+          });
+        },
+        data: (_) {
+          if (previous is AsyncLoading) {
+            if (!context.mounted) return;
+            CustomSnackbarHelper.show(context, text: "Password reset successful! Please check your email.");
+            Navigator.pop(context);
+          }
+        },
+      );
+    });
+
     return Scaffold(
       appBar: CustomAppBar(value: "Reset Password"),
       body: SafeArea(
@@ -60,35 +77,15 @@ class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
                         width: double.infinity,
                         child: CustomElevatedButton(
                           onPressed: () async {
-                            try {
-                              setState(() {
-                                errorMessage = null;
-                              });
+                            setState(() {
+                              errorMessage = null;
+                            });
 
-                              if (!resetScreenKey.currentState!.validate()) {
-                                return;
-                              }
-
-                              final firebaseAuthRepository = ref.read(
-                                firebaseAuthRepositoryProvider,
-                              );
-
-                              await firebaseAuthRepository.resetPassword(
-                                email: emailController.text.trim(),
-                              );
-
-                              if (!context.mounted) {
-                                return;
-                              }
-
-                              CustomSnackbarHelper.show(context, text: "Successful! Please check your email.");
-                            } on AuthException catch (e) {
-                              setState(() {
-                                errorMessage = e.message;
-                              });
-
-                              CustomSnackbarHelper.show(context, text: errorMessage!);
+                            if (!resetScreenKey.currentState!.validate()) {
+                              return;
                             }
+
+                            await ref.read(resetPasswordProvider.notifier).resetPassword(email: emailController.text);
                           },
                           value: "Reset",
                         ),

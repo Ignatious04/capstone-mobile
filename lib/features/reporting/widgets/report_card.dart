@@ -1,5 +1,5 @@
 import 'package:capstone/core/enums/report_type_enum.dart';
-import 'package:capstone/core/shared/classes/formatter.dart';
+import 'package:capstone/core/utilities/formatter.dart';
 import 'package:capstone/core/shared/widgets/text/sub_title_text.dart';
 import 'package:capstone/core/shared/widgets/text/card_title_text.dart';
 import 'package:capstone/features/reporting/models/report_model.dart';
