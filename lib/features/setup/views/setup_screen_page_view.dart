@@ -1,8 +1,7 @@
-import 'package:capstone/core/shared/providers/firebase_auth_provider.dart';
-import 'package:capstone/core/shared/providers/user_repository_provider.dart';
 import 'package:capstone/core/shared/providers/user_provider.dart';
 import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
 import 'package:capstone/core/shared/widgets/custom_header_widget.dart';
+import 'package:capstone/features/setup/views/setup_screen_contact_number_page.dart';
 import 'package:capstone/features/setup/views/setup_screen_user_card_page.dart';
 import 'package:capstone/features/setup/views/setup_screen_personal_info_page.dart';
 import 'package:capstone/features/setup/views/setup_screen_medical_info_page.dart';
@@ -20,11 +19,12 @@ class SetupScreenPageView extends ConsumerStatefulWidget {
 }
 
 class _SetupScreenPageView extends ConsumerState<SetupScreenPageView> {
+  final userContactNumPageKey = GlobalKey<FormState>();
   final userInfoPageKey = GlobalKey<FormState>();
   final userCardPageKey = GlobalKey<FormState>();
   final pageController = PageController(initialPage: 0);
   int currentPage = 0;
-  final numberOfPages = 4;
+  final numberOfPages = 5;
 
   @override
   void dispose() {
@@ -51,6 +51,7 @@ class _SetupScreenPageView extends ConsumerState<SetupScreenPageView> {
   @override
   Widget build(BuildContext context) {
     final formKeys = [
+      userContactNumPageKey,
       userInfoPageKey,
       userCardPageKey,
     ];
@@ -95,6 +96,10 @@ class _SetupScreenPageView extends ConsumerState<SetupScreenPageView> {
                       },
                       children: [
                         Form(
+                          key: userContactNumPageKey,
+                          child: SetupScreenContactNumberPage(),
+                        ),
+                        Form(
                           key: userInfoPageKey,
                           child: SetupScreenPersonalInfoPage(),
                         ),
@@ -130,28 +135,14 @@ class _SetupScreenPageView extends ConsumerState<SetupScreenPageView> {
                       Expanded(
                         child: CustomElevatedButton(
                           onPressed: () async {
-                            if (currentPage < 2) {
-                              if (!formKeys[currentPage].currentState!.validate()) {
+                            if (currentPage < 3) {
+                              if (formKeys[currentPage].currentState!.validate()) {
                                 return;
                               }
                             }
 
                             if (currentPage == numberOfPages - 1) {
-                              ref.read(userProvider.notifier).setIsSetup(true);
-
-                              final userID = ref.read(firebaseAuthProvider).currentUser!.uid;
-                              final user = ref.read(userProvider);
-
-                              debugPrint("=== BEFORE UPDATE ===");
-                              debugPrint("userID: '${user.userID}'");
-                              debugPrint(user.toMap().toString());
-
-                              await ref
-                                  .read(userRepositoryProvider)
-                                  .updateUser(
-                                    userID,
-                                    user.toMap(),
-                                  );
+                              ref.read(userProvider.notifier).updateUserSetup();
 
                               if (!context.mounted) {
                                 return;

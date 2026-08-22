@@ -1,4 +1,5 @@
 import 'package:capstone/core/shared/widgets/auth_wrapper.dart';
+import 'package:capstone/features/setup/views/setup_screen_page_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -51,7 +52,7 @@ class _MyAppState extends State<MyApp> {
         scaffoldBackgroundColor: const Color(0xFFF0F0F0),
         fontFamily: 'Inter',
       ),
-      home: AuthWrapper(),
+      home: SetupScreenPageView(),
     );
   }
 }

@@ -1,7 +1,10 @@
 import 'dart:io';
 
+import 'package:capstone/core/enums/verification_status_enum.dart';
+
 class UserModel {
   final String userID;
+  final File? profileImage;
   final String? profileURL;
   final String firstName;
   final String middleName;
@@ -27,10 +30,11 @@ class UserModel {
   final int createdAt;
   final int updatedAt;
   final bool isSetup;
-  final bool isVerified;
+  final VerificationStatusEnum isVerified;
 
   const UserModel({
     this.userID = "",
+    this.profileImage,
     this.profileURL,
     this.firstName = "",
     this.middleName = "",
@@ -53,7 +57,7 @@ class UserModel {
     this.createdAt = 0,
     this.updatedAt = 0,
     this.isSetup = false,
-    this.isVerified = false,
+    this.isVerified = VerificationStatusEnum.pending,
   });
 
   factory UserModel.fromMap(Map<dynamic, dynamic> map) {
@@ -139,10 +143,11 @@ class UserModel {
     int? createdAt,
     int? updatedAt,
     bool? isSetup,
-    bool? isVerified,
+    VerificationStatusEnum? isVerified,
   }) {
     return UserModel(
       userID: userID ?? this.userID,
+      profileImage: profileImage ?? this.profileImage,
       profileURL: profileURL ?? this.profileURL,
       firstName: firstName ?? this.firstName,
       middleName: middleName ?? this.middleName,

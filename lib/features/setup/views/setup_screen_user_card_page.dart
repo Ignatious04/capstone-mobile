@@ -99,9 +99,17 @@ class _SetupScreenUserCardPage extends ConsumerState<SetupScreenUserCardPage> {
               height: 200,
               child: Stack(
                 children: [
-                  // Bottom widget
                   Positioned.fill(
-                    child: isCameraInitialized ? CameraPreview(cameraController) : Container(),
+                    child: isCameraInitialized
+                        ? FittedBox(
+                            fit: BoxFit.cover,
+                            child: SizedBox(
+                              width: cameraController.value.previewSize!.height,
+                              height: cameraController.value.previewSize!.width,
+                              child: CameraPreview(cameraController),
+                            ),
+                          )
+                        : Container(),
                   ),
                   Positioned.fill(
                     child: CustomPaint(

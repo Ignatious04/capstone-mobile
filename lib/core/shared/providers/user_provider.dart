@@ -2,8 +2,10 @@ import 'dart:io';
 import 'package:capstone/core/shared/models/user_model.dart';
 import 'package:capstone/core/shared/providers/firebase_auth_provider.dart';
 import 'package:capstone/core/shared/providers/user_repository_provider.dart';
+import 'package:capstone/features/reporting/providers/storage_repository_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart' as path;
 
 final userProvider = NotifierProvider<UserNotifier, UserModel>(
   UserNotifier.new,
@@ -45,6 +47,25 @@ class UserNotifier extends Notifier<UserModel> {
     state = state.copyWith(
       profileImage: File(image.path),
     );
+  }
+
+  Future<void> updateUserSetup() async {
+    setIsSetup(true);
+
+    final userID = ref.read(firebaseAuthProvider).currentUser!.uid;
+    final user = ref.read(userProvider);
+    final fileName = path.basename(user.profileImage!.path);
+
+    await ref
+        .read(storageRepositoryProvider)
+        .uploadProfilePicture(file: user.profileImage!, userID: userID, fileName: fileName);
+
+    await ref
+        .read(userRepositoryProvider)
+        .updateUser(
+          userID,
+          user.toMap(),
+        );
   }
 
   void setUserID(String value) {

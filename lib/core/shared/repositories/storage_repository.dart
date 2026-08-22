@@ -28,6 +28,18 @@ class StorageRepository {
     );
   }
 
+  Future<void> uploadProfilePicture({
+    required File file,
+    required String userID,
+    required String fileName,
+  }) async {
+    final extension = path.extension(fileName);
+    final storageFileName = '${DateTime.now().millisecondsSinceEpoch}$extension';
+    final ref = _storage.ref().child('users/$userID/$storageFileName');
+
+    await ref.putFile(file);
+  }
+
   Future<List<AttachmentModel>> uploadAttachments({
     required String reportID,
     required List<File> files,
