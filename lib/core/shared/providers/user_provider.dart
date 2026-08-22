@@ -53,12 +53,27 @@ class UserNotifier extends Notifier<UserModel> {
     setIsSetup(true);
 
     final userID = ref.read(firebaseAuthProvider).currentUser!.uid;
-    final user = ref.read(userProvider);
-    final fileName = path.basename(user.profileImage!.path);
+    var user = ref.read(userProvider);
 
-    await ref
-        .read(storageRepositoryProvider)
-        .uploadProfilePicture(file: user.profileImage!, userID: userID, fileName: fileName);
+    if (user.profileImage != null) {
+      final fileName = path.basename(user.profileImage!.path);
+      final profileURL = await ref
+          .read(storageRepositoryProvider)
+          .uploadProfilePicture(file: user.profileImage!, userID: userID, fileName: fileName);
+
+      state = state.copyWith(profileURL: profileURL);
+      user = ref.read(userProvider);
+    }
+
+    if (user.idImage != null) {
+      final fileName = path.basename(user.idImage!.path);
+      final idImageURL = await ref
+          .read(storageRepositoryProvider)
+          .uploadIdPicture(file: user.idImage!, userID: userID, fileName: fileName);
+
+      state = state.copyWith(idImageURL: idImageURL);
+      user = ref.read(userProvider);
+    }
 
     await ref
         .read(userRepositoryProvider)
@@ -74,6 +89,14 @@ class UserNotifier extends Notifier<UserModel> {
 
   void removeProfilePicture(int index) {
     state = state.copyWith(profileImage: null);
+  }
+
+  void setIdImage(File value) {
+    state = state.copyWith(idImage: value);
+  }
+
+  void setProfileURL(String url) {
+    state = state.copyWith(profileURL: url);
   }
 
   void setFirstName(String value) {

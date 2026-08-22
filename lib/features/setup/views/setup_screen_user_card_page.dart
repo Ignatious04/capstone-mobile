@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:camera/camera.dart';
 import 'package:capstone/core/shared/widgets/custom_dropdown_button.dart';
 import 'package:capstone/core/shared/widgets/scanner_overlay_painter.dart';
@@ -24,6 +26,7 @@ class _SetupScreenUserCardPage extends ConsumerState<SetupScreenUserCardPage> {
   @override
   void initState() {
     super.initState();
+    _initializeCamera();
   }
 
   Future<void> _initializeCamera() async {
@@ -93,65 +96,110 @@ class _SetupScreenUserCardPage extends ConsumerState<SetupScreenUserCardPage> {
           const SizedBox(
             height: 10,
           ),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(12),
-            child: SizedBox(
-              height: 200,
-              child: Stack(
-                children: [
-                  Positioned.fill(
-                    child: isCameraInitialized
-                        ? FittedBox(
-                            fit: BoxFit.cover,
-                            child: SizedBox(
-                              width: cameraController.value.previewSize!.height,
-                              height: cameraController.value.previewSize!.width,
-                              child: CameraPreview(cameraController),
-                            ),
-                          )
-                        : Container(),
-                  ),
-                  Positioned.fill(
-                    child: CustomPaint(
-                      painter: ScannerOverlayPainter(),
-                      child: Container(),
-                    ),
-                  ),
-                  const Positioned(
-                    top: 75,
-                    left: 20,
-                    right: 20,
-                    child: Column(
-                      children: [
-                        SizedBox(height: 8),
-                        Center(
-                          child: SupportingInfoText(
-                            value: "Align your ID inside the frame",
-                            color: AppColors.darkerGrey,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          ElevatedButton(
-            onPressed: () {
-              _initializeCamera();
+          FormField<File>(
+            initialValue: user.idImage,
+            validator: (value) {
+              if (value == null) {
+                return "ID photo is required";
+              }
+              return null;
             },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.deepOrange,
-              foregroundColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadiusGeometry.circular(12),
-              ),
-            ),
-            child: const Text("Start camera"),
+            builder: (field) {
+              return Column(
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: SizedBox(
+                      height: 200,
+                      child: Stack(
+                        children: [
+                          Positioned.fill(
+                            child: field.value != null
+                                ? Image.file(
+                                    field.value!,
+                                    fit: BoxFit.cover,
+                                  )
+                                : (isCameraInitialized
+                                    ? FittedBox(
+                                        fit: BoxFit.cover,
+                                        child: SizedBox(
+                                          width: cameraController.value.previewSize!.height,
+                                          height: cameraController.value.previewSize!.width,
+                                          child: CameraPreview(cameraController),
+                                        ),
+                                      )
+                                    : Container()),
+                          ),
+                          if (field.value == null) ...[
+                            Positioned.fill(
+                              child: CustomPaint(
+                                painter: ScannerOverlayPainter(),
+                                child: Container(),
+                              ),
+                            ),
+                            const Positioned(
+                              top: 75,
+                              left: 20,
+                              right: 20,
+                              child: Column(
+                                children: [
+                                  SizedBox(height: 8),
+                                  Center(
+                                    child: SupportingInfoText(
+                                      value: "Align your ID inside the frame",
+                                      color: AppColors.darkerGrey,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: !isCameraInitialized
+                          ? null
+                          : () async {
+                              if (field.value != null) {
+                                // Retake: go back to the live preview.
+                                field.didChange(null);
+                                return;
+                              }
+
+                              final image = await cameraController.takePicture();
+                              final file = File(image.path);
+
+                              ref.read(userProvider.notifier).setIdImage(file);
+                              field.didChange(file);
+                            },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.deepOrange,
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadiusGeometry.circular(12),
+                        ),
+                      ),
+                      child: Text(field.value != null ? "Retake photo" : "Capture ID"),
+                    ),
+                  ),
+                  if (field.hasError)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 4),
+                      child: Text(
+                        field.errorText!,
+                        style: const TextStyle(color: Colors.red, fontSize: 12),
+                      ),
+                    ),
+                ],
+              );
+            },
           ),
         ],
       ),

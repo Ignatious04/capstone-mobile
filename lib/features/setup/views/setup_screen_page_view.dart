@@ -142,7 +142,7 @@ class _SetupScreenPageView extends ConsumerState<SetupScreenPageView> {
                             }
 
                             if (currentPage == numberOfPages - 1) {
-                              ref.read(userProvider.notifier).updateUserSetup();
+                              await ref.read(userProvider.notifier).updateUserSetup();
 
                               if (!context.mounted) {
                                 return;

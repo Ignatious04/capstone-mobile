@@ -17,6 +17,8 @@ class UserModel {
   final String civilStatus;
   final String religion;
   final String idType;
+  final File? idImage;
+  final String? idImageURL;
 
   final String email;
 
@@ -47,6 +49,8 @@ class UserModel {
     this.civilStatus = "",
     this.religion = "",
     this.idType = "",
+    this.idImage,
+    this.idImageURL,
     this.email = "",
     this.bloodType = "",
     this.height = 0,
@@ -75,6 +79,7 @@ class UserModel {
       civilStatus: map['civilStatus'] ?? '',
       religion: map['religion'] ?? '',
       idType: map['idType'] ?? '',
+      idImageURL: map['idImageURL'],
       email: map['email'] ?? '',
       bloodType: map['bloodType'] ?? '',
       height: (map['height'] as num?)?.toDouble() ?? 0.0,
@@ -85,7 +90,7 @@ class UserModel {
       createdAt: map['createdAt'] ?? 0,
       updatedAt: map['updatedAt'] ?? 0,
       isSetup: map["isSetup"] ?? false,
-      isVerified: map['isVerified'] ?? false,
+      isVerified: VerificationStatusEnum.values.byName(map['isVerified'] ?? 'pending'),
     );
   }
 
@@ -104,6 +109,7 @@ class UserModel {
       'civilStatus': civilStatus,
       'religion': religion,
       'idType': idType,
+      'idImageURL': idImageURL,
       'email': email,
       'bloodType': bloodType,
       'height': height,
@@ -114,13 +120,14 @@ class UserModel {
       'createdAt': createdAt,
       'updatedAt': updatedAt,
       'isSetup': isSetup,
-      'isVerified': isVerified,
+      'isVerified': isVerified.name,
     };
   }
 
   UserModel copyWith({
     String? userID,
     File? profileImage,
+    bool clearProfileImage = false,
     String? profileURL,
     String? firstName,
     String? middleName,
@@ -133,6 +140,9 @@ class UserModel {
     String? civilStatus,
     String? religion,
     String? idType,
+    bool clearIdImage = false,
+    File? idImage,
+    String? idImageURL,
     String? email,
     String? bloodType,
     double? height,
@@ -147,7 +157,7 @@ class UserModel {
   }) {
     return UserModel(
       userID: userID ?? this.userID,
-      profileImage: profileImage ?? this.profileImage,
+      profileImage: clearProfileImage ? null : (profileImage ?? this.profileImage),
       profileURL: profileURL ?? this.profileURL,
       firstName: firstName ?? this.firstName,
       middleName: middleName ?? this.middleName,
@@ -160,6 +170,8 @@ class UserModel {
       civilStatus: civilStatus ?? this.civilStatus,
       religion: religion ?? this.religion,
       idType: idType ?? this.idType,
+      idImage: clearIdImage ? null : (idImage ?? this.idImage),
+      idImageURL: idImageURL ?? this.idImageURL,
       email: email ?? this.email,
       bloodType: bloodType ?? this.bloodType,
       height: height ?? this.height,

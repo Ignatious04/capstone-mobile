@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:capstone/core/shared/widgets/custom_dropdown_button.dart';
 import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
 import 'package:capstone/core/shared/widgets/custom_text_field.dart';
@@ -56,37 +58,56 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
           const SizedBox(
             height: 10,
           ),
-          SizedBox(
-            width: 150,
-            height: 150,
-            child: ClipOval(
-              child: user.profileImage != null
-                  ? Image.file(
-                      user.profileImage!,
-                      width: 50,
-                      height: 50,
-                      fit: BoxFit.cover,
-                    )
-                  : Container(
-                      color: AppColors.lighterBlack,
-                      child: const Icon(
-                        Icons.person,
-                        size: 50,
+          FormField<File>(
+            initialValue: user.profileImage,
+            validator: (value) {
+              if (value == null) {
+                return "Profile photo is required";
+              }
+              return null;
+            },
+            builder: (field) {
+              return Column(
+                children: [
+                  SizedBox(
+                    width: 150,
+                    height: 150,
+                    child: ClipOval(
+                      child: field.value != null
+                          ? Image.file(
+                              field.value!,
+                              width: 150,
+                              height: 150,
+                              fit: BoxFit.cover,
+                            )
+                          : Container(
+                              color: AppColors.lighterBlack,
+                              child: const Icon(Icons.person, size: 50),
+                            ),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  SizedBox(
+                    width: double.infinity,
+                    child: CustomElevatedButton(
+                      onPressed: () async {
+                        await ref.read(userProvider.notifier).addProfilePicture(ImageSource.camera);
+                        field.didChange(ref.read(userProvider).profileImage);
+                      },
+                      value: "Tap to take photo",
+                    ),
+                  ),
+                  if (field.hasError)
+                    Padding(
+                      padding: const EdgeInsets.only(top: 4),
+                      child: Text(
+                        field.errorText!,
+                        style: const TextStyle(color: Colors.red, fontSize: 12),
                       ),
                     ),
-            ),
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          SizedBox(
-            width: double.infinity,
-            child: CustomElevatedButton(
-              onPressed: () async {
-                ref.read(userProvider.notifier).addProfilePicture(ImageSource.gallery);
-              },
-              value: "Tap to upload photo",
-            ),
+                ],
+              );
+            },
           ),
           const SizedBox(
             height: 10,
