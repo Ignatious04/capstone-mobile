@@ -37,6 +37,7 @@ class OnboardingScreen extends StatelessWidget {
                     value:
                         "Your personal information has been successfully saved and secured. You're now ready to access emergency services through the application.",
                     alignment: TextAlign.center,
+                    maxLines: 4,
                     color: AppColors.darkerGrey,
                   ),
                   const SizedBox(

@@ -107,7 +107,10 @@ class PreCallGuidanceSummaryScreen extends ConsumerWidget {
                 if (context.mounted) {
                   Navigator.pop(context);
 
-                  ref.read(guidanceProvider.notifier).resetAnswers();
+                  CustomSnackbarHelper.show(
+                    context,
+                    text: "Guidance report submitted successfully!",
+                  );
                 }
               } catch (e) {
                 debugPrint("ERROR: $e");

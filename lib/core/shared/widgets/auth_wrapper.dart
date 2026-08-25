@@ -13,12 +13,10 @@ class AuthWrapper extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final authState = ref.watch(authStateProvider);
-    debugPrint("AuthWrapper rebuilt");
 
     return authState.when(
-      data: (user) {
-        debugPrint("Auth user: ${user?.uid}");
-        if (user == null) {
+      data: (authUser) {
+        if (authUser == null) {
           return const LoginScreen();
         }
 
@@ -26,11 +24,7 @@ class AuthWrapper extends ConsumerWidget {
 
         return userAsync.when(
           data: (user) {
-            if (user == null) {
-              return const LoginScreen();
-            }
-
-            if (!user.isSetup) {
+            if (user == null || !user.isSetup) {
               return const WelcomeScreen();
             }
 

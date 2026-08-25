@@ -35,7 +35,7 @@ class StorageRepository {
   }) async {
     final extension = path.extension(fileName);
     final storageFileName = '${DateTime.now().millisecondsSinceEpoch}$extension';
-    final ref = _storage.ref().child('users/$userID/$storageFileName');
+    final ref = _storage.ref().child('users/$userID/profile/$storageFileName');
 
     await ref.putFile(file);
     final url = await ref.getDownloadURL();

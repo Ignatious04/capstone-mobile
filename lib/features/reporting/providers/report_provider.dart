@@ -9,7 +9,7 @@ import 'package:capstone/features/reporting/models/report_model.dart';
 import 'package:capstone/features/reporting/models/victim_model.dart';
 import 'package:capstone/features/reporting/providers/pending_attachments_provider.dart';
 import 'package:capstone/features/reporting/providers/report_repository_provider.dart';
-import 'package:capstone/features/reporting/providers/storage_repository_provider.dart';
+import 'package:capstone/core/shared/providers/storage_repository_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';

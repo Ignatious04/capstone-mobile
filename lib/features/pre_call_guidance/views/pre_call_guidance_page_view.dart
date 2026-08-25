@@ -24,6 +24,9 @@ class _PreCallGuidancePageViewState extends ConsumerState<PreCallGuidancePageVie
   void initState() {
     super.initState();
     pageController = PageController(initialPage: 0);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(guidanceProvider.notifier).resetAnswers();
+    });
   }
 
   void navigateToPage() {

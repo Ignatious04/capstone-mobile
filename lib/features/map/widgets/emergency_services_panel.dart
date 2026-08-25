@@ -116,6 +116,7 @@ class _EmergencyServicesPanelState extends ConsumerState<EmergencyServicesPanel>
       snap: true,
       snapSizes: const [
         0.09,
+        0.30,
         0.75,
       ],
       builder:

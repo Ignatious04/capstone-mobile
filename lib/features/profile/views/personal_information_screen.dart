@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:capstone/core/shared/widgets/custom_app_bar.dart';
 import 'package:capstone/core/shared/widgets/custom_circular_progress_indicator.dart';
 import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
@@ -5,6 +6,7 @@ import 'package:capstone/core/shared/widgets/text/data_label_text.dart';
 import 'package:capstone/core/shared/widgets/text/data_value_text.dart';
 import 'package:capstone/core/shared/providers/user_provider.dart';
 import 'package:capstone/core/shared/widgets/text/section_title_text.dart';
+import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/profile/views/update_personal_information_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -42,10 +44,17 @@ class PersonalInformationScreen extends ConsumerWidget {
                               width: 150,
                               height: 150,
                               child: ClipOval(
-                                child: Image.asset(
-                                  "assets/images/me.jpg",
-                                  fit: BoxFit.cover,
-                                ),
+                                child: user.profileURL != null
+                                    ? CachedNetworkImage(
+                                        imageUrl: user.profileURL!,
+                                        width: 150,
+                                        height: 150,
+                                        fit: BoxFit.cover,
+                                      )
+                                    : Container(
+                                        color: AppColors.lighterBlack,
+                                        child: const Icon(Icons.person, size: 50),
+                                      ),
                               ),
                             ),
                           ),

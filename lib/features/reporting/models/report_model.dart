@@ -68,8 +68,7 @@ class ReportModel {
       victims: victims ?? this.victims,
       attachments: attachments ?? this.attachments,
       guidanceAnswers: guidanceAnswers ?? this.guidanceAnswers,
-      additionalInformation:
-          additionalInformation ?? this.additionalInformation,
+      additionalInformation: additionalInformation ?? this.additionalInformation,
       status: status ?? this.status,
       location: location ?? this.location,
       createdAt: createdAt ?? this.createdAt,
@@ -103,21 +102,17 @@ class ReportModel {
       reportID: map['reportID'] ?? '',
       referenceNumber: map['referenceNumber'] ?? '',
       userID: map['userID'] ?? '',
-
       reportType: map['reportType'] != null
           ? ReportTypeEnum.values.firstWhere(
               (e) => e.name == map['reportType'],
             )
           : ReportTypeEnum.normal,
-
       incidentType: map['incidentType'] != null
           ? ServiceTypeEnum.values.firstWhere(
               (e) => e.name == map['incidentType'],
             )
           : null,
-
       description: map['description'] ?? '',
-
       victims: (map['victims'] as List<dynamic>? ?? [])
           .map(
             (v) => VictimModel.fromMap(
@@ -125,7 +120,6 @@ class ReportModel {
             ),
           )
           .toList(),
-
       attachments: (map['attachments'] as List<dynamic>? ?? [])
           .map(
             (a) => AttachmentModel.fromMap(
@@ -133,7 +127,6 @@ class ReportModel {
             ),
           )
           .toList(),
-
       guidanceAnswers: (map['guidanceAnswers'] as List<dynamic>? ?? [])
           .map(
             (e) => PreCallGuidanceModel.fromMap(
@@ -141,19 +134,14 @@ class ReportModel {
             ),
           )
           .toList(),
-
       additionalInformation: map['additionalInformation'] ?? '',
-
       status: map['status'] != null
           ? ReportStatusEnum.values.firstWhere(
               (e) => e.name == map['status'],
             )
           : null,
-
       location: map['location'],
-
       createdAt: (map['createdAt'] as Timestamp?)?.toDate(),
-
       resolvedAt: (map['resolvedAt'] as Timestamp?)?.toDate(),
     );
   }

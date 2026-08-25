@@ -1,9 +1,11 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:capstone/core/shared/widgets/custom_circular_progress_indicator.dart';
 import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
 import 'package:capstone/core/shared/providers/firebase_auth_provider.dart';
 import 'package:capstone/core/shared/providers/user_provider.dart';
 import 'package:capstone/core/shared/widgets/text/screen_title_text.dart';
 import 'package:capstone/core/shared/widgets/text/supporting_info_text.dart';
+import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/profile/views/personal_information_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -18,8 +20,8 @@ class ProfileScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final userAsync = ref.watch(currentAuthenticatedUserProvider);
     return userAsync.when(
-      data: (data) {
-        if (data == null) {
+      data: (user) {
+        if (user == null) {
           return const Center(
             child: CustomCircularProgressIndicator(),
           );
@@ -36,11 +38,17 @@ class ProfileScreen extends ConsumerWidget {
                     width: 150,
                     height: 150,
                     child: ClipOval(
-                      child: Image.asset(
-                        "assets/images/me.jpg",
-
-                        fit: BoxFit.cover,
-                      ),
+                      child: user.profileURL != null
+                          ? CachedNetworkImage(
+                              imageUrl: user.profileURL!,
+                              width: 150,
+                              height: 150,
+                              fit: BoxFit.cover,
+                            )
+                          : Container(
+                              color: AppColors.lighterBlack,
+                              child: const Icon(Icons.person, size: 50),
+                            ),
                     ),
                   ),
                 ),
@@ -48,7 +56,7 @@ class ProfileScreen extends ConsumerWidget {
                   height: 10,
                 ),
                 ScreenTitleText(
-                  value: "${data.firstName} ${data.lastName}",
+                  value: "${user.firstName} ${user.lastName}",
                   isBold: true,
                 ),
                 const SizedBox(

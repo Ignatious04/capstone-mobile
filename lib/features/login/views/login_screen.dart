@@ -49,7 +49,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         },
         data: (_) {
           if (previous is AsyncLoading) {
-            // only navigate if we just finished loading successfully
             CustomSnackbarHelper.show(context, text: "Logged in successfully!");
             Navigator.pushAndRemoveUntil(
               context,

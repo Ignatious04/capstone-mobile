@@ -6,6 +6,7 @@ import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/reporting/widgets/section_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 
 class SetupScreenSummaryPage extends ConsumerWidget {
   const SetupScreenSummaryPage({super.key});
@@ -58,9 +59,11 @@ class SetupScreenSummaryPage extends ConsumerWidget {
                         ),
                         InfoColumn(
                           title: "DATE OF BIRTH",
-                          value: DateTime.fromMillisecondsSinceEpoch(
-                            ref.read(userProvider).birthDate,
-                          ).toString(),
+                          value: DateFormat("MMMM dd, yyyy").format(
+                            DateTime.fromMillisecondsSinceEpoch(
+                              ref.read(userProvider).birthDate,
+                            ),
+                          ),
                         ),
                         const SizedBox(
                           height: 10,

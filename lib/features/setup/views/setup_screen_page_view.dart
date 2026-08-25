@@ -136,7 +136,7 @@ class _SetupScreenPageView extends ConsumerState<SetupScreenPageView> {
                         child: CustomElevatedButton(
                           onPressed: () async {
                             if (currentPage < 3) {
-                              if (formKeys[currentPage].currentState!.validate()) {
+                              if (!formKeys[currentPage].currentState!.validate()) {
                                 return;
                               }
                             }

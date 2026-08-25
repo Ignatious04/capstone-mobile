@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:capstone/core/shared/models/user_model.dart';
 import 'package:capstone/core/shared/providers/firebase_auth_provider.dart';
 import 'package:capstone/core/shared/providers/user_repository_provider.dart';
-import 'package:capstone/features/reporting/providers/storage_repository_provider.dart';
+import 'package:capstone/core/shared/providers/storage_repository_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as path;
@@ -50,10 +50,8 @@ class UserNotifier extends Notifier<UserModel> {
   }
 
   Future<void> updateUserSetup() async {
-    setIsSetup(true);
-
     final userID = ref.read(firebaseAuthProvider).currentUser!.uid;
-    var user = ref.read(userProvider);
+    var user = state;
 
     if (user.profileImage != null) {
       final fileName = path.basename(user.profileImage!.path);
@@ -62,7 +60,7 @@ class UserNotifier extends Notifier<UserModel> {
           .uploadProfilePicture(file: user.profileImage!, userID: userID, fileName: fileName);
 
       state = state.copyWith(profileURL: profileURL);
-      user = ref.read(userProvider);
+      user = state;
     }
 
     if (user.idImage != null) {
@@ -72,8 +70,10 @@ class UserNotifier extends Notifier<UserModel> {
           .uploadIdPicture(file: user.idImage!, userID: userID, fileName: fileName);
 
       state = state.copyWith(idImageURL: idImageURL);
-      user = ref.read(userProvider);
+      user = state;
     }
+
+    setIsSetup(true);
 
     await ref
         .read(userRepositoryProvider)
