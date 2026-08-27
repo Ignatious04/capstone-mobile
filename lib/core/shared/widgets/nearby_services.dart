@@ -27,10 +27,10 @@ class NearbyServices extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   CardTitleText(
-                    value: "Service Name",
+                    value: name,
                     isBold: true,
                   ),
-                  SubtitleText(value: "Address"),
+                  SubtitleText(value: address),
                   SubtitleText(value: "${distance.toStringAsFixed(2)} km"),
                 ],
               ),

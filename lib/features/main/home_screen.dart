@@ -1,10 +1,13 @@
 import 'package:capstone/core/enums/map_mode_enum.dart';
+import 'package:capstone/core/enums/service_type_enum.dart';
 import 'package:capstone/core/shared/providers/location_provider.dart';
 import 'package:capstone/core/shared/widgets/custom_circular_progress_indicator.dart';
 import 'package:capstone/core/shared/widgets/custom_header_widget.dart';
 import 'package:capstone/core/shared/widgets/text/button_text.dart';
 import 'package:capstone/core/shared/widgets/text/section_title_text.dart';
 import 'package:capstone/core/shared/widgets/service_button.dart';
+import 'package:capstone/core/utilities/distance_helper.dart';
+import 'package:capstone/features/main/providers/nearest_emergency_services_provider.dart';
 import 'package:capstone/features/map/widgets/map_tile_widget.dart';
 import 'package:capstone/core/shared/widgets/nearby_services.dart';
 import 'package:capstone/core/themes/app_colors.dart';
@@ -27,6 +30,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final location = ref.watch(locationStreamProvider);
+    final nearestServicesAsync = ref.watch(nearestEmergencyServicesProvider);
 
     return SafeArea(
       child: SingleChildScrollView(
@@ -93,9 +97,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     children: [
                       Expanded(
                         child: ServiceButton(
-                          onPressed: () {
-                            
-                          },
+                          onPressed: () {},
                           value: "Fire",
                           icon: Icons.fire_truck,
                           color: Colors.red,
@@ -105,9 +107,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       const SizedBox(width: 10),
                       Expanded(
                         child: ServiceButton(
-                          onPressed: () {
-                            
-                          },
+                          onPressed: () {},
                           value: "Crime",
                           icon: Icons.local_police,
                           color: Colors.blue,
@@ -117,9 +117,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       const SizedBox(width: 10),
                       Expanded(
                         child: ServiceButton(
-                          onPressed: () {
-                            
-                          },
+                          onPressed: () {},
                           value: "Medical",
                           icon: Icons.medical_services,
                           color: Colors.green,
@@ -199,22 +197,36 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   const SizedBox(
                     height: 10,
                   ),
-                  ...List.generate(
-                    3,
-                    (index) {
+                  nearestServicesAsync.when(
+                    data: (nearestByType) {
                       return Column(
-                        children: [
-                          NearbyServices(
-                            name: "Service name",
-                            address: "Address",
-                            distance: 0.0,
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                        ],
+                        children: ServiceTypeEnum.values.map((type) {
+                          final service = nearestByType[type];
+
+                          if (service == null) {
+                            return const SizedBox.shrink();
+                          }
+
+                          final distanceMeters = DistanceHelper.distanceInMeters(
+                            location.value!,
+                            service.location,
+                          );
+
+                          return Column(
+                            children: [
+                              NearbyServices(
+                                name: service.name,
+                                address: service.address,
+                                distance: distanceMeters / 1000,
+                              ),
+                              const SizedBox(height: 10),
+                            ],
+                          );
+                        }).toList(),
                       );
                     },
+                    loading: () => const Center(child: CustomCircularProgressIndicator()),
+                    error: (e, _) => Text(e.toString()),
                   ),
                 ],
               ),
