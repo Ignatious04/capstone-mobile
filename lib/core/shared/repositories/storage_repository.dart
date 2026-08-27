@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:capstone/core/enums/attachment_type_enum.dart';
-import 'package:capstone/features/reporting/models/attachment_model.dart';
+import 'package:capstone/features/public_user/reporting/models/attachment_model.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path/path.dart' as path;
 
