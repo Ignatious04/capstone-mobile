@@ -3,9 +3,8 @@ import 'package:capstone/core/shared/widgets/custom_app_bar.dart';
 import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
 import 'package:capstone/core/shared/widgets/custom_snackbar_helper.dart';
 import 'package:capstone/core/shared/widgets/custom_text_field.dart';
-import 'package:capstone/core/shared/providers/firebase_auth_provider.dart';
-import 'package:capstone/core/shared/providers/user_repository_provider.dart';
 import 'package:capstone/core/shared/providers/user_provider.dart';
+import 'package:capstone/features/public_user/register/providers/register_provider.dart';
 import 'package:capstone/features/public_user/reporting/widgets/section_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -115,27 +114,12 @@ class _RegisterScreenPage extends ConsumerState<RegisterScreen> {
                                 return;
                               }
 
-                              final firebaseAuthRepository = ref.read(
-                                firebaseAuthRepositoryProvider,
-                              );
-
-                              final credential = await firebaseAuthRepository.createAccount(
-                                email: emailController.text,
-                                password: passwordController.text,
-                              );
-
-                              final userID = credential.user!.uid;
-                              ref.read(userProvider.notifier).setUserID(userID);
-                              ref.read(userProvider.notifier).setEmail(emailController.text);
-
-                              final user = ref
-                                  .read(userProvider)
-                                  .copyWith(
-                                    createdAt: DateTime.now().millisecondsSinceEpoch,
-                                    updatedAt: DateTime.now().millisecondsSinceEpoch,
+                              ref
+                                  .read(registerProvider.notifier)
+                                  .register(
+                                    email: emailController.text,
+                                    password: passwordController.text,
                                   );
-
-                              await ref.read(userRepositoryProvider).createUser(user);
 
                               if (!context.mounted) {
                                 return;

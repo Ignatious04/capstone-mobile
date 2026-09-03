@@ -1,4 +1,4 @@
-import 'package:capstone/features/public_user/main/home_screen.dart';
+import 'package:capstone/features/public_user/main/views/home_screen.dart';
 import 'package:capstone/features/public_user/map/views/map_screen.dart';
 import 'package:capstone/features/public_user/pre_call_guidance/views/pre_call_guidance_screen.dart';
 import 'package:capstone/features/public_user/profile/views/profile_screen.dart';

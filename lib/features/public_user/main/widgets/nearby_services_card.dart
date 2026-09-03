@@ -2,8 +2,8 @@ import 'package:capstone/core/shared/widgets/text/card_title_text.dart';
 import 'package:capstone/core/shared/widgets/text/sub_title_text.dart';
 import 'package:flutter/material.dart';
 
-class NearbyServices extends StatelessWidget {
-  const NearbyServices({
+class NearbyServicesCard extends StatelessWidget {
+  const NearbyServicesCard({
     super.key,
     required this.name,
     required this.address,
@@ -31,7 +31,7 @@ class NearbyServices extends StatelessWidget {
                     isBold: true,
                   ),
                   SubtitleText(value: address),
-                  SubtitleText(value: "${distance.toStringAsFixed(2)} km"),
+                  SubtitleText(value: "Distance: ${distance.toStringAsFixed(2)} km"),
                 ],
               ),
             ),
@@ -40,7 +40,11 @@ class NearbyServices extends StatelessWidget {
             ),
             IconButton(
               onPressed: () {},
-              icon: Icon(Icons.call, size: 30),
+              icon: Icon(
+                Icons.call,
+                size: 30,
+                color: Colors.deepOrange,
+              ),
             ),
           ],
         ),

@@ -123,6 +123,10 @@ class UserNotifier extends Notifier<UserModel> {
     state = state.copyWith(contactNumber: value);
   }
 
+  void setIsContactNumberVerified(bool value) {
+    state = state.copyWith(isContactNumberVerified: value);
+  }
+
   void setAddress(String value) {
     state = state.copyWith(address: value);
   }

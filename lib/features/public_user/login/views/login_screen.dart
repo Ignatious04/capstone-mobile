@@ -10,7 +10,7 @@ import 'package:capstone/core/shared/widgets/text/sub_title_text.dart';
 import 'package:capstone/core/shared/widgets/text/supporting_info_text.dart';
 import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/public_user/login/providers/login_provider.dart';
-import 'package:capstone/features/public_user/register/register_screen.dart';
+import 'package:capstone/features/public_user/register/views/register_screen.dart';
 import 'package:capstone/features/public_user/login/views/reset_password_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

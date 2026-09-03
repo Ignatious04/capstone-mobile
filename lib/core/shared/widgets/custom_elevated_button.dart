@@ -11,7 +11,7 @@ class CustomElevatedButton extends StatelessWidget {
     this.hasPadding = false,
   });
 
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final String value;
   final Color color;
   final Color backgroundColor;

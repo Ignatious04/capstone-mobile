@@ -12,6 +12,7 @@ class UserModel {
   final int birthDate;
   final String sex;
   final String contactNumber;
+  final bool isContactNumberVerified;
   final String address;
   final String nationality;
   final String civilStatus;
@@ -44,6 +45,7 @@ class UserModel {
     this.birthDate = 0,
     this.sex = "",
     this.contactNumber = "",
+    this.isContactNumberVerified = false,
     this.address = "",
     this.nationality = "",
     this.civilStatus = "",
@@ -74,6 +76,7 @@ class UserModel {
       birthDate: map['birthDate'] ?? 0,
       sex: map['sex'] ?? '',
       contactNumber: map['contactNumber'] ?? '',
+      isContactNumberVerified: map["isContactNumberVerified"] ?? false,
       address: map['address'] ?? '',
       nationality: map['nationality'] ?? '',
       civilStatus: map['civilStatus'] ?? '',
@@ -104,6 +107,7 @@ class UserModel {
       'birthDate': birthDate,
       'sex': sex,
       'contactNumber': contactNumber,
+      "isContactNumberVerified": isContactNumberVerified,
       'address': address,
       'nationality': nationality,
       'civilStatus': civilStatus,
@@ -135,6 +139,7 @@ class UserModel {
     int? birthDate,
     String? sex,
     String? contactNumber,
+    bool? isContactNumberVerified = false,
     String? address,
     String? nationality,
     String? civilStatus,
@@ -165,6 +170,7 @@ class UserModel {
       birthDate: birthDate ?? this.birthDate,
       sex: sex ?? this.sex,
       contactNumber: contactNumber ?? this.contactNumber,
+      isContactNumberVerified: isContactNumberVerified ?? this.isContactNumberVerified,
       address: address ?? this.address,
       nationality: nationality ?? this.nationality,
       civilStatus: civilStatus ?? this.civilStatus,

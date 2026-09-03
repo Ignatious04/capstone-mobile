@@ -6,7 +6,9 @@ class CustomTextField extends StatelessWidget {
   const CustomTextField({
     super.key,
     required this.title,
+    this.prefixText,
     this.controller,
+    this.enabled = true,
     this.validator,
     this.keyboardType,
     this.inputFormatters,
@@ -22,7 +24,9 @@ class CustomTextField extends StatelessWidget {
   });
 
   final String title;
+  final String? prefixText;
   final TextEditingController? controller;
+  final bool enabled;
   final String? Function(String?)? validator;
   final TextInputType? keyboardType;
   final List<TextInputFormatter>? inputFormatters;
@@ -63,6 +67,7 @@ class CustomTextField extends StatelessWidget {
         ),
         TextFormField(
           controller: controller,
+          enabled: enabled,
           validator: validator,
           keyboardType: keyboardType,
           maxLines: maxLines,
@@ -76,6 +81,10 @@ class CustomTextField extends StatelessWidget {
                     fontSize: 0,
                   )
                 : null,
+            prefixText: prefixText ?? "",
+            prefixStyle: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
             isDense: true,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10.0),
