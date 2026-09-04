@@ -1,10 +1,10 @@
+import 'package:capstone/core/exceptions/auth_exception.dart';
 import 'package:capstone/core/shared/providers/user_provider.dart';
 import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
 import 'package:capstone/core/shared/widgets/custom_snackbar_helper.dart';
 import 'package:capstone/core/shared/widgets/custom_text_field.dart';
 import 'package:capstone/features/public_user/reporting/widgets/section_title.dart';
 import 'package:capstone/features/public_user/setup/providers/phone_verification_provider.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -65,11 +65,7 @@ class _SetupScreenContactNumberPageState extends ConsumerState<SetupScreenPhoneV
 
       next.status.whenOrNull(
         error: (error, _) {
-          final message = error is FirebaseAuthException
-              ? (error.code == 'invalid-verification-code'
-                    ? "Invalid code. Please try again."
-                    : "Verification failed. Please try again.")
-              : "Something went wrong.";
+          final message = error is AuthException ? error.message : "Something went wrong.";
           CustomSnackbarHelper.show(context, text: message);
         },
       );
@@ -83,6 +79,7 @@ class _SetupScreenContactNumberPageState extends ConsumerState<SetupScreenPhoneV
           CustomTextField(
             title: "CONTACT NUMBER",
             prefixText: "+63 ",
+            autovalidateMode: AutovalidateMode.disabled,
             controller: contactNumController,
             keyboardType: const TextInputType.numberWithOptions(decimal: false),
             inputFormatters: [
@@ -103,6 +100,7 @@ class _SetupScreenContactNumberPageState extends ConsumerState<SetupScreenPhoneV
             },
             enabled: !isVerified,
             isRequired: true,
+            hideErrorText: false,
           ),
           const SizedBox(height: 10),
           if (isVerified) ...[

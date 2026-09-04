@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:capstone/core/shared/widgets/custom_dropdown_button.dart';
 import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
+import 'package:capstone/core/shared/widgets/custom_snackbar_helper.dart';
 import 'package:capstone/core/shared/widgets/custom_text_field.dart';
 import 'package:capstone/core/shared/widgets/text/data_label_text.dart';
 import 'package:capstone/core/shared/providers/user_provider.dart';
@@ -91,8 +92,20 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
                     width: double.infinity,
                     child: CustomElevatedButton(
                       onPressed: () async {
-                        await ref.read(userProvider.notifier).addProfilePicture(ImageSource.camera);
-                        field.didChange(ref.read(userProvider).profileImage);
+                        final error = await ref.read(userProvider.notifier).addProfilePicture(ImageSource.camera);
+
+                        if (error != null && error.isNotEmpty) {
+                          if (context.mounted) {
+                            CustomSnackbarHelper.show(context, text: error);
+                          }
+                          return;
+                        }
+
+                        if (error == null) {
+                          field.didChange(
+                            ref.read(userProvider).profileImage,
+                          );
+                        }
                       },
                       value: "Tap to take photo",
                     ),

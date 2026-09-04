@@ -23,6 +23,9 @@ class AuthWrapper extends ConsumerWidget {
           return const LoginScreen();
         }
 
+        debugPrint('Email: ${authUser.email}');
+        debugPrint('Email verified: ${authUser.emailVerified}');
+
         if (!authUser.emailVerified) {
           return const EmailVerificationScreen();
         }

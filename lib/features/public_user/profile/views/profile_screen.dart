@@ -7,6 +7,7 @@ import 'package:capstone/core/shared/widgets/text/screen_title_text.dart';
 import 'package:capstone/core/shared/widgets/text/supporting_info_text.dart';
 import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/public_user/profile/views/personal_information_screen.dart';
+import 'package:capstone/features/public_user/profile/views/settings_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -83,7 +84,16 @@ class ProfileScreen extends ConsumerWidget {
                 SizedBox(
                   width: double.infinity,
                   child: CustomElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return SettingsScreen();
+                          },
+                        ),
+                      );
+                    },
                     backgroundColor: Colors.white,
                     color: Colors.black,
                     value: "Settings",

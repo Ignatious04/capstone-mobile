@@ -10,6 +10,7 @@ class CustomTextField extends StatelessWidget {
     this.controller,
     this.enabled = true,
     this.validator,
+    this.autovalidateMode = AutovalidateMode.onUserInteraction,
     this.keyboardType,
     this.inputFormatters,
     this.isReadOnly = false,
@@ -28,6 +29,7 @@ class CustomTextField extends StatelessWidget {
   final TextEditingController? controller;
   final bool enabled;
   final String? Function(String?)? validator;
+  final AutovalidateMode autovalidateMode;
   final TextInputType? keyboardType;
   final List<TextInputFormatter>? inputFormatters;
   final bool isReadOnly;
@@ -69,6 +71,7 @@ class CustomTextField extends StatelessWidget {
           controller: controller,
           enabled: enabled,
           validator: validator,
+          autovalidateMode: autovalidateMode,
           keyboardType: keyboardType,
           maxLines: maxLines,
           inputFormatters: inputFormatters,

@@ -56,6 +56,8 @@ class FirebaseAuthRepository {
         return AuthException('This phone number is already linked to another account.');
       case 'quota-exceeded':
         return AuthException('SMS quota exceeded. Please try again later.');
+      case 'provider-already-linked':
+        return AuthException('This account already has a verified phone number.');
       default:
         return AuthException('Something went wrong. Please try again.');
     }

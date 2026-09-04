@@ -1,8 +1,10 @@
 import 'dart:io';
+import 'package:capstone/core/enums/facecheck_result_enum.dart';
 import 'package:capstone/core/shared/models/user_model.dart';
 import 'package:capstone/core/shared/providers/firebase_auth_provider.dart';
 import 'package:capstone/core/shared/providers/user_repository_provider.dart';
 import 'package:capstone/core/shared/providers/storage_repository_provider.dart';
+import 'package:capstone/features/public_user/setup/providers/face_detection_service_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as path;
@@ -35,18 +37,22 @@ class UserNotifier extends Notifier<UserModel> {
     state = build();
   }
 
-  Future<void> addProfilePicture(ImageSource source) async {
+  Future<String?> addProfilePicture(ImageSource source) async {
     final picker = ImagePicker();
-
     final image = await picker.pickImage(source: source);
 
     if (image == null) {
-      return;
+      return null;
     }
 
-    state = state.copyWith(
-      profileImage: File(image.path),
-    );
+    final faceCheck = await ref.read(faceDetectionServiceProvider).checkFace(image.path);
+
+    if (faceCheck != FaceCheckResult.ok) {
+      return faceCheck.message;
+    }
+
+    state = state.copyWith(profileImage: File(image.path));
+    return null;
   }
 
   Future<void> updateUserSetup() async {
