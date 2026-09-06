@@ -10,23 +10,21 @@ class RegisterNotifier extends Notifier<AsyncValue<void>> {
   AsyncValue<void> build() => const AsyncData(null);
 
   Future<void> register({required String email, required String password}) async {
-    final firebaseAuthRepository = ref.read(firebaseAuthRepositoryProvider);
-    final user = ref.read(userProvider);
-    final userNotifier = ref.read(userProvider.notifier);
+    state = const AsyncLoading();
+    state = await AsyncValue.guard(() async {
+      final firebaseAuthRepository = ref.read(firebaseAuthRepositoryProvider);
+      final userNotifier = ref.read(userProvider.notifier);
+      final credential = await firebaseAuthRepository.createAccount(email: email, password: password);
+      final userID = credential.user!.uid;
+      await firebaseAuthRepository.sendEmailVerification();
+      userNotifier.setUserID(userID);
+      userNotifier.setEmail(email);
+      final now = DateTime.now().millisecondsSinceEpoch;
+      userNotifier.setCreatedAt(now);
+      userNotifier.setUpdatedAt(now);
+      final user = ref.read(userProvider);
 
-    final credential = await firebaseAuthRepository.createAccount(email: email, password: password);
-    final userID = credential.user!.uid;
-    await firebaseAuthRepository.sendEmailVerification();
-    userNotifier.setUserID(userID);
-    userNotifier.setEmail(email);
-
-    ref
-        .read(userProvider)
-        .copyWith(
-          createdAt: DateTime.now().millisecondsSinceEpoch,
-          updatedAt: DateTime.now().millisecondsSinceEpoch,
-        );
-
-    await ref.read(userRepositoryProvider).createUser(user);
+      await ref.read(userRepositoryProvider).createUser(user);
+    });
   }
 }

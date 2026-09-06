@@ -38,6 +38,21 @@ class _RegisterScreenPage extends ConsumerState<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
+    ref.listen<AsyncValue<void>>(registerProvider, (previous, next) {
+      next.whenOrNull(
+        error: (error, stack) {
+          final message = error is AuthException ? error.message : "Something went wrong. Please try again.";
+          CustomSnackbarHelper.show(context, text: message);
+        },
+      );
+
+      if (previous?.isLoading == true && next.hasValue) {
+        Navigator.pop(context);
+      }
+    });
+
+    final isRegistering = ref.watch(registerProvider).isLoading;
+
     return Scaffold(
       appBar: CustomAppBar(value: "Register"),
       body: SafeArea(
@@ -109,29 +124,20 @@ class _RegisterScreenPage extends ConsumerState<RegisterScreen> {
                       SizedBox(
                         width: double.infinity,
                         child: CustomElevatedButton(
-                          onPressed: () async {
-                            try {
-                              if (!registerScreenKey.currentState!.validate()) {
-                                return;
-                              }
+                          onPressed: isRegistering
+                              ? null
+                              : () async {
+                                  if (!registerScreenKey.currentState!.validate()) {
+                                    return;
+                                  }
 
-                              await ref
-                                  .read(registerProvider.notifier)
-                                  .register(
-                                    email: emailController.text,
-                                    password: passwordController.text,
-                                  );
-                            } on AuthException catch (e) {
-                              setState(() {
-                                errorMessage = e.message;
-                              });
-                              
-                              if (!context.mounted) {
-                                return;
-                              }
-                              CustomSnackbarHelper.show(context, text: errorMessage);
-                            }
-                          },
+                                  await ref
+                                      .read(registerProvider.notifier)
+                                      .register(
+                                        email: emailController.text,
+                                        password: passwordController.text,
+                                      );
+                                },
                           value: "Sign Up",
                         ),
                       ),

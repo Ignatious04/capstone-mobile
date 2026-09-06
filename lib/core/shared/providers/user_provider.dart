@@ -82,6 +82,7 @@ class UserNotifier extends Notifier<UserModel> {
     }
 
     setIsSetup(true);
+    user = state;
 
     await ref
         .read(userRepositoryProvider)
@@ -91,7 +92,7 @@ class UserNotifier extends Notifier<UserModel> {
         );
   }
 
-    Future<String?> captureId(File file) async {
+  Future<String?> captureId(File file) async {
     final idNumber = await ref.read(ocrServiceProvider).extractIdNumber(file.path, state.idType);
 
     if (idNumber == null) {
@@ -99,9 +100,7 @@ class UserNotifier extends Notifier<UserModel> {
     }
 
     final userID = ref.read(firebaseAuthProvider).currentUser!.uid;
-    final isDuplicate = await ref
-        .read(userRepositoryProvider)
-        .isIdNumberTaken(idNumber, excludeUserID: userID);
+    final isDuplicate = await ref.read(userRepositoryProvider).isIdNumberTaken(idNumber, excludeUserID: userID);
 
     if (isDuplicate) {
       return IdCaptureResult.duplicate.message;
@@ -209,5 +208,13 @@ class UserNotifier extends Notifier<UserModel> {
 
   void setIsSetup(bool value) {
     state = state.copyWith(isSetup: value);
+  }
+
+  void setCreatedAt(int value) {
+    state = state.copyWith(createdAt: value);
+  }
+
+  void setUpdatedAt(int value) {
+    state = state.copyWith(updatedAt: value);
   }
 }

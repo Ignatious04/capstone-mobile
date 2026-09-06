@@ -1,6 +1,7 @@
 import 'package:capstone/core/shared/providers/user_provider.dart';
 import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
 import 'package:capstone/core/shared/widgets/custom_header_widget.dart';
+import 'package:capstone/core/shared/widgets/custom_snackbar_helper.dart';
 import 'package:capstone/core/shared/widgets/loading_overlay_widget.dart';
 import 'package:capstone/features/public_user/setup/views/setup_screen_phone_verification_page.dart';
 import 'package:capstone/features/public_user/setup/views/setup_screen_user_card_page.dart';
@@ -23,7 +24,7 @@ class _SetupScreenPageView extends ConsumerState<SetupScreenPageView> {
   final userContactNumPageKey = GlobalKey<FormState>();
   final userInfoPageKey = GlobalKey<FormState>();
   final userCardPageKey = GlobalKey<FormState>();
-  final pageController = PageController(initialPage: 2);
+  final pageController = PageController(initialPage: 0);
   int currentPage = 0;
   final numberOfPages = 5;
 
@@ -153,22 +154,23 @@ class _SetupScreenPageView extends ConsumerState<SetupScreenPageView> {
                                 builder: (context) => showLoadingOverlay(),
                               );
 
-                              await ref.read(userProvider.notifier).updateUserSetup();
+                              try {
+                                await ref.read(userProvider.notifier).updateUserSetup();
 
-                              if (!context.mounted) {
-                                return;
+                                if (!context.mounted) return;
+
+                                Navigator.pop(context); // dismiss the loading overlay
+                                Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => OnboardingScreen()),
+                                  (route) => false,
+                                );
+                              } catch (e) {
+                                if (!context.mounted) return;
+
+                                Navigator.pop(context); // dismiss the loading overlay
+                                CustomSnackbarHelper.show(context, text: "Something went wrong. Please try again.");
                               }
-
-                              Navigator.pop(context);
-                              Navigator.pushAndRemoveUntil(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) {
-                                    return OnboardingScreen();
-                                  },
-                                ),
-                                (route) => false,
-                              );
                             } else {
                               navigateToPage();
                             }

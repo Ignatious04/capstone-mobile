@@ -143,7 +143,7 @@ class UserModel {
     int? birthDate,
     String? sex,
     String? contactNumber,
-    bool? isContactNumberVerified = false,
+    bool? isContactNumberVerified,
     String? address,
     String? nationality,
     String? civilStatus,
