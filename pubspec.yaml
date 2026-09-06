@@ -56,6 +56,7 @@ dependencies:
   google_mlkit_face_detection: ^0.14.0
   flutter_localizations:
     sdk: flutter
+  google_mlkit_text_recognition: ^0.16.0
   
   
 

@@ -1,10 +1,10 @@
 import 'dart:io';
-
 import 'package:camera/camera.dart';
 import 'package:capstone/core/shared/widgets/custom_dropdown_button.dart';
 import 'package:capstone/core/shared/widgets/scanner_overlay_painter.dart';
 import 'package:capstone/core/shared/providers/user_provider.dart';
 import 'package:capstone/core/services/camera_service.dart';
+import 'package:capstone/core/shared/widgets/text/button_text.dart';
 import 'package:capstone/core/shared/widgets/text/supporting_info_text.dart';
 import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/public_user/reporting/widgets/section_title.dart';
@@ -22,6 +22,8 @@ class _SetupScreenUserCardPage extends ConsumerState<SetupScreenUserCardPage> {
   final _cameraServices = CameraService();
   late final CameraController cameraController;
   bool isCameraInitialized = false;
+  bool isProcessing = false;
+  String? idCheckError;
 
   @override
   void initState() {
@@ -37,6 +39,17 @@ class _SetupScreenUserCardPage extends ConsumerState<SetupScreenUserCardPage> {
     setState(() {
       isCameraInitialized = true;
     });
+  }
+
+  Future<File> takePicture() async {
+    final image = await cameraController.takePicture();
+    final file = File(image.path);
+    return file;
+  }
+
+  Future<String?> getIDFromCard(File file) async {
+    final error = await ref.read(userProvider.notifier).captureId(file);
+    return error;
   }
 
   @override
@@ -120,15 +133,15 @@ class _SetupScreenUserCardPage extends ConsumerState<SetupScreenUserCardPage> {
                                     fit: BoxFit.cover,
                                   )
                                 : (isCameraInitialized
-                                    ? FittedBox(
-                                        fit: BoxFit.cover,
-                                        child: SizedBox(
-                                          width: cameraController.value.previewSize!.height,
-                                          height: cameraController.value.previewSize!.width,
-                                          child: CameraPreview(cameraController),
-                                        ),
-                                      )
-                                    : Container()),
+                                      ? FittedBox(
+                                          fit: BoxFit.cover,
+                                          child: SizedBox(
+                                            width: cameraController.value.previewSize!.height,
+                                            height: cameraController.value.previewSize!.width,
+                                            child: CameraPreview(cameraController),
+                                          ),
+                                        )
+                                      : Container()),
                           ),
                           if (field.value == null) ...[
                             Positioned.fill(
@@ -164,19 +177,38 @@ class _SetupScreenUserCardPage extends ConsumerState<SetupScreenUserCardPage> {
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
-                      onPressed: !isCameraInitialized
+                      onPressed: !isCameraInitialized || isProcessing
                           ? null
                           : () async {
                               if (field.value != null) {
-                                // Retake: go back to the live preview.
                                 field.didChange(null);
+                                setState(() {
+                                  idCheckError = null;
+                                });
                                 return;
                               }
 
-                              final image = await cameraController.takePicture();
-                              final file = File(image.path);
+                              File file = await takePicture();
 
-                              ref.read(userProvider.notifier).setIdImage(file);
+                              setState(() {
+                                isProcessing = true;
+                                idCheckError = null;
+                              });
+
+                              String? error = await getIDFromCard(file);
+                              debugPrint(error);
+
+                              setState(() {
+                                isProcessing = false;
+                              });
+
+                              if (error != null) {
+                                setState(() {
+                                  idCheckError = error;
+                                });
+                                return;
+                              }
+
                               field.didChange(file);
                             },
                       style: ElevatedButton.styleFrom(
@@ -186,17 +218,31 @@ class _SetupScreenUserCardPage extends ConsumerState<SetupScreenUserCardPage> {
                           borderRadius: BorderRadiusGeometry.circular(12),
                         ),
                       ),
-                      child: Text(field.value != null ? "Retake photo" : "Capture ID"),
-                    ),
-                  ),
-                  if (field.hasError)
-                    Padding(
-                      padding: const EdgeInsets.only(top: 4),
-                      child: Text(
-                        field.errorText!,
-                        style: const TextStyle(color: Colors.red, fontSize: 12),
+                      child: ButtonText(
+                        value: isProcessing ? "Checking..." : (field.value != null ? "Retake photo" : "Capture ID"),
+                        color: Colors.white,
                       ),
                     ),
+                  ),
+                  if (idCheckError != null) ...[
+                    const SizedBox(height: 10),
+                    SupportingInfoText(
+                      value: idCheckError!,
+                      color: Colors.red,
+                    ),
+                  ] else if (field.hasError) ...[
+                    const SizedBox(height: 10),
+                    SupportingInfoText(
+                      value: field.errorText ?? "",
+                      color: Colors.red,
+                    ),
+                  ],
+                  if (field.value != null && user.idNumber.isNotEmpty) ...[
+                    const SizedBox(height: 10),
+                    SupportingInfoText(
+                      value: "ID Number: ${user.idNumber}",
+                    ),
+                  ],
                 ],
               );
             },

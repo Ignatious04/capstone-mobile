@@ -114,6 +114,9 @@ class PreCallGuidanceSummaryScreen extends ConsumerWidget {
                 }
               } catch (e) {
                 debugPrint("ERROR: $e");
+                if (!context.mounted) {
+                  return;
+                }
                 CustomSnackbarHelper.show(
                   context,
                   text: "An error has occurred while trying to send your report!",

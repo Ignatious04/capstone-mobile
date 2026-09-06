@@ -1,3 +1,8 @@
+import 'package:capstone/core/shared/widgets/text/button_text.dart';
+import 'package:capstone/core/shared/widgets/text/paragraph_text.dart';
+import 'package:capstone/core/shared/widgets/text/screen_title_text.dart';
+import 'package:capstone/core/shared/widgets/text/section_title_text.dart';
+import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/public_user/setup/views/setup_screen_page_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -19,34 +24,21 @@ class WelcomeScreen extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
-                    "MEAS",
-                    style:
-                        Theme.of(
-                          context,
-                        ).textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
+                  ScreenTitleText(value: "MEAS"),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  SectionTitleText(value: "Hello!"),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  ParagraphText(
+                    value: "Let's start off by setting up your account.",
+                    alignment: TextAlign.center,
+                    color: AppColors.darkerGrey,
                   ),
                   SizedBox(
-                    height: 20,
-                  ),
-                  Text(
-                    "Welcome!",
-                    style: Theme.of(context).textTheme.titleSmall,
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Text(
-                    "Let's start off by setting up your account",
-                    textAlign: TextAlign.center,
-                    style: Theme.of(
-                      context,
-                    ).textTheme.bodySmall?.copyWith(color: Colors.black54),
-                  ),
-                  SizedBox(
-                    height: 20,
+                    height: 10,
                   ),
                   SizedBox(
                     width: double.infinity,
@@ -65,7 +57,10 @@ class WelcomeScreen extends StatelessWidget {
                           (route) => false,
                         );
                       },
-                      child: Text("Proceed"),
+                      child: ButtonText(
+                        value: "Proceed",
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ],

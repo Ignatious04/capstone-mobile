@@ -1,10 +1,12 @@
 import 'dart:io';
 import 'package:capstone/core/enums/facecheck_result_enum.dart';
+import 'package:capstone/core/enums/id_capture_result_enum.dart';
 import 'package:capstone/core/shared/models/user_model.dart';
 import 'package:capstone/core/shared/providers/firebase_auth_provider.dart';
 import 'package:capstone/core/shared/providers/user_repository_provider.dart';
 import 'package:capstone/core/shared/providers/storage_repository_provider.dart';
 import 'package:capstone/features/public_user/setup/providers/face_detection_service_provider.dart';
+import 'package:capstone/features/public_user/setup/providers/ocr_service_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as path;
@@ -89,6 +91,26 @@ class UserNotifier extends Notifier<UserModel> {
         );
   }
 
+    Future<String?> captureId(File file) async {
+    final idNumber = await ref.read(ocrServiceProvider).extractIdNumber(file.path, state.idType);
+
+    if (idNumber == null) {
+      return IdCaptureResult.unreadable.message;
+    }
+
+    final userID = ref.read(firebaseAuthProvider).currentUser!.uid;
+    final isDuplicate = await ref
+        .read(userRepositoryProvider)
+        .isIdNumberTaken(idNumber, excludeUserID: userID);
+
+    if (isDuplicate) {
+      return IdCaptureResult.duplicate.message;
+    }
+
+    state = state.copyWith(idImage: file, idNumber: idNumber);
+    return null;
+  }
+
   void setUserID(String value) {
     state = state.copyWith(userID: value);
   }
@@ -99,6 +121,10 @@ class UserNotifier extends Notifier<UserModel> {
 
   void setIdImage(File value) {
     state = state.copyWith(idImage: value);
+  }
+
+  void setIdNumber(String value) {
+    state = state.copyWith(idNumber: value);
   }
 
   void setProfileURL(String url) {

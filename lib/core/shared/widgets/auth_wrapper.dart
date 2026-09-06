@@ -7,6 +7,7 @@ import 'package:capstone/core/shared/providers/firebase_auth_provider.dart';
 import 'package:capstone/features/public_user/register/views/email_verification_screen.dart';
 import 'package:capstone/features/public_user/setup/views/welcome_screen.dart';
 import 'package:capstone/features/responder/main/views/responder_main_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -15,6 +16,7 @@ class AuthWrapper extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    //FirebaseAuth.instance.signOut();
     final authState = ref.watch(authStateProvider);
 
     return authState.when(

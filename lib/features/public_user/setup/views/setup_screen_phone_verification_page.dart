@@ -79,7 +79,7 @@ class _SetupScreenContactNumberPageState extends ConsumerState<SetupScreenPhoneV
           CustomTextField(
             title: "CONTACT NUMBER",
             prefixText: "+63 ",
-            autovalidateMode: AutovalidateMode.disabled,
+            autovalidateMode: AutovalidateMode.onUserInteractionIfError,
             controller: contactNumController,
             keyboardType: const TextInputType.numberWithOptions(decimal: false),
             inputFormatters: [

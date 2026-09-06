@@ -7,7 +7,7 @@ class UserRepository {
   UserRepository(this.firestore);
 
   Future<void> createUser(UserModel user) async {
-    await firestore.collection('users').doc(user.userID).set(user.toMap());
+    await firestore.collection('users').doc(user.userID).set(user.toMap(), SetOptions(merge: true));
   }
 
   Future<UserModel?> getUser(String uid) async {
@@ -35,5 +35,11 @@ class UserRepository {
     Map<String, dynamic> data,
   ) async {
     await firestore.collection('users').doc(uid).set(data, SetOptions(merge: true));
+  }
+
+  Future<bool> isIdNumberTaken(String idNumber, {required String excludeUserID}) async {
+    final query = await firestore.collection('users').where('idNumber', isEqualTo: idNumber).get();
+
+    return query.docs.any((doc) => doc.id != excludeUserID);
   }
 }

@@ -100,6 +100,7 @@ class _RegisterScreenPage extends ConsumerState<RegisterScreen> {
 
                           return null;
                         },
+                        autovalidateMode: AutovalidateMode.onUserInteractionIfError,
                         obscureText: true,
                         hideErrorText: false,
                         isRequired: true,
@@ -114,22 +115,20 @@ class _RegisterScreenPage extends ConsumerState<RegisterScreen> {
                                 return;
                               }
 
-                              ref
+                              await ref
                                   .read(registerProvider.notifier)
                                   .register(
                                     email: emailController.text,
                                     password: passwordController.text,
                                   );
-
-                              if (!context.mounted) {
-                                return;
-                              }
-
-                              Navigator.pop(context);
                             } on AuthException catch (e) {
                               setState(() {
                                 errorMessage = e.message;
                               });
+                              
+                              if (!context.mounted) {
+                                return;
+                              }
                               CustomSnackbarHelper.show(context, text: errorMessage);
                             }
                           },

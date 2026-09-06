@@ -476,6 +476,10 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> {
                                   return;
                                 }
 
+                                if (!context.mounted) {
+                                  return;
+                                }
+
                                 showDialog(
                                   context: context,
                                   barrierDismissible: false,
@@ -506,6 +510,9 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> {
                                 } catch (e, stack) {
                                   debugPrint("ERROR: $e");
                                   debugPrintStack(stackTrace: stack);
+                                  if (!context.mounted) {
+                                    return;
+                                  }
                                   CustomSnackbarHelper.show(
                                     context,
                                     text: "An error has occurred while trying to send your report!",

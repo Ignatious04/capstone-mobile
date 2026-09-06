@@ -20,6 +20,7 @@ class UserModel {
   final String idType;
   final File? idImage;
   final String? idImageURL;
+  final String idNumber;
 
   final String email;
 
@@ -53,6 +54,7 @@ class UserModel {
     this.idType = "",
     this.idImage,
     this.idImageURL,
+    this.idNumber = "",
     this.email = "",
     this.bloodType = "",
     this.height = 0,
@@ -83,6 +85,7 @@ class UserModel {
       religion: map['religion'] ?? '',
       idType: map['idType'] ?? '',
       idImageURL: map['idImageURL'],
+      idNumber: map["idNumber"] ?? "",
       email: map['email'] ?? '',
       bloodType: map['bloodType'] ?? '',
       height: (map['height'] as num?)?.toDouble() ?? 0.0,
@@ -114,6 +117,7 @@ class UserModel {
       'religion': religion,
       'idType': idType,
       'idImageURL': idImageURL,
+      'idNumber': idNumber,
       'email': email,
       'bloodType': bloodType,
       'height': height,
@@ -148,6 +152,7 @@ class UserModel {
     bool clearIdImage = false,
     File? idImage,
     String? idImageURL,
+    String? idNumber,
     String? email,
     String? bloodType,
     double? height,
@@ -178,6 +183,7 @@ class UserModel {
       idType: idType ?? this.idType,
       idImage: clearIdImage ? null : (idImage ?? this.idImage),
       idImageURL: idImageURL ?? this.idImageURL,
+      idNumber: idNumber ?? this.idNumber,
       email: email ?? this.email,
       bloodType: bloodType ?? this.bloodType,
       height: height ?? this.height,
