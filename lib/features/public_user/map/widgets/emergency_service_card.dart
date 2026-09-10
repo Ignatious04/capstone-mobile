@@ -14,6 +14,7 @@ class EmergencyServiceCard extends StatelessWidget {
     required this.address,
     required this.distance,
     required this.status,
+    required this.onCallTap,
     required this.onTap,
   });
 
@@ -24,6 +25,7 @@ class EmergencyServiceCard extends StatelessWidget {
   final String address;
   final String distance;
   final String status;
+  final VoidCallback onCallTap;
   final VoidCallback onTap;
 
   @override
@@ -106,6 +108,10 @@ class EmergencyServiceCard extends StatelessWidget {
                     ),
                   ],
                 ),
+              ),
+              IconButton(
+                icon: const Icon(Icons.call, color: Colors.green),
+                onPressed: onCallTap,
               ),
               const Icon(
                 Icons.arrow_right,

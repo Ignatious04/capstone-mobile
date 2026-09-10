@@ -4,6 +4,7 @@ import 'package:capstone/core/shared/widgets/text/button_text.dart';
 import 'package:capstone/core/shared/widgets/text/section_title_text.dart';
 import 'package:capstone/core/shared/widgets/text/supporting_info_text.dart';
 import 'package:capstone/core/themes/app_colors.dart';
+import 'package:capstone/core/utilities/call_launcher.dart';
 import 'package:capstone/features/public_user/map/models/emergency_service_model.dart';
 import 'package:capstone/features/public_user/map/providers/emergency_service_filter_provider.dart';
 import 'package:capstone/features/public_user/map/providers/emergency_service_search_provider.dart';
@@ -242,6 +243,9 @@ class _EmergencyServicesPanelState extends ConsumerState<EmergencyServicesPanel>
                         address: service.address,
                         distance: _formatDistance(service),
                         status: service.isActive ? 'Open' : 'Unavailable',
+                        onCallTap: () {
+                          launchPhoneCall(service.contactNumber);
+                        },
                         onTap: () {
                           _moveToService(LatLng(service.location.latitude, service.location.longitude));
                         },

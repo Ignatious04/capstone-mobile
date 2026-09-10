@@ -3,11 +3,14 @@ import 'package:capstone/core/enums/report_type_enum.dart';
 import 'package:capstone/core/enums/service_type_enum.dart';
 import 'package:capstone/core/shared/providers/firebase_auth_provider.dart';
 import 'package:capstone/core/utilities/reference_number_generator.dart';
+import 'package:capstone/core/utilities/sms_launcher.dart';
+import 'package:capstone/features/public_user/map/providers/contact_number_repository_provider.dart';
 import 'package:capstone/features/public_user/pre_call_guidance/models/pre_call_guidance_model.dart';
 import 'package:capstone/features/public_user/pre_call_guidance/models/question_state.dart';
 import 'package:capstone/features/public_user/reporting/providers/report_provider.dart';
 import 'package:capstone/features/public_user/reporting/providers/report_repository_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -34,29 +37,72 @@ class GuidanceNotifier extends Notifier<QuestionState> {
   }
 
   Future<void> submitGuidanceReport({required LatLng location}) async {
+    final incidentType = ref.read(reportProvider).incidentType;
+
+    if (incidentType == null) {
+      throw Exception('No incident type selected.');
+    }
+
+    final now = DateTime.now();
+    final referenceNumber = ReferenceNumberGenerator.generate(now);
+
+    final connectivityResult = await Connectivity().checkConnectivity();
+    final isOnline = !connectivityResult.contains(ConnectivityResult.none);
+
+    if (!isOnline) {
+      await _submitViaSms(
+        incidentType: incidentType,
+        referenceNumber: referenceNumber,
+        location: location,
+      );
+      return;
+    }
+
     final reportRepository = ref.read(reportRepositoryProvider);
     final userID = ref.read(firebaseAuthProvider).currentUser!.uid;
-
     final reportID = reportRepository.getReportID();
-    final now = DateTime.now();
 
     final report = ref
         .read(reportProvider)
         .copyWith(
           reportID: reportID,
-          referenceNumber: ReferenceNumberGenerator.generate(now),
+          referenceNumber: referenceNumber,
           userID: userID,
           reportType: ReportTypeEnum.preCallGuidance,
           guidanceAnswers: state.questions,
           status: ReportStatusEnum.pending,
-          location: GeoPoint(
-            location.latitude,
-            location.longitude,
-          ),
+          location: GeoPoint(location.latitude, location.longitude),
           createdAt: now,
         );
 
-    await ref.read(reportRepositoryProvider).createReport(report);
+    await reportRepository.createReport(report);
+  }
+
+  Future<void> _submitViaSms({
+    required ServiceTypeEnum incidentType,
+    required String referenceNumber,
+    required LatLng location,
+  }) async {
+    final number = await ref.read(contactNumberRepositoryProvider).getNumber(incidentType);
+
+    if (number == null) {
+      throw Exception(
+        'No cached contact number available for offline reporting. Please connect to the internet at least once.',
+      );
+    }
+
+    final buffer = StringBuffer()
+      ..writeln('EMERGENCY REPORT (Ref: $referenceNumber)')
+      ..writeln('Type: ${incidentType.name.toUpperCase()}');
+
+    for (final q in state.questions) {
+      final answer = q.answer == null ? 'Not answered' : (q.answer! ? 'Yes' : 'No');
+      buffer.writeln('${q.question} $answer');
+    }
+
+    buffer.writeln('Location: https://maps.google.com/?q=${location.latitude},${location.longitude}');
+
+    await launchSms(number, buffer.toString());
   }
 
   void loadQuestions(ServiceTypeEnum type) {

@@ -1,7 +1,9 @@
 import 'package:capstone/core/l10n/app_localizations.dart';
+import 'package:capstone/core/shared/providers/connectivity_stream_provider.dart';
 import 'package:capstone/core/shared/providers/locale_provider.dart';
 import 'package:capstone/core/shared/widgets/auth_wrapper.dart';
 import 'package:capstone/features/public_user/setup/views/setup_screen_page_view.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -25,6 +27,8 @@ class MyApp extends ConsumerStatefulWidget {
 }
 
 class _MyAppState extends ConsumerState<MyApp> {
+  final scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
+
   @override
   void initState() {
     super.initState();
@@ -34,7 +38,31 @@ class _MyAppState extends ConsumerState<MyApp> {
   Widget build(BuildContext context) {
     final locale = ref.watch(localeProvider);
 
+    ref.listen<AsyncValue<List<ConnectivityResult>>>(connectivityStreamProvider, (previous, next) {
+      next.whenData((result) {
+        final isOffline = result.isEmpty || result.every((r) => r == ConnectivityResult.none);
+        final wasOffline = previous?.value?.every((r) => r == ConnectivityResult.none) ?? false;
+
+        if (isOffline && !wasOffline) {
+          scaffoldMessengerKey.currentState?.showSnackBar(
+            const SnackBar(
+              content: Text('No internet connection. Some features may be limited.'),
+              duration: Duration(seconds: 4),
+            ),
+          );
+        } else if (!isOffline && wasOffline) {
+          scaffoldMessengerKey.currentState?.showSnackBar(
+            const SnackBar(
+              content: Text('Back online.'),
+              duration: Duration(seconds: 2),
+            ),
+          );
+        }
+      });
+    });
+
     return MaterialApp(
+      scaffoldMessengerKey: scaffoldMessengerKey,
       locale: locale,
 
       localizationsDelegates: const [

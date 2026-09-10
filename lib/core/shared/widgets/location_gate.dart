@@ -32,12 +32,19 @@ class _LocationGateState extends ConsumerState<LocationGate> with WidgetsBinding
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
-      _checkLocation();
+      _checkLocation(silent: true);
     }
   }
 
-  Future<void> _checkLocation() async {
+  Future<void> _checkLocation({bool silent = false}) async {
     final locationService = ref.read(locationServiceProvider);
+
+    if (silent) {
+      final status = await locationService.checkLocationStatus();
+      if (status == LocationStatusEnum.ready) {
+        return;
+      }
+    }
 
     setState(() {
       _loading = true;
