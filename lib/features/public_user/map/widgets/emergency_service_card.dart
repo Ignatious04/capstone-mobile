@@ -10,7 +10,8 @@ class EmergencyServiceCard extends StatelessWidget {
     required this.icon,
     required this.iconColor,
     required this.title,
-    required this.subtitle,
+    required this.contactNumber,
+    required this.address,
     required this.distance,
     required this.status,
     required this.onTap,
@@ -19,11 +20,11 @@ class EmergencyServiceCard extends StatelessWidget {
   final IconData icon;
   final Color iconColor;
   final String title;
-  final String subtitle;
+  final String contactNumber;
+  final String address;
   final String distance;
   final String status;
   final VoidCallback onTap;
-
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +67,12 @@ class EmergencyServiceCard extends StatelessWidget {
                       value: title,
                     ),
                     SubtitleText(
-                      value: subtitle,
+                      value: contactNumber,
+                      overflow: TextOverflow.ellipsis,
+                      color: AppColors.darkerGrey,
+                    ),
+                    SubtitleText(
+                      value: address,
                       overflow: TextOverflow.ellipsis,
                       color: AppColors.darkerGrey,
                     ),

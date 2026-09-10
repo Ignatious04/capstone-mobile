@@ -31,6 +31,7 @@ class EmergencyServicesPanel extends ConsumerStatefulWidget {
 
 class _EmergencyServicesPanelState extends ConsumerState<EmergencyServicesPanel> {
   final DraggableScrollableController _panelController = DraggableScrollableController();
+  ScrollController? _scrollController;
 
   IconData _getServiceIcon(EmergencyServiceModel service) {
     switch (service.type) {
@@ -79,7 +80,13 @@ class _EmergencyServicesPanelState extends ConsumerState<EmergencyServicesPanel>
 
   void _moveToService(LatLng location) {
     _panelController.animateTo(
-      0.18,
+      0.09,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeOut,
+    );
+
+    _scrollController?.animateTo(
+      0,
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeOut,
     );
@@ -124,6 +131,7 @@ class _EmergencyServicesPanelState extends ConsumerState<EmergencyServicesPanel>
             BuildContext context,
             ScrollController scrollController,
           ) {
+            _scrollController = scrollController;
             return Container(
               decoration: const BoxDecoration(
                 color: Color(0xFFF0F0F0),
@@ -230,7 +238,8 @@ class _EmergencyServicesPanelState extends ConsumerState<EmergencyServicesPanel>
                         icon: _getServiceIcon(service),
                         iconColor: _getServiceColor(service),
                         title: service.name,
-                        subtitle: service.address,
+                        contactNumber: service.contactNumber,
+                        address: service.address,
                         distance: _formatDistance(service),
                         status: service.isActive ? 'Open' : 'Unavailable',
                         onTap: () {
