@@ -1,7 +1,10 @@
 import 'package:capstone/core/l10n/app_localizations.dart';
+import 'package:capstone/core/shared/providers/app_notification_provider.dart';
 import 'package:capstone/core/shared/providers/connectivity_stream_provider.dart';
 import 'package:capstone/core/shared/providers/locale_provider.dart';
+import 'package:capstone/core/shared/widgets/app_notification_overlay.dart';
 import 'package:capstone/core/shared/widgets/auth_wrapper.dart';
+import 'package:capstone/core/shared/widgets/custom_snackbar_helper.dart';
 import 'package:capstone/features/public_user/setup/views/setup_screen_page_view.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
@@ -40,23 +43,22 @@ class _MyAppState extends ConsumerState<MyApp> {
 
     ref.listen<AsyncValue<List<ConnectivityResult>>>(connectivityStreamProvider, (previous, next) {
       next.whenData((result) {
+        debugPrint('connectivity event: $result');
         final isOffline = result.isEmpty || result.every((r) => r == ConnectivityResult.none);
         final wasOffline = previous?.value?.every((r) => r == ConnectivityResult.none) ?? false;
 
         if (isOffline && !wasOffline) {
-          scaffoldMessengerKey.currentState?.showSnackBar(
-            const SnackBar(
-              content: Text('No internet connection. Some features may be limited.'),
-              duration: Duration(seconds: 4),
-            ),
-          );
+          ref
+              .read(appNotificationProvider.notifier)
+              .show(
+                'No internet connection. Some features may be limited.',
+              );
         } else if (!isOffline && wasOffline) {
-          scaffoldMessengerKey.currentState?.showSnackBar(
-            const SnackBar(
-              content: Text('Back online.'),
-              duration: Duration(seconds: 2),
-            ),
-          );
+          ref
+              .read(appNotificationProvider.notifier)
+              .show(
+                'Back online.',
+              );
         }
       });
     });
@@ -94,7 +96,9 @@ class _MyAppState extends ConsumerState<MyApp> {
         scaffoldBackgroundColor: const Color(0xFFF0F0F0),
         fontFamily: 'Inter',
       ),
-      home: AuthWrapper(),
+      home: AppNotificationOverlay(
+        child: AuthWrapper(),
+      ),
     );
   }
 }

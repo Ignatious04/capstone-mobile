@@ -4,15 +4,20 @@ import 'package:flutter/material.dart';
 class CustomSnackbarHelper {
   static void show(
     BuildContext context, {
+    GlobalKey<ScaffoldMessengerState>? globalMessenger,
     required String text,
     Color? color,
   }) {
-    final messenger = ScaffoldMessenger.of(context);
+    final messenger =
+        globalMessenger?.currentState ?? ScaffoldMessenger.of(context);
 
     messenger
       ..clearSnackBars()
       ..showSnackBar(
-        CustomSnackbar(text: text, color: color,),
+        CustomSnackbar(
+          text: text,
+          color: color,
+        ),
       );
   }
 }
