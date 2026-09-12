@@ -4,8 +4,6 @@ import 'package:capstone/core/shared/providers/connectivity_stream_provider.dart
 import 'package:capstone/core/shared/providers/locale_provider.dart';
 import 'package:capstone/core/shared/widgets/app_notification_overlay.dart';
 import 'package:capstone/core/shared/widgets/auth_wrapper.dart';
-import 'package:capstone/core/shared/widgets/custom_snackbar_helper.dart';
-import 'package:capstone/features/public_user/setup/views/setup_screen_page_view.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

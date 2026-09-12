@@ -15,6 +15,7 @@ class LocationGate extends ConsumerStatefulWidget {
 class _LocationGateState extends ConsumerState<LocationGate> with WidgetsBindingObserver {
   bool _loading = true;
   String? _message;
+  LocationStatusEnum? _status;
 
   @override
   void initState() {
@@ -39,66 +40,81 @@ class _LocationGateState extends ConsumerState<LocationGate> with WidgetsBinding
   Future<void> _checkLocation({bool silent = false}) async {
     final locationService = ref.read(locationServiceProvider);
 
-    if (silent) {
-      final status = await locationService.checkLocationStatus();
-      if (status == LocationStatusEnum.ready) {
-        return;
-      }
+    final status = await locationService.checkLocationStatus();
+    if (!mounted) return;
+
+    if (status == LocationStatusEnum.ready) {
+      setState(() {
+        _loading = false;
+        _message = null;
+        _status = null;
+      });
+      return;
     }
+
+    // A silent (app-resumed) recheck should only ever *clear* an error,
+    // never pop up a new one or reopen Settings on its own.
+    if (silent) return;
 
     setState(() {
       _loading = true;
       _message = null;
     });
 
-    while (mounted) {
-      final status = await locationService.checkLocationStatus();
+    switch (status) {
+      case LocationStatusEnum.ready:
+        return; // handled above
 
-      switch (status) {
-        case LocationStatusEnum.ready:
-          if (!mounted) return;
+      case LocationStatusEnum.permissionDenied:
+        final result = await locationService.requestPermission();
+        if (!mounted) return;
 
+        if (result == LocationStatusEnum.ready) {
           setState(() {
             _loading = false;
             _message = null;
+            _status = null;
           });
-
           return;
+        }
 
-        case LocationStatusEnum.permissionDenied:
-          final result = await locationService.requestPermission();
+        setState(() {
+          _loading = false;
+          _message = "Location permission is required to continue.";
+          _status = LocationStatusEnum.permissionDenied;
+        });
+        return;
 
-          if (result == LocationStatusEnum.ready) {
-            continue;
-          }
+      case LocationStatusEnum.permissionDeniedForever:
+        setState(() {
+          _loading = false;
+          _message = "Location permission has been permanently denied. Please enable it in Settings.";
+          _status = LocationStatusEnum.permissionDeniedForever;
+        });
+        return;
 
-          setState(() {
-            _loading = false;
-            _message = "Location permission is required to continue.";
-          });
+      case LocationStatusEnum.serviceDisabled:
+        setState(() {
+          _loading = false;
+          _message = "Please enable Location Services to continue.";
+          _status = LocationStatusEnum.serviceDisabled;
+        });
+        return;
+    }
+  }
 
-          return;
+  Future<void> _handleRetry() async {
+    final locationService = ref.read(locationServiceProvider);
 
-        case LocationStatusEnum.permissionDeniedForever:
-          await locationService.openAppSettings();
-
-          setState(() {
-            _message = "Location permission has been permanently denied. Please enable it in Settings.";
-            _loading = false;
-          });
-
-          return;
-
-        case LocationStatusEnum.serviceDisabled:
-          await locationService.openLocationSettings();
-
-          setState(() {
-            _message = "Please enable Location Services to continue.";
-            _loading = false;
-          });
-
-          return;
-      }
+    switch (_status) {
+      case LocationStatusEnum.permissionDeniedForever:
+        await locationService.openAppSettings();
+        break;
+      case LocationStatusEnum.serviceDisabled:
+        await locationService.openLocationSettings();
+        break;
+      default:
+        await _checkLocation();
     }
   }
 
@@ -126,7 +142,7 @@ class _LocationGateState extends ConsumerState<LocationGate> with WidgetsBinding
                 ),
                 const SizedBox(height: 10),
                 ElevatedButton(
-                  onPressed: _checkLocation,
+                  onPressed: _handleRetry,
                   child: const Text("Try Again"),
                 ),
               ],
