@@ -1,6 +1,8 @@
 import 'package:capstone/core/enums/location_status_enum.dart';
 import 'package:capstone/core/shared/providers/location_provider.dart';
 import 'package:capstone/core/shared/widgets/custom_circular_progress_indicator.dart';
+import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
+import 'package:capstone/core/shared/widgets/text/paragraph_text.dart';
 import 'package:capstone/features/public_user/main/views/main_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -132,18 +134,18 @@ class _LocationGateState extends ConsumerState<LocationGate> with WidgetsBinding
       return Scaffold(
         body: Center(
           child: Padding(
-            padding: const EdgeInsets.all(24),
+            padding: const EdgeInsets.all(20),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  _message!,
-                  textAlign: TextAlign.center,
+                ParagraphText(
+                  value: _message!,
+                  alignment: TextAlign.center,
                 ),
                 const SizedBox(height: 10),
-                ElevatedButton(
+                CustomElevatedButton(
                   onPressed: _handleRetry,
-                  child: const Text("Try Again"),
+                  value: "Open Settings",
                 ),
               ],
             ),

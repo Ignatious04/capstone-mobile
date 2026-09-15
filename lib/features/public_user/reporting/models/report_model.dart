@@ -11,6 +11,7 @@ class ReportModel {
   final String reportID;
   final String referenceNumber;
   final String userID;
+  final String responderID;
   final ReportTypeEnum reportType;
   final ServiceTypeEnum? incidentType;
   final String description;
@@ -27,6 +28,7 @@ class ReportModel {
     this.reportID = '',
     this.referenceNumber = '',
     this.userID = '',
+    this.responderID = '',
     this.reportType = ReportTypeEnum.normal,
     this.incidentType,
     this.description = '',
@@ -44,6 +46,7 @@ class ReportModel {
     String? reportID,
     String? referenceNumber,
     String? userID,
+    String? responderID,
     ReportTypeEnum? reportType,
     ServiceTypeEnum? incidentType,
     String? description,
@@ -54,7 +57,6 @@ class ReportModel {
     ReportStatusEnum? status,
     ReportPriorityEnum? priority,
     GeoPoint? location,
-    String? dispatcherID,
     DateTime? createdAt,
     DateTime? resolvedAt,
   }) {
@@ -62,6 +64,7 @@ class ReportModel {
       reportID: reportID ?? this.reportID,
       referenceNumber: referenceNumber ?? this.referenceNumber,
       userID: userID ?? this.userID,
+      responderID: responderID ?? this.responderID,
       reportType: reportType ?? this.reportType,
       incidentType: incidentType ?? this.incidentType,
       description: description ?? this.description,
@@ -81,6 +84,7 @@ class ReportModel {
       'reportID': reportID,
       'referenceNumber': referenceNumber,
       'userID': userID,
+      'responderID': responderID,
       'reportType': reportType.name,
       'incidentType': incidentType?.name,
       'description': description,
@@ -95,51 +99,30 @@ class ReportModel {
     };
   }
 
-  factory ReportModel.fromMap(
-    Map<String, dynamic> map,
-  ) {
+  factory ReportModel.fromMap(Map<String, dynamic> map) {
     return ReportModel(
       reportID: map['reportID'] ?? '',
       referenceNumber: map['referenceNumber'] ?? '',
       userID: map['userID'] ?? '',
+      responderID: map['responderID'] ?? '',
       reportType: map['reportType'] != null
-          ? ReportTypeEnum.values.firstWhere(
-              (e) => e.name == map['reportType'],
-            )
+          ? ReportTypeEnum.values.firstWhere((e) => e.name == map['reportType'])
           : ReportTypeEnum.normal,
       incidentType: map['incidentType'] != null
-          ? ServiceTypeEnum.values.firstWhere(
-              (e) => e.name == map['incidentType'],
-            )
+          ? ServiceTypeEnum.values.firstWhere((e) => e.name == map['incidentType'])
           : null,
       description: map['description'] ?? '',
       victims: (map['victims'] as List<dynamic>? ?? [])
-          .map(
-            (v) => VictimModel.fromMap(
-              Map<String, dynamic>.from(v),
-            ),
-          )
+          .map((v) => VictimModel.fromMap(Map<String, dynamic>.from(v)))
           .toList(),
       attachments: (map['attachments'] as List<dynamic>? ?? [])
-          .map(
-            (a) => AttachmentModel.fromMap(
-              Map<String, dynamic>.from(a),
-            ),
-          )
+          .map((a) => AttachmentModel.fromMap(Map<String, dynamic>.from(a)))
           .toList(),
       guidanceAnswers: (map['guidanceAnswers'] as List<dynamic>? ?? [])
-          .map(
-            (e) => PreCallGuidanceModel.fromMap(
-              Map<String, dynamic>.from(e),
-            ),
-          )
+          .map((e) => PreCallGuidanceModel.fromMap(Map<String, dynamic>.from(e)))
           .toList(),
       additionalInformation: map['additionalInformation'] ?? '',
-      status: map['status'] != null
-          ? ReportStatusEnum.values.firstWhere(
-              (e) => e.name == map['status'],
-            )
-          : null,
+      status: map['status'] != null ? ReportStatusEnum.values.firstWhere((e) => e.name == map['status']) : null,
       location: map['location'],
       createdAt: (map['createdAt'] as Timestamp?)?.toDate(),
       resolvedAt: (map['resolvedAt'] as Timestamp?)?.toDate(),

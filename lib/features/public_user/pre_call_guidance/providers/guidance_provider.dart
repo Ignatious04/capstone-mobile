@@ -10,7 +10,6 @@ import 'package:capstone/features/public_user/pre_call_guidance/models/question_
 import 'package:capstone/features/public_user/reporting/providers/report_provider.dart';
 import 'package:capstone/features/public_user/reporting/providers/report_repository_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -36,7 +35,7 @@ class GuidanceNotifier extends Notifier<QuestionState> {
     );
   }
 
-  Future<void> submitGuidanceReport({required LatLng location}) async {
+  Future<void> submitGuidanceReport({required LatLng location, required bool isOnline}) async {
     final incidentType = ref.read(reportProvider).incidentType;
 
     if (incidentType == null) {
@@ -45,9 +44,6 @@ class GuidanceNotifier extends Notifier<QuestionState> {
 
     final now = DateTime.now();
     final referenceNumber = ReferenceNumberGenerator.generate(now);
-
-    final connectivityResult = await Connectivity().checkConnectivity();
-    final isOnline = !connectivityResult.contains(ConnectivityResult.none);
 
     if (!isOnline) {
       await _submitViaSms(

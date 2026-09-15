@@ -1,16 +1,19 @@
 import 'package:capstone/core/shared/widgets/text/card_title_text.dart';
 import 'package:capstone/core/shared/widgets/text/sub_title_text.dart';
+import 'package:capstone/core/utilities/call_launcher.dart';
 import 'package:flutter/material.dart';
 
 class NearbyServicesCard extends StatelessWidget {
   const NearbyServicesCard({
     super.key,
     required this.name,
+    required this.contactNumber,
     required this.address,
     required this.distance,
   });
 
   final String name;
+  final String contactNumber;
   final String address;
   final double distance;
 
@@ -30,6 +33,7 @@ class NearbyServicesCard extends StatelessWidget {
                     value: name,
                     isBold: true,
                   ),
+                  SubtitleText(value: contactNumber),
                   SubtitleText(value: address),
                   SubtitleText(value: "Distance: ${distance.toStringAsFixed(2)} km"),
                 ],
@@ -39,7 +43,9 @@ class NearbyServicesCard extends StatelessWidget {
               width: 10,
             ),
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                launchPhoneCall(contactNumber);
+              },
               icon: Icon(
                 Icons.call,
                 size: 30,

@@ -47,14 +47,13 @@ class WelcomeScreen extends StatelessWidget {
                         backgroundColor: Colors.deepOrange,
                       ),
                       onPressed: () {
-                        Navigator.pushAndRemoveUntil(
+                        Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) {
                               return SetupScreenPageView();
                             },
                           ),
-                          (route) => false,
                         );
                       },
                       child: ButtonText(

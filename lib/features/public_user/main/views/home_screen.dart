@@ -6,6 +6,7 @@ import 'package:capstone/core/shared/widgets/custom_header_widget.dart';
 import 'package:capstone/core/shared/widgets/text/button_text.dart';
 import 'package:capstone/core/shared/widgets/text/section_title_text.dart';
 import 'package:capstone/core/shared/widgets/service_button.dart';
+import 'package:capstone/core/utilities/call_launcher.dart';
 import 'package:capstone/core/utilities/distance_helper.dart';
 import 'package:capstone/features/public_user/main/providers/nearest_emergency_services_provider.dart';
 import 'package:capstone/features/public_user/map/providers/contact_number_repository_provider.dart';
@@ -170,7 +171,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         SizedBox(
                           width: double.infinity,
                           child: ElevatedButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              launchPhoneCall("*123#");
+                            },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.red,
                               iconColor: Colors.white,
@@ -226,6 +229,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                   children: [
                                     NearbyServicesCard(
                                       name: service.name,
+                                      contactNumber: service.contactNumber,
                                       address: service.address,
                                       distance: distanceMeters / 1000,
                                     ),

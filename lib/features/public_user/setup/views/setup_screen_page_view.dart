@@ -26,7 +26,7 @@ class _SetupScreenPageView extends ConsumerState<SetupScreenPageView> {
   final userCardPageKey = GlobalKey<FormState>();
   final pageController = PageController(initialPage: 0);
   int currentPage = 0;
-  final numberOfPages = 5;
+  final numberOfPages = 4;
 
   @override
   void dispose() {
@@ -57,7 +57,6 @@ class _SetupScreenPageView extends ConsumerState<SetupScreenPageView> {
   @override
   Widget build(BuildContext context) {
     final formKeys = [
-      userContactNumPageKey,
       userInfoPageKey,
       userCardPageKey,
     ];
@@ -102,10 +101,6 @@ class _SetupScreenPageView extends ConsumerState<SetupScreenPageView> {
                       },
                       children: [
                         Form(
-                          key: userContactNumPageKey,
-                          child: SetupScreenPhoneVerificationPage(),
-                        ),
-                        Form(
                           key: userInfoPageKey,
                           child: SetupScreenPersonalInfoPage(),
                         ),
@@ -141,7 +136,7 @@ class _SetupScreenPageView extends ConsumerState<SetupScreenPageView> {
                       Expanded(
                         child: CustomElevatedButton(
                           onPressed: () async {
-                            if (currentPage < 3) {
+                            if (currentPage < 2) {
                               if (!formKeys[currentPage].currentState!.validate()) {
                                 return;
                               }
@@ -160,10 +155,11 @@ class _SetupScreenPageView extends ConsumerState<SetupScreenPageView> {
                                 if (!context.mounted) return;
 
                                 Navigator.pop(context); // dismiss the loading overlay
-                                Navigator.pushAndRemoveUntil(
+                                Navigator.push(
                                   context,
-                                  MaterialPageRoute(builder: (context) => OnboardingScreen()),
-                                  (route) => false,
+                                  MaterialPageRoute(
+                                    builder: (context) => OnboardingScreen(),
+                                  ),
                                 );
                               } catch (e) {
                                 if (!context.mounted) return;

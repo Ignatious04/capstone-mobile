@@ -17,6 +17,7 @@ class AuthWrapper extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     //FirebaseAuth.instance.signOut();
+
     final authState = ref.watch(authStateProvider);
 
     return authState.when(
@@ -47,6 +48,7 @@ class AuthWrapper extends ConsumerWidget {
                 if (user == null || !user.isSetup) {
                   return const WelcomeScreen();
                 }
+
                 return const LocationGate();
               },
               loading: () => const Scaffold(body: Center(child: CustomCircularProgressIndicator())),

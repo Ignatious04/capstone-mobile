@@ -1,0 +1,1 @@
+enum NotificationTypeEnum { connectivity, reportStatus }

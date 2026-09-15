@@ -16,17 +16,13 @@ final userProvider = NotifierProvider<UserNotifier, UserModel>(
 );
 
 final currentAuthenticatedUserProvider = StreamProvider<UserModel?>((ref) {
-  final currentUser = ref.watch(firebaseAuthProvider).currentUser;
+  final authUser = ref.watch(authStateProvider).value;
 
-  if (currentUser == null) {
+  if (authUser == null) {
     return Stream.value(null);
   }
 
-  return ref
-      .read(userRepositoryProvider)
-      .watchUser(
-        currentUser.uid,
-      );
+  return ref.read(userRepositoryProvider).watchUser(authUser.uid);
 });
 
 class UserNotifier extends Notifier<UserModel> {

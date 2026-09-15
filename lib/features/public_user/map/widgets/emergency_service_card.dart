@@ -110,7 +110,7 @@ class EmergencyServiceCard extends StatelessWidget {
                 ),
               ),
               IconButton(
-                icon: const Icon(Icons.call, color: Colors.green),
+                icon: const Icon(Icons.call, color: Colors.deepOrange, size: 30,),
                 onPressed: onCallTap,
               ),
               const Icon(

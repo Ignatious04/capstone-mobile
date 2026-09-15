@@ -50,14 +50,13 @@ class OnboardingScreen extends StatelessWidget {
                         backgroundColor: Colors.deepOrange,
                       ),
                       onPressed: () {
-                        Navigator.pushAndRemoveUntil(
+                        Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) {
                               return LocationGate();
                             },
                           ),
-                          (route) => false,
                         );
                       },
                       child: const Text("Proceed to Home"),

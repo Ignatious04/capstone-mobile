@@ -11,6 +11,7 @@ import 'package:capstone/core/shared/widgets/custom_text_field.dart';
 import 'package:capstone/core/shared/widgets/loading_overlay_widget.dart';
 import 'package:capstone/core/shared/widgets/text/button_text.dart';
 import 'package:capstone/core/shared/widgets/text/data_label_text.dart';
+import 'package:capstone/core/shared/widgets/text/paragraph_text.dart';
 import 'package:capstone/core/shared/widgets/text/supporting_info_text.dart';
 import 'package:capstone/features/public_user/map/widgets/map_tile_widget.dart';
 import 'package:capstone/features/public_user/reporting/providers/pending_attachments_provider.dart';
@@ -23,6 +24,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:capstone/core/shared/widgets/custom_alert_dialog.dart';
 
 class ReportsFormScreen extends ConsumerStatefulWidget {
   const ReportsFormScreen({super.key});
@@ -53,48 +55,48 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> {
     return LoadingOverlayWidget();
   }
 
-  Future<bool?> _showConfirmDialog(BuildContext context) {
-    return showDialog<bool>(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const SupportingInfoText(
-            value: "Are you sure that you wish to submit this report?",
-          ),
-          content: const Text("Put disclaimer here..."),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-          actions: [
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pop(context, false);
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.deepOrange,
-                foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
-              child: const Text("No"),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pop(context, true);
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.deepOrange,
-                foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
-              child: const Text("Yes"),
-            ),
-          ],
-        );
-      },
-    );
-  }
+  // Future<bool?> _showConfirmDialog(BuildContext context) {
+  //   return showDialog<bool>(
+  //     context: context,
+  //     builder: (context) {
+  //       return AlertDialog(
+  //         title: const SupportingInfoText(
+  //           value: "Are you sure that you wish to submit this report?",
+  //         ),
+  //         content: const ParagraphText(value: "Put disclaimer here..."),
+  //         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+  //         actions: [
+  //           ElevatedButton(
+  //             onPressed: () {
+  //               Navigator.pop(context, false);
+  //             },
+  //             style: ElevatedButton.styleFrom(
+  //               backgroundColor: Colors.deepOrange,
+  //               foregroundColor: Colors.white,
+  //               shape: RoundedRectangleBorder(
+  //                 borderRadius: BorderRadius.circular(12),
+  //               ),
+  //             ),
+  //             child: const Text("No"),
+  //           ),
+  //           ElevatedButton(
+  //             onPressed: () {
+  //               Navigator.pop(context, true);
+  //             },
+  //             style: ElevatedButton.styleFrom(
+  //               backgroundColor: Colors.deepOrange,
+  //               foregroundColor: Colors.white,
+  //               shape: RoundedRectangleBorder(
+  //                 borderRadius: BorderRadius.circular(12),
+  //               ),
+  //             ),
+  //             child: const Text("Yes"),
+  //           ),
+  //         ],
+  //       );
+  //     },
+  //   );
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -470,7 +472,11 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> {
                                   return;
                                 }
 
-                                final confirmed = await _showConfirmDialog(context);
+                                final confirmed = await showConfirmationDialog(
+                                  context,
+                                  title: "Do you wish to submit this report?",
+                                  content: "Disclaimer...",
+                                );
 
                                 if (confirmed != true) {
                                   return;

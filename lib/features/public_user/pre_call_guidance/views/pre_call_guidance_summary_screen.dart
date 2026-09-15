@@ -1,4 +1,5 @@
 import 'package:capstone/core/shared/providers/location_provider.dart';
+import 'package:capstone/core/shared/widgets/custom_alert_dialog.dart';
 import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
 import 'package:capstone/core/shared/widgets/custom_snackbar_helper.dart';
 import 'package:capstone/core/shared/widgets/text/card_title_text.dart';
@@ -7,6 +8,7 @@ import 'package:capstone/core/shared/widgets/text/data_value_text.dart';
 import 'package:capstone/core/shared/widgets/text/paragraph_text.dart';
 import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/public_user/pre_call_guidance/providers/guidance_provider.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -91,7 +93,20 @@ class PreCallGuidanceSummaryScreen extends ConsumerWidget {
           const SizedBox(height: 10),
           CustomElevatedButton(
             onPressed: () async {
+              final confirmed = await showConfirmationDialog(
+                context,
+                title: "Do you wish to submit this report?",
+              );
+
+              if (confirmed != true) {
+                return;
+              }
+
               final currentLocation = location.value;
+
+              if (!context.mounted) {
+                return;
+              }
 
               if (currentLocation == null) {
                 CustomSnackbarHelper.show(
@@ -101,8 +116,31 @@ class PreCallGuidanceSummaryScreen extends ConsumerWidget {
                 return;
               }
 
+              final connectivityResult = await Connectivity().checkConnectivity();
+              final isOnline = !connectivityResult.contains(ConnectivityResult.none);
+
+              if (!isOnline) {
+                if (!context.mounted) {
+                  return;
+                }
+
+                final confirmed = await showConfirmationDialog(
+                  context,
+                  title: "Due to the loss of internet connection, this report will send through the SMS, proceed?",
+                );
+
+                if (confirmed != true) {
+                  return;
+                }
+              }
+
               try {
-                await ref.read(guidanceProvider.notifier).submitGuidanceReport(location: currentLocation);
+                await ref
+                    .read(guidanceProvider.notifier)
+                    .submitGuidanceReport(
+                      location: currentLocation,
+                      isOnline: isOnline,
+                    );
 
                 if (context.mounted) {
                   Navigator.pop(context);

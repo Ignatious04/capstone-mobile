@@ -13,6 +13,7 @@ class MapTileWidget extends StatefulWidget {
     this.services = const [],
     this.mode = MapModeEnum.view,
     this.gesturesEnabled,
+    this.extraMarkers = const {},
   });
 
   final void Function(GoogleMapController controller)? onMapCreated;
@@ -21,6 +22,7 @@ class MapTileWidget extends StatefulWidget {
   final List<EmergencyServiceModel> services;
   final MapModeEnum mode;
   final bool? gesturesEnabled;
+  final Set<Marker> extraMarkers;
 
   @override
   State<MapTileWidget> createState() => _MapTileWidgetState();
@@ -51,6 +53,7 @@ class _MapTileWidgetState extends State<MapTileWidget> {
       }
     }
 
+    markers.addAll(widget.extraMarkers);
     return markers;
   }
 

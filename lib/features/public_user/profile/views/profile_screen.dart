@@ -138,6 +138,12 @@ class ProfileScreen extends ConsumerWidget {
                         );
 
                         await firebaseAuthRepository.signOut();
+
+                        if (!context.mounted) {
+                          return;
+                        }
+
+                        Navigator.pop(context);
                       } on FirebaseAuthException catch (e) {
                         debugPrint(e.message);
                       }
