@@ -1,6 +1,9 @@
+import 'package:capstone/core/enums/report_status_enum.dart';
 import 'package:capstone/core/shared/widgets/custom_circular_progress_indicator.dart';
 import 'package:capstone/core/shared/widgets/custom_header_widget.dart';
 import 'package:capstone/core/shared/widgets/text/supporting_info_text.dart';
+import 'package:capstone/core/themes/app_colors.dart';
+import 'package:capstone/features/public_user/reporting/models/report_model.dart';
 import 'package:capstone/features/public_user/reporting/widgets/report_card.dart';
 import 'package:capstone/features/public_user/reporting/providers/report_repository_provider.dart';
 import 'package:capstone/features/public_user/reporting/views/reports_form_screen.dart';
@@ -17,6 +20,40 @@ class ReportsScreen extends ConsumerStatefulWidget {
 
 class _ReportsScreenState extends ConsumerState<ReportsScreen> {
   final ScrollController _scrollController = ScrollController();
+
+  Color _getStatusColor(ReportModel report) {
+    switch (report.status) {
+      case ReportStatusEnum.pending:
+        return Colors.deepOrange;
+      case ReportStatusEnum.accepted:
+        return Colors.blue;
+      case ReportStatusEnum.dispatched:
+        return Colors.purple;
+      case ReportStatusEnum.onScene:
+        return AppColors.darkerGreen;
+      case ReportStatusEnum.resolved:
+        return AppColors.darkerGrey;
+      default:
+        return Colors.black;
+    }
+  }
+
+  Color _getStatusBackgroundColor(ReportModel report) {
+    switch (report.status) {
+      case ReportStatusEnum.pending:
+        return AppColors.lighterDeepOrange;
+      case ReportStatusEnum.accepted:
+        return AppColors.lighterBlue;
+      case ReportStatusEnum.dispatched:
+        return AppColors.lighterPurple;
+      case ReportStatusEnum.onScene:
+        return AppColors.lighterGreen;
+      case ReportStatusEnum.resolved:
+        return Colors.grey;
+      default:
+        return Colors.black;
+    }
+  }
 
   @override
   void dispose() {
@@ -52,15 +89,14 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
                     itemCount: reports.length,
                     itemBuilder: (context, index) {
                       final report = reports[index];
-                      return Padding(
-                        padding: const EdgeInsets.only(bottom: 10),
-                        child: ReportCard(
-                          referenceNumber: report.referenceNumber,
-                          emergencyType: report.incidentType!.name,
-                          createdAt: DateFormat("MMMM dd, yyyy").format(report.createdAt!),
-                          status: report.status!.name,
-                          report: report,
-                        ),
+                      return ReportCard(
+                        referenceNumber: report.referenceNumber,
+                        emergencyType: report.incidentType!.name,
+                        createdAt: DateFormat("MMM dd, yyyy • h:mm a").format(report.createdAt!),
+                        status: report.status!,
+                        statusColor: _getStatusColor(report),
+                        statusBackground: _getStatusBackgroundColor(report),
+                        report: report,
                       );
                     },
                   );

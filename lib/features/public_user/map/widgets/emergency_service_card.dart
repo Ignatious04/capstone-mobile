@@ -40,86 +40,94 @@ class EmergencyServiceCard extends StatelessWidget {
           color: AppColors.lighterBlack,
         ),
       ),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(12),
-        onTap: onTap,
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Row(
-            children: [
-              Container(
-                width: 50,
-                height: 50,
-                decoration: BoxDecoration(
-                  color: AppColors.lighterBlack,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Icon(
-                  icon,
-                  color: iconColor,
-                  size: 50,
-                ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+        child: Row(
+          children: [
+            Container(
+              width: 50,
+              height: 50,
+              decoration: BoxDecoration(
+                color: Colors.black12,
+                borderRadius: BorderRadius.circular(12),
               ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    CardTitleText(
-                      value: title,
-                    ),
-                    SubtitleText(
-                      value: contactNumber,
-                      overflow: TextOverflow.ellipsis,
-                      color: AppColors.darkerGrey,
-                    ),
-                    SubtitleText(
-                      value: address,
-                      overflow: TextOverflow.ellipsis,
-                      color: AppColors.darkerGrey,
-                    ),
-                    Row(
-                      children: [
-                        Icon(
-                          Icons.location_on,
-                          size: 25,
-                          color: AppColors.darkerGrey,
-                        ),
-                        SupportingInfoText(
-                          value: distance,
-                          color: AppColors.darkerGrey,
-                        ),
-                        const SizedBox(width: 10),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 10,
-                            vertical: 5,
-                          ),
-                          decoration: BoxDecoration(
-                            color: AppColors.lighterGreen,
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          child: SupportingInfoText(
-                            value: status,
-                            color: AppColors.darkerGreen,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              IconButton(
-                icon: const Icon(Icons.call, color: Colors.deepOrange, size: 30,),
-                onPressed: onCallTap,
-              ),
-              const Icon(
-                Icons.arrow_right,
-                color: Colors.deepOrange,
+              child: Icon(
+                icon,
+                color: iconColor,
                 size: 50,
               ),
-            ],
-          ),
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CardTitleText(
+                    value: title,
+                  ),
+                  SubtitleText(
+                    value: contactNumber,
+                    overflow: TextOverflow.ellipsis,
+                    color: AppColors.darkerGrey,
+                  ),
+                  SubtitleText(
+                    value: address,
+                    overflow: TextOverflow.ellipsis,
+                    color: AppColors.darkerGrey,
+                  ),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.location_on,
+                        size: 25,
+                        color: AppColors.darkerGrey,
+                      ),
+                      SupportingInfoText(
+                        value: distance,
+                        color: AppColors.darkerGrey,
+                      ),
+                      const SizedBox(width: 10),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 10,
+                          vertical: 5,
+                        ),
+                        decoration: BoxDecoration(
+                          color: AppColors.lighterGreen,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: SupportingInfoText(
+                          value: status,
+                          color: AppColors.darkerGreen,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(width: 10),
+            Column(
+              children: [
+                IconButton(
+                  icon: const Icon(
+                    Icons.call,
+                    color: Colors.deepOrange,
+                    size: 30,
+                  ),
+                  onPressed: onCallTap,
+                ),
+                IconButton(
+                  icon: const Icon(
+                    Icons.location_searching,
+                    color: Colors.deepOrange,
+                    size: 30,
+                  ),
+                  onPressed: onTap,
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );

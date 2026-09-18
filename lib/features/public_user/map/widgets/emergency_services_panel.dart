@@ -37,13 +37,13 @@ class _EmergencyServicesPanelState extends ConsumerState<EmergencyServicesPanel>
   IconData _getServiceIcon(EmergencyServiceModel service) {
     switch (service.type) {
       case ServiceTypeEnum.fire:
-        return Icons.local_fire_department;
+        return Icons.local_fire_department_outlined;
 
       case ServiceTypeEnum.police:
-        return Icons.local_police;
+        return Icons.local_police_outlined;
 
       case ServiceTypeEnum.medical:
-        return Icons.local_hospital;
+        return Icons.local_hospital_outlined;
     }
   }
 
@@ -118,13 +118,13 @@ class _EmergencyServicesPanelState extends ConsumerState<EmergencyServicesPanel>
 
     return DraggableScrollableSheet(
       controller: _panelController,
-      initialChildSize: 0.30,
-      minChildSize: 0.09,
+      initialChildSize: 0.35,
+      minChildSize: 0.12,
       maxChildSize: 0.75,
       snap: true,
       snapSizes: const [
-        0.09,
-        0.30,
+        0.12,
+        0.35,
         0.75,
       ],
       builder:
@@ -157,7 +157,7 @@ class _EmergencyServicesPanelState extends ConsumerState<EmergencyServicesPanel>
                           children: [
                             Padding(
                               padding: const EdgeInsets.only(
-                                top: 10,
+                                top: 20,
                               ),
                               child: Container(
                                 width: 50,
@@ -191,7 +191,7 @@ class _EmergencyServicesPanelState extends ConsumerState<EmergencyServicesPanel>
                                     ],
                                   ),
                                   const SizedBox(
-                                    height: 10,
+                                    height: 30,
                                   ),
                                   CustomTextField(
                                     title: "Search",

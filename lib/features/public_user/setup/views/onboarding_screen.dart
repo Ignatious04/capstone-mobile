@@ -1,4 +1,3 @@
-import 'package:capstone/core/shared/widgets/location_gate.dart';
 import 'package:capstone/core/shared/widgets/text/screen_title_text.dart';
 import 'package:capstone/core/shared/widgets/text/sub_title_text.dart';
 import 'package:capstone/core/themes/app_colors.dart';
@@ -50,14 +49,8 @@ class OnboardingScreen extends StatelessWidget {
                         backgroundColor: Colors.deepOrange,
                       ),
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return LocationGate();
-                            },
-                          ),
-                        );
+                        debugPrint("Pressed");
+                        Navigator.popUntil(context, (route) => route.isFirst);
                       },
                       child: const Text("Proceed to Home"),
                     ),

@@ -1,4 +1,7 @@
+import 'package:capstone/core/enums/report_status_enum.dart';
 import 'package:capstone/core/enums/report_type_enum.dart';
+import 'package:capstone/core/shared/widgets/text/supporting_info_text.dart';
+import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/core/utilities/formatter.dart';
 import 'package:capstone/core/shared/widgets/text/sub_title_text.dart';
 import 'package:capstone/core/shared/widgets/text/card_title_text.dart';
@@ -14,21 +17,32 @@ class ReportCard extends StatelessWidget {
     required this.emergencyType,
     required this.createdAt,
     required this.status,
+    required this.statusColor,
+    required this.statusBackground,
     required this.report,
   });
 
   final String referenceNumber;
   final String emergencyType;
   final String createdAt;
-  final String status;
+  final ReportStatusEnum status;
+  final Color statusColor;
+  final Color statusBackground;
   final ReportModel report;
 
   @override
   Widget build(BuildContext context) {
     return Card(
+      margin: const EdgeInsets.only(bottom: 10),
+      color: Colors.white,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+        side: BorderSide(
+          color: AppColors.lighterBlack,
+        ),
+      ),
       child: Container(
         width: double.infinity,
-        padding: EdgeInsets.all(0),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
           color: Colors.white,
@@ -51,10 +65,28 @@ class ReportCard extends StatelessWidget {
                         value: "Emergency Type: ${Formatter.formatEnumName(emergencyType)}",
                       ),
                       SubtitleText(
-                        value: "Date: $createdAt",
+                        value: createdAt,
                       ),
-                      SubtitleText(
-                        value: "Status: ${Formatter.formatEnumName(status)}",
+                      Row(
+                        children: [
+                          SubtitleText(
+                            value: "Status: ",
+                          ),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 5,
+                            ),
+                            decoration: BoxDecoration(
+                              color: statusBackground,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: SupportingInfoText(
+                              value: Formatter.formatEnumName(status.name),
+                              color: statusColor,
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -70,21 +102,26 @@ class ReportCard extends StatelessWidget {
                 ),
                 GestureDetector(
                   onTap: () {
-                    if (report.reportType == ReportTypeEnum.normal) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) {
-                            return NormalReportsViewScreen(report: report);
-                          },
-                        ),
-                      );
-                    } else {
+                    if (report.reportType == ReportTypeEnum.preCallGuidance) {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) {
                             return PreCallGuidanceReportViewScreen(report: report);
+                          },
+                        ),
+                      );
+                    } else {
+                      // normal and quick (one-tap) reports share the same shape
+                      // (incident type, description, location, victims, attachments) -
+                      // quick reports just leave most of it empty, which
+                      // NormalReportsViewScreen already renders sensibly
+                      // (e.g. "No description provided.").
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return NormalReportsViewScreen(report: report);
                           },
                         ),
                       );

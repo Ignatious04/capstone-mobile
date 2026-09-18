@@ -35,7 +35,7 @@ class GuidanceNotifier extends Notifier<QuestionState> {
     );
   }
 
-  Future<void> submitGuidanceReport({required LatLng location, required bool isOnline}) async {
+  Future<bool> submitGuidanceReport({required LatLng location, required bool isOnline}) async {
     final incidentType = ref.read(reportProvider).incidentType;
 
     if (incidentType == null) {
@@ -51,7 +51,7 @@ class GuidanceNotifier extends Notifier<QuestionState> {
         referenceNumber: referenceNumber,
         location: location,
       );
-      return;
+      return true;
     }
 
     final reportRepository = ref.read(reportRepositoryProvider);
@@ -72,6 +72,8 @@ class GuidanceNotifier extends Notifier<QuestionState> {
         );
 
     await reportRepository.createReport(report);
+
+    return false;
   }
 
   Future<void> _submitViaSms({

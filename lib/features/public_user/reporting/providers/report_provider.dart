@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:capstone/core/enums/report_status_enum.dart';
+import 'package:capstone/core/enums/report_type_enum.dart';
 import 'package:capstone/core/enums/service_type_enum.dart';
 import 'package:capstone/core/shared/providers/firebase_auth_provider.dart';
 import 'package:capstone/core/shared/providers/realtime_database_repository_provider.dart';
@@ -73,6 +74,43 @@ class ReportNotifier extends Notifier<ReportModel> {
     await realtimeRepository.create(path: "activeReports/${report.reportID}", data: realtimeReport.toMap());
 
     ref.read(pendingAttachmentsProvider.notifier).state = [];
+  }
+
+  Future<void> submitQuickReport({
+    required ServiceTypeEnum incidentType,
+    required LatLng location,
+  }) async {
+    final reportRepository = ref.read(reportRepositoryProvider);
+    final realtimeRepository = ref.read(realtimeDatabaseRepositoryProvider);
+    final userID = ref.read(firebaseAuthProvider).currentUser!.uid;
+
+    final reportID = reportRepository.getReportID();
+    final now = DateTime.now();
+    final referenceNumber = ReferenceNumberGenerator.generate(now);
+
+    final report = ReportModel(
+      reportID: reportID,
+      referenceNumber: referenceNumber,
+      userID: userID,
+      reportType: ReportTypeEnum.quick,
+      incidentType: incidentType,
+      status: ReportStatusEnum.pending,
+      location: GeoPoint(location.latitude, location.longitude),
+      createdAt: now,
+    );
+
+    await reportRepository.createReport(report);
+
+    final realtimeReport = RealtimeReportModel(
+      reportID: report.reportID,
+      referenceNumber: report.referenceNumber,
+      status: report.status ?? ReportStatusEnum.pending,
+      latitude: report.location?.latitude ?? 0,
+      longitude: report.location?.longitude ?? 0,
+      updatedAt: now,
+    );
+
+    await realtimeRepository.create(path: "activeReports/${report.reportID}", data: realtimeReport.toMap());
   }
 
   void setIncidentType(ServiceTypeEnum value) {

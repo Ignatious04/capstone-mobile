@@ -42,4 +42,16 @@ class UserRepository {
 
     return query.docs.any((doc) => doc.id != excludeUserID);
   }
+
+  Future<void> updateFcmToken(String uid, String token) async {
+    await firestore.collection('users').doc(uid).set({
+      'fcmToken': token,
+    }, SetOptions(merge: true));
+  }
+
+  Future<void> clearFcmToken(String uid) async {
+    await firestore.collection('users').doc(uid).update({
+      'fcmToken': FieldValue.delete(),
+    });
+  }
 }

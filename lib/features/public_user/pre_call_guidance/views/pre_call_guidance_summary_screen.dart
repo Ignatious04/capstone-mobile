@@ -22,7 +22,7 @@ class PreCallGuidanceSummaryScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(guidanceProvider);
-    final location = ref.watch(locationStreamProvider);
+    final location = ref.watch(currentLocationProvider);
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -91,76 +91,97 @@ class PreCallGuidanceSummaryScreen extends ConsumerWidget {
             ),
           ),
           const SizedBox(height: 10),
+          if (location.isLoading)
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: 16,
+                    width: 16,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  ),
+                  SizedBox(width: 10),
+                  ParagraphText(value: "Getting your location..."),
+                ],
+              ),
+            ),
           CustomElevatedButton(
-            onPressed: () async {
-              final confirmed = await showConfirmationDialog(
-                context,
-                title: "Do you wish to submit this report?",
-              );
-
-              if (confirmed != true) {
-                return;
-              }
-
-              final currentLocation = location.value;
-
-              if (!context.mounted) {
-                return;
-              }
-
-              if (currentLocation == null) {
-                CustomSnackbarHelper.show(
-                  context,
-                  text: "Location unavailable!",
-                );
-                return;
-              }
-
-              final connectivityResult = await Connectivity().checkConnectivity();
-              final isOnline = !connectivityResult.contains(ConnectivityResult.none);
-
-              if (!isOnline) {
-                if (!context.mounted) {
-                  return;
-                }
-
-                final confirmed = await showConfirmationDialog(
-                  context,
-                  title: "Due to the loss of internet connection, this report will send through the SMS, proceed?",
-                );
-
-                if (confirmed != true) {
-                  return;
-                }
-              }
-
-              try {
-                await ref
-                    .read(guidanceProvider.notifier)
-                    .submitGuidanceReport(
-                      location: currentLocation,
-                      isOnline: isOnline,
+            onPressed: location.isLoading
+                ? null
+                : () async {
+                    final confirmed = await showConfirmationDialog(
+                      context,
+                      title: "Do you wish to submit this report?",
                     );
 
-                if (context.mounted) {
-                  Navigator.pop(context);
+                    if (confirmed != true) {
+                      return;
+                    }
 
-                  CustomSnackbarHelper.show(
-                    context,
-                    text: "Guidance report submitted successfully!",
-                  );
-                }
-              } catch (e) {
-                debugPrint("ERROR: $e");
-                if (!context.mounted) {
-                  return;
-                }
-                CustomSnackbarHelper.show(
-                  context,
-                  text: "An error has occurred while trying to send your report!",
-                );
-              }
-            },
+                    final currentLocation = location.value;
+
+                    if (!context.mounted) {
+                      return;
+                    }
+
+                    if (currentLocation == null) {
+                      CustomSnackbarHelper.show(
+                        context,
+                        text: "Location unavailable!",
+                      );
+                      return;
+                    }
+
+                    final connectivityResult = await Connectivity().checkConnectivity();
+                    final isOnline = !connectivityResult.contains(ConnectivityResult.none);
+
+                    if (!isOnline) {
+                      if (!context.mounted) {
+                        return;
+                      }
+
+                      final confirmed = await showConfirmationDialog(
+                        context,
+                        title:
+                            "Due to the loss of internet connection, this report will send through the SMS, proceed?",
+                      );
+
+                      if (confirmed != true) {
+                        return;
+                      }
+                    }
+
+                    try {
+                      final isSMS = await ref
+                          .read(guidanceProvider.notifier)
+                          .submitGuidanceReport(
+                            location: currentLocation,
+                            isOnline: isOnline,
+                          );
+
+                      if (context.mounted) {
+                        Navigator.pop(context);
+
+                        if (!isSMS) {
+                          CustomSnackbarHelper.show(
+                            context,
+                            text: "Guidance report submitted successfully!",
+                          );
+                        }
+                      }
+                    } catch (e) {
+                      debugPrint("ERROR: $e");
+                      if (!context.mounted) {
+                        return;
+                      }
+                      CustomSnackbarHelper.show(
+                        context,
+                        text: "An error has occurred while trying to send your report!",
+                      );
+                    }
+                  },
             value: "Submit Report",
             color: Colors.white,
             backgroundColor: Colors.deepOrange,

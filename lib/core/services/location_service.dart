@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:capstone/core/enums/location_status_enum.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -52,13 +54,30 @@ class LocationService {
   }
 
   Future<LatLng> getCurrentLocation() async {
-    final position = await Geolocator.getCurrentPosition();
+    Position position;
+    try {
+      position = await Geolocator.getCurrentPosition(
+        locationSettings: const LocationSettings(
+          accuracy: LocationAccuracy.high,
+          timeLimit: Duration(seconds: 10),
+        ),
+      );
+    } on TimeoutException {
+      // Fall back to last known position, or a lower-accuracy fix
+      final lastKnown = await Geolocator.getLastKnownPosition();
+      if (lastKnown != null) {
+        position = lastKnown;
+      } else {
+        position = await Geolocator.getCurrentPosition(
+          locationSettings: const LocationSettings(
+            accuracy: LocationAccuracy.medium,
+            timeLimit: Duration(seconds: 20),
+          ),
+        );
+      }
+    }
 
-    currentLatLng = LatLng(
-      position.latitude,
-      position.longitude,
-    );
-
+    currentLatLng = LatLng(position.latitude, position.longitude);
     return currentLatLng!;
   }
 

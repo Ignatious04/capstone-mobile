@@ -14,16 +14,20 @@ class NotificationHistoryScreen extends ConsumerWidget {
     final hasUnread = notifications.any((n) => !n.isRead);
 
     return Scaffold(
+      appBar: AppBar(
+        title: const SizedBox(
+          width: double.infinity,
+          child: CustomHeaderWidget(
+            title: "Notifications",
+            hasPadding: false,
+            hasBoxShadow: false,
+          ),
+        ),
+        titleSpacing: 0,
+      ),
       body: SafeArea(
         child: Column(
           children: [
-            const SizedBox(
-              width: double.infinity,
-              child: CustomHeaderWidget(
-                title: "Notifications",
-                body: "Connectivity and case updates",
-              ),
-            ),
             if (hasUnread)
               Align(
                 alignment: Alignment.centerRight,

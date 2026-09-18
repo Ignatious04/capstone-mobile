@@ -51,59 +51,70 @@ class _MainScreenState extends State<MainScreen> {
           children: pages,
         ),
       ),
-      bottomNavigationBar: CurvedNavigationBar(
-        color: Colors.deepOrange,
-        backgroundColor: Colors.deepOrangeAccent,
-        buttonBackgroundColor: Colors.deepOrange,
-        index: currentPageIndex,
-        animationDuration: Duration(milliseconds: 300),
-        items: [
-          CurvedNavigationBarItem(
-            child: Icon(
-              Icons.map,
-              color: Colors.white,
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black26,
+              blurRadius: 12,
+              offset: Offset(0, 3),
             ),
-            label: "Map",
-            labelStyle: labelStyle,
-          ),
-          CurvedNavigationBarItem(
-            child: Icon(
-              Icons.chat,
-              color: Colors.white,
+          ],
+        ),
+        child: CurvedNavigationBar(
+          color: Colors.deepOrange,
+          backgroundColor: Colors.deepOrangeAccent,
+          buttonBackgroundColor: Colors.deepOrange,
+          index: currentPageIndex,
+          animationDuration: Duration(milliseconds: 300),
+          items: [
+            CurvedNavigationBarItem(
+              child: Icon(
+                Icons.map,
+                color: Colors.white,
+              ),
+              label: "Map",
+              labelStyle: labelStyle,
             ),
-            label: "Reports",
-            labelStyle: labelStyle,
-          ),
-          CurvedNavigationBarItem(
-            child: Icon(
-              Icons.home,
-              color: Colors.white,
+            CurvedNavigationBarItem(
+              child: Icon(
+                Icons.chat,
+                color: Colors.white,
+              ),
+              label: "Reports",
+              labelStyle: labelStyle,
             ),
-            label: "Home",
-            labelStyle: labelStyle,
-          ),
-          CurvedNavigationBarItem(
-            child: Icon(
-              Icons.menu_book,
-              color: Colors.white,
+            CurvedNavigationBarItem(
+              child: Icon(
+                Icons.home,
+                color: Colors.white,
+              ),
+              label: "Home",
+              labelStyle: labelStyle,
             ),
-            label: "Guidance",
-            labelStyle: labelStyle,
-          ),
-          CurvedNavigationBarItem(
-            child: Icon(
-              Icons.account_circle,
-              color: Colors.white,
+            CurvedNavigationBarItem(
+              child: Icon(
+                Icons.menu_book,
+                color: Colors.white,
+              ),
+              label: "Guidance",
+              labelStyle: labelStyle,
             ),
-            label: "Profile",
-            labelStyle: labelStyle,
-          ),
-        ],
-        onTap: (value) {
-          setState(() {
-            currentPageIndex = value;
-          });
-        },
+            CurvedNavigationBarItem(
+              child: Icon(
+                Icons.account_circle,
+                color: Colors.white,
+              ),
+              label: "Profile",
+              labelStyle: labelStyle,
+            ),
+          ],
+          onTap: (value) {
+            setState(() {
+              currentPageIndex = value;
+            });
+          },
+        ),
       ),
     );
   }

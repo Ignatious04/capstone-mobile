@@ -3,7 +3,6 @@ import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
 import 'package:capstone/core/shared/widgets/custom_header_widget.dart';
 import 'package:capstone/core/shared/widgets/custom_snackbar_helper.dart';
 import 'package:capstone/core/shared/widgets/loading_overlay_widget.dart';
-import 'package:capstone/features/public_user/setup/views/setup_screen_phone_verification_page.dart';
 import 'package:capstone/features/public_user/setup/views/setup_screen_user_card_page.dart';
 import 'package:capstone/features/public_user/setup/views/setup_screen_personal_info_page.dart';
 import 'package:capstone/features/public_user/setup/views/setup_screen_medical_info_page.dart';

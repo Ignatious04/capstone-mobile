@@ -1,5 +1,4 @@
 import 'package:capstone/core/exceptions/auth_exception.dart';
-import 'package:capstone/core/shared/widgets/auth_wrapper.dart';
 import 'package:capstone/core/shared/widgets/custom_circular_progress_indicator.dart';
 import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
 import 'package:capstone/core/shared/widgets/custom_snackbar_helper.dart';
@@ -50,11 +49,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         data: (_) {
           if (previous is AsyncLoading) {
             CustomSnackbarHelper.show(context, text: "Logged in successfully!");
-            Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(builder: (context) => AuthWrapper()),
-              (route) => false,
-            );
           }
         },
       );
@@ -82,8 +76,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 const CardTitleText(
-                  value: "MEAS",
+                  value: "Saup Angeles",
                   color: Colors.white,
+                  isBold: true,
                 ),
                 const SubtitleText(
                   value: "Mobile Emergency Access System",

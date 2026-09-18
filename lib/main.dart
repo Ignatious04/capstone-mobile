@@ -1,10 +1,14 @@
 import 'package:capstone/core/l10n/app_localizations.dart';
+import 'package:capstone/core/services/push_notification_service.dart';
 import 'package:capstone/core/shared/providers/app_notification_provider.dart';
 import 'package:capstone/core/shared/providers/connectivity_stream_provider.dart';
+import 'package:capstone/core/shared/providers/firebase_auth_provider.dart';
 import 'package:capstone/core/shared/providers/locale_provider.dart';
 import 'package:capstone/core/shared/widgets/app_notification_overlay.dart';
-import 'package:capstone/core/shared/widgets/auth_wrapper.dart';
+import 'package:capstone/features/auth_wrapper.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -14,9 +18,8 @@ import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler); // register before runApp
   runApp(ProviderScope(child: const MyApp()));
 }
 
@@ -57,6 +60,18 @@ class _MyAppState extends ConsumerState<MyApp> {
               .show(
                 'Back online.',
               );
+        }
+      });
+    });
+
+    ref.listen<AsyncValue<User?>>(authStateProvider, (previous, next) {
+      next.whenData((authUser) {
+        final push = ref.read(pushNotificationServiceProvider);
+        if (authUser != null && authUser.emailVerified) {
+          push.init();
+          push.registerToken(authUser.uid);
+        } else if (previous?.value != null && authUser == null) {
+          push.clearToken(previous!.value!.uid);
         }
       });
     });
