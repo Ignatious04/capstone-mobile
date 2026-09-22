@@ -54,4 +54,13 @@ class UserRepository {
       'fcmToken': FieldValue.delete(),
     });
   }
+
+  Future<void> setDeactivated(String uid, {required bool isDeactivated}) async {
+    final now = DateTime.now().millisecondsSinceEpoch;
+    await firestore.collection('users').doc(uid).update({
+      'isDeactivated': isDeactivated,
+      'deactivatedAt': isDeactivated ? now : null,
+      'updatedAt': now,
+    });
+  }
 }

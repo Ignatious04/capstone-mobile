@@ -54,7 +54,8 @@ class UserNotifier extends Notifier<UserModel> {
   }
 
   Future<void> updateUserSetup() async {
-    final userID = ref.read(firebaseAuthProvider).currentUser!.uid;
+    final authUser = ref.read(firebaseAuthProvider).currentUser!;
+    final userID = authUser.uid;
     var user = state;
 
     if (user.profileImage != null) {
@@ -78,13 +79,21 @@ class UserNotifier extends Notifier<UserModel> {
     }
 
     setIsSetup(true);
-    user = state;
+
+    user = state.copyWith(
+      userID: userID,
+      email: authUser.email ?? state.email,
+      updatedAt: DateTime.now().millisecondsSinceEpoch,
+    );
+
+    final data = user.toMap();
+    if (user.createdAt == 0) data.remove('createdAt'); // keep the original from registration
 
     await ref
         .read(userRepositoryProvider)
         .updateUser(
           userID,
-          user.toMap(),
+          data,
         );
   }
 

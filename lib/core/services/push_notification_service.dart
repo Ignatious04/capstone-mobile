@@ -53,7 +53,11 @@ class PushNotificationService {
   /// Call on sign-out so a stale token doesn't keep receiving another
   /// account's pushes on a shared device.
   Future<void> clearToken(String userID) async {
-    await ref.read(userRepositoryProvider).clearFcmToken(userID);
+    try {
+      await ref.read(userRepositoryProvider).clearFcmToken(userID);
+    } catch (e) {
+      debugPrint('clearToken failed: $e');
+    }
   }
 
   void _handleForegroundMessage(RemoteMessage message) {
@@ -63,16 +67,18 @@ class PushNotificationService {
 
     ref.read(appNotificationProvider.notifier).show('$title: $body');
 
-    ref.read(notificationHistoryProvider.notifier).add(
-      NotificationModel(
-        id: message.messageId ?? DateTime.now().millisecondsSinceEpoch.toString(),
-        type: NotificationTypeEnum.reportStatus,
-        title: title,
-        message: body,
-        createdAt: DateTime.now(),
-        reportID: reportID,
-      ),
-    );
+    ref
+        .read(notificationHistoryProvider.notifier)
+        .add(
+          NotificationModel(
+            id: message.messageId ?? DateTime.now().millisecondsSinceEpoch.toString(),
+            type: NotificationTypeEnum.reportStatus,
+            title: title,
+            message: body,
+            createdAt: DateTime.now(),
+            reportID: reportID,
+          ),
+        );
   }
 
   void _handleNotificationTap(RemoteMessage message) {

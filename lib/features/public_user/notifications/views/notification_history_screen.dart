@@ -1,5 +1,5 @@
 import 'package:capstone/core/shared/providers/notification_history_provider.dart';
-import 'package:capstone/core/shared/widgets/custom_header_widget.dart';
+import 'package:capstone/core/shared/widgets/custom_app_bar.dart';
 import 'package:capstone/core/shared/widgets/text/supporting_info_text.dart';
 import 'package:capstone/features/public_user/notifications/widgets/notification_card.dart';
 import 'package:flutter/material.dart';
@@ -14,17 +14,7 @@ class NotificationHistoryScreen extends ConsumerWidget {
     final hasUnread = notifications.any((n) => !n.isRead);
 
     return Scaffold(
-      appBar: AppBar(
-        title: const SizedBox(
-          width: double.infinity,
-          child: CustomHeaderWidget(
-            title: "Notifications",
-            hasPadding: false,
-            hasBoxShadow: false,
-          ),
-        ),
-        titleSpacing: 0,
-      ),
+      appBar: CustomAppBar(value: "Notifications"),
       body: SafeArea(
         child: Column(
           children: [

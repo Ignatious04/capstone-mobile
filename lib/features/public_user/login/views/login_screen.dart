@@ -3,7 +3,8 @@ import 'package:capstone/core/shared/widgets/custom_circular_progress_indicator.
 import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
 import 'package:capstone/core/shared/widgets/custom_snackbar_helper.dart';
 import 'package:capstone/core/shared/widgets/custom_text_field.dart';
-import 'package:capstone/core/shared/widgets/text/card_title_text.dart';
+import 'package:capstone/core/shared/widgets/google_sign_in_button.dart';
+import 'package:capstone/core/shared/widgets/text/screen_title_text.dart';
 import 'package:capstone/core/shared/widgets/text/section_title_text.dart';
 import 'package:capstone/core/shared/widgets/text/sub_title_text.dart';
 import 'package:capstone/core/shared/widgets/text/supporting_info_text.dart';
@@ -75,7 +76,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const CardTitleText(
+                const ScreenTitleText(
                   value: "Saup Angeles",
                   color: Colors.white,
                   isBold: true,
@@ -147,7 +148,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 ),
                 Align(
                   alignment: Alignment.centerRight,
-                  child: GestureDetector(
+                  child: InkWell(
                     onTap: () {
                       Navigator.push(
                         context,
@@ -158,9 +159,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         ),
                       );
                     },
-                    child: const SupportingInfoText(
-                      value: "Forgot password?",
-                      color: Colors.red,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                      child: const SupportingInfoText(
+                        value: "Forgot password?",
+                        color: Colors.deepOrange,
+                      ),
                     ),
                   ),
                 ),
@@ -221,11 +225,16 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 const SizedBox(
                   height: 10,
                 ),
+                const GoogleSignInButton(),
+                const SizedBox(
+                  height: 10,
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     const SupportingInfoText(value: "Didn't have an account?", color: AppColors.darkerGrey),
-                    GestureDetector(
+                    SizedBox(width: 5),
+                    InkWell(
                       onTap: () {
                         Navigator.push(
                           context,
@@ -237,7 +246,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         );
                       },
                       child: Padding(
-                        padding: const EdgeInsets.only(left: 8.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 5.0),
                         child: SupportingInfoText(
                           value: "Create one",
                           color: Colors.deepOrange,

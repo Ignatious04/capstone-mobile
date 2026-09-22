@@ -4,7 +4,13 @@ import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
 import 'package:capstone/core/shared/widgets/custom_snackbar_helper.dart';
 import 'package:capstone/core/shared/widgets/custom_text_field.dart';
 import 'package:capstone/core/shared/providers/user_provider.dart';
+import 'package:capstone/core/shared/widgets/google_sign_in_button.dart';
+import 'package:capstone/core/shared/widgets/text/section_title_text.dart';
+import 'package:capstone/core/shared/widgets/text/supporting_info_text.dart';
+import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/public_user/register/providers/register_provider.dart';
+import 'package:capstone/features/public_user/register/views/privacy_policy_screen.dart';
+import 'package:capstone/features/public_user/register/views/terms_and_conditions_screen.dart';
 import 'package:capstone/features/public_user/reporting/widgets/section_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -22,6 +28,8 @@ class _RegisterScreenPage extends ConsumerState<RegisterScreen> {
   TextEditingController confirmPasswordController = TextEditingController();
   final registerScreenKey = GlobalKey<FormState>();
   String errorMessage = "";
+  bool hasReadTermsAndConditions = false;
+  bool hasReadPrivacyPolicy = false;
 
   @override
   void initState() {
@@ -54,7 +62,7 @@ class _RegisterScreenPage extends ConsumerState<RegisterScreen> {
     final isRegistering = ref.watch(registerProvider).isLoading;
 
     return Scaffold(
-      appBar: CustomAppBar(value: "Register"),
+      appBar: CustomAppBar(value: "Registration"),
       body: SafeArea(
         child: Form(
           key: registerScreenKey,
@@ -121,10 +129,79 @@ class _RegisterScreenPage extends ConsumerState<RegisterScreen> {
                         isRequired: true,
                       ),
                       const SizedBox(height: 10),
+                      Row(
+                        children: [
+                          Checkbox(
+                            value: hasReadTermsAndConditions,
+                            onChanged: (value) {
+                              setState(() {
+                                hasReadTermsAndConditions = value ?? false;
+                              });
+                            },
+                          ),
+                          Expanded(
+                            child: InkWell(
+                              borderRadius: BorderRadius.circular(12),
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) {
+                                      return TermsAndConditionsScreen();
+                                    },
+                                  ),
+                                );
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                                child: const SupportingInfoText(
+                                  value: "I have read and agree to the Terms and Conditions",
+                                  color: Colors.deepOrange,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Checkbox(
+                            value: hasReadPrivacyPolicy,
+                            onChanged: (value) {
+                              setState(() {
+                                hasReadPrivacyPolicy = value ?? false;
+                              });
+                            },
+                          ),
+                          Expanded(
+                            child: InkWell(
+                              borderRadius: BorderRadius.circular(12),
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) {
+                                      return PrivacyPolicyScreen();
+                                    },
+                                  ),
+                                );
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                                child: const SupportingInfoText(
+                                  value: "I have read and acknowledge the app's Privacy Policy.",
+                                  color: Colors.deepOrange,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 10),
                       SizedBox(
                         width: double.infinity,
                         child: CustomElevatedButton(
-                          onPressed: isRegistering
+                          onPressed: isRegistering || !hasReadTermsAndConditions || !hasReadPrivacyPolicy
                               ? null
                               : () async {
                                   if (!registerScreenKey.currentState!.validate()) {
@@ -140,6 +217,22 @@ class _RegisterScreenPage extends ConsumerState<RegisterScreen> {
                                 },
                           value: "Sign Up",
                         ),
+                      ),
+                      const SizedBox(height: 10),
+                      Row(
+                        children: [
+                          Expanded(child: Divider(color: Colors.black.withValues(alpha: 0.2))),
+                          const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 10),
+                            child: SectionTitleText(value: "OR", color: AppColors.lighterBlack),
+                          ),
+                          Expanded(child: Divider(color: Colors.black.withValues(alpha: 0.2))),
+                        ],
+                      ),
+                      const SizedBox(height: 10),
+                      GoogleSignInButton(
+                        label: "Sign up with Google",
+                        onSuccess: () => Navigator.pop(context),
                       ),
                       const SizedBox(height: 10),
                     ],

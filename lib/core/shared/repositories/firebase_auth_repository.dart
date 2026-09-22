@@ -1,5 +1,7 @@
 import 'package:capstone/core/exceptions/auth_exception.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class FirebaseAuthRepository {
   final FirebaseAuth firebaseAuth;
@@ -7,6 +9,35 @@ class FirebaseAuthRepository {
 
   User? get currentUser => firebaseAuth.currentUser;
   Stream<User?> get authStateChanges => firebaseAuth.authStateChanges();
+  bool get hasPasswordProvider => currentUser?.providerData.any((p) => p.providerId == 'password') ?? false;
+
+  static const _webClientId = 'PASTE_WEB_CLIENT_ID.apps.googleusercontent.com';
+  static Future<void>? _googleInit;
+
+  // GoogleSignIn.initialize() must be called exactly once per app run.
+  Future<void> _ensureGoogleInitialized() {
+    return _googleInit ??= GoogleSignIn.instance.initialize(serverClientId: _webClientId);
+  }
+
+  /// Returns null if the user closes the Google account picker.
+  Future<UserCredential?> signInWithGoogle() async {
+    try {
+      await _ensureGoogleInitialized();
+      final googleUser = await GoogleSignIn.instance.authenticate();
+      final idToken = googleUser.authentication.idToken;
+      if (idToken == null) {
+        throw AuthException('Google sign-in failed. Please try again.');
+      }
+      final credential = GoogleAuthProvider.credential(idToken: idToken);
+      return await firebaseAuth.signInWithCredential(credential);
+    } on GoogleSignInException catch (e) {
+      if (e.code == GoogleSignInExceptionCode.canceled) return null;
+      debugPrint('Google sign-in error: ${e.code} ${e.description}');
+      throw AuthException('Google sign-in failed. Please try again.');
+    } on FirebaseAuthException catch (e) {
+      throw _mapAuthError(e);
+    }
+  }
 
   Future<UserCredential> createAccount({
     required String email,
@@ -36,13 +67,67 @@ class FirebaseAuthRepository {
     }
   }
 
+  /// Email/password accounts only.
+  Future<void> changePassword({
+    required String currentPassword,
+    required String newPassword,
+  }) async {
+    try {
+      final user = currentUser;
+      if (user == null) throw AuthException('No user is currently signed in.');
+      if (!hasPasswordProvider || user.email == null) {
+        throw AuthException('This account signs in with Google and has no password.');
+      }
+
+      await user.reauthenticateWithCredential(
+        EmailAuthProvider.credential(email: user.email!, password: currentPassword),
+      );
+      await user.updatePassword(newPassword);
+    } on FirebaseAuthException catch (e) {
+      throw _mapAuthError(e);
+    }
+  }
+
+  /// Re-verifies the user before a sensitive action. Pass [password] for
+  /// email accounts; leave it null for Google accounts (shows the Google picker).
+  /// Returns false if the user cancelled the picker.
+  Future<bool> reauthenticate({String? password}) async {
+    try {
+      final user = currentUser;
+      if (user == null) throw AuthException('No user is currently signed in.');
+
+      if (hasPasswordProvider) {
+        if (password == null || password.isEmpty) {
+          throw AuthException('Please enter your password.');
+        }
+        await user.reauthenticateWithCredential(
+          EmailAuthProvider.credential(email: user.email!, password: password),
+        );
+        return true;
+      }
+
+      await _ensureGoogleInitialized();
+      final googleUser = await GoogleSignIn.instance.authenticate();
+      final idToken = googleUser.authentication.idToken;
+      if (idToken == null) throw AuthException('Google sign-in failed. Please try again.');
+
+      await user.reauthenticateWithCredential(GoogleAuthProvider.credential(idToken: idToken));
+      return true;
+    } on GoogleSignInException catch (e) {
+      if (e.code == GoogleSignInExceptionCode.canceled) return false;
+      throw AuthException('Google sign-in failed. Please try again.');
+    } on FirebaseAuthException catch (e) {
+      throw _mapAuthError(e);
+    }
+  }
+
   Exception _mapAuthError(FirebaseAuthException e) {
     switch (e.code) {
       case 'user-not-found':
-      case 'wrong-password':
       case 'invalid-email':
         return AuthException("Please check the format of your email address");
       case 'invalid-credential':
+      case 'wrong-password':
         return AuthException('Incorrect email or password.');
       case 'too-many-requests':
         return AuthException('Too many attempts. Try again later.');
@@ -58,6 +143,14 @@ class FirebaseAuthRepository {
         return AuthException('SMS quota exceeded. Please try again later.');
       case 'provider-already-linked':
         return AuthException('This account already has a verified phone number.');
+      case 'account-exists-with-different-credential':
+        return AuthException('An account already exists with this email. Log in with your email and password instead.');
+      case 'weak-password':
+        return AuthException('Password must be at least 6 characters.');
+      case 'requires-recent-login':
+        return AuthException('Please log in again to continue.');
+      case 'user-mismatch':
+        return AuthException('Please choose the same Google account you signed up with.');
       default:
         return AuthException('Something went wrong. Please try again.');
     }
@@ -69,6 +162,12 @@ class FirebaseAuthRepository {
     } on FirebaseAuthException catch (e) {
       throw _mapAuthError(e);
     }
+
+    // Best-effort: never let this block logging out.
+    try {
+      await _ensureGoogleInitialized();
+      await GoogleSignIn.instance.signOut();
+    } catch (_) {}
   }
 
   Future<void> resetPassword({

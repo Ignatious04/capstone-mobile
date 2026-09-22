@@ -1,0 +1,126 @@
+import 'package:capstone/core/exceptions/auth_exception.dart';
+import 'package:capstone/core/shared/providers/firebase_auth_provider.dart';
+import 'package:capstone/core/shared/widgets/custom_app_bar.dart';
+import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
+import 'package:capstone/core/shared/widgets/custom_snackbar_helper.dart';
+import 'package:capstone/core/shared/widgets/custom_text_field.dart';
+import 'package:capstone/core/shared/widgets/text/screen_title_text.dart';
+import 'package:capstone/core/shared/widgets/text/supporting_info_text.dart';
+import 'package:capstone/core/themes/app_colors.dart';
+import 'package:capstone/features/public_user/profile/providers/deactivate_account_provider.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+class DeactivateAccountScreen extends ConsumerStatefulWidget {
+  const DeactivateAccountScreen({super.key});
+
+  @override
+  ConsumerState<DeactivateAccountScreen> createState() => _DeactivateAccountScreenState();
+}
+
+class _DeactivateAccountScreenState extends ConsumerState<DeactivateAccountScreen> {
+  final formKey = GlobalKey<FormState>();
+  final passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    passwordController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _onDeactivate(bool usesPassword) async {
+    if (usesPassword && !formKey.currentState!.validate()) return;
+
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const SupportingInfoText(value: "Deactivate your account?"),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        backgroundColor: Colors.white,
+        actions: [
+          CustomElevatedButton(onPressed: () => Navigator.pop(context, false), value: "Cancel"),
+          CustomElevatedButton(onPressed: () => Navigator.pop(context, true), value: "Deactivate"),
+        ],
+      ),
+    );
+    if (confirmed != true || !mounted) return;
+
+    final deactivated = await ref
+        .read(deactivateAccountProvider.notifier)
+        .deactivate(password: usesPassword ? passwordController.text : null);
+    if (!mounted) return;
+
+    final state = ref.read(deactivateAccountProvider);
+    if (state.hasError) {
+      final error = state.error;
+      CustomSnackbarHelper.show(
+        context,
+        text: error is AuthException ? error.message : "Something went wrong. Please try again.",
+      );
+    } else if (deactivated) {
+      CustomSnackbarHelper.show(context, text: "Your account has been deactivated.");
+      // AuthWrapper already switched to LoginScreen underneath; clear the
+      // routes pushed on top (Safety Profile, this screen) so it shows.
+      Navigator.of(context).popUntil((route) => route.isFirst);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final usesPassword = ref.read(firebaseAuthRepositoryProvider).hasPasswordProvider;
+    final isLoading = ref.watch(deactivateAccountProvider).isLoading;
+
+    return PopScope(
+      canPop: !isLoading,
+      child: Scaffold(
+        appBar: CustomAppBar(value: "Deactivate Account"),
+        body: SafeArea(
+          child: Form(
+            key: formKey,
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  const Icon(Icons.pause_circle_outline, size: 50, color: Colors.deepOrange),
+                  const SizedBox(height: 10),
+                  const ScreenTitleText(value: "Deactivate your account", alignment: TextAlign.center),
+                  const SizedBox(height: 10),
+                  const SupportingInfoText(
+                    value:
+                        "You won't be able to use the app or send reports until you reactivate. "
+                        "Your profile and past reports are kept, and you can reactivate any time "
+                        "by logging in again. You can still call emergency hotlines from your phone.",
+                    color: AppColors.darkerGrey,
+                    alignment: TextAlign.center,
+                  ),
+                  const SizedBox(height: 20),
+                  if (usesPassword)
+                    CustomTextField(
+                      title: "CONFIRM YOUR PASSWORD",
+                      controller: passwordController,
+                      obscureText: true,
+                      hideErrorText: false,
+                      isRequired: true,
+                      validator: (value) => (value == null || value.isEmpty) ? "Password is required" : null,
+                    )
+                  else
+                    const SupportingInfoText(
+                      value: "You'll be asked to confirm with your Google account.",
+                      color: AppColors.darkerGrey,
+                      alignment: TextAlign.center,
+                    ),
+                  const SizedBox(height: 20),
+                  CustomElevatedButton(
+                    value: isLoading ? "Deactivating..." : "Deactivate My Account",
+                    onPressed: isLoading ? null : () => _onDeactivate(usesPassword),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}

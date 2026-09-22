@@ -1,9 +1,12 @@
+import 'package:capstone/core/enums/notification_type_enum.dart';
 import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/services/push_notification_service.dart';
+import 'package:capstone/core/shared/models/notification_model.dart';
 import 'package:capstone/core/shared/providers/app_notification_provider.dart';
 import 'package:capstone/core/shared/providers/connectivity_stream_provider.dart';
 import 'package:capstone/core/shared/providers/firebase_auth_provider.dart';
 import 'package:capstone/core/shared/providers/locale_provider.dart';
+import 'package:capstone/core/shared/providers/notification_history_provider.dart';
 import 'package:capstone/core/shared/widgets/app_notification_overlay.dart';
 import 'package:capstone/features/auth_wrapper.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -49,16 +52,32 @@ class _MyAppState extends ConsumerState<MyApp> {
         final wasOffline = previous?.value?.every((r) => r == ConnectivityResult.none) ?? false;
 
         if (isOffline && !wasOffline) {
+          const message = 'No internet connection. Some features may be limited.';
+          ref.read(appNotificationProvider.notifier).show(message);
           ref
-              .read(appNotificationProvider.notifier)
-              .show(
-                'No internet connection. Some features may be limited.',
+              .read(notificationHistoryProvider.notifier)
+              .add(
+                NotificationModel(
+                  id: DateTime.now().millisecondsSinceEpoch.toString(),
+                  type: NotificationTypeEnum.connectivity,
+                  title: 'Offline',
+                  message: message,
+                  createdAt: DateTime.now(),
+                ),
               );
         } else if (!isOffline && wasOffline) {
+          const message = 'Back online.';
+          ref.read(appNotificationProvider.notifier).show(message);
           ref
-              .read(appNotificationProvider.notifier)
-              .show(
-                'Back online.',
+              .read(notificationHistoryProvider.notifier)
+              .add(
+                NotificationModel(
+                  id: DateTime.now().millisecondsSinceEpoch.toString(),
+                  type: NotificationTypeEnum.connectivity,
+                  title: 'Back online',
+                  message: message,
+                  createdAt: DateTime.now(),
+                ),
               );
         }
       });
@@ -70,8 +89,6 @@ class _MyAppState extends ConsumerState<MyApp> {
         if (authUser != null && authUser.emailVerified) {
           push.init();
           push.registerToken(authUser.uid);
-        } else if (previous?.value != null && authUser == null) {
-          push.clearToken(previous!.value!.uid);
         }
       });
     });

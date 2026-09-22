@@ -1,5 +1,7 @@
 import 'package:capstone/core/l10n/app_localizations.dart';
+import 'package:capstone/core/shared/providers/firebase_auth_provider.dart';
 import 'package:capstone/core/shared/providers/locale_provider.dart';
+import 'package:capstone/features/public_user/profile/views/change_password_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -52,6 +54,17 @@ class SettingsScreen extends ConsumerWidget {
                   );
                 },
               ),
+              const Divider(),
+              if (ref.read(firebaseAuthRepositoryProvider).hasPasswordProvider)
+                ListTile(
+                  leading: const Icon(Icons.lock_outline),
+                  title: const Text('Change Password'),
+                  trailing: const Icon(Icons.chevron_right),
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const ChangePasswordScreen()),
+                  ),
+                ),
             ],
           ),
         ),

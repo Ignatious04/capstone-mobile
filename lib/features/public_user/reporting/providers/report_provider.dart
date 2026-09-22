@@ -47,8 +47,7 @@ class ReportNotifier extends Notifier<ReportModel> {
       files: ref.read(pendingAttachmentsProvider),
     );
 
-    final report = ref
-        .read(reportProvider)
+    final report = state
         .copyWith(
           reportID: reportID,
           referenceNumber: referenceNumber,

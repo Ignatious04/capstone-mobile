@@ -1,4 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:capstone/core/exceptions/auth_exception.dart';
+import 'package:capstone/core/services/push_notification_service.dart';
 import 'package:capstone/core/shared/widgets/custom_circular_progress_indicator.dart';
 import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
 import 'package:capstone/core/shared/providers/firebase_auth_provider.dart';
@@ -8,7 +10,6 @@ import 'package:capstone/core/shared/widgets/text/supporting_info_text.dart';
 import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/public_user/profile/views/personal_information_screen.dart';
 import 'package:capstone/features/public_user/profile/views/settings_screen.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -137,8 +138,13 @@ class ProfileScreen extends ConsumerWidget {
                           firebaseAuthRepositoryProvider,
                         );
 
+                        final uid = firebaseAuthRepository.currentUser?.uid;
+
+                        if (uid != null) {
+                          await ref.read(pushNotificationServiceProvider).clearToken(uid);
+                        }
                         await firebaseAuthRepository.signOut();
-                      } on FirebaseAuthException catch (e) {
+                      } on AuthException catch (e) {
                         debugPrint(e.message);
                       }
                     },

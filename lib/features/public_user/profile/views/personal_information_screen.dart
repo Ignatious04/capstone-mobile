@@ -7,6 +7,7 @@ import 'package:capstone/core/shared/widgets/text/data_value_text.dart';
 import 'package:capstone/core/shared/providers/user_provider.dart';
 import 'package:capstone/core/shared/widgets/text/section_title_text.dart';
 import 'package:capstone/core/themes/app_colors.dart';
+import 'package:capstone/features/public_user/profile/views/deactivate_account_screen.dart';
 import 'package:capstone/features/public_user/profile/views/update_personal_information_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -168,7 +169,12 @@ class PersonalInformationScreen extends ConsumerWidget {
                           SizedBox(
                             width: double.infinity,
                             child: CustomElevatedButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => const DeactivateAccountScreen()),
+                                );
+                              },
                               color: Colors.red,
                               backgroundColor: Colors.white,
                               value: "Deactivate Account",

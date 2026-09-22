@@ -2,6 +2,7 @@ import 'package:capstone/core/shared/providers/responder_provider.dart';
 import 'package:capstone/core/shared/providers/user_provider.dart';
 import 'package:capstone/core/shared/widgets/custom_circular_progress_indicator.dart';
 import 'package:capstone/core/shared/widgets/location_gate.dart';
+import 'package:capstone/features/deactivated_screen.dart';
 import 'package:capstone/features/public_user/login/views/login_screen.dart';
 import 'package:capstone/core/shared/providers/firebase_auth_provider.dart';
 import 'package:capstone/features/public_user/register/views/email_verification_screen.dart';
@@ -45,6 +46,10 @@ class AuthWrapper extends ConsumerWidget {
 
             return userAsync.when(
               data: (user) {
+                if (user != null && user.isDeactivated) {
+                  return const DeactivatedScreen();
+                }
+
                 if (user == null || !user.isSetup) {
                   return const WelcomeScreen();
                 }

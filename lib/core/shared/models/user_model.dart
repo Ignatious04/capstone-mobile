@@ -36,6 +36,9 @@ class UserModel {
   final bool isSetup;
   final VerificationStatusEnum isVerified;
 
+  final bool isDeactivated;
+  final int? deactivatedAt;
+
   const UserModel({
     this.userID = "",
     this.profileImage,
@@ -66,6 +69,8 @@ class UserModel {
     this.updatedAt = 0,
     this.isSetup = false,
     this.isVerified = VerificationStatusEnum.pending,
+    this.isDeactivated = false,
+    this.deactivatedAt,
   });
 
   factory UserModel.fromMap(Map<dynamic, dynamic> map) {
@@ -97,6 +102,8 @@ class UserModel {
       updatedAt: map['updatedAt'] ?? 0,
       isSetup: map["isSetup"] ?? false,
       isVerified: VerificationStatusEnum.values.byName(map['isVerified'] ?? 'pending'),
+      isDeactivated: map['isDeactivated'] ?? false,
+      deactivatedAt: map['deactivatedAt'],
     );
   }
 
@@ -129,6 +136,8 @@ class UserModel {
       'updatedAt': updatedAt,
       'isSetup': isSetup,
       'isVerified': isVerified.name,
+      'isDeactivated': isDeactivated,
+      'deactivatedAt': deactivatedAt,
     };
   }
 
@@ -164,6 +173,8 @@ class UserModel {
     int? updatedAt,
     bool? isSetup,
     VerificationStatusEnum? isVerified,
+    final bool? isDeactivated,
+    final int? deactivatedAt,
   }) {
     return UserModel(
       userID: userID ?? this.userID,
@@ -195,6 +206,8 @@ class UserModel {
       updatedAt: updatedAt ?? this.updatedAt,
       isSetup: isSetup ?? this.isSetup,
       isVerified: isVerified ?? this.isVerified,
+      isDeactivated: isDeactivated ?? this.isDeactivated,
+      deactivatedAt: deactivatedAt ?? this.deactivatedAt,
     );
   }
 }
