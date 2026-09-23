@@ -13,6 +13,11 @@ class UserModel {
   final String sex;
   final String contactNumber;
   final bool isContactNumberVerified;
+
+  final String houseNum;
+  final String street;
+  final String barangay;
+
   final String address;
   final String nationality;
   final String civilStatus;
@@ -50,6 +55,9 @@ class UserModel {
     this.sex = "",
     this.contactNumber = "",
     this.isContactNumberVerified = false,
+    this.houseNum = "",
+    this.street = "",
+    this.barangay = "",
     this.address = "",
     this.nationality = "",
     this.civilStatus = "",
@@ -153,6 +161,9 @@ class UserModel {
     String? sex,
     String? contactNumber,
     bool? isContactNumberVerified,
+    String? houseNum,
+    String? street,
+    String? barangay,
     String? address,
     String? nationality,
     String? civilStatus,
@@ -187,6 +198,9 @@ class UserModel {
       sex: sex ?? this.sex,
       contactNumber: contactNumber ?? this.contactNumber,
       isContactNumberVerified: isContactNumberVerified ?? this.isContactNumberVerified,
+      houseNum: houseNum ?? this.houseNum,
+      street: street ?? this.street,
+      barangay: barangay ?? this.barangay,
       address: address ?? this.address,
       nationality: nationality ?? this.nationality,
       civilStatus: civilStatus ?? this.civilStatus,

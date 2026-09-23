@@ -83,6 +83,7 @@ class UserNotifier extends Notifier<UserModel> {
     user = state.copyWith(
       userID: userID,
       email: authUser.email ?? state.email,
+      address: "${user.houseNum}, ${user.street}, ${user.barangay}",
       updatedAt: DateTime.now().millisecondsSinceEpoch,
     );
 
@@ -161,6 +162,18 @@ class UserNotifier extends Notifier<UserModel> {
 
   void setIsContactNumberVerified(bool value) {
     state = state.copyWith(isContactNumberVerified: value);
+  }
+
+  void setHouseNum(String value) {
+    state = state.copyWith(houseNum: value);
+  }
+
+  void setStreet(String value) {
+    state = state.copyWith(street: value);
+  }
+
+  void setBarangay(String value) {
+    state = state.copyWith(barangay: value);
   }
 
   void setAddress(String value) {

@@ -6,7 +6,7 @@ class DataValueText extends StatelessWidget {
     required this.value,
     this.alignment = TextAlign.left,
     this.color = Colors.black,
-    this.isBold = true,
+    this.isBold = false,
   });
 
   final String value;

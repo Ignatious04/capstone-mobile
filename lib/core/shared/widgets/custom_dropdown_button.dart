@@ -47,6 +47,7 @@ class CustomDropdownButton<T> extends StatelessWidget {
         DropdownButtonFormField<T>(
           initialValue: value,
           validator: validator,
+          menuMaxHeight: 300.0,
           decoration: InputDecoration(
             errorStyle: hideErrorText
                 ? const TextStyle(

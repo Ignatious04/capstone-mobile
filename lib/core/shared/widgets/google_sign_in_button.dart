@@ -6,9 +6,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class GoogleSignInButton extends ConsumerWidget {
-  const GoogleSignInButton({super.key, this.label = "Continue with Google", this.onSuccess});
+  const GoogleSignInButton({
+    super.key,
+    this.label = "Continue with Google",
+    this.hasReadTermsAndConditions,
+    this.hasReadPrivacyPolicy,
+    this.isSignIn = true,
+    this.onSuccess,
+  });
 
   final String label;
+  final bool? hasReadTermsAndConditions;
+  final bool? hasReadPrivacyPolicy;
+  final bool isSignIn;
   final VoidCallback? onSuccess;
 
   @override
@@ -18,7 +28,7 @@ class GoogleSignInButton extends ConsumerWidget {
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton.icon(
-        onPressed: isLoading
+        onPressed: isLoading || hasReadTermsAndConditions == false || hasReadPrivacyPolicy == false
             ? null
             : () async {
                 final signedIn = await ref.read(googleSignInProvider.notifier).signIn();

@@ -84,7 +84,8 @@ class SetupScreenSummaryPage extends ConsumerWidget {
                         ),
                         InfoColumn(
                           title: "HOME ADDRESS",
-                          value: ref.read(userProvider).address,
+                          value:
+                              "${ref.read(userProvider).houseNum}, ${ref.read(userProvider).street}, ${ref.read(userProvider).barangay}",
                         ),
                         const SizedBox(
                           height: 10,

@@ -232,6 +232,8 @@ class _RegisterScreenPage extends ConsumerState<RegisterScreen> {
                       const SizedBox(height: 10),
                       GoogleSignInButton(
                         label: "Sign up with Google",
+                        hasReadTermsAndConditions: hasReadTermsAndConditions,
+                        hasReadPrivacyPolicy: hasReadPrivacyPolicy,
                         onSuccess: () => Navigator.pop(context),
                       ),
                       const SizedBox(height: 10),

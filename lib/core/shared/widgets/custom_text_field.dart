@@ -76,7 +76,12 @@ class CustomTextField extends StatelessWidget {
           maxLines: maxLines,
           inputFormatters: inputFormatters,
           readOnly: isReadOnly,
-          style: TextStyle(fontSize: 14, color: Colors.black),
+          style:
+              Theme.of(
+                context,
+              ).textTheme.titleMedium?.copyWith(
+                color: Colors.black,
+              ),
           obscureText: obscureText,
           decoration: InputDecoration(
             errorStyle: hideErrorText

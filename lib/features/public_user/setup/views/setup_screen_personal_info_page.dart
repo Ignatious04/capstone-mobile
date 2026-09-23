@@ -6,6 +6,7 @@ import 'package:capstone/core/shared/widgets/custom_snackbar_helper.dart';
 import 'package:capstone/core/shared/widgets/custom_text_field.dart';
 import 'package:capstone/core/shared/widgets/text/data_label_text.dart';
 import 'package:capstone/core/shared/providers/user_provider.dart';
+import 'package:capstone/core/shared/widgets/text/data_value_text.dart';
 import 'package:capstone/core/shared/widgets/text/supporting_info_text.dart';
 import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/public_user/reporting/widgets/section_title.dart';
@@ -26,9 +27,67 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
   TextEditingController middleNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
   TextEditingController birthDateController = TextEditingController();
-  TextEditingController sexController = TextEditingController();
+  TextEditingController contactNumController = TextEditingController();
+  TextEditingController houseNumController = TextEditingController();
+  TextEditingController streetController = TextEditingController();
+  TextEditingController barangayController = TextEditingController();
 
-  TextEditingController addressController = TextEditingController();
+  static const _sexItems = [
+    DropdownMenuItem(
+      value: "Male",
+      child: DataValueText(value: "Male"),
+    ),
+    DropdownMenuItem(
+      value: "Female",
+      child: DataValueText(value: "Female"),
+    ),
+  ];
+
+  static const _civilStatusItems = [
+    DropdownMenuItem(
+      value: "Single",
+      child: DataValueText(value: "Single"),
+    ),
+    DropdownMenuItem(
+      value: "Married",
+      child: DataValueText(value: "Married"),
+    ),
+  ];
+
+  final List<String> _barangays = const [
+    'Agapito del Rosario',
+    'Amsic',
+    'Anunas',
+    'Balibago',
+    'Capaya',
+    'Claro M. Recto',
+    'Cuayan',
+    'Cutud',
+    'Lourdes North West',
+    'Lourdes Sur (Talimundoc)',
+    'Lourdes Sur East',
+    'Malabañas (Malabanias)',
+    'Margot',
+    'Mining',
+    'Marisol (Ninoy Aquino)',
+    'Pampang (Santo Niño)',
+    'Pandan',
+    'Pulung Bulu (Pulungbulu)',
+    'Pulung Cacutud',
+    'Pulung Maragul',
+    'Salapungan',
+    'San José',
+    'San Nicolas',
+    'Santa Teresita',
+    'Santa Trinidad',
+    'Santo Cristo',
+    'Santo Domingo',
+    'Santo Rosario',
+    'Sapalibutad',
+    'Sapangbato',
+    'Tabun',
+    'Virgen Delos Remedios',
+  ];
 
   @override
   void initState() {
@@ -37,9 +96,13 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
     firstNameController.text = user.firstName;
     middleNameController.text = user.middleName;
     lastNameController.text = user.lastName;
-    birthDateController.text = user.birthDate == 0 ? "" : user.birthDate.toString();
-    sexController.text = user.sex;
-    addressController.text = user.address;
+    birthDateController.text = user.birthDate == 0
+        ? ""
+        : DateFormat("MM/dd/yy").format(DateTime.fromMillisecondsSinceEpoch(user.birthDate));
+    contactNumController.text = user.contactNumber;
+    houseNumController.text = user.houseNum;
+    streetController.text = user.street;
+    barangayController.text = user.address;
   }
 
   @override
@@ -213,7 +276,12 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
                         return null;
                       },
                       readOnly: true,
-                      style: TextStyle(fontSize: 14),
+                      style:
+                          Theme.of(
+                            context,
+                          ).textTheme.titleMedium?.copyWith(
+                            color: Colors.black,
+                          ),
                       decoration: InputDecoration(
                         errorStyle: TextStyle(fontSize: 0),
                         isDense: true,
@@ -265,10 +333,7 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
 
                     return null;
                   },
-                  items: [
-                    const DropdownMenuItem(value: "Male", child: Text("Male")),
-                    const DropdownMenuItem(value: "Female", child: Text("Female")),
-                  ],
+                  items: _sexItems,
                   onChanged: (value) {
                     ref.read(userProvider.notifier).setSex(value!);
                   },
@@ -277,22 +342,90 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
               ),
             ],
           ),
-
           const SizedBox(
             height: 10,
           ),
           CustomTextField(
-            title: "HOME ADDRESS",
-            controller: addressController,
+            title: "CONTACT NO.",
+            controller: contactNumController,
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return "Home address is required";
+                return "Contact no. is required";
               }
 
               return null;
             },
             onChanged: (value) {
-              ref.read(userProvider.notifier).setAddress(value);
+              ref.read(userProvider.notifier).setContactNumber(value);
+            },
+            isRequired: true,
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          Row(
+            children: [
+              Expanded(
+                flex: 2,
+                child: CustomTextField(
+                  title: "HOUSE NO.",
+                  controller: houseNumController,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "House no. is required";
+                    }
+
+                    return null;
+                  },
+                  onChanged: (value) {
+                    ref.read(userProvider.notifier).setHouseNum(value);
+                  },
+                  isRequired: true,
+                ),
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+              Expanded(
+                flex: 3,
+                child: CustomTextField(
+                  title: "STREET",
+                  controller: streetController,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Street is required";
+                    }
+
+                    return null;
+                  },
+                  onChanged: (value) {
+                    ref.read(userProvider.notifier).setStreet(value);
+                  },
+                  isRequired: true,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          CustomDropdownButton(
+            title: "BARANGAY",
+            value: user.barangay.isEmpty ? null : user.barangay,
+            items: _barangays.map((String barangay) {
+              return DropdownMenuItem<String>(
+                value: barangay,
+                child: DataValueText(value: barangay),
+              );
+            }).toList(),
+            onChanged: (value) {
+              ref.read(userProvider.notifier).setBarangay(value!);
+            },
+            validator: (value) {
+              if (value == null || value.isEmpty) {
+                return "Barangay is required";
+              }
+              return null;
             },
             isRequired: true,
           ),
@@ -308,7 +441,7 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
                   value: user.nationality.isEmpty ? null : user.nationality,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return "Sex is required";
+                      return "Nationality is required";
                     }
 
                     return null;
@@ -335,21 +468,12 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
                   value: user.civilStatus.isEmpty ? null : user.civilStatus,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return "Sex is required";
+                      return "Civil status is required";
                     }
 
                     return null;
                   },
-                  items: [
-                    const DropdownMenuItem(
-                      value: "Single",
-                      child: Text("Single"),
-                    ),
-                    const DropdownMenuItem(
-                      value: "Married",
-                      child: Text("Married"),
-                    ),
-                  ],
+                  items: _civilStatusItems,
                   onChanged: (value) {
                     ref.read(userProvider.notifier).setCivilStatus(value!);
                   },
@@ -366,7 +490,7 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
             value: user.religion.isEmpty ? null : user.religion,
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return "Sex is required";
+                return "Religion is required";
               }
 
               return null;
