@@ -29,7 +29,7 @@ class CustomDropdownButton<T> extends StatelessWidget {
         Text.rich(
           TextSpan(
             style: Theme.of(context).textTheme.labelMedium?.copyWith(
-              color: AppColors.darkerGrey,
+              color: Colors.black54,
             ),
             children: [
               TextSpan(text: title),

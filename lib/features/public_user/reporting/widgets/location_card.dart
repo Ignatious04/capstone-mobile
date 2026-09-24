@@ -1,6 +1,6 @@
 import 'package:capstone/core/enums/map_mode_enum.dart';
-import 'package:capstone/core/shared/widgets/text/data_label_text.dart';
-import 'package:capstone/core/shared/widgets/text/data_value_text.dart';
+import 'package:capstone/core/shared/widgets/text/body_text.dart';
+import 'package:capstone/core/shared/widgets/text/label_text.dart';
 import 'package:capstone/features/public_user/map/widgets/map_tile_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -32,27 +32,28 @@ class LocationCard extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.all(20),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Icon(
                   Icons.place_outlined,
-                  size: 22,
+                  size: 25,
                 ),
                 const SizedBox(width: 10),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const DataLabelText(
+                      const BodyText(
                         value: 'REPORTED LOCATION',
                       ),
-                      const SizedBox(height: 4),
-                      DataValueText(
+                      const SizedBox(height: 10),
+                      LabelText(
                         value:
                             '${location.latitude.toStringAsFixed(6)}, '
                             '${location.longitude.toStringAsFixed(6)}',
+                        isBold: true,
                       ),
                     ],
                   ),

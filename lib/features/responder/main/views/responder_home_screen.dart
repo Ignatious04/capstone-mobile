@@ -1,5 +1,5 @@
-import 'package:capstone/core/shared/widgets/text/screen_title_text.dart';
-import 'package:capstone/core/shared/widgets/text/supporting_info_text.dart';
+import 'package:capstone/core/shared/widgets/text/body_text.dart';
+import 'package:capstone/core/shared/widgets/text/title_text.dart';
 import 'package:capstone/core/themes/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -18,11 +18,11 @@ class ResponderHomeScreen extends ConsumerWidget {
             children: [
               Icon(Icons.local_hospital, size: 64, color: AppColors.darkerGrey),
               SizedBox(height: 16),
-              ScreenTitleText(value: "No active case"),
+              TitleText(value: "No active case"),
               SizedBox(height: 8),
-              SupportingInfoText(
+              BodyText(
                 value: "You'll be notified here when a case is assigned to you.",
-                color: AppColors.darkerGrey,
+                color: Colors.black54,
               ),
             ],
           ),

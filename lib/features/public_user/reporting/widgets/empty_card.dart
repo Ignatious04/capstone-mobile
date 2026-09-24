@@ -1,4 +1,4 @@
-import 'package:capstone/core/shared/widgets/text/card_title_text.dart';
+import 'package:capstone/core/shared/widgets/text/title_text.dart';
 import 'package:capstone/core/themes/app_colors.dart';
 import 'package:flutter/material.dart';
 
@@ -34,7 +34,7 @@ class EmptyCard extends StatelessWidget {
               color: AppColors.lighterBlack,
             ),
             const SizedBox(height: 10),
-            CardTitleText(
+            TitleText(
               value: message,
               alignment: TextAlign.center,
             ),

@@ -1,9 +1,8 @@
 import 'package:capstone/core/shared/widgets/info_column.dart';
-import 'package:capstone/core/shared/widgets/text/card_title_text.dart';
 import 'package:capstone/core/shared/providers/user_provider.dart';
-import 'package:capstone/core/shared/widgets/text/paragraph_text.dart';
+import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/themes/app_colors.dart';
-import 'package:capstone/features/public_user/reporting/widgets/section_title.dart';
+import 'package:capstone/core/shared/widgets/section_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -148,64 +147,11 @@ class SetupScreenSummaryPage extends ConsumerWidget {
                       width: 20,
                     ),
                     const Expanded(
-                      child: ParagraphText(
+                      child: BodyText(
                         value:
-                            "MEAS is a guidance and reporting tool only. It does not replace direct emergency calls to 911 or local hotlines.",
+                            "REMINDER: MEAS is a guidance and reporting tool only. It does not replace direct emergency calls to 911 or local hotlines.",
                         color: Colors.red,
                       ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(height: 10),
-          Card(
-            color: Colors.white,
-            child: SizedBox(
-              width: double.infinity,
-              child: Padding(
-                padding: const EdgeInsets.all(20.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const CardTitleText(
-                      value: "DATA PRIVACY",
-                      color: Colors.deepOrange,
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Text.rich(
-                      TextSpan(
-                        text: "In compliance with the ",
-                        style: Theme.of(context).textTheme.bodyLarge,
-                        children: [
-                          TextSpan(
-                            text: "Data Privacy Act of 2012 (RA 10173): ",
-                            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    const ParagraphText(
-                      value: "• All personal data shall be encrypted and stored securely",
-                    ),
-                    const ParagraphText(
-                      value:
-                          "• Your data is only shared with authorized emergency responders and personnel during an active incident",
-                    ),
-                    const ParagraphText(
-                      value: "• Your location is only transmitted once an emergency report has been triggered",
-                    ),
-                    const ParagraphText(
-                      value:
-                          "• Your data will never be sold or shared with third parties (e.g. non-government agencies, private entities)",
                     ),
                   ],
                 ),

@@ -1,7 +1,6 @@
-import 'package:capstone/core/shared/widgets/text/button_text.dart';
-import 'package:capstone/core/shared/widgets/text/paragraph_text.dart';
-import 'package:capstone/core/shared/widgets/text/screen_title_text.dart';
-import 'package:capstone/core/shared/widgets/text/section_title_text.dart';
+import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
+import 'package:capstone/core/shared/widgets/text/body_text.dart';
+import 'package:capstone/core/shared/widgets/text/title_text.dart';
 import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/public_user/setup/views/setup_screen_page_view.dart';
 import 'package:flutter/material.dart';
@@ -24,15 +23,15 @@ class WelcomeScreen extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  ScreenTitleText(value: "MEAS"),
+                  TitleText(value: "Saup Angeles"),
                   SizedBox(
                     height: 10,
                   ),
-                  SectionTitleText(value: "Hello!"),
+                  TitleText(value: "Hello!"),
                   SizedBox(
                     height: 10,
                   ),
-                  ParagraphText(
+                  BodyText(
                     value: "Let's start off by setting up your account.",
                     alignment: TextAlign.center,
                     color: AppColors.darkerGrey,
@@ -42,10 +41,7 @@ class WelcomeScreen extends StatelessWidget {
                   ),
                   SizedBox(
                     width: double.infinity,
-                    child: FilledButton(
-                      style: FilledButton.styleFrom(
-                        backgroundColor: Colors.deepOrange,
-                      ),
+                    child: CustomElevatedButton(
                       onPressed: () {
                         Navigator.push(
                           context,
@@ -54,10 +50,7 @@ class WelcomeScreen extends StatelessWidget {
                           ),
                         );
                       },
-                      child: ButtonText(
-                        value: "Proceed",
-                        color: Colors.white,
-                      ),
+                      value: "Proceed",
                     ),
                   ),
                 ],

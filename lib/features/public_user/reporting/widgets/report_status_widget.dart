@@ -1,5 +1,5 @@
+import 'package:capstone/core/shared/widgets/text/label_text.dart';
 import 'package:capstone/core/utilities/formatter.dart';
-import 'package:capstone/core/shared/widgets/text/supporting_info_text.dart';
 import 'package:capstone/core/themes/app_colors.dart';
 import 'package:flutter/material.dart';
 
@@ -28,7 +28,7 @@ class ReportStatusWidget extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 10),
-          SupportingInfoText(
+          LabelText(
             value: Formatter.formatEnumName(status),
             color: Colors.white,
             isBold: true,

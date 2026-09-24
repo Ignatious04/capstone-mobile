@@ -1,5 +1,5 @@
 import 'package:capstone/core/shared/providers/app_notification_provider.dart';
-import 'package:capstone/core/shared/widgets/text/supporting_info_text.dart';
+import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -57,7 +57,7 @@ class AppNotificationOverlay extends ConsumerWidget {
                         children: [
                           SizedBox(
                             width: 100,
-                            child: SupportingInfoText(
+                            child: BodyText(
                               value: notification.message,
                               color: Colors.white,
                             ),

@@ -1,30 +1,27 @@
 import 'package:flutter/material.dart';
 
-class SubtitleText extends StatelessWidget {
-  const SubtitleText({
+class BodyText extends StatelessWidget {
+  const BodyText({
     super.key,
     required this.value,
     this.alignment = TextAlign.left,
     this.color = Colors.black,
+    this.isOverflow = false,
     this.isBold = false,
-    this.maxLines = 1,
-    this.overflow = TextOverflow.ellipsis,
   });
 
   final String value;
   final TextAlign alignment;
   final Color color;
+  final bool isOverflow;
   final bool isBold;
-  final int maxLines;
-  final TextOverflow overflow;
 
   @override
   Widget build(BuildContext context) {
     return Text(
       value,
       textAlign: alignment,
-      maxLines: maxLines,
-      overflow: overflow,
+      overflow: isOverflow ? TextOverflow.ellipsis : null,
       style:
           Theme.of(
             context,

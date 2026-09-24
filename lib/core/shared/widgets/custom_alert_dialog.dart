@@ -1,6 +1,6 @@
+import 'package:capstone/core/shared/widgets/text/body_text.dart';
+import 'package:capstone/core/shared/widgets/text/title_text.dart';
 import 'package:flutter/material.dart';
-import 'package:capstone/core/shared/widgets/text/paragraph_text.dart';
-import 'package:capstone/core/shared/widgets/text/supporting_info_text.dart';
 
 Future<bool?> showConfirmationDialog(
   BuildContext context, {
@@ -39,11 +39,11 @@ class ConfirmationDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: SupportingInfoText(
+      title: TitleText(
         value: title,
       ),
       content: content != null
-          ? ParagraphText(
+          ? BodyText(
               value: content!,
             )
           : null,

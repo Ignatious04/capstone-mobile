@@ -1,5 +1,4 @@
-import 'package:capstone/core/shared/widgets/text/data_label_text.dart';
-import 'package:capstone/core/shared/widgets/text/data_value_text.dart';
+import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:flutter/material.dart';
 
 class InfoColumn extends StatelessWidget {
@@ -17,12 +16,13 @@ class InfoColumn extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        DataLabelText(
+        BodyText(
           value: title,
+          color: Colors.black54,
         ),
-        DataValueText(
+        BodyText(
           value: value,
-          isBold: false,
+          isBold: true,
         ),
       ],
     );

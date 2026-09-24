@@ -1,5 +1,5 @@
 // lib/features/responder/views/responder_history_screen.dart
-import 'package:capstone/core/shared/widgets/text/screen_title_text.dart';
+import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:flutter/material.dart';
 
 class ResponderHistoryScreen extends StatelessWidget {
@@ -14,7 +14,7 @@ class ResponderHistoryScreen extends StatelessWidget {
         iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: const Center(
-        child: ScreenTitleText(value: "No resolved cases yet"),
+        child: BodyText(value: "No resolved cases yet"),
       ),
     );
   }

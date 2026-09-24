@@ -1,13 +1,12 @@
 import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:capstone/core/shared/widgets/custom_dropdown_button.dart';
+import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
 import 'package:capstone/core/shared/widgets/scanner_overlay_painter.dart';
 import 'package:capstone/core/shared/providers/user_provider.dart';
 import 'package:capstone/core/services/camera_service.dart';
-import 'package:capstone/core/shared/widgets/text/button_text.dart';
-import 'package:capstone/core/shared/widgets/text/supporting_info_text.dart';
-import 'package:capstone/core/themes/app_colors.dart';
-import 'package:capstone/features/public_user/reporting/widgets/section_title.dart';
+import 'package:capstone/core/shared/widgets/text/label_text.dart';
+import 'package:capstone/core/shared/widgets/section_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -158,9 +157,9 @@ class _SetupScreenUserCardPage extends ConsumerState<SetupScreenUserCardPage> {
                                 children: [
                                   SizedBox(height: 8),
                                   Center(
-                                    child: SupportingInfoText(
+                                    child: LabelText(
                                       value: "Align your ID inside the frame",
-                                      color: AppColors.darkerGrey,
+                                      color: Colors.black54,
                                     ),
                                   ),
                                 ],
@@ -176,70 +175,62 @@ class _SetupScreenUserCardPage extends ConsumerState<SetupScreenUserCardPage> {
                   ),
                   SizedBox(
                     width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: !isCameraInitialized || isProcessing
-                          ? null
-                          : () async {
-                              if (field.value != null) {
-                                field.didChange(null);
+                    child: CustomElevatedButton(
+                      onPressed: () {
+                        !isCameraInitialized || isProcessing
+                            ? null
+                            : () async {
+                                if (field.value != null) {
+                                  field.didChange(null);
+                                  setState(() {
+                                    idCheckError = null;
+                                  });
+                                  return;
+                                }
+
+                                File file = await takePicture();
+
                                 setState(() {
+                                  isProcessing = true;
                                   idCheckError = null;
                                 });
-                                return;
-                              }
 
-                              File file = await takePicture();
+                                String? error = await getIDFromCard(file);
+                                debugPrint(error);
 
-                              setState(() {
-                                isProcessing = true;
-                                idCheckError = null;
-                              });
-
-                              String? error = await getIDFromCard(file);
-                              debugPrint(error);
-
-                              setState(() {
-                                isProcessing = false;
-                              });
-
-                              if (error != null) {
                                 setState(() {
-                                  idCheckError = error;
+                                  isProcessing = false;
                                 });
-                                return;
-                              }
 
-                              field.didChange(file);
-                            },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.deepOrange,
-                        foregroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadiusGeometry.circular(12),
-                        ),
-                      ),
-                      child: ButtonText(
-                        value: isProcessing ? "Checking..." : (field.value != null ? "Retake photo" : "Capture ID"),
-                        color: Colors.white,
-                      ),
+                                if (error != null) {
+                                  setState(() {
+                                    idCheckError = error;
+                                  });
+                                  return;
+                                }
+
+                                field.didChange(file);
+                              };
+                      },
+                      value: isProcessing ? "Checking..." : (field.value != null ? "Retake photo" : "Capture ID"),
                     ),
                   ),
                   if (idCheckError != null) ...[
                     const SizedBox(height: 10),
-                    SupportingInfoText(
+                    LabelText(
                       value: idCheckError!,
                       color: Colors.red,
                     ),
                   ] else if (field.hasError) ...[
                     const SizedBox(height: 10),
-                    SupportingInfoText(
+                    LabelText(
                       value: field.errorText ?? "",
                       color: Colors.red,
                     ),
                   ],
                   if (field.value != null && user.idNumber.isNotEmpty) ...[
                     const SizedBox(height: 10),
-                    SupportingInfoText(
+                    LabelText(
                       value: "ID Number: ${user.idNumber}",
                     ),
                   ],

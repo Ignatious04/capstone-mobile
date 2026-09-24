@@ -1,7 +1,7 @@
 import 'package:capstone/core/enums/notification_type_enum.dart';
 import 'package:capstone/core/shared/models/notification_model.dart';
-import 'package:capstone/core/shared/widgets/text/card_title_text.dart';
-import 'package:capstone/core/shared/widgets/text/sub_title_text.dart';
+import 'package:capstone/core/shared/widgets/text/body_text.dart';
+import 'package:capstone/core/shared/widgets/text/title_text.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -42,11 +42,11 @@ class NotificationCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CardTitleText(value: notification.title, isBold: true),
+                    TitleText(value: notification.title, isBold: true),
                     const SizedBox(height: 4),
-                    SubtitleText(value: notification.message, maxLines: 3),
+                    BodyText(value: notification.message),
                     const SizedBox(height: 4),
-                    SubtitleText(
+                    BodyText(
                       value: DateFormat("MMM dd, yyyy • h:mm a").format(notification.createdAt),
                       color: Colors.grey,
                     ),

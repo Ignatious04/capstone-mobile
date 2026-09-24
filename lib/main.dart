@@ -88,7 +88,7 @@ class _MyAppState extends ConsumerState<MyApp> {
         final push = ref.read(pushNotificationServiceProvider);
         if (authUser != null && authUser.emailVerified) {
           push.init();
-          push.registerToken(authUser.uid);
+          push.registerToken(authUser.uid); 
         }
       });
     });

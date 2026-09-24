@@ -1,5 +1,5 @@
-import 'package:capstone/core/shared/widgets/text/sub_title_text.dart';
-import 'package:capstone/core/shared/widgets/text/screen_title_text.dart';
+import 'package:capstone/core/shared/widgets/text/body_text.dart';
+import 'package:capstone/core/shared/widgets/text/headline_text.dart';
 import 'package:flutter/material.dart';
 
 class CustomHeaderWidget extends StatelessWidget {
@@ -39,16 +39,15 @@ class CustomHeaderWidget extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ScreenTitleText(
+            HeadlineText(
               value: title,
               color: Colors.white,
               isBold: true,
             ),
             if (body != null)
-              SubtitleText(
+              BodyText(
                 value: body!,
                 color: Colors.white,
-                isBold: false,
               ),
             if (progressIndicator != null) ...[
               SizedBox(height: 10),

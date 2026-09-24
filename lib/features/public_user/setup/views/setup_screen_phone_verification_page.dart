@@ -3,7 +3,7 @@ import 'package:capstone/core/shared/providers/user_provider.dart';
 import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
 import 'package:capstone/core/shared/widgets/custom_snackbar_helper.dart';
 import 'package:capstone/core/shared/widgets/custom_text_field.dart';
-import 'package:capstone/features/public_user/reporting/widgets/section_title.dart';
+import 'package:capstone/core/shared/widgets/section_title.dart';
 import 'package:capstone/features/public_user/setup/providers/phone_verification_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';

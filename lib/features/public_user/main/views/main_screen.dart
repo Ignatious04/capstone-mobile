@@ -1,4 +1,5 @@
 import 'package:capstone/features/public_user/main/views/home_screen.dart';
+import 'package:capstone/features/public_user/main/widgets/floating_nav_bar.dart';
 import 'package:capstone/features/public_user/map/views/map_screen.dart';
 import 'package:capstone/features/public_user/pre_call_guidance/views/pre_call_guidance_screen.dart';
 import 'package:capstone/features/public_user/profile/views/profile_screen.dart';
@@ -31,10 +32,6 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final labelStyle = Theme.of(context).textTheme.labelMedium?.copyWith(
-      color: Colors.white,
-    );
-
     final pages = const [
       MapScreen(),
       ReportsScreen(),
@@ -51,70 +48,9 @@ class _MainScreenState extends State<MainScreen> {
           children: pages,
         ),
       ),
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black26,
-              blurRadius: 12,
-              offset: Offset(0, 3),
-            ),
-          ],
-        ),
-        child: CurvedNavigationBar(
-          color: Colors.deepOrange,
-          backgroundColor: Colors.deepOrangeAccent,
-          buttonBackgroundColor: Colors.deepOrange,
-          index: currentPageIndex,
-          animationDuration: Duration(milliseconds: 300),
-          items: [
-            CurvedNavigationBarItem(
-              child: Icon(
-                Icons.map,
-                color: Colors.white,
-              ),
-              label: "Map",
-              labelStyle: labelStyle,
-            ),
-            CurvedNavigationBarItem(
-              child: Icon(
-                Icons.chat,
-                color: Colors.white,
-              ),
-              label: "Reports",
-              labelStyle: labelStyle,
-            ),
-            CurvedNavigationBarItem(
-              child: Icon(
-                Icons.home,
-                color: Colors.white,
-              ),
-              label: "Home",
-              labelStyle: labelStyle,
-            ),
-            CurvedNavigationBarItem(
-              child: Icon(
-                Icons.menu_book,
-                color: Colors.white,
-              ),
-              label: "Guidance",
-              labelStyle: labelStyle,
-            ),
-            CurvedNavigationBarItem(
-              child: Icon(
-                Icons.account_circle,
-                color: Colors.white,
-              ),
-              label: "Profile",
-              labelStyle: labelStyle,
-            ),
-          ],
-          onTap: (value) {
-            setState(() {
-              currentPageIndex = value;
-            });
-          },
-        ),
+      bottomNavigationBar: FloatingNavBar(
+        currentIndex: currentPageIndex,
+        onTap: (value) => setState(() => currentPageIndex = value),
       ),
     );
   }

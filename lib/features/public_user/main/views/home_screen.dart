@@ -7,8 +7,7 @@ import 'package:capstone/core/shared/widgets/custom_circular_progress_indicator.
 import 'package:capstone/core/shared/widgets/custom_header_widget.dart';
 import 'package:capstone/core/shared/widgets/custom_snackbar_helper.dart';
 import 'package:capstone/core/shared/widgets/loading_overlay_widget.dart';
-import 'package:capstone/core/shared/widgets/text/button_text.dart';
-import 'package:capstone/core/shared/widgets/text/section_title_text.dart';
+import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/widgets/service_button.dart';
 import 'package:capstone/core/utilities/call_launcher.dart';
 import 'package:capstone/core/utilities/distance_helper.dart';
@@ -21,7 +20,7 @@ import 'package:capstone/features/public_user/main/widgets/nearby_services_card.
 import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/public_user/notifications/views/notification_history_screen.dart';
 import 'package:capstone/features/public_user/reporting/providers/report_provider.dart';
-import 'package:capstone/features/public_user/reporting/widgets/section_title.dart';
+import 'package:capstone/core/shared/widgets/section_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -272,10 +271,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             const SizedBox(
                               width: 10,
                             ),
-                            const SectionTitleText(
+                            const BodyText(
                               value: "OR",
-                              color: AppColors.lighterBlack,
-                              isBold: false,
+                              color: Colors.black54,
                             ),
                             const SizedBox(
                               width: 10,
@@ -314,9 +312,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                 SizedBox(
                                   height: 10,
                                 ),
-                                ButtonText(
+                                BodyText(
                                   value: "CALL 911",
                                   color: Colors.white,
+                                  isBold: true,
                                 ),
                               ],
                             ),

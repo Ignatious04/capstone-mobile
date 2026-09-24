@@ -1,10 +1,10 @@
 import 'package:capstone/core/enums/service_type_enum.dart';
 import 'package:capstone/core/shared/widgets/custom_text_field.dart';
-import 'package:capstone/core/shared/widgets/text/button_text.dart';
-import 'package:capstone/core/shared/widgets/text/section_title_text.dart';
-import 'package:capstone/core/shared/widgets/text/supporting_info_text.dart';
+import 'package:capstone/core/shared/widgets/text/body_text.dart';
+import 'package:capstone/core/shared/widgets/text/title_text.dart';
 import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/core/utilities/call_launcher.dart';
+import 'package:capstone/core/utilities/formatter.dart';
 import 'package:capstone/features/public_user/map/models/emergency_service_model.dart';
 import 'package:capstone/features/public_user/map/providers/emergency_service_filter_provider.dart';
 import 'package:capstone/features/public_user/map/providers/emergency_service_search_provider.dart';
@@ -60,6 +60,17 @@ class _EmergencyServicesPanelState extends ConsumerState<EmergencyServicesPanel>
     }
   }
 
+  Color _getServiceBackgroundColor(EmergencyServiceModel service) {
+    switch (service.type) {
+      case ServiceTypeEnum.fire:
+        return AppColors.lighterRed;
+      case ServiceTypeEnum.police:
+        return AppColors.lighterBlue;
+      case ServiceTypeEnum.medical:
+        return AppColors.lighterGreen;
+    }
+  }
+
   double _getDistance(EmergencyServiceModel service) {
     return Geolocator.distanceBetween(
       widget.currentLocation.latitude,
@@ -81,7 +92,7 @@ class _EmergencyServicesPanelState extends ConsumerState<EmergencyServicesPanel>
 
   void _moveToService(LatLng location) {
     _panelController.animateTo(
-      0.09,
+      0.15,
       duration: const Duration(milliseconds: 300),
       curve: Curves.easeOut,
     );
@@ -119,11 +130,11 @@ class _EmergencyServicesPanelState extends ConsumerState<EmergencyServicesPanel>
     return DraggableScrollableSheet(
       controller: _panelController,
       initialChildSize: 0.35,
-      minChildSize: 0.12,
+      minChildSize: 0.15,
       maxChildSize: 0.75,
       snap: true,
       snapSizes: const [
-        0.12,
+        0.15,
         0.35,
         0.75,
       ],
@@ -180,21 +191,21 @@ class _EmergencyServicesPanelState extends ConsumerState<EmergencyServicesPanel>
                                   Row(
                                     children: [
                                       const Expanded(
-                                        child: SectionTitleText(
+                                        child: TitleText(
                                           value: 'Nearby Emergency Services',
                                           isBold: true,
                                         ),
                                       ),
-                                      SupportingInfoText(
+                                      BodyText(
                                         value: "${widget.services.length} location(s)",
                                       ),
                                     ],
                                   ),
                                   const SizedBox(
-                                    height: 30,
+                                    height: 10,
                                   ),
                                   CustomTextField(
-                                    title: "Search",
+                                    title: "SEARCH",
                                     onChanged: (value) {
                                       ref.read(emergencyServiceSearchProvider.notifier).setQuery(value);
                                     },
@@ -208,8 +219,9 @@ class _EmergencyServicesPanelState extends ConsumerState<EmergencyServicesPanel>
                                       final isSelected = ref.watch(emergencyServiceFilterProvider) == type;
 
                                       return ChoiceChip(
-                                        label: ButtonText(
-                                          value: type.name,
+                                        label: BodyText(
+                                          value: Formatter.formatEnumName(type.name),
+                                          isBold: true,
                                         ),
                                         selected: isSelected,
                                         onSelected: (_) {
@@ -238,6 +250,7 @@ class _EmergencyServicesPanelState extends ConsumerState<EmergencyServicesPanel>
                       return EmergencyServiceCard(
                         icon: _getServiceIcon(service),
                         iconColor: _getServiceColor(service),
+                        backgroundColor: _getServiceBackgroundColor(service),
                         title: service.name,
                         contactNumber: service.contactNumber,
                         address: service.address,

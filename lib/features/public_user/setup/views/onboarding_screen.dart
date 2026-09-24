@@ -1,5 +1,5 @@
-import 'package:capstone/core/shared/widgets/text/screen_title_text.dart';
-import 'package:capstone/core/shared/widgets/text/sub_title_text.dart';
+import 'package:capstone/core/shared/widgets/text/body_text.dart';
+import 'package:capstone/core/shared/widgets/text/title_text.dart';
 import 'package:capstone/core/themes/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -21,23 +21,22 @@ class OnboardingScreen extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const ScreenTitleText(
-                    value: "MEAS",
+                  const TitleText(
+                    value: "Saup Angeles",
                     isBold: true,
                   ),
                   const SizedBox(
                     height: 20,
                   ),
-                  const SubtitleText(value: "Account and Safety Profile Saved"),
+                  const BodyText(value: "Account and Safety Profile Saved"),
                   const SizedBox(
                     height: 20,
                   ),
-                  const SubtitleText(
+                  const BodyText(
                     value:
                         "Your personal information has been successfully saved and secured. You're now ready to access emergency services through the application.",
                     alignment: TextAlign.center,
-                    maxLines: 4,
-                    color: AppColors.darkerGrey,
+                    color: Colors.black54,
                   ),
                   const SizedBox(
                     height: 20,

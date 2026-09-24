@@ -1,6 +1,6 @@
-import 'package:capstone/core/shared/widgets/text/card_title_text.dart';
-import 'package:capstone/core/shared/widgets/text/paragraph_text.dart';
-import 'package:capstone/core/shared/widgets/text/supporting_info_text.dart';
+import 'package:capstone/core/shared/widgets/text/body_text.dart';
+import 'package:capstone/core/shared/widgets/text/label_text.dart';
+import 'package:capstone/core/shared/widgets/text/title_text.dart';
 import 'package:capstone/core/themes/app_colors.dart';
 import 'package:flutter/material.dart';
 
@@ -39,7 +39,7 @@ class VictimCardItem extends StatelessWidget {
                     shape: BoxShape.circle,
                   ),
                   child: Center(
-                    child: SupportingInfoText(
+                    child: LabelText(
                       value: '$index',
                       color: Colors.white,
                       isBold: true,
@@ -49,7 +49,7 @@ class VictimCardItem extends StatelessWidget {
                 ),
                 const SizedBox(width: 10),
                 Expanded(
-                  child: CardTitleText(
+                  child: TitleText(
                     value: name.isEmpty ? 'Unnamed victim' : name,
                     color: Colors.white,
                     isBold: false,
@@ -59,7 +59,7 @@ class VictimCardItem extends StatelessWidget {
             ),
             if (description.isNotEmpty) ...[
               const SizedBox(height: 10),
-              ParagraphText(
+              BodyText(
                 value: description,
                 color: Colors.white,
               ),

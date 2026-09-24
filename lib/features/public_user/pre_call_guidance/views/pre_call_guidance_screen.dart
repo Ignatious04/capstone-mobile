@@ -5,7 +5,7 @@ import 'package:capstone/features/public_user/pre_call_guidance/providers/guidan
 import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/public_user/pre_call_guidance/views/pre_call_guidance_page_view.dart';
 import 'package:capstone/features/public_user/reporting/providers/report_provider.dart';
-import 'package:capstone/features/public_user/reporting/widgets/section_title.dart';
+import 'package:capstone/core/shared/widgets/section_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

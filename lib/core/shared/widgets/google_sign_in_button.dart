@@ -1,7 +1,9 @@
 import 'package:capstone/core/exceptions/auth_exception.dart';
 import 'package:capstone/core/shared/providers/google_sign_in_provider.dart';
+import 'package:capstone/core/shared/widgets/custom_circular_progress_indicator.dart';
 import 'package:capstone/core/shared/widgets/custom_snackbar_helper.dart';
-import 'package:capstone/core/shared/widgets/text/button_text.dart';
+import 'package:capstone/core/shared/widgets/text/body_text.dart';
+import 'package:capstone/core/shared/widgets/text/label_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -46,14 +48,17 @@ class GoogleSignInButton extends ConsumerWidget {
                 }
               },
         icon: isLoading
-            ? const SizedBox(width: 18, height: 18, child: CircularProgressIndicator(strokeWidth: 2))
+            ? const SizedBox(width: 20, height: 20, child: CustomCircularProgressIndicator())
             : Image.asset(
                 'assets/images/google_logo.png',
                 width: 25,
                 height: 25,
                 errorBuilder: (_, _, _) => const Icon(Icons.g_mobiledata, size: 28),
               ),
-        label: ButtonText(value: label),
+        label: BodyText(
+          value: label,
+          isBold: true,
+        ),
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.white,
           shape: RoundedRectangleBorder(

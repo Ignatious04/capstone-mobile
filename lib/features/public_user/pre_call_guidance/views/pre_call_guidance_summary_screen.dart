@@ -1,11 +1,11 @@
 import 'package:capstone/core/shared/providers/location_provider.dart';
 import 'package:capstone/core/shared/widgets/custom_alert_dialog.dart';
+import 'package:capstone/core/shared/widgets/custom_circular_progress_indicator.dart';
 import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
 import 'package:capstone/core/shared/widgets/custom_snackbar_helper.dart';
-import 'package:capstone/core/shared/widgets/text/card_title_text.dart';
-import 'package:capstone/core/shared/widgets/text/data_label_text.dart';
-import 'package:capstone/core/shared/widgets/text/data_value_text.dart';
-import 'package:capstone/core/shared/widgets/text/paragraph_text.dart';
+import 'package:capstone/core/shared/widgets/text/body_text.dart';
+import 'package:capstone/core/shared/widgets/text/label_text.dart';
+import 'package:capstone/core/shared/widgets/text/title_text.dart';
 import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/public_user/pre_call_guidance/providers/guidance_provider.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -44,15 +44,15 @@ class PreCallGuidanceSummaryScreen extends ConsumerWidget {
                     size: 50,
                   ),
                   const SizedBox(height: 10),
-                  CardTitleText(
+                  TitleText(
                     value: "Guidance Complete",
                     isBold: true,
                   ),
-                  ParagraphText(
+                  BodyText(
                     value:
                         "Your pre-call guidance has been completed. You may now submit your report to the appropriate agency.",
                     alignment: TextAlign.center,
-                    isBold: false,
+                    isOverflow: false,
                   ),
                 ],
               ),
@@ -71,10 +71,10 @@ class PreCallGuidanceSummaryScreen extends ConsumerWidget {
               itemBuilder: (_, index) {
                 final item = state.questions[index];
                 return ListTile(
-                  title: DataLabelText(
+                  title: BodyText(
                     value: item.question,
                   ),
-                  subtitle: DataValueText(
+                  subtitle: LabelText(
                     value: item.answer == null
                         ? "Not answered"
                         : item.answer!
@@ -98,12 +98,12 @@ class PreCallGuidanceSummaryScreen extends ConsumerWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SizedBox(
-                    height: 16,
-                    width: 16,
-                    child: CircularProgressIndicator(strokeWidth: 2),
+                    height: 15,
+                    width: 15,
+                    child: CustomCircularProgressIndicator(color: Colors.white),
                   ),
                   SizedBox(width: 10),
-                  ParagraphText(value: "Getting your location..."),
+                  BodyText(value: "Getting your location..."),
                 ],
               ),
             ),

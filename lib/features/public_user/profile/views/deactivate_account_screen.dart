@@ -4,8 +4,8 @@ import 'package:capstone/core/shared/widgets/custom_app_bar.dart';
 import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
 import 'package:capstone/core/shared/widgets/custom_snackbar_helper.dart';
 import 'package:capstone/core/shared/widgets/custom_text_field.dart';
-import 'package:capstone/core/shared/widgets/text/screen_title_text.dart';
-import 'package:capstone/core/shared/widgets/text/supporting_info_text.dart';
+import 'package:capstone/core/shared/widgets/text/body_text.dart';
+import 'package:capstone/core/shared/widgets/text/title_text.dart';
 import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/public_user/profile/providers/deactivate_account_provider.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +34,7 @@ class _DeactivateAccountScreenState extends ConsumerState<DeactivateAccountScree
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const SupportingInfoText(value: "Deactivate your account?"),
+        title: const BodyText(value: "Deactivate your account?"),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         backgroundColor: Colors.white,
         actions: [
@@ -84,9 +84,9 @@ class _DeactivateAccountScreenState extends ConsumerState<DeactivateAccountScree
                 children: [
                   const Icon(Icons.pause_circle_outline, size: 50, color: Colors.deepOrange),
                   const SizedBox(height: 10),
-                  const ScreenTitleText(value: "Deactivate your account", alignment: TextAlign.center),
+                  const TitleText(value: "Deactivate your account", alignment: TextAlign.center),
                   const SizedBox(height: 10),
-                  const SupportingInfoText(
+                  const BodyText(
                     value:
                         "You won't be able to use the app or send reports until you reactivate. "
                         "Your profile and past reports are kept, and you can reactivate any time "
@@ -105,9 +105,9 @@ class _DeactivateAccountScreenState extends ConsumerState<DeactivateAccountScree
                       validator: (value) => (value == null || value.isEmpty) ? "Password is required" : null,
                     )
                   else
-                    const SupportingInfoText(
+                    const BodyText(
                       value: "You'll be asked to confirm with your Google account.",
-                      color: AppColors.darkerGrey,
+                      color: Colors.black54,
                       alignment: TextAlign.center,
                     ),
                   const SizedBox(height: 20),

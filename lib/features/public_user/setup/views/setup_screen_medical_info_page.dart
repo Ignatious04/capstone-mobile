@@ -2,8 +2,8 @@ import 'package:capstone/core/shared/widgets/custom_date_picker_widget.dart';
 import 'package:capstone/core/shared/widgets/custom_dropdown_button.dart';
 import 'package:capstone/core/shared/widgets/custom_text_field.dart';
 import 'package:capstone/core/shared/providers/user_provider.dart';
-import 'package:capstone/core/shared/widgets/text/supporting_info_text.dart';
-import 'package:capstone/features/public_user/reporting/widgets/section_title.dart';
+import 'package:capstone/core/shared/widgets/section_title.dart';
+import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -36,7 +36,7 @@ class _SetupScreenMedicalInfoPage extends ConsumerState<SetupScreenMedicalInfoPa
           const SizedBox(
             height: 10,
           ),
-          const SupportingInfoText(
+          const BodyText(
             value: "This information helps emergency responders provide better care. All fields are optional.",
             isBold: false,
           ),

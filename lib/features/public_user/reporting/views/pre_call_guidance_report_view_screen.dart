@@ -1,13 +1,11 @@
+import 'package:capstone/core/shared/widgets/text/body_text.dart';
+import 'package:capstone/core/shared/widgets/text/title_text.dart';
 import 'package:capstone/core/utilities/formatter.dart';
 import 'package:capstone/core/shared/widgets/custom_app_bar.dart';
 import 'package:capstone/core/shared/widgets/info_column.dart';
-import 'package:capstone/core/shared/widgets/text/card_title_text.dart';
-import 'package:capstone/core/shared/widgets/text/data_label_text.dart';
-import 'package:capstone/core/shared/widgets/text/data_value_text.dart';
-import 'package:capstone/core/shared/widgets/text/paragraph_text.dart';
 import 'package:capstone/features/public_user/reporting/models/report_model.dart';
 import 'package:capstone/features/public_user/reporting/widgets/report_status_widget.dart';
-import 'package:capstone/features/public_user/reporting/widgets/section_title.dart';
+import 'package:capstone/core/shared/widgets/section_title.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -62,10 +60,10 @@ class PreCallGuidanceReportViewScreen extends StatelessWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const DataLabelText(
+                                const BodyText(
                                   value: 'EMERGENCY TYPE',
                                 ),
-                                DataValueText(
+                                BodyText(
                                   value: Formatter.formatEnumName(report.incidentType!.name),
                                   isBold: true,
                                 ),
@@ -94,15 +92,15 @@ class PreCallGuidanceReportViewScreen extends StatelessWidget {
                       const SizedBox(height: 10),
                       Align(
                         alignment: Alignment.center,
-                        child: const CardTitleText(
+                        child: const TitleText(
                           value: "Pre-Call Guidance",
-                          isBold: true,
                         ),
                       ),
                       const SizedBox(height: 10),
-                      const ParagraphText(
+                      const BodyText(
                         value: "This report was submitted through the pre-call guidance module.",
                         alignment: TextAlign.center,
+                        isOverflow: false,
                       ),
                     ],
                   ),
@@ -128,12 +126,12 @@ class PreCallGuidanceReportViewScreen extends StatelessWidget {
                       const SizedBox(height: 10),
                       InfoColumn(
                         title: "STATUS",
-                        value: report.status?.name.toUpperCase() ?? "-",
+                        value: Formatter.formatEnumName(report.status!.name),
                       ),
                       const SizedBox(height: 10),
                       InfoColumn(
                         title: "INCIDENT TYPE",
-                        value: report.incidentType?.name ?? "-",
+                        value: Formatter.formatEnumName(report.incidentType!.name),
                       ),
                       const SizedBox(height: 10),
                       InfoColumn(
@@ -164,16 +162,16 @@ class PreCallGuidanceReportViewScreen extends StatelessWidget {
                   itemBuilder: (_, index) {
                     final item = report.guidanceAnswers[index];
                     return ListTile(
-                      title: DataLabelText(
+                      title: BodyText(
                         value: item.question,
                       ),
-                      subtitle: DataValueText(
+                      subtitle: BodyText(
                         value: item.answer == null
                             ? "Not answered"
                             : item.answer!
                             ? "Yes"
                             : "No",
-                        isBold: false,
+                        isBold: true,
                       ),
                       leading: Icon(
                         item.answer == true ? Icons.check_circle : Icons.cancel,

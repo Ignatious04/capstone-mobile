@@ -5,8 +5,9 @@ import 'package:capstone/core/shared/widgets/custom_circular_progress_indicator.
 import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
 import 'package:capstone/core/shared/providers/firebase_auth_provider.dart';
 import 'package:capstone/core/shared/providers/user_provider.dart';
-import 'package:capstone/core/shared/widgets/text/screen_title_text.dart';
-import 'package:capstone/core/shared/widgets/text/supporting_info_text.dart';
+import 'package:capstone/core/shared/widgets/custom_header_widget.dart';
+import 'package:capstone/core/shared/widgets/text/body_text.dart';
+import 'package:capstone/core/shared/widgets/text/headline_text.dart';
 import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/public_user/profile/views/personal_information_screen.dart';
 import 'package:capstone/features/public_user/profile/views/settings_screen.dart';
@@ -29,132 +30,151 @@ class ProfileScreen extends ConsumerWidget {
           );
         }
         return SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Hero(
-                  tag: "profile_pic",
-                  child: SizedBox(
-                    width: 150,
-                    height: 150,
-                    child: ClipOval(
-                      child: user.profileURL != null
-                          ? CachedNetworkImage(
-                              imageUrl: user.profileURL!,
-                              width: 150,
-                              height: 150,
-                              fit: BoxFit.cover,
-                            )
-                          : Container(
-                              color: AppColors.lighterBlack,
-                              child: const Icon(Icons.person, size: 50),
-                            ),
+          child: Column(
+            children: [
+              SizedBox(
+                width: double.infinity,
+                child: const CustomHeaderWidget(title: "Safety Profile", body: "View and manage your account"),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Hero(
+                      tag: "profile_pic",
+                      child: SizedBox(
+                        width: 150,
+                        height: 150,
+                        child: ClipOval(
+                          child: user.profileURL != null
+                              ? CachedNetworkImage(
+                                  imageUrl: user.profileURL!,
+                                  width: 150,
+                                  height: 150,
+                                  fit: BoxFit.cover,
+                                )
+                              : Container(
+                                  color: AppColors.lighterBlack,
+                                  child: const Icon(Icons.person, size: 50),
+                                ),
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                ScreenTitleText(
-                  value: "${user.firstName} ${user.lastName}",
-                  isBold: true,
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                SizedBox(
-                  width: double.infinity,
-                  child: CustomElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) {
-                            return PersonalInformationScreen();
-                          },
-                        ),
-                      );
-                    },
-                    backgroundColor: Colors.white,
-                    color: Colors.black,
-                    value: "Personal Information",
-                  ),
-                ),
-                SizedBox(
-                  width: double.infinity,
-                  child: CustomElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) {
-                            return SettingsScreen();
-                          },
-                        ),
-                      );
-                    },
-                    backgroundColor: Colors.white,
-                    color: Colors.black,
-                    value: "Settings",
-                  ),
-                ),
-                SizedBox(
-                  width: double.infinity,
-                  child: CustomElevatedButton(
-                    onPressed: () async {
-                      final dialog = await showDialog<bool>(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            title: const SupportingInfoText(value: "Do you wish to log out?"),
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                            backgroundColor: Colors.white,
-                            actions: [
-                              CustomElevatedButton(
-                                onPressed: () {
-                                  Navigator.pop(context, false);
-                                },
-                                value: "No",
-                              ),
-                              CustomElevatedButton(
-                                onPressed: () {
-                                  Navigator.pop(context, true);
-                                },
-                                value: "Yes",
-                              ),
-                            ],
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    HeadlineText(
+                      value: "${user.firstName} ${user.lastName}",
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    SizedBox(
+                      width: double.infinity,
+                      child: CustomElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return PersonalInformationScreen();
+                              },
+                            ),
                           );
                         },
-                      );
+                        icon: Icon(
+                          Icons.person,
+                          size: 25,
+                        ),
+                        backgroundColor: Colors.white,
+                        color: Colors.black,
+                        value: "Personal Information",
+                      ),
+                    ),
+                    SizedBox(
+                      width: double.infinity,
+                      child: CustomElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return SettingsScreen();
+                              },
+                            ),
+                          );
+                        },
+                        icon: Icon(
+                          Icons.settings,
+                          size: 25,
+                        ),
+                        backgroundColor: Colors.white,
+                        color: Colors.black,
+                        value: "Settings",
+                      ),
+                    ),
+                    SizedBox(
+                      width: double.infinity,
+                      child: CustomElevatedButton(
+                        onPressed: () async {
+                          final dialog = await showDialog<bool>(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: const BodyText(value: "Do you wish to log out?"),
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                                backgroundColor: Colors.white,
+                                actions: [
+                                  CustomElevatedButton(
+                                    onPressed: () {
+                                      Navigator.pop(context, false);
+                                    },
+                                    value: "No",
+                                  ),
+                                  CustomElevatedButton(
+                                    onPressed: () {
+                                      Navigator.pop(context, true);
+                                    },
+                                    value: "Yes",
+                                  ),
+                                ],
+                              );
+                            },
+                          );
 
-                      if (dialog != true) {
-                        return;
-                      }
+                          if (dialog != true) {
+                            return;
+                          }
 
-                      try {
-                        final firebaseAuthRepository = ref.read(
-                          firebaseAuthRepositoryProvider,
-                        );
+                          try {
+                            final firebaseAuthRepository = ref.read(
+                              firebaseAuthRepositoryProvider,
+                            );
 
-                        final uid = firebaseAuthRepository.currentUser?.uid;
+                            final uid = firebaseAuthRepository.currentUser?.uid;
 
-                        if (uid != null) {
-                          await ref.read(pushNotificationServiceProvider).clearToken(uid);
-                        }
-                        await firebaseAuthRepository.signOut();
-                      } on AuthException catch (e) {
-                        debugPrint(e.message);
-                      }
-                    },
-                    color: Colors.red,
-                    backgroundColor: Colors.white,
-                    value: "Log Out",
-                  ),
+                            if (uid != null) {
+                              await ref.read(pushNotificationServiceProvider).clearToken(uid);
+                            }
+                            await firebaseAuthRepository.signOut();
+                          } on AuthException catch (e) {
+                            debugPrint(e.message);
+                          }
+                        },
+                        icon: Icon(
+                          Icons.logout,
+                          size: 25,
+                        ),
+                        color: Colors.red,
+                        backgroundColor: Colors.white,
+                        value: "Log Out",
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         );
       },

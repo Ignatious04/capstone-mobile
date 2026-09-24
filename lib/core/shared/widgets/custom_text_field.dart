@@ -14,7 +14,7 @@ class CustomTextField extends StatelessWidget {
     this.keyboardType,
     this.inputFormatters,
     this.isReadOnly = false,
-    this.color = AppColors.darkerGrey,
+    this.color = Colors.black,
     this.obscureText = false,
     this.hideErrorText = true,
     this.vertical = 10,
@@ -50,7 +50,7 @@ class CustomTextField extends StatelessWidget {
         Text.rich(
           TextSpan(
             style: Theme.of(context).textTheme.labelMedium?.copyWith(
-              color: AppColors.darkerGrey,
+              color: Colors.black54,
             ),
             children: [
               TextSpan(text: title),
@@ -79,8 +79,8 @@ class CustomTextField extends StatelessWidget {
           style:
               Theme.of(
                 context,
-              ).textTheme.titleMedium?.copyWith(
-                color: Colors.black,
+              ).textTheme.bodyMedium?.copyWith(
+                color: color,
               ),
           obscureText: obscureText,
           decoration: InputDecoration(

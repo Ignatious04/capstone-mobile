@@ -3,8 +3,8 @@ import 'package:capstone/core/exceptions/auth_exception.dart';
 import 'package:capstone/core/shared/providers/firebase_auth_provider.dart';
 import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
 import 'package:capstone/core/shared/widgets/custom_snackbar_helper.dart';
-import 'package:capstone/core/shared/widgets/text/screen_title_text.dart';
-import 'package:capstone/core/shared/widgets/text/supporting_info_text.dart';
+import 'package:capstone/core/shared/widgets/text/body_text.dart';
+import 'package:capstone/core/shared/widgets/text/title_text.dart';
 import 'package:capstone/core/themes/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -36,12 +36,12 @@ class _EmailVerificationScreenState extends ConsumerState<EmailVerificationScree
             children: [
               const Icon(Icons.mark_email_unread_outlined, size: 50, color: Colors.deepOrange),
               const SizedBox(height: 10),
-              const ScreenTitleText(
+              const TitleText(
                 value: "Verify your email",
                 alignment: TextAlign.center,
               ),
               const SizedBox(height: 10),
-              SupportingInfoText(
+              BodyText(
                 value:
                     "We sent a verification link to $email. "
                     "Tap the link, then come back and press Continue.",

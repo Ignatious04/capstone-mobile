@@ -2,11 +2,9 @@
 import 'package:capstone/core/enums/map_mode_enum.dart';
 import 'package:capstone/core/enums/report_status_enum.dart';
 import 'package:capstone/core/shared/widgets/custom_circular_progress_indicator.dart';
-import 'package:capstone/core/shared/widgets/text/data_label_text.dart';
-import 'package:capstone/core/shared/widgets/text/data_value_text.dart';
-import 'package:capstone/core/shared/widgets/text/paragraph_text.dart';
-import 'package:capstone/core/shared/widgets/text/screen_title_text.dart';
-import 'package:capstone/core/shared/widgets/text/supporting_info_text.dart';
+import 'package:capstone/core/shared/widgets/text/body_text.dart';
+import 'package:capstone/core/shared/widgets/text/label_text.dart';
+import 'package:capstone/core/shared/widgets/text/title_text.dart';
 import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/core/utilities/formatter.dart';
 import 'package:capstone/features/public_user/map/widgets/map_tile_widget.dart';
@@ -15,7 +13,7 @@ import 'package:capstone/features/public_user/reporting/providers/report_reposit
 import 'package:capstone/features/public_user/reporting/widgets/additional_information_card.dart';
 import 'package:capstone/features/public_user/reporting/widgets/attachments_card.dart';
 import 'package:capstone/features/public_user/reporting/widgets/report_status_widget.dart';
-import 'package:capstone/features/public_user/reporting/widgets/section_title.dart';
+import 'package:capstone/core/shared/widgets/section_title.dart';
 import 'package:capstone/features/public_user/reporting/widgets/victims_card.dart';
 import 'package:capstone/features/responder/active_case/widgets/active_case_action_bar.dart';
 import 'package:flutter/material.dart';
@@ -85,11 +83,11 @@ class _NoActiveCase extends StatelessWidget {
           children: [
             Icon(Icons.local_hospital, size: 64, color: AppColors.darkerGrey),
             SizedBox(height: 16),
-            ScreenTitleText(value: "No active case"),
+            TitleText(value: "No active case"),
             SizedBox(height: 8),
-            SupportingInfoText(
+            BodyText(
               value: "You'll be notified here when a case is assigned to you.",
-              color: AppColors.darkerGrey,
+              color: Colors.black54,
             ),
           ],
         ),
@@ -199,8 +197,8 @@ class _ActiveCaseBody extends StatelessWidget {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const DataLabelText(value: 'EMERGENCY TYPE'),
-                                  DataValueText(
+                                  const LabelText(value: 'EMERGENCY TYPE'),
+                                  BodyText(
                                     value: Formatter.formatEnumName(report.incidentType?.name ?? '—'),
                                     isBold: true,
                                   ),
@@ -212,11 +210,11 @@ class _ActiveCaseBody extends StatelessWidget {
                         const SizedBox(height: 10),
                         ReportStatusWidget(status: report.status!.name),
                         const SizedBox(height: 10),
-                        const DataLabelText(value: 'REFERENCE NUMBER'),
-                        DataValueText(value: report.referenceNumber),
+                        const LabelText(value: 'REFERENCE NUMBER'),
+                        BodyText(value: report.referenceNumber),
                         const SizedBox(height: 10),
-                        const DataLabelText(value: 'DESCRIPTION'),
-                        ParagraphText(
+                        const LabelText(value: 'DESCRIPTION'),
+                        BodyText(
                           value: report.description.isEmpty ? 'No description provided.' : report.description,
                         ),
                       ],

@@ -1,4 +1,4 @@
-import 'package:capstone/core/shared/widgets/text/data_label_text.dart';
+import 'package:capstone/core/shared/widgets/text/label_text.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -21,7 +21,7 @@ class CustomDatePickerWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        DataLabelText(value: title),
+        LabelText(value: title),
         SizedBox(
           height: 10,
         ),

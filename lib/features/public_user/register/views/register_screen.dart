@@ -5,13 +5,13 @@ import 'package:capstone/core/shared/widgets/custom_snackbar_helper.dart';
 import 'package:capstone/core/shared/widgets/custom_text_field.dart';
 import 'package:capstone/core/shared/providers/user_provider.dart';
 import 'package:capstone/core/shared/widgets/google_sign_in_button.dart';
-import 'package:capstone/core/shared/widgets/text/section_title_text.dart';
-import 'package:capstone/core/shared/widgets/text/supporting_info_text.dart';
+import 'package:capstone/core/shared/widgets/text/body_text.dart';
+import 'package:capstone/core/shared/widgets/text/label_text.dart';
 import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/public_user/register/providers/register_provider.dart';
 import 'package:capstone/features/public_user/register/views/privacy_policy_screen.dart';
 import 'package:capstone/features/public_user/register/views/terms_and_conditions_screen.dart';
-import 'package:capstone/features/public_user/reporting/widgets/section_title.dart';
+import 'package:capstone/core/shared/widgets/section_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -154,7 +154,7 @@ class _RegisterScreenPage extends ConsumerState<RegisterScreen> {
                               },
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                                child: const SupportingInfoText(
+                                child: const LabelText(
                                   value: "I have read and agree to the Terms and Conditions",
                                   color: Colors.deepOrange,
                                 ),
@@ -188,7 +188,7 @@ class _RegisterScreenPage extends ConsumerState<RegisterScreen> {
                               },
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                                child: const SupportingInfoText(
+                                child: const LabelText(
                                   value: "I have read and acknowledge the app's Privacy Policy.",
                                   color: Colors.deepOrange,
                                 ),
@@ -224,7 +224,7 @@ class _RegisterScreenPage extends ConsumerState<RegisterScreen> {
                           Expanded(child: Divider(color: Colors.black.withValues(alpha: 0.2))),
                           const Padding(
                             padding: EdgeInsets.symmetric(horizontal: 10),
-                            child: SectionTitleText(value: "OR", color: AppColors.lighterBlack),
+                            child: BodyText(value: "OR", color: Colors.black54),
                           ),
                           Expanded(child: Divider(color: Colors.black.withValues(alpha: 0.2))),
                         ],

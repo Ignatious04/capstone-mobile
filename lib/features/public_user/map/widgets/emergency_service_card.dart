@@ -1,6 +1,7 @@
-import 'package:capstone/core/shared/widgets/text/card_title_text.dart';
-import 'package:capstone/core/shared/widgets/text/sub_title_text.dart';
-import 'package:capstone/core/shared/widgets/text/supporting_info_text.dart';
+import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
+import 'package:capstone/core/shared/widgets/text/body_text.dart';
+import 'package:capstone/core/shared/widgets/text/label_text.dart';
+import 'package:capstone/core/shared/widgets/text/title_text.dart';
 import 'package:capstone/core/themes/app_colors.dart';
 import 'package:flutter/material.dart';
 
@@ -9,6 +10,7 @@ class EmergencyServiceCard extends StatelessWidget {
     super.key,
     required this.icon,
     required this.iconColor,
+    required this.backgroundColor,
     required this.title,
     required this.contactNumber,
     required this.address,
@@ -20,6 +22,7 @@ class EmergencyServiceCard extends StatelessWidget {
 
   final IconData icon;
   final Color iconColor;
+  final Color backgroundColor;
   final String title;
   final String contactNumber;
   final String address;
@@ -42,88 +45,114 @@ class EmergencyServiceCard extends StatelessWidget {
       ),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-        child: Row(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              width: 50,
-              height: 50,
-              decoration: BoxDecoration(
-                color: Colors.black12,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Icon(
-                icon,
-                color: iconColor,
-                size: 50,
-              ),
-            ),
-            const SizedBox(width: 10),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CardTitleText(
-                    value: title,
+            Row(
+              children: [
+                Container(
+                  width: 50,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    color: backgroundColor,
+                    borderRadius: BorderRadius.circular(12),
                   ),
-                  SubtitleText(
-                    value: contactNumber,
-                    overflow: TextOverflow.ellipsis,
-                    color: AppColors.darkerGrey,
-                  ),
-                  SubtitleText(
-                    value: address,
-                    overflow: TextOverflow.ellipsis,
-                    color: AppColors.darkerGrey,
-                  ),
-                  Row(
+                  child: Icon(icon, color: iconColor, size: 40),
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Icon(
-                        Icons.location_on,
-                        size: 25,
-                        color: AppColors.darkerGrey,
+                      TitleText(
+                        value: title,
                       ),
-                      SupportingInfoText(
-                        value: distance,
-                        color: AppColors.darkerGrey,
-                      ),
-                      const SizedBox(width: 10),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 10,
-                          vertical: 5,
-                        ),
-                        decoration: BoxDecoration(
-                          color: AppColors.lighterGreen,
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: SupportingInfoText(
-                          value: status,
-                          color: AppColors.darkerGreen,
-                        ),
+                      BodyText(
+                        value: contactNumber,
+                        color: Colors.black54,
                       ),
                     ],
                   ),
-                ],
-              ),
-            ),
-            SizedBox(width: 10),
-            Column(
-              children: [
-                IconButton(
-                  icon: const Icon(
-                    Icons.call,
-                    color: Colors.deepOrange,
-                    size: 30,
-                  ),
-                  onPressed: onCallTap,
                 ),
-                IconButton(
-                  icon: const Icon(
-                    Icons.location_searching,
-                    color: Colors.deepOrange,
-                    size: 30,
+              ],
+            ),
+            const SizedBox(height: 10),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      BodyText(
+                        value: address,
+                        color: Colors.black54,
+                        isOverflow: false,
+                      ),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            Icons.location_on,
+                            size: 20,
+                            color: Colors.black54,
+                          ),
+                          BodyText(
+                            value: distance,
+                            color: Colors.black54,
+                          ),
+                          const SizedBox(width: 10),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 5,
+                            ),
+                            decoration: BoxDecoration(
+                              color: AppColors.lighterGreen,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: LabelText(
+                              value: status,
+                              color: AppColors.darkerGreen,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 10),
+                      Row(
+                        children: [
+                          Expanded(
+                            flex: 3,
+                            child: CustomElevatedButton(
+                              onPressed: onTap,
+                              icon: const Icon(
+                                Icons.near_me,
+                                color: Colors.white,
+                                size: 25,
+                              ),
+                              value: "Show on map",
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 10,
+                          ),
+                          Expanded(
+                            flex: 2,
+                            child: CustomElevatedButton(
+                              onPressed: onCallTap,
+                              icon: const Icon(
+                                Icons.call,
+                                color: Colors.white,
+                                size: 25,
+                              ),
+                              value: "Call",
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
-                  onPressed: onTap,
                 ),
               ],
             ),

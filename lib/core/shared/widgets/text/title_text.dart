@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-class ParagraphText extends StatelessWidget {
-  const ParagraphText({
+class TitleText extends StatelessWidget {
+  const TitleText({
     super.key,
     required this.value,
     this.alignment = TextAlign.left,
     this.color = Colors.black,
-    this.isBold = false,
+    this.isBold = true,
   });
 
   final String value;
@@ -22,7 +22,7 @@ class ParagraphText extends StatelessWidget {
       style:
           Theme.of(
             context,
-          ).textTheme.bodyLarge?.copyWith(
+          ).textTheme.titleMedium?.copyWith(
             color: color,
             fontWeight: isBold ? FontWeight.bold : null,
           ),

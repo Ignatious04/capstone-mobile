@@ -1,6 +1,6 @@
 // lib/features/responder/views/responder_profile_screen.dart
 import 'package:capstone/core/shared/providers/firebase_auth_provider.dart';
-import 'package:capstone/core/shared/widgets/text/screen_title_text.dart';
+import 'package:capstone/core/shared/widgets/text/title_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -24,7 +24,7 @@ class ResponderProfileScreen extends ConsumerWidget {
         ],
       ),
       body: const Center(
-        child: ScreenTitleText(value: "Responder profile"),
+        child: TitleText(value: "Responder profile"),
       ),
     );
   }

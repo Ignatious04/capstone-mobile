@@ -4,12 +4,11 @@ import 'package:capstone/core/shared/widgets/custom_dropdown_button.dart';
 import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
 import 'package:capstone/core/shared/widgets/custom_snackbar_helper.dart';
 import 'package:capstone/core/shared/widgets/custom_text_field.dart';
-import 'package:capstone/core/shared/widgets/text/data_label_text.dart';
+import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/providers/user_provider.dart';
-import 'package:capstone/core/shared/widgets/text/data_value_text.dart';
-import 'package:capstone/core/shared/widgets/text/supporting_info_text.dart';
+import 'package:capstone/core/shared/widgets/text/label_text.dart';
 import 'package:capstone/core/themes/app_colors.dart';
-import 'package:capstone/features/public_user/reporting/widgets/section_title.dart';
+import 'package:capstone/core/shared/widgets/section_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
@@ -35,22 +34,22 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
   static const _sexItems = [
     DropdownMenuItem(
       value: "Male",
-      child: DataValueText(value: "Male"),
+      child: BodyText(value: "Male"),
     ),
     DropdownMenuItem(
       value: "Female",
-      child: DataValueText(value: "Female"),
+      child: BodyText(value: "Female"),
     ),
   ];
 
   static const _civilStatusItems = [
     DropdownMenuItem(
       value: "Single",
-      child: DataValueText(value: "Single"),
+      child: BodyText(value: "Single"),
     ),
     DropdownMenuItem(
       value: "Married",
-      child: DataValueText(value: "Married"),
+      child: BodyText(value: "Married"),
     ),
   ];
 
@@ -188,7 +187,7 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
           const SizedBox(
             height: 10,
           ),
-          const SupportingInfoText(
+          const LabelText(
             value: "NOTE: REQUIRED FIELDS ARE DENOTED BY AN ASTERISK (*)",
             color: Colors.red,
             isBold: false,
@@ -262,7 +261,7 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    DataLabelText(value: "DATE OF BIRTH"),
+                    LabelText(value: "DATE OF BIRTH"),
                     SizedBox(
                       height: 10,
                     ),
@@ -415,7 +414,7 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
             items: _barangays.map((String barangay) {
               return DropdownMenuItem<String>(
                 value: barangay,
-                child: DataValueText(value: barangay),
+                child: BodyText(value: barangay),
               );
             }).toList(),
             onChanged: (value) {
@@ -449,7 +448,7 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
                   items: [
                     const DropdownMenuItem(
                       value: "Filipino",
-                      child: Text("Filipino"),
+                      child: BodyText(value: "Filipino"),
                     ),
                   ],
                   onChanged: (value) {

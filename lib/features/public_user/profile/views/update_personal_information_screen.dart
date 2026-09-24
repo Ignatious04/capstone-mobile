@@ -4,6 +4,7 @@ import 'package:capstone/core/shared/widgets/custom_app_bar.dart';
 import 'package:capstone/core/shared/widgets/custom_dropdown_button.dart';
 import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
 import 'package:capstone/core/shared/widgets/custom_text_field.dart';
+import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -84,7 +85,6 @@ class _UpdatePersonalInformationScreenState extends ConsumerState<UpdatePersonal
                         controller: sexController,
                         isReadOnly: true,
                         color: Colors.black54,
-                        isRequired: true,
                       ),
                       const SizedBox(height: 10),
                       CustomTextField(
@@ -128,7 +128,7 @@ class _UpdatePersonalInformationScreenState extends ConsumerState<UpdatePersonal
                         items: [
                           DropdownMenuItem(
                             value: "Filipino",
-                            child: Text("Filipino"),
+                            child: BodyText(value: "Filipino"),
                           ),
                         ],
                         onChanged: (value) {
@@ -152,11 +152,11 @@ class _UpdatePersonalInformationScreenState extends ConsumerState<UpdatePersonal
                         items: [
                           DropdownMenuItem(
                             value: "Single",
-                            child: Text("Single"),
+                            child: BodyText(value: "Single"),
                           ),
                           DropdownMenuItem(
                             value: "Married",
-                            child: Text("Married"),
+                            child: BodyText(value: "Married"),
                           ),
                         ],
                         onChanged: (value) {
@@ -180,11 +180,11 @@ class _UpdatePersonalInformationScreenState extends ConsumerState<UpdatePersonal
                         items: [
                           DropdownMenuItem(
                             value: "Catholic",
-                            child: Text("Catholic"),
+                            child: BodyText(value: "Catholic"),
                           ),
                           DropdownMenuItem(
                             value: "Iglesia ni Cristo",
-                            child: Text("Iglesia ni Cristo"),
+                            child: BodyText(value: "Iglesia ni Cristo"),
                           ),
                         ],
                         onChanged: (value) {

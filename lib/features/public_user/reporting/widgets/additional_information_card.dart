@@ -1,4 +1,4 @@
-import 'package:capstone/core/shared/widgets/text/paragraph_text.dart';
+import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/features/public_user/reporting/widgets/empty_card.dart';
 import 'package:flutter/material.dart';
 
@@ -25,7 +25,7 @@ class AdditionalInformationCard extends StatelessWidget {
       ),
       child: Padding(
         padding: const EdgeInsets.all(18),
-        child: ParagraphText(
+        child: BodyText(
           value: additionalInfo!,
         ),
       ),

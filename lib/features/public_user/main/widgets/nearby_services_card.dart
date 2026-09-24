@@ -1,6 +1,5 @@
-import 'package:capstone/core/shared/widgets/text/card_title_text.dart';
-import 'package:capstone/core/shared/widgets/text/sub_title_text.dart';
-import 'package:capstone/core/shared/widgets/text/supporting_info_text.dart';
+import 'package:capstone/core/shared/widgets/text/body_text.dart';
+import 'package:capstone/core/shared/widgets/text/title_text.dart';
 import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/core/utilities/call_launcher.dart';
 import 'package:flutter/material.dart';
@@ -57,20 +56,26 @@ class NearbyServicesCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  CardTitleText(
-                    value: name,
-                    isBold: true,
+                  TitleText(value: name),
+                  BodyText(
+                    value: contactNumber,
+                    color: Colors.black,
                   ),
-                  SubtitleText(value: contactNumber),
-                  SubtitleText(value: address),
+                  BodyText(
+                    value: address,
+                    color: Colors.black,
+                  ),
                   Row(
                     children: [
                       Icon(
                         Icons.location_on,
                         size: 25,
-                        color: AppColors.darkerGrey,
+                        color: Colors.black54,
                       ),
-                      SupportingInfoText(value: "${distance.toStringAsFixed(2)} km"),
+                      BodyText(
+                        value: "${distance.toStringAsFixed(2)} km",
+                        color: Colors.black54,
+                      ),
                     ],
                   ),
                 ],

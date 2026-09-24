@@ -1,7 +1,13 @@
 import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/shared/providers/firebase_auth_provider.dart';
 import 'package:capstone/core/shared/providers/locale_provider.dart';
+import 'package:capstone/core/shared/widgets/custom_app_bar.dart';
+import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
+import 'package:capstone/core/shared/widgets/text/body_text.dart';
+import 'package:capstone/core/shared/widgets/text/title_text.dart';
+import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/public_user/profile/views/change_password_screen.dart';
+import 'package:capstone/features/public_user/profile/views/deactivate_account_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -14,58 +20,109 @@ class SettingsScreen extends ConsumerWidget {
     final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
+      appBar: CustomAppBar(value: "Settings"),
       body: SafeArea(
         child: SingleChildScrollView(
-          child: Column(
-            children: [
-              ListTile(
-                leading: const Icon(Icons.language),
-                title: Text(l10n.language),
-                subtitle: Text(
-                  locale.languageCode == 'en' ? 'English' : 'Filipino',
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TitleText(
+                  value: "General",
+                  isBold: false,
                 ),
-                trailing: const Icon(Icons.chevron_right),
-                onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) {
-                      return SimpleDialog(
-                        title: const Text('Select Language'),
-                        children: [
-                          SimpleDialogOption(
-                            onPressed: () {
-                              ref.read(localeProvider.notifier).state = const Locale('en');
+                const SizedBox(height: 10),
+                Card(
+                  margin: EdgeInsets.all(0),
+                  color: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    side: BorderSide(
+                      color: Colors.black12,
+                    ),
+                  ),
+                  child: ListTile(
+                    leading: const Icon(
+                      Icons.language,
+                      size: 25,
+                    ),
+                    title: BodyText(
+                      value: l10n.language,
+                    ),
+                    subtitle: BodyText(
+                      value: locale.languageCode == 'en' ? 'English' : 'Filipino',
+                      isBold: true,
+                    ),
+                    trailing: const Icon(Icons.chevron_right),
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return SimpleDialog(
+                            backgroundColor: Colors.white,
+                            title: const TitleText(
+                              value: 'Select Language',
+                              isBold: false,
+                            ),
+                            children: [
+                              SimpleDialogOption(
+                                onPressed: () {
+                                  ref.read(localeProvider.notifier).state = const Locale('en');
 
-                              Navigator.pop(context);
-                            },
-                            child: const Text('English'),
-                          ),
-                          SimpleDialogOption(
-                            onPressed: () {
-                              ref.read(localeProvider.notifier).state = const Locale('fil');
+                                  Navigator.pop(context);
+                                },
+                                child: const BodyText(value: 'English'),
+                              ),
+                              SimpleDialogOption(
+                                onPressed: () {
+                                  ref.read(localeProvider.notifier).state = const Locale('fil');
 
-                              Navigator.pop(context);
-                            },
-                            child: const Text('Filipino'),
-                          ),
-                        ],
+                                  Navigator.pop(context);
+                                },
+                                child: const BodyText(value: 'Filipino'),
+                              ),
+                            ],
+                          );
+                        },
                       );
                     },
-                  );
-                },
-              ),
-              const Divider(),
-              if (ref.read(firebaseAuthRepositoryProvider).hasPasswordProvider)
-                ListTile(
-                  leading: const Icon(Icons.lock_outline),
-                  title: const Text('Change Password'),
-                  trailing: const Icon(Icons.chevron_right),
-                  onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const ChangePasswordScreen()),
                   ),
                 ),
-            ],
+                if (ref.read(firebaseAuthRepositoryProvider).hasPasswordProvider) ...[
+                  const SizedBox(height: 10),
+                  TitleText(
+                    value: "Security",
+                    isBold: false,
+                  ),
+                  const SizedBox(height: 10),
+                  ListTile(
+                    leading: const Icon(Icons.lock_outline),
+                    title: const Text('Change Password'),
+                    trailing: const Icon(Icons.chevron_right),
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const ChangePasswordScreen()),
+                    ),
+                  ),
+                ],
+                const SizedBox(height: 10),
+                SizedBox(
+                  width: double.infinity,
+                  child: CustomElevatedButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const DeactivateAccountScreen()),
+                      );
+                    },
+                    color: Colors.red,
+                    backgroundColor: Colors.white,
+                    value: "Deactivate Account",
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

@@ -2,12 +2,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:capstone/core/shared/widgets/custom_app_bar.dart';
 import 'package:capstone/core/shared/widgets/custom_circular_progress_indicator.dart';
 import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
-import 'package:capstone/core/shared/widgets/text/data_label_text.dart';
-import 'package:capstone/core/shared/widgets/text/data_value_text.dart';
+import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/providers/user_provider.dart';
-import 'package:capstone/core/shared/widgets/text/section_title_text.dart';
+import 'package:capstone/core/shared/widgets/text/label_text.dart';
+import 'package:capstone/core/shared/widgets/text/title_text.dart';
 import 'package:capstone/core/themes/app_colors.dart';
-import 'package:capstone/features/public_user/profile/views/deactivate_account_screen.dart';
 import 'package:capstone/features/public_user/profile/views/update_personal_information_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -62,11 +61,11 @@ class PersonalInformationScreen extends ConsumerWidget {
                           const SizedBox(
                             height: 10,
                           ),
-                          SectionTitleText(
+                          TitleText(
                             value: "${user.firstName} ${user.lastName}",
                             isBold: true,
                           ),
-                          SectionTitleText(
+                          BodyText(
                             value: user.contactNumber,
                           ),
                           const SizedBox(
@@ -77,68 +76,77 @@ class PersonalInformationScreen extends ConsumerWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const DataLabelText(
+                                const LabelText(
                                   value: "DATE OF BIRTH",
+                                  color: Colors.black54,
                                 ),
-                                DataValueText(
+                                BodyText(
                                   value: DateFormat("MMMM dd, yyyy").format(
                                     DateTime.fromMillisecondsSinceEpoch(
                                       user.birthDate,
                                     ),
                                   ),
+                                  isBold: true,
                                 ),
                                 const SizedBox(
                                   height: 10,
                                 ),
-                                const DataLabelText(
+                                const LabelText(
                                   value: "SEX",
+                                  color: Colors.black54,
                                 ),
-                                DataValueText(
+                                BodyText(
                                   value: user.sex,
+                                  isBold: true,
                                 ),
                                 const SizedBox(
                                   height: 10,
                                 ),
-                                const DataLabelText(
+                                const LabelText(
                                   value: "HOME ADDRESS",
+                                  color: Colors.black54,
                                 ),
-                                DataValueText(
+                                BodyText(
                                   value: user.address,
+                                  isBold: true,
                                 ),
                                 const SizedBox(
                                   height: 10,
                                 ),
-                                const DataLabelText(
+                                const LabelText(
                                   value: "NATIONALITY",
+                                  color: Colors.black54,
                                 ),
-                                DataValueText(
+                                BodyText(
                                   value: user.nationality,
+                                  isBold: true,
                                 ),
                                 const SizedBox(
                                   height: 10,
                                 ),
-                                const DataLabelText(
-                                  value: "Civil Status",
+                                const LabelText(
+                                  value: "CIVIL STATUS",
+                                  color: Colors.black54,
                                 ),
-                                DataValueText(
+                                BodyText(
                                   value: user.civilStatus,
+                                  isBold: true,
                                 ),
                                 const SizedBox(
                                   height: 10,
                                 ),
-                                const DataLabelText(
-                                  value: "Religion",
+                                const LabelText(
+                                  value: "RELIGION",
+                                  color: Colors.black54,
                                 ),
-                                DataValueText(
+                                BodyText(
                                   value: user.religion,
+                                  isBold: true,
                                 ),
                                 const SizedBox(
                                   height: 10,
                                 ),
-                                Container(
-                                  height: 1,
-                                  color: Colors.black,
-                                ),
+                                Divider(),
                                 const SizedBox(
                                   height: 10,
                                 ),
@@ -164,20 +172,6 @@ class PersonalInformationScreen extends ConsumerWidget {
                                 );
                               },
                               value: "Update Personal Information",
-                            ),
-                          ),
-                          SizedBox(
-                            width: double.infinity,
-                            child: CustomElevatedButton(
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(builder: (context) => const DeactivateAccountScreen()),
-                                );
-                              },
-                              color: Colors.red,
-                              backgroundColor: Colors.white,
-                              value: "Deactivate Account",
                             ),
                           ),
                         ],

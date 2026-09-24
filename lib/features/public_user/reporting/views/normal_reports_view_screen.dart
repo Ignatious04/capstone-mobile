@@ -1,14 +1,13 @@
+import 'package:capstone/core/shared/widgets/text/body_text.dart';
+import 'package:capstone/core/shared/widgets/text/label_text.dart';
 import 'package:capstone/core/utilities/formatter.dart';
 import 'package:capstone/core/shared/widgets/custom_app_bar.dart';
-import 'package:capstone/core/shared/widgets/text/data_label_text.dart';
-import 'package:capstone/core/shared/widgets/text/data_value_text.dart';
-import 'package:capstone/core/shared/widgets/text/paragraph_text.dart';
 import 'package:capstone/features/public_user/reporting/models/report_model.dart';
 import 'package:capstone/features/public_user/reporting/widgets/additional_information_card.dart';
 import 'package:capstone/features/public_user/reporting/widgets/attachments_card.dart';
 import 'package:capstone/features/public_user/reporting/widgets/location_card.dart';
 import 'package:capstone/features/public_user/reporting/widgets/report_status_widget.dart';
-import 'package:capstone/features/public_user/reporting/widgets/section_title.dart';
+import 'package:capstone/core/shared/widgets/section_title.dart';
 import 'package:capstone/features/public_user/reporting/widgets/victims_card.dart';
 import 'package:flutter/material.dart';
 
@@ -64,10 +63,10 @@ class NormalReportsViewScreen extends StatelessWidget {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const DataLabelText(
+                                  const BodyText(
                                     value: 'EMERGENCY TYPE',
                                   ),
-                                  DataValueText(
+                                  LabelText(
                                     value: Formatter.formatEnumName(report.incidentType!.name),
                                     isBold: true,
                                   ),
@@ -81,10 +80,10 @@ class NormalReportsViewScreen extends StatelessWidget {
                           status: status,
                         ),
                         const SizedBox(height: 10),
-                        const DataLabelText(
+                        const LabelText(
                           value: 'DESCRIPTION',
                         ),
-                        ParagraphText(
+                        BodyText(
                           value: report.description.isEmpty ? 'No description provided.' : report.description,
                         ),
                       ],

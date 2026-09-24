@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class ScreenTitleText extends StatelessWidget {
-  const ScreenTitleText({
+class HeadlineText extends StatelessWidget {
+  const HeadlineText({
     super.key,
     required this.value,
     this.alignment = TextAlign.left,

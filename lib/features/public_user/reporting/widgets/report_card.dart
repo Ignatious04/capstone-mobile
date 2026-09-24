@@ -1,10 +1,10 @@
 import 'package:capstone/core/enums/report_status_enum.dart';
 import 'package:capstone/core/enums/report_type_enum.dart';
-import 'package:capstone/core/shared/widgets/text/supporting_info_text.dart';
+import 'package:capstone/core/shared/widgets/text/body_text.dart';
+import 'package:capstone/core/shared/widgets/text/label_text.dart';
+import 'package:capstone/core/shared/widgets/text/title_text.dart';
 import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/core/utilities/formatter.dart';
-import 'package:capstone/core/shared/widgets/text/sub_title_text.dart';
-import 'package:capstone/core/shared/widgets/text/card_title_text.dart';
 import 'package:capstone/features/public_user/reporting/models/report_model.dart';
 import 'package:capstone/features/public_user/reporting/views/pre_call_guidance_report_view_screen.dart';
 import 'package:capstone/features/public_user/reporting/views/normal_reports_view_screen.dart';
@@ -57,19 +57,18 @@ class ReportCard extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      CardTitleText(
+                      TitleText(
                         value: referenceNumber.toString(),
-                        isBold: true,
                       ),
-                      SubtitleText(
+                      BodyText(
                         value: "Emergency Type: ${Formatter.formatEnumName(emergencyType)}",
                       ),
-                      SubtitleText(
+                      BodyText(
                         value: createdAt,
                       ),
                       Row(
                         children: [
-                          SubtitleText(
+                          BodyText(
                             value: "Status: ",
                           ),
                           Container(
@@ -81,7 +80,7 @@ class ReportCard extends StatelessWidget {
                               color: statusBackground,
                               borderRadius: BorderRadius.circular(12),
                             ),
-                            child: SupportingInfoText(
+                            child: LabelText(
                               value: Formatter.formatEnumName(status.name),
                               color: statusColor,
                             ),

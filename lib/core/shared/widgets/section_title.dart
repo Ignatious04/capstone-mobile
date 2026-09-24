@@ -1,5 +1,4 @@
-import 'package:capstone/core/shared/widgets/text/section_title_text.dart';
-import 'package:capstone/core/themes/app_colors.dart';
+import 'package:capstone/core/shared/widgets/text/title_text.dart';
 import 'package:flutter/material.dart';
 
 class SectionTitle extends StatelessWidget {
@@ -9,7 +8,7 @@ class SectionTitle extends StatelessWidget {
     required this.title,
     this.mainAxisAlignment = MainAxisAlignment.start,
     this.size = 25,
-    this.isBold = true,
+    this.isBold = false,
   });
 
   final IconData icon;
@@ -26,10 +25,10 @@ class SectionTitle extends StatelessWidget {
         Icon(
           icon,
           size: size,
-          color: AppColors.darkerGrey,
+          color: Colors.black54,
         ),
         const SizedBox(width: 10),
-        SectionTitleText(
+        TitleText(
           value: title,
           isBold: isBold,
         ),

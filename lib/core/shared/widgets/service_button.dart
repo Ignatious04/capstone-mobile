@@ -1,4 +1,4 @@
-import 'package:capstone/core/shared/widgets/text/button_text.dart';
+import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:flutter/material.dart';
 
 class ServiceButton extends StatelessWidget {
@@ -45,9 +45,10 @@ class ServiceButton extends StatelessWidget {
           SizedBox(
             height: 10,
           ),
-          ButtonText(
+          BodyText(
             value: value,
             color: color,
+            isBold: true,
           ),
         ],
       ),

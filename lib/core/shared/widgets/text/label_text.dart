@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class ButtonText extends StatelessWidget {
-  const ButtonText({
+class LabelText extends StatelessWidget {
+  const LabelText({
     super.key,
     required this.value,
     this.alignment = TextAlign.left,
@@ -22,7 +22,7 @@ class ButtonText extends StatelessWidget {
       style:
           Theme.of(
             context,
-          ).textTheme.labelLarge?.copyWith(
+          ).textTheme.labelMedium?.copyWith(
             color: color,
             fontWeight: isBold ? FontWeight.bold : null,
           ),

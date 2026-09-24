@@ -4,10 +4,10 @@ import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
 import 'package:capstone/core/shared/widgets/custom_snackbar_helper.dart';
 import 'package:capstone/core/shared/widgets/custom_text_field.dart';
 import 'package:capstone/core/shared/widgets/google_sign_in_button.dart';
-import 'package:capstone/core/shared/widgets/text/screen_title_text.dart';
-import 'package:capstone/core/shared/widgets/text/section_title_text.dart';
-import 'package:capstone/core/shared/widgets/text/sub_title_text.dart';
-import 'package:capstone/core/shared/widgets/text/supporting_info_text.dart';
+import 'package:capstone/core/shared/widgets/text/body_text.dart';
+import 'package:capstone/core/shared/widgets/text/headline_text.dart';
+import 'package:capstone/core/shared/widgets/text/label_text.dart';
+import 'package:capstone/core/shared/widgets/text/title_text.dart';
 import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/public_user/login/providers/login_provider.dart';
 import 'package:capstone/features/public_user/register/views/register_screen.dart';
@@ -76,12 +76,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const ScreenTitleText(
+                const HeadlineText(
                   value: "Saup Angeles",
                   color: Colors.white,
                   isBold: true,
                 ),
-                const SubtitleText(
+                const TitleText(
                   value: "Mobile Emergency Access System",
                   color: Colors.white,
                 ),
@@ -99,10 +99,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SectionTitleText(value: "Welcome!"),
-                const SupportingInfoText(
+                const TitleText(
+                  value: "Welcome!",
+                  color: Colors.black,
+                ),
+                const BodyText(
                   value: "Log in to your account",
-                  color: AppColors.darkerGrey,
+                  color: Colors.black54,
                 ),
                 const SizedBox(
                   height: 10.0,
@@ -138,7 +141,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   onChanged: (value) {},
                 ),
                 if (errorMessage != null) ...[
-                  SupportingInfoText(
+                  LabelText(
                     value: errorMessage!,
                     color: Colors.red[700]!,
                   ),
@@ -161,7 +164,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     },
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                      child: const SupportingInfoText(
+                      child: const LabelText(
                         value: "Forgot password?",
                         color: Colors.deepOrange,
                       ),
@@ -201,15 +204,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     Expanded(
                       child: Container(
                         height: 1,
-                        color: Colors.black.withValues(alpha: 0.2),
+                        color: Colors.black54,
                       ),
                     ),
                     const SizedBox(
                       width: 10,
                     ),
-                    const SectionTitleText(
+                    const BodyText(
                       value: "OR",
-                      color: AppColors.lighterBlack,
+                      color: Colors.black54,
                     ),
                     const SizedBox(
                       width: 10,
@@ -217,7 +220,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     Expanded(
                       child: Container(
                         height: 1,
-                        color: Colors.black.withValues(alpha: 0.2),
+                        color: Colors.black54,
                       ),
                     ),
                   ],
@@ -232,7 +235,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const SupportingInfoText(value: "Didn't have an account?", color: AppColors.darkerGrey),
+                    const LabelText(value: "Didn't have an account?", color: Colors.black54),
                     SizedBox(width: 5),
                     InkWell(
                       onTap: () {
@@ -247,7 +250,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       },
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                        child: SupportingInfoText(
+                        child: LabelText(
                           value: "Create one",
                           color: Colors.deepOrange,
                         ),
