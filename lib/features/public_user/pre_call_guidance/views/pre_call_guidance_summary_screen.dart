@@ -113,8 +113,12 @@ class PreCallGuidanceSummaryScreen extends ConsumerWidget {
                     final confirmed = await showConfirmationDialog(
                       context,
                       title: "Do you wish to submit this report?",
+                      content:
+                          "Angeles City's declared emergency response time is 10–15 minutes; "
+                          "please note that actual response time may vary depending on "
+                          "responder availability, traffic, and the nature of each case.",
                     );
-
+                    
                     if (confirmed != true) {
                       return;
                     }

@@ -49,7 +49,7 @@ class LocationCard extends StatelessWidget {
                         value: 'REPORTED LOCATION',
                       ),
                       const SizedBox(height: 10),
-                      LabelText(
+                      BodyText(
                         value:
                             '${location.latitude.toStringAsFixed(6)}, '
                             '${location.longitude.toStringAsFixed(6)}',

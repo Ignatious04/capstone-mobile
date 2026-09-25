@@ -19,7 +19,7 @@ import 'package:capstone/features/public_user/map/widgets/map_tile_widget.dart';
 import 'package:capstone/features/public_user/main/widgets/nearby_services_card.dart';
 import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/public_user/notifications/views/notification_history_screen.dart';
-import 'package:capstone/features/public_user/reporting/providers/report_provider.dart';
+import 'package:capstone/core/shared/providers/report_provider.dart';
 import 'package:capstone/core/shared/widgets/section_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -72,10 +72,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
     final confirmed = await showConfirmationDialog(
       context,
-      title: "Send a $label report?",
+      title: "Send a quick $label report?",
       content:
-          "This immediately sends $label your current location as an emergency report. "
-          "Only use this for real emergencies.",
+          "This immediately sends your current location as an emergency report. "
+          "Only use this for real emergencies. "
+          "Angeles City's declared emergency response time is 10–15 minutes; "
+          "please note that actual response time may vary depending on "
+          "responder availability, traffic, and the nature of each case.",
     );
 
     if (confirmed != true) return;

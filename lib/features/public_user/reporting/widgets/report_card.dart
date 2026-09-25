@@ -5,7 +5,7 @@ import 'package:capstone/core/shared/widgets/text/label_text.dart';
 import 'package:capstone/core/shared/widgets/text/title_text.dart';
 import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/core/utilities/formatter.dart';
-import 'package:capstone/features/public_user/reporting/models/report_model.dart';
+import 'package:capstone/core/shared/models/report_model.dart';
 import 'package:capstone/features/public_user/reporting/views/pre_call_guidance_report_view_screen.dart';
 import 'package:capstone/features/public_user/reporting/views/normal_reports_view_screen.dart';
 import 'package:flutter/material.dart';

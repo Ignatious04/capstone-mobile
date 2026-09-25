@@ -1,5 +1,5 @@
 import 'package:capstone/core/enums/report_status_enum.dart';
-import 'package:capstone/features/public_user/reporting/models/report_model.dart';
+import 'package:capstone/core/shared/models/report_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ReportRepository {

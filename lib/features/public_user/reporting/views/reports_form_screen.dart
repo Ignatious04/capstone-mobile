@@ -1,4 +1,6 @@
 import 'package:capstone/core/controllers/victim_controllers.dart';
+import 'package:capstone/core/enums/police_concern_enum.dart';
+import 'package:capstone/core/enums/report_priority_enum.dart';
 import 'package:capstone/core/enums/service_type_enum.dart';
 import 'package:capstone/core/enums/map_mode_enum.dart';
 import 'package:capstone/core/shared/widgets/custom_app_bar.dart';
@@ -14,7 +16,7 @@ import 'package:capstone/core/shared/widgets/text/label_text.dart';
 import 'package:capstone/features/public_user/map/widgets/map_tile_widget.dart';
 import 'package:capstone/features/public_user/reporting/providers/pending_attachments_provider.dart';
 import 'package:capstone/core/shared/providers/location_provider.dart';
-import 'package:capstone/features/public_user/reporting/providers/report_provider.dart';
+import 'package:capstone/core/shared/providers/report_provider.dart';
 import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/public_user/reporting/views/select_location_screen.dart';
 import 'package:capstone/core/shared/widgets/section_title.dart';
@@ -38,6 +40,9 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> {
   LatLng? _selectedLocation;
   GoogleMapController? _mapController;
   final reportsFormKey = GlobalKey<FormState>();
+  bool _isPoliceEmergency = true;
+  PoliceConcernTypeEnum? _policeConcernType;
+
   static const _emergencyType = [
     DropdownMenuItem(
       value: ServiceTypeEnum.medical,
@@ -126,9 +131,98 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> {
                                 items: _emergencyType,
                                 onChanged: (value) {
                                   ref.read(reportProvider.notifier).setIncidentType(value!);
+                                  setState(() {
+                                    _isPoliceEmergency = true;
+                                    _policeConcernType = null;
+                                  });
                                 },
                                 isRequired: true,
                               ),
+                              const SizedBox(height: 10),
+                              if (ref.watch(reportProvider).incidentType == ServiceTypeEnum.police) ...[
+                                const LabelText(value: "IS THIS AN EMERGENCY?", color: Colors.black54),
+                                const SizedBox(height: 10),
+                                SizedBox(
+                                  width: double.infinity,
+                                  child: SegmentedButton<bool>(
+                                    style: SegmentedButton.styleFrom(
+                                      iconSize: 25,
+                                      selectedBackgroundColor: Colors.deepOrange,
+                                      selectedForegroundColor: Colors.white,
+                                      shape: const RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.all(
+                                          Radius.circular(12.0),
+                                        ),
+                                      ),
+                                    ),
+                                    segments: [
+                                      ButtonSegment(
+                                        value: true,
+                                        label: BodyText(
+                                          value: "Emergency",
+                                          isBold: true,
+                                          color: _isPoliceEmergency ? Colors.white : Colors.black,
+                                        ),
+                                      ),
+                                      ButtonSegment(
+                                        value: false,
+                                        label: BodyText(
+                                          value: "Non-emergency",
+                                          isBold: true,
+                                          color: _isPoliceEmergency ? Colors.black : Colors.white,
+                                        ),
+                                      ),
+                                    ],
+                                    selected: {_isPoliceEmergency},
+                                    onSelectionChanged: (selection) {
+                                      setState(() {
+                                        _isPoliceEmergency = selection.first;
+                                      });
+                                    },
+                                  ),
+                                ),
+                                if (!_isPoliceEmergency) ...[
+                                  const SizedBox(height: 10),
+                                  CustomDropdownButton<PoliceConcernTypeEnum>(
+                                    title: "CONCERN TYPE",
+                                    value: _policeConcernType,
+                                    validator: (value) => value == null ? "Concern type is required" : null,
+                                    hideErrorText: false,
+                                    isRequired: true,
+                                    items: const [
+                                      DropdownMenuItem(
+                                        value: PoliceConcernTypeEnum.noiseComplaint,
+                                        child: BodyText(value: "Noise complaint", isBold: true),
+                                      ),
+                                      DropdownMenuItem(
+                                        value: PoliceConcernTypeEnum.lostItem,
+                                        child: BodyText(value: "Lost/stolen item", isBold: true),
+                                      ),
+                                      DropdownMenuItem(
+                                        value: PoliceConcernTypeEnum.minorDispute,
+                                        child: BodyText(value: "Minor dispute", isBold: true),
+                                      ),
+                                      DropdownMenuItem(
+                                        value: PoliceConcernTypeEnum.suspiciousActivity,
+                                        child: BodyText(value: "Suspicious activity", isBold: true),
+                                      ),
+                                      DropdownMenuItem(
+                                        value: PoliceConcernTypeEnum.vandalism,
+                                        child: BodyText(value: "Vandalism", isBold: true),
+                                      ),
+                                      DropdownMenuItem(
+                                        value: PoliceConcernTypeEnum.requestForReport,
+                                        child: BodyText(value: "Request for a police report", isBold: true),
+                                      ),
+                                      DropdownMenuItem(
+                                        value: PoliceConcernTypeEnum.other,
+                                        child: BodyText(value: "Other", isBold: true),
+                                      ),
+                                    ],
+                                    onChanged: (value) => setState(() => _policeConcernType = value),
+                                  ),
+                                ],
+                              ],
                               const SizedBox(
                                 height: 10,
                               ),
@@ -444,7 +538,11 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> {
                                 final confirmed = await showConfirmationDialog(
                                   context,
                                   title: "Do you wish to submit this report?",
-                                  content: "Disclaimer...",
+                                  content:
+                                      "By submitting, you confirm that this report is accurate. "
+                                      "Angeles City's declared emergency response time is 10–15 minutes; "
+                                      "please note that actual response time may vary depending on "
+                                      "responder availability, traffic, and the nature of each case.",
                                 );
 
                                 if (confirmed != true) {
@@ -473,6 +571,14 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> {
                                         description: incidentDescriptionController.text,
                                         additionalInformation: additionalInformationController.text,
                                         selectedLocation: _selectedLocation!,
+                                        priority: ref.read(reportProvider).incidentType == ServiceTypeEnum.police
+                                            ? (_isPoliceEmergency ? ReportPriorityEnum.high : ReportPriorityEnum.low)
+                                            : ReportPriorityEnum.high,
+                                        policeConcernType:
+                                            ref.read(reportProvider).incidentType == ServiceTypeEnum.police &&
+                                                !_isPoliceEmergency
+                                            ? _policeConcernType
+                                            : null,
                                       );
 
                                   if (!context.mounted) {

@@ -1,3 +1,4 @@
+import 'package:capstone/core/enums/police_concern_enum.dart';
 import 'package:capstone/core/enums/service_type_enum.dart';
 import 'package:capstone/core/enums/report_priority_enum.dart';
 import 'package:capstone/core/enums/report_status_enum.dart';
@@ -13,6 +14,8 @@ class ReportModel {
   final String userID;
   final String responderID;
   final ReportTypeEnum reportType;
+  final ReportPriorityEnum? priority;
+  final PoliceConcernTypeEnum? policeConcernType;
   final ServiceTypeEnum? incidentType;
   final String description;
   final List<VictimModel> victims;
@@ -30,6 +33,8 @@ class ReportModel {
     this.userID = '',
     this.responderID = '',
     this.reportType = ReportTypeEnum.normal,
+    this.priority,
+    this.policeConcernType,
     this.incidentType,
     this.description = '',
     this.victims = const [],
@@ -48,6 +53,8 @@ class ReportModel {
     String? userID,
     String? responderID,
     ReportTypeEnum? reportType,
+    ReportPriorityEnum? priority,
+    PoliceConcernTypeEnum? policeConcernType,
     ServiceTypeEnum? incidentType,
     String? description,
     List<VictimModel>? victims,
@@ -55,7 +62,6 @@ class ReportModel {
     List<PreCallGuidanceModel>? guidanceAnswers,
     String? additionalInformation,
     ReportStatusEnum? status,
-    ReportPriorityEnum? priority,
     GeoPoint? location,
     DateTime? createdAt,
     DateTime? resolvedAt,
@@ -66,6 +72,8 @@ class ReportModel {
       userID: userID ?? this.userID,
       responderID: responderID ?? this.responderID,
       reportType: reportType ?? this.reportType,
+      priority: priority ?? this.priority,
+      policeConcernType: policeConcernType ?? this.policeConcernType,
       incidentType: incidentType ?? this.incidentType,
       description: description ?? this.description,
       victims: victims ?? this.victims,
@@ -86,6 +94,8 @@ class ReportModel {
       'userID': userID,
       'responderID': responderID,
       'reportType': reportType.name,
+      'priority': priority?.name,
+      'policeConcernType': policeConcernType?.name,
       'incidentType': incidentType?.name,
       'description': description,
       'victims': victims.map((v) => v.toMap()).toList(),
@@ -108,6 +118,10 @@ class ReportModel {
       reportType: map['reportType'] != null
           ? ReportTypeEnum.values.firstWhere((e) => e.name == map['reportType'])
           : ReportTypeEnum.normal,
+      priority: map['priority'] != null ? ReportPriorityEnum.values.firstWhere((e) => e.name == map['priority']) : null,
+      policeConcernType: map['policeConcernType'] != null
+          ? PoliceConcernTypeEnum.values.firstWhere((e) => e.name == map['policeConcernType'])
+          : null,
       incidentType: map['incidentType'] != null
           ? ServiceTypeEnum.values.firstWhere((e) => e.name == map['incidentType'])
           : null,

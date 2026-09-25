@@ -3,7 +3,7 @@ import 'package:capstone/core/exceptions/auth_exception.dart';
 import 'package:capstone/core/services/push_notification_service.dart';
 import 'package:capstone/core/shared/providers/firebase_auth_provider.dart';
 import 'package:capstone/core/shared/providers/user_repository_provider.dart';
-import 'package:capstone/features/public_user/reporting/providers/report_repository_provider.dart';
+import 'package:capstone/core/shared/providers/report_repository_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final deactivateAccountProvider = NotifierProvider<DeactivateAccountNotifier, AsyncValue<void>>(

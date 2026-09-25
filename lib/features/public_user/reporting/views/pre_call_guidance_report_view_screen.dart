@@ -3,7 +3,7 @@ import 'package:capstone/core/shared/widgets/text/title_text.dart';
 import 'package:capstone/core/utilities/formatter.dart';
 import 'package:capstone/core/shared/widgets/custom_app_bar.dart';
 import 'package:capstone/core/shared/widgets/info_column.dart';
-import 'package:capstone/features/public_user/reporting/models/report_model.dart';
+import 'package:capstone/core/shared/models/report_model.dart';
 import 'package:capstone/features/public_user/reporting/widgets/report_status_widget.dart';
 import 'package:capstone/core/shared/widgets/section_title.dart';
 import 'package:flutter/material.dart';

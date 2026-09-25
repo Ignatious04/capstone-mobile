@@ -4,7 +4,7 @@ import 'package:capstone/core/shared/widgets/service_button.dart';
 import 'package:capstone/features/public_user/pre_call_guidance/providers/guidance_provider.dart';
 import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/public_user/pre_call_guidance/views/pre_call_guidance_page_view.dart';
-import 'package:capstone/features/public_user/reporting/providers/report_provider.dart';
+import 'package:capstone/core/shared/providers/report_provider.dart';
 import 'package:capstone/core/shared/widgets/section_title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
