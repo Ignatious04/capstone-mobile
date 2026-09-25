@@ -1,6 +1,7 @@
 import 'package:capstone/core/enums/report_status_enum.dart';
 import 'package:capstone/core/shared/widgets/custom_circular_progress_indicator.dart';
 import 'package:capstone/core/shared/widgets/custom_header_widget.dart';
+import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/widgets/text/label_text.dart';
 import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/core/shared/models/report_model.dart';
@@ -78,7 +79,7 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
                 data: (reports) {
                   if (reports.isEmpty) {
                     return const Center(
-                      child: LabelText(
+                      child: BodyText(
                         value: "No reports yet.",
                       ),
                     );

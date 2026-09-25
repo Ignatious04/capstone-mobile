@@ -1,5 +1,6 @@
 // lib/features/setup/providers/phone_verification_provider.dart
 import 'package:capstone/core/shared/providers/firebase_auth_provider.dart';
+import 'package:capstone/core/shared/providers/user_repository_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -49,6 +50,10 @@ class PhoneVerificationNotifier extends Notifier<PhoneVerificationProvider> {
             phoneNumber: e164PhoneNumber,
             onVerificationCompleted: (credential) async {
               await ref.read(firebaseAuthRepositoryProvider).linkPhoneCredential(credential);
+              await ref.read(userRepositoryProvider).updateUser(
+                ref.read(firebaseAuthProvider).currentUser!.uid,
+                {"isContactNumberVerified": true},
+              );
               state = state.copyWith(isVerified: true, status: const AsyncData(null));
             },
             onVerificationFailed: (e) {
@@ -78,6 +83,10 @@ class PhoneVerificationNotifier extends Notifier<PhoneVerificationProvider> {
         smsCode: smsCode,
       );
       await ref.read(firebaseAuthRepositoryProvider).linkPhoneCredential(credential);
+      await ref.read(userRepositoryProvider).updateUser(
+        ref.read(firebaseAuthProvider).currentUser!.uid,
+        {"isContactNumberVerified": true},
+      );
     });
 
     state = state.copyWith(status: result, isVerified: result is AsyncData);

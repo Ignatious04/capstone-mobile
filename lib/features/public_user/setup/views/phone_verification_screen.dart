@@ -9,14 +9,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class SetupScreenPhoneVerificationPage extends ConsumerStatefulWidget {
-  const SetupScreenPhoneVerificationPage({super.key});
+class PhoneVerificationScreen extends ConsumerStatefulWidget {
+  const PhoneVerificationScreen({super.key});
 
   @override
-  ConsumerState<SetupScreenPhoneVerificationPage> createState() => _SetupScreenContactNumberPageState();
+  ConsumerState<PhoneVerificationScreen> createState() => _PhoneVerificationScreenState();
 }
 
-class _SetupScreenContactNumberPageState extends ConsumerState<SetupScreenPhoneVerificationPage> {
+class _PhoneVerificationScreenState extends ConsumerState<PhoneVerificationScreen> {
   TextEditingController contactNumController = TextEditingController();
   TextEditingController otpController = TextEditingController();
 

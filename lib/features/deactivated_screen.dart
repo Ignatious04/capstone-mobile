@@ -1,15 +1,19 @@
 import 'package:capstone/core/exceptions/auth_exception.dart';
+import 'package:capstone/core/shared/models/user_model.dart';
 import 'package:capstone/core/shared/providers/firebase_auth_provider.dart';
 import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
 import 'package:capstone/core/shared/widgets/custom_snackbar_helper.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/widgets/text/title_text.dart';
 import 'package:capstone/features/public_user/profile/providers/deactivate_account_provider.dart';
+import 'package:capstone/features/public_user/profile/views/reactivation_verification_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class DeactivatedScreen extends ConsumerWidget {
-  const DeactivatedScreen({super.key});
+  const DeactivatedScreen({super.key, required this.user,});
+
+  final UserModel user;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -45,9 +49,12 @@ class DeactivatedScreen extends ConsumerWidget {
               ),
               const SizedBox(height: 20),
               CustomElevatedButton(
-                value: isLoading ? "Reactivating..." : "Reactivate Account",
-                onPressed: isLoading ? null : () => ref.read(deactivateAccountProvider.notifier).reactivate(),
-              ),
+    value: "Reactivate Account",
+    onPressed: () => Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => ReactivationVerificationScreen(contactNumber: user.contactNumber)),
+    ),
+  ),
               const SizedBox(height: 10),
               TextButton(
                 onPressed: isLoading ? null : () => ref.read(firebaseAuthRepositoryProvider).signOut(),

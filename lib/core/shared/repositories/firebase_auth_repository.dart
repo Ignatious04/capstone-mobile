@@ -121,6 +121,24 @@ class FirebaseAuthRepository {
     }
   }
 
+  Future<void> reauthenticateWithPhone({
+    required String verificationId,
+    required String smsCode,
+  }) async {
+    try {
+      final user = currentUser;
+      if (user == null) throw AuthException('No user is currently signed in.');
+
+      final credential = PhoneAuthProvider.credential(
+        verificationId: verificationId,
+        smsCode: smsCode,
+      );
+      await user.reauthenticateWithCredential(credential);
+    } on FirebaseAuthException catch (e) {
+      throw _mapAuthError(e);
+    }
+  }
+
   Exception _mapAuthError(FirebaseAuthException e) {
     switch (e.code) {
       case 'user-not-found':

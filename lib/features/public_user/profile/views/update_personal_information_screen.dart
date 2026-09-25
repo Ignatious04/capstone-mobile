@@ -1,4 +1,5 @@
 import 'package:capstone/core/shared/models/user_model.dart';
+import 'package:capstone/core/shared/providers/user_provider.dart';
 import 'package:capstone/core/shared/providers/user_repository_provider.dart';
 import 'package:capstone/core/shared/widgets/custom_app_bar.dart';
 import 'package:capstone/core/shared/widgets/custom_dropdown_button.dart';
@@ -42,7 +43,11 @@ class _UpdatePersonalInformationScreenState extends ConsumerState<UpdatePersonal
       ),
     );
     sexController = TextEditingController(text: widget.user.sex);
-    contactNumController = TextEditingController(text: widget.user.contactNumber);
+    contactNumController = TextEditingController(
+      text: widget.user.contactNumber.startsWith("+63")
+          ? widget.user.contactNumber.substring(3)
+          : widget.user.contactNumber,
+    );
     addressController = TextEditingController(text: widget.user.address);
 
     sex = widget.user.sex;
@@ -88,17 +93,27 @@ class _UpdatePersonalInformationScreenState extends ConsumerState<UpdatePersonal
                       ),
                       const SizedBox(height: 10),
                       CustomTextField(
-                        title: "CONTACT NUMBER",
+                        title: "CONTACT NO.",
+                        prefixText: "+63 ", // added
                         controller: contactNumController,
-                        keyboardType: TextInputType.numberWithOptions(decimal: false),
-                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                        keyboardType: const TextInputType.numberWithOptions(decimal: false), // added
+                        inputFormatters: [
+                          // added
+                          FilteringTextInputFormatter.digitsOnly,
+                          LengthLimitingTextInputFormatter(10),
+                        ],
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Contact number is required";
+                            return "Contact no. is required";
+                          }
+                          if (value.length != 10) {
+                            // added
+                            return "Enter a valid 10-digit number";
                           }
 
                           return null;
                         },
+                        onChanged: (value) {},
                         isRequired: true,
                       ),
                       const SizedBox(height: 10),
@@ -197,15 +212,21 @@ class _UpdatePersonalInformationScreenState extends ConsumerState<UpdatePersonal
                         width: double.infinity,
                         child: CustomElevatedButton(
                           onPressed: () async {
+                            final localNumber = contactNumController.text;
+                            final e164Number = "+63$localNumber";
+
+                            final numberChanged = e164Number != widget.user.contactNumber;
+
                             await ref.read(userRepositoryProvider).updateUser(
                               widget.user.userID,
                               {
                                 "sex": sex,
-                                "contactNumber": contactNumController.text,
+                                "contactNumber": numberChanged ? e164Number : localNumber,
                                 "address": addressController.text,
                                 "nationality": nationality,
                                 "civilStatus": civilStatus,
                                 "religion": religion,
+                                if (numberChanged) "isContactNumberVerified": false,
                               },
                             );
 

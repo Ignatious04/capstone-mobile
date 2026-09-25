@@ -157,7 +157,9 @@ class UserNotifier extends Notifier<UserModel> {
   }
 
   void setContactNumber(String value) {
-    state = state.copyWith(contactNumber: value);
+    state = state.copyWith(
+      contactNumber: "+63$value",
+    );
   }
 
   void setIsContactNumberVerified(bool value) {

@@ -23,6 +23,12 @@ class DeactivateAccountNotifier extends Notifier<AsyncValue<void>> {
       final authRepository = ref.read(firebaseAuthRepositoryProvider);
       final userID = authRepository.currentUser!.uid;
 
+      // 0. Must have a verified number before you're allowed to deactivate at all.
+      final user = await ref.read(userRepositoryProvider).getUser(userID);
+      if (user == null || !user.isContactNumberVerified) {
+        throw AuthException('Please verify your phone number before deactivating your account.');
+      }
+
       // 1. Don't cut someone off from status updates mid-emergency.
       final reports = await ref.read(reportRepositoryProvider).getReports(userID).first;
       if (reports.any((report) => report.status != ReportStatusEnum.resolved)) {

@@ -46,7 +46,7 @@ class AuthWrapper extends ConsumerWidget {
             return userAsync.when(
               data: (user) {
                 if (user != null && user.isDeactivated) {
-                  return const DeactivatedScreen();
+                  return DeactivatedScreen(user: user);
                 }
 
                 if (user == null || !user.isSetup) {

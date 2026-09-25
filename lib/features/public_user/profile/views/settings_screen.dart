@@ -1,12 +1,14 @@
 import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/shared/providers/firebase_auth_provider.dart';
 import 'package:capstone/core/shared/providers/locale_provider.dart';
+import 'package:capstone/core/shared/providers/user_provider.dart';
 import 'package:capstone/core/shared/widgets/custom_app_bar.dart';
 import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/widgets/text/title_text.dart';
 import 'package:capstone/features/public_user/profile/views/change_password_screen.dart';
 import 'package:capstone/features/public_user/profile/views/deactivate_account_screen.dart';
+import 'package:capstone/features/public_user/profile/views/phone_number_verification_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -15,6 +17,7 @@ class SettingsScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final user = ref.watch(currentAuthenticatedUserProvider).value;
     final locale = ref.watch(localeProvider);
     final l10n = AppLocalizations.of(context)!;
 
@@ -88,12 +91,37 @@ class SettingsScreen extends ConsumerWidget {
                     },
                   ),
                 ),
-                if (ref.read(firebaseAuthRepositoryProvider).hasPasswordProvider) ...[
+                const SizedBox(height: 10),
+                TitleText(
+                  value: "Security",
+                  isBold: false,
+                ),
+                if (user != null && !user.isContactNumberVerified) ...[
                   const SizedBox(height: 10),
-                  TitleText(
-                    value: "Security",
-                    isBold: false,
+                  Card(
+                    margin: EdgeInsets.all(0),
+                    color: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      side: BorderSide(
+                        color: Colors.black12,
+                      ),
+                    ),
+                    child: ListTile(
+                      leading: const Icon(Icons.phone_android),
+                      title: const TitleText(value: 'Verify Phone Number'),
+                      subtitle: const BodyText(value: 'Required before you can deactivate your account'),
+                      trailing: const Icon(Icons.chevron_right),
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => PhoneNumberVerificationScreen(currentContactNumber: user.contactNumber),
+                        ),
+                      ),
+                    ),
                   ),
+                ],
+                if (ref.read(firebaseAuthRepositoryProvider).hasPasswordProvider) ...[
                   const SizedBox(height: 10),
                   ListTile(
                     leading: const Icon(Icons.lock_outline),
