@@ -6,6 +6,7 @@ import 'package:capstone/core/shared/providers/app_notification_provider.dart';
 import 'package:capstone/core/shared/providers/connectivity_stream_provider.dart';
 import 'package:capstone/core/shared/providers/firebase_auth_provider.dart';
 import 'package:capstone/core/shared/providers/locale_provider.dart';
+import 'package:capstone/core/shared/providers/navigator_key_provider.dart';
 import 'package:capstone/core/shared/providers/notification_history_provider.dart';
 import 'package:capstone/core/shared/widgets/app_notification_overlay.dart';
 import 'package:capstone/features/auth_wrapper.dart';
@@ -94,6 +95,7 @@ class _MyAppState extends ConsumerState<MyApp> {
     });
 
     return MaterialApp(
+      navigatorKey: ref.watch(navigatorKeyProvider),
       scaffoldMessengerKey: scaffoldMessengerKey,
       locale: locale,
 

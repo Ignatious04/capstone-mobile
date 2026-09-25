@@ -1,7 +1,11 @@
+import 'package:capstone/core/enums/report_type_enum.dart';
 import 'package:capstone/core/shared/providers/notification_history_provider.dart';
+import 'package:capstone/core/shared/providers/report_repository_provider.dart';
 import 'package:capstone/core/shared/widgets/custom_app_bar.dart';
 import 'package:capstone/core/shared/widgets/text/title_text.dart';
 import 'package:capstone/features/public_user/notifications/widgets/notification_card.dart';
+import 'package:capstone/features/public_user/reporting/views/normal_reports_view_screen.dart';
+import 'package:capstone/features/public_user/reporting/views/pre_call_guidance_report_view_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -40,13 +44,24 @@ class NotificationHistoryScreen extends ConsumerWidget {
                           padding: const EdgeInsets.only(bottom: 10),
                           child: NotificationCard(
                             notification: notification,
-                            onTap: () {
+                            onTap: () async {
                               if (!notification.isRead) {
                                 ref.read(notificationHistoryProvider.notifier).markAsRead(notification.id);
                               }
-                              // TODO: if notification.reportID != null, navigate to the
-                              // report detail screen once a "get report by ID" repository
-                              // method exists.
+                              final reportID = notification.reportID;
+                              if (reportID == null) return;
+
+                              final report = await ref.read(reportRepositoryProvider).getReportByID(reportID);
+                              if (report == null || !context.mounted) return;
+
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => report.reportType == ReportTypeEnum.preCallGuidance
+                                      ? PreCallGuidanceReportViewScreen(report: report)
+                                      : NormalReportsViewScreen(report: report),
+                                ),
+                              );
                             },
                           ),
                         );

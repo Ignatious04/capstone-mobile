@@ -15,6 +15,14 @@ class ReportRepository {
     return docRef.id;
   }
 
+  /// Fetches a single report by ID — used when navigating from a push
+  /// notification or notification-history entry that only carries the ID.
+  Future<ReportModel?> getReportByID(String reportID) async {
+    final doc = await firestore.collection('reports').doc(reportID).get();
+    if (!doc.exists) return null;
+    return ReportModel.fromMap(doc.data()!);
+  }
+
   Stream<List<ReportModel>> getReports(String userID) {
     return firestore
         .collection("reports")

@@ -1,14 +1,20 @@
 import 'package:capstone/core/enums/notification_type_enum.dart';
+import 'package:capstone/core/enums/report_type_enum.dart';
 import 'package:capstone/core/shared/models/notification_model.dart';
 import 'package:capstone/core/shared/providers/app_notification_provider.dart';
+import 'package:capstone/core/shared/providers/navigator_key_provider.dart';
 import 'package:capstone/core/shared/providers/notification_history_provider.dart';
+import 'package:capstone/core/shared/providers/report_repository_provider.dart';
 import 'package:capstone/core/shared/providers/user_repository_provider.dart';
 import 'package:capstone/core/shared/repositories/notification_history_repository.dart';
+import 'package:capstone/features/public_user/reporting/views/normal_reports_view_screen.dart';
+import 'package:capstone/features/public_user/reporting/views/pre_call_guidance_report_view_screen.dart';
 import 'package:capstone/firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// Must be a top-level function — this is what the OS calls when a
@@ -103,11 +109,24 @@ class PushNotificationService {
         );
   }
 
-  void _handleNotificationTap(RemoteMessage message) {
+  Future<void> _handleNotificationTap(RemoteMessage message) async {
     final reportID = message.data['reportID'] as String?;
     debugPrint('Notification tapped, reportID: $reportID');
-    // TODO: navigate to the report detail screen once there's a
-    // navigatorKey/route for it — data payload already carries reportID.
+    if (reportID == null) return;
+
+    final navigatorState = ref.read(navigatorKeyProvider).currentState;
+    if (navigatorState == null) return;
+
+    final report = await ref.read(reportRepositoryProvider).getReportByID(reportID);
+    if (report == null) return;
+
+    navigatorState.push(
+      MaterialPageRoute(
+        builder: (context) => report.reportType == ReportTypeEnum.preCallGuidance
+            ? PreCallGuidanceReportViewScreen(report: report)
+            : NormalReportsViewScreen(report: report),
+      ),
+    );
   }
 }
 
