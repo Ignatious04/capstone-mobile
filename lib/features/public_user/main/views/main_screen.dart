@@ -4,8 +4,6 @@ import 'package:capstone/features/public_user/map/views/map_screen.dart';
 import 'package:capstone/features/public_user/pre_call_guidance/views/pre_call_guidance_screen.dart';
 import 'package:capstone/features/public_user/profile/views/profile_screen.dart';
 import 'package:capstone/features/public_user/reporting/views/reports_screen.dart';
-import 'package:curved_labeled_navigation_bar/curved_navigation_bar.dart';
-import 'package:curved_labeled_navigation_bar/curved_navigation_bar_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 

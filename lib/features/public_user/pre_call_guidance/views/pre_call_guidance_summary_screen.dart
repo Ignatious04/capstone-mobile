@@ -6,7 +6,6 @@ import 'package:capstone/core/shared/widgets/custom_snackbar_helper.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/widgets/text/label_text.dart';
 import 'package:capstone/core/shared/widgets/text/title_text.dart';
-import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/public_user/pre_call_guidance/providers/guidance_provider.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
@@ -190,7 +189,7 @@ class PreCallGuidanceSummaryScreen extends ConsumerWidget {
             onPressed: onCancel,
             value: "Cancel",
             color: Colors.white,
-            backgroundColor: AppColors.darkerGrey,
+            backgroundColor: Colors.black54,
           ),
           const SizedBox(
             height: 20,

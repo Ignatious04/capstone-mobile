@@ -95,41 +95,37 @@ class ReportCard extends StatelessWidget {
                 ),
                 VerticalDivider(
                   width: 1,
+                  color: Colors.black54,
                 ),
                 SizedBox(
                   width: 10,
                 ),
-                GestureDetector(
-                  onTap: () {
-                    if (report.reportType == ReportTypeEnum.preCallGuidance) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) {
-                            return PreCallGuidanceReportViewScreen(report: report);
-                          },
-                        ),
-                      );
-                    } else {
-                      // normal and quick (one-tap) reports share the same shape
-                      // (incident type, description, location, victims, attachments) -
-                      // quick reports just leave most of it empty, which
-                      // NormalReportsViewScreen already renders sensibly
-                      // (e.g. "No description provided.").
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) {
-                            return NormalReportsViewScreen(report: report);
-                          },
-                        ),
-                      );
-                    }
-                  },
-                  child: Icon(
-                    Icons.arrow_right,
-                    size: 50,
-                    color: Colors.deepOrange,
+                Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(12),
+                    onTap: () {
+                      if (report.reportType == ReportTypeEnum.preCallGuidance) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => PreCallGuidanceReportViewScreen(report: report),
+                          ),
+                        );
+                      } else {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => NormalReportsViewScreen(report: report),
+                          ),
+                        );
+                      }
+                    },
+                    child: const Icon(
+                      Icons.arrow_right,
+                      size: 50,
+                      color: Colors.deepOrange,
+                    ),
                   ),
                 ),
               ],

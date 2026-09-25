@@ -7,7 +7,6 @@ import 'package:capstone/core/shared/providers/user_provider.dart';
 import 'package:capstone/core/shared/widgets/google_sign_in_button.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/widgets/text/label_text.dart';
-import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/public_user/register/providers/register_provider.dart';
 import 'package:capstone/features/public_user/register/views/privacy_policy_screen.dart';
 import 'package:capstone/features/public_user/register/views/terms_and_conditions_screen.dart';

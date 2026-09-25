@@ -1,7 +1,6 @@
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/widgets/text/label_text.dart';
 import 'package:capstone/core/shared/widgets/text/title_text.dart';
-import 'package:capstone/core/themes/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class VictimCardItem extends StatelessWidget {
@@ -21,7 +20,7 @@ class VictimCardItem extends StatelessWidget {
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
-        color: AppColors.darkerGrey,
+        color: Colors.black54,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Padding(

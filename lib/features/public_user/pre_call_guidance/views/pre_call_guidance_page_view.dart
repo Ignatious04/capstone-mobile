@@ -1,6 +1,5 @@
 import 'package:capstone/core/shared/widgets/custom_app_bar.dart';
 import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
-import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/public_user/pre_call_guidance/providers/guidance_provider.dart';
 import 'package:capstone/features/public_user/pre_call_guidance/views/pre_call_guidance_page.dart';
 import 'package:capstone/features/public_user/pre_call_guidance/views/pre_call_guidance_summary_screen.dart';
@@ -64,7 +63,7 @@ class _PreCallGuidancePageViewState extends ConsumerState<PreCallGuidancePageVie
             LinearProgressIndicator(
               value: (state.currentPage + 1) / state.questions.length,
               color: Colors.white,
-              backgroundColor: AppColors.darkerGrey,
+              backgroundColor: Colors.black54,
             ),
             Expanded(
               child: Padding(

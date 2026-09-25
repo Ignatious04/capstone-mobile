@@ -6,7 +6,6 @@ import 'package:capstone/core/shared/widgets/custom_snackbar_helper.dart';
 import 'package:capstone/core/shared/widgets/custom_text_field.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/widgets/text/title_text.dart';
-import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/public_user/profile/providers/deactivate_account_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -91,7 +90,7 @@ class _DeactivateAccountScreenState extends ConsumerState<DeactivateAccountScree
                         "You won't be able to use the app or send reports until you reactivate. "
                         "Your profile and past reports are kept, and you can reactivate any time "
                         "by logging in again. You can still call emergency hotlines from your phone.",
-                    color: AppColors.darkerGrey,
+                    color: Colors.black54,
                     alignment: TextAlign.center,
                   ),
                   const SizedBox(height: 20),

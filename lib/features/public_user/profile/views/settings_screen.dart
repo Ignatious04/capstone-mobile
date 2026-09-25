@@ -5,7 +5,6 @@ import 'package:capstone/core/shared/widgets/custom_app_bar.dart';
 import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/widgets/text/title_text.dart';
-import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/public_user/profile/views/change_password_screen.dart';
 import 'package:capstone/features/public_user/profile/views/deactivate_account_screen.dart';
 import 'package:flutter/material.dart';

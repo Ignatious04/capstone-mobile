@@ -1,6 +1,5 @@
 import 'package:capstone/core/shared/widgets/text/label_text.dart';
 import 'package:capstone/core/utilities/formatter.dart';
-import 'package:capstone/core/themes/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class ReportStatusWidget extends StatelessWidget {
@@ -13,7 +12,7 @@ class ReportStatusWidget extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
-        color: AppColors.darkerGrey,
+        color: Colors.black54,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Row(

@@ -1,7 +1,6 @@
 import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/widgets/text/title_text.dart';
-import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/public_user/setup/views/setup_screen_page_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -34,7 +33,7 @@ class WelcomeScreen extends StatelessWidget {
                   BodyText(
                     value: "Let's start off by setting up your account.",
                     alignment: TextAlign.center,
-                    color: AppColors.darkerGrey,
+                    color: Colors.black54,
                   ),
                   SizedBox(
                     height: 10,

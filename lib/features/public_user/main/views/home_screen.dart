@@ -266,6 +266,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             const Expanded(
                               child: Divider(
                                 height: 1,
+                                color: Colors.black54,
                               ),
                             ),
                             const SizedBox(
@@ -281,6 +282,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             const Expanded(
                               child: Divider(
                                 height: 1,
+                                color: Colors.black54,
                               ),
                             ),
                           ],

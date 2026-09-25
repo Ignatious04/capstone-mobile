@@ -8,7 +8,6 @@ import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/widgets/text/headline_text.dart';
 import 'package:capstone/core/shared/widgets/text/label_text.dart';
 import 'package:capstone/core/shared/widgets/text/title_text.dart';
-import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/public_user/login/providers/login_provider.dart';
 import 'package:capstone/features/public_user/register/views/register_screen.dart';
 import 'package:capstone/features/public_user/login/views/reset_password_screen.dart';

@@ -1,6 +1,5 @@
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/widgets/text/title_text.dart';
-import 'package:capstone/core/themes/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -16,7 +15,7 @@ class ResponderHomeScreen extends ConsumerWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.local_hospital, size: 64, color: AppColors.darkerGrey),
+              Icon(Icons.local_hospital, size: 64, color: Colors.black54),
               SizedBox(height: 16),
               TitleText(value: "No active case"),
               SizedBox(height: 8),

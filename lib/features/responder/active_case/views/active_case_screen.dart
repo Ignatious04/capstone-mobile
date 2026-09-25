@@ -5,7 +5,6 @@ import 'package:capstone/core/shared/widgets/custom_circular_progress_indicator.
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/widgets/text/label_text.dart';
 import 'package:capstone/core/shared/widgets/text/title_text.dart';
-import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/core/utilities/formatter.dart';
 import 'package:capstone/features/public_user/map/widgets/map_tile_widget.dart';
 import 'package:capstone/features/public_user/reporting/models/report_model.dart';
@@ -81,7 +80,7 @@ class _NoActiveCase extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.local_hospital, size: 64, color: AppColors.darkerGrey),
+            Icon(Icons.local_hospital, size: 64, color: Colors.black54),
             SizedBox(height: 16),
             TitleText(value: "No active case"),
             SizedBox(height: 8),

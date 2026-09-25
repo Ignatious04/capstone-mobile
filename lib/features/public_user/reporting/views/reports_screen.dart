@@ -32,7 +32,7 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
       case ReportStatusEnum.onScene:
         return AppColors.darkerGreen;
       case ReportStatusEnum.resolved:
-        return AppColors.darkerGrey;
+        return Colors.black54;
       default:
         return Colors.black;
     }
