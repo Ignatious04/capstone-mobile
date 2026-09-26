@@ -25,6 +25,7 @@ class ReportModel {
   final ReportStatusEnum? status;
   final GeoPoint? location;
   final DateTime? createdAt;
+  final String? assignedTo;
   final DateTime? resolvedAt;
 
   const ReportModel({
@@ -44,6 +45,7 @@ class ReportModel {
     this.status = ReportStatusEnum.pending,
     this.location,
     this.createdAt,
+    this.assignedTo,
     this.resolvedAt,
   });
 
@@ -64,6 +66,7 @@ class ReportModel {
     ReportStatusEnum? status,
     GeoPoint? location,
     DateTime? createdAt,
+    String? assignedTo,
     DateTime? resolvedAt,
   }) {
     return ReportModel(
@@ -83,6 +86,7 @@ class ReportModel {
       status: status ?? this.status,
       location: location ?? this.location,
       createdAt: createdAt ?? this.createdAt,
+      assignedTo: assignedTo ?? this.assignedTo,
       resolvedAt: resolvedAt ?? this.resolvedAt,
     );
   }
@@ -105,6 +109,7 @@ class ReportModel {
       'status': status?.name,
       'location': location,
       'createdAt': createdAt,
+      "assignedTo" : assignedTo,
       'resolvedAt': resolvedAt,
     };
   }
@@ -139,6 +144,7 @@ class ReportModel {
       status: map['status'] != null ? ReportStatusEnum.values.firstWhere((e) => e.name == map['status']) : null,
       location: map['location'],
       createdAt: (map['createdAt'] as Timestamp?)?.toDate(),
+      assignedTo: map["assignedTo"] ?? "",
       resolvedAt: (map['resolvedAt'] as Timestamp?)?.toDate(),
     );
   }

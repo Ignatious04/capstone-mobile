@@ -10,6 +10,7 @@ import 'package:capstone/core/shared/widgets/text/label_text.dart';
 import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/core/shared/widgets/section_title.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -346,16 +347,25 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
           ),
           CustomTextField(
             title: "CONTACT NO.",
+            prefixText: "+63 ",
             controller: contactNumController,
+            keyboardType: const TextInputType.numberWithOptions(decimal: false),
+            inputFormatters: [
+              FilteringTextInputFormatter.digitsOnly,
+              LengthLimitingTextInputFormatter(10),
+            ],
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return "Contact no. is required";
+              }
+              if (value.length != 10) {
+                return "Enter a valid 10-digit number";
               }
 
               return null;
             },
             onChanged: (value) {
-              ref.read(userProvider.notifier).setContactNumber(value);
+              ref.read(userProvider.notifier).setContactNumber("+63$value"); // was: setContactNumber(value)
             },
             isRequired: true,
           ),

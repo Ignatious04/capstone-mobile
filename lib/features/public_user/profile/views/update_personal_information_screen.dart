@@ -1,6 +1,7 @@
 import 'package:capstone/core/shared/models/user_model.dart';
 import 'package:capstone/core/shared/providers/user_provider.dart';
 import 'package:capstone/core/shared/providers/user_repository_provider.dart';
+import 'package:capstone/core/shared/widgets/custom_alert_dialog.dart';
 import 'package:capstone/core/shared/widgets/custom_app_bar.dart';
 import 'package:capstone/core/shared/widgets/custom_dropdown_button.dart';
 import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
@@ -212,6 +213,15 @@ class _UpdatePersonalInformationScreenState extends ConsumerState<UpdatePersonal
                         width: double.infinity,
                         child: CustomElevatedButton(
                           onPressed: () async {
+                            final confirmed = await showConfirmationDialog(
+                              context,
+                              title: "Do you wish to update your personal information?",
+                            );
+
+                            if (confirmed != true) {
+                              return;
+                            }
+
                             final localNumber = contactNumController.text;
                             final e164Number = "+63$localNumber";
 
@@ -221,7 +231,7 @@ class _UpdatePersonalInformationScreenState extends ConsumerState<UpdatePersonal
                               widget.user.userID,
                               {
                                 "sex": sex,
-                                "contactNumber": numberChanged ? e164Number : localNumber,
+                                "contactNumber": e164Number,
                                 "address": addressController.text,
                                 "nationality": nationality,
                                 "civilStatus": civilStatus,
