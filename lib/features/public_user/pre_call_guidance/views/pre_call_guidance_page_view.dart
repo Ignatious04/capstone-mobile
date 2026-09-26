@@ -63,7 +63,7 @@ class _PreCallGuidancePageViewState extends ConsumerState<PreCallGuidancePageVie
             LinearProgressIndicator(
               value: (state.currentPage + 1) / state.questions.length,
               color: Colors.white,
-              backgroundColor: Colors.black54,
+              backgroundColor: Colors.black26,
             ),
             Expanded(
               child: Padding(

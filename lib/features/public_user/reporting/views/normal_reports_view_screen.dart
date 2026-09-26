@@ -1,3 +1,5 @@
+import 'package:capstone/core/enums/service_type_enum.dart';
+import 'package:capstone/core/shared/widgets/emergency_guidance_sheet.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/widgets/text/label_text.dart';
 import 'package:capstone/core/utilities/formatter.dart';
@@ -24,8 +26,23 @@ class NormalReportsViewScreen extends StatelessWidget {
     final status = report.status!.name;
     final location = report.location;
     final information = report.additionalInformation.trim();
+    final showGuidanceEntry = !(report.incidentType == ServiceTypeEnum.police && report.policeConcernType != null);
     return Scaffold(
-      appBar: const CustomAppBar(value: "View Report"),
+      appBar: CustomAppBar(
+        value: "View Report",
+        actions: showGuidanceEntry
+            ? [
+                IconButton(
+                  icon: const Icon(
+                    Icons.info_outline,
+                    size: 25,
+                  ),
+                  tooltip: "While you wait",
+                  onPressed: () => EmergencyGuidanceSheet.show(context, report.incidentType!),
+                ),
+              ]
+            : null,
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -64,7 +81,7 @@ class NormalReportsViewScreen extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   const BodyText(
-                                    value: 'EMERGENCY TYPE',
+                                    value: 'INCIDENT TYPE',
                                   ),
                                   BodyText(
                                     value: Formatter.formatEnumName(report.incidentType!.name),

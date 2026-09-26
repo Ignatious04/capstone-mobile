@@ -99,7 +99,9 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
     birthDateController.text = user.birthDate == 0
         ? ""
         : DateFormat("MM/dd/yy").format(DateTime.fromMillisecondsSinceEpoch(user.birthDate));
-    contactNumController.text = user.contactNumber;
+    contactNumController = TextEditingController(
+      text: user.contactNumber.startsWith("+63") ? user.contactNumber.substring(3) : user.contactNumber,
+    );
     houseNumController.text = user.houseNum;
     streetController.text = user.street;
     barangayController.text = user.address;
@@ -365,7 +367,7 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
               return null;
             },
             onChanged: (value) {
-              ref.read(userProvider.notifier).setContactNumber("+63$value"); // was: setContactNumber(value)
+              ref.read(userProvider.notifier).setContactNumber("value"); // was: setContactNumber(value)
             },
             isRequired: true,
           ),

@@ -1,3 +1,4 @@
+import 'package:capstone/core/shared/widgets/emergency_guidance_sheet.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/widgets/text/title_text.dart';
 import 'package:capstone/core/utilities/formatter.dart';
@@ -23,7 +24,16 @@ class PreCallGuidanceReportViewScreen extends StatelessWidget {
     // final location = report.location;
     // final information = report.additionalInformation.trim();
     return Scaffold(
-      appBar: const CustomAppBar(value: "View Report"),
+      appBar: CustomAppBar(
+        value: "View Report",
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.info_outline),
+            tooltip: "While you wait",
+            onPressed: () => EmergencyGuidanceSheet.show(context, report.incidentType!),
+          ),
+        ],
+      ),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(20),

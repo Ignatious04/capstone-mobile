@@ -95,7 +95,7 @@ class _UpdatePersonalInformationScreenState extends ConsumerState<UpdatePersonal
                       const SizedBox(height: 10),
                       CustomTextField(
                         title: "CONTACT NO.",
-                        prefixText: "+63 ", // added
+                        prefixText: "+63 ",
                         controller: contactNumController,
                         keyboardType: const TextInputType.numberWithOptions(decimal: false), // added
                         inputFormatters: [

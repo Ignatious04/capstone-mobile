@@ -10,6 +10,7 @@ import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
 import 'package:capstone/core/shared/widgets/custom_snackbar.dart';
 import 'package:capstone/core/shared/widgets/custom_snackbar_helper.dart';
 import 'package:capstone/core/shared/widgets/custom_text_field.dart';
+import 'package:capstone/core/shared/widgets/emergency_guidance_sheet.dart';
 import 'package:capstone/core/shared/widgets/loading_overlay_widget.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/widgets/text/label_text.dart';
@@ -585,8 +586,21 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> {
                                     return;
                                   }
 
+                                  final submittedIncidentType = ref.read(reportProvider).incidentType!;
+                                  final isNonEmergencyPolice =
+                                      submittedIncidentType == ServiceTypeEnum.police && !_isPoliceEmergency;
+
                                   CustomSnackbarHelper.show(context, text: "Report sent successfully!");
-                                  Navigator.pop(context);
+                                  Navigator.pop(context); // dismiss loading overlay
+
+                                  if (!isNonEmergencyPolice && context.mounted) {
+                                    await EmergencyGuidanceSheet.show(context, submittedIncidentType);
+                                  }
+
+                                  if (!context.mounted) {
+                                    return;
+                                  }
+
                                   Navigator.pop(context, true);
                                 } catch (e, stack) {
                                   debugPrint("ERROR: $e");
@@ -594,6 +608,9 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> {
                                   if (!context.mounted) {
                                     return;
                                   }
+
+                                  Navigator.pop(context);
+
                                   CustomSnackbarHelper.show(
                                     context,
                                     text: "An error has occurred while trying to send your report!",

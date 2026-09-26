@@ -2,9 +2,10 @@ import 'package:capstone/core/shared/widgets/text/headline_text.dart';
 import 'package:flutter/material.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const CustomAppBar({super.key, required this.value});
+  const CustomAppBar({super.key, required this.value, this.actions});
 
   final String value;
+  final List<Widget>? actions;
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +24,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       iconTheme: const IconThemeData(
         color: Colors.white,
       ),
+      actions: actions,
     );
   }
 

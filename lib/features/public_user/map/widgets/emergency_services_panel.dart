@@ -129,7 +129,7 @@ class _EmergencyServicesPanelState extends ConsumerState<EmergencyServicesPanel>
 
     return DraggableScrollableSheet(
       controller: _panelController,
-      initialChildSize: 0.35,
+      initialChildSize: 0.15,
       minChildSize: 0.15,
       maxChildSize: 0.75,
       snap: true,
@@ -174,7 +174,7 @@ class _EmergencyServicesPanelState extends ConsumerState<EmergencyServicesPanel>
                                 width: 50,
                                 height: 5,
                                 decoration: BoxDecoration(
-                                  color: AppColors.lighterBlack,
+                                  color: Colors.black54,
                                   borderRadius: BorderRadius.circular(12),
                                 ),
                               ),

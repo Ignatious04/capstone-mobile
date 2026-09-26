@@ -1,8 +1,11 @@
 import 'package:capstone/core/shared/providers/location_provider.dart';
+import 'package:capstone/core/shared/providers/report_provider.dart';
 import 'package:capstone/core/shared/widgets/custom_alert_dialog.dart';
 import 'package:capstone/core/shared/widgets/custom_circular_progress_indicator.dart';
 import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
 import 'package:capstone/core/shared/widgets/custom_snackbar_helper.dart';
+import 'package:capstone/core/shared/widgets/emergency_guidance_sheet.dart';
+import 'package:capstone/core/shared/widgets/loading_overlay_widget.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/widgets/text/label_text.dart';
 import 'package:capstone/core/shared/widgets/text/title_text.dart';
@@ -118,7 +121,7 @@ class PreCallGuidanceSummaryScreen extends ConsumerWidget {
                           "please note that actual response time may vary depending on "
                           "responder availability, traffic, and the nature of each case.",
                     );
-                    
+
                     if (confirmed != true) {
                       return;
                     }
@@ -156,6 +159,12 @@ class PreCallGuidanceSummaryScreen extends ConsumerWidget {
                       }
                     }
 
+                    showDialog(
+                      context: context,
+                      barrierDismissible: false,
+                      builder: (context) => const LoadingOverlayWidget(),
+                    );
+
                     try {
                       final isSMS = await ref
                           .read(guidanceProvider.notifier)
@@ -165,6 +174,16 @@ class PreCallGuidanceSummaryScreen extends ConsumerWidget {
                           );
 
                       if (context.mounted) {
+                        Navigator.pop(context);
+
+                        final incidentType = ref.read(reportProvider).incidentType!;
+
+                        await EmergencyGuidanceSheet.show(context, incidentType);
+
+                        if (!context.mounted) {
+                          return;
+                        }
+
                         Navigator.pop(context);
 
                         if (!isSMS) {
@@ -179,6 +198,9 @@ class PreCallGuidanceSummaryScreen extends ConsumerWidget {
                       if (!context.mounted) {
                         return;
                       }
+
+                      Navigator.pop(context);
+
                       CustomSnackbarHelper.show(
                         context,
                         text: "An error has occurred while trying to send your report!",
