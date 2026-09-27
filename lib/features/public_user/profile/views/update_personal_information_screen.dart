@@ -1,5 +1,4 @@
 import 'package:capstone/core/shared/models/user_model.dart';
-import 'package:capstone/core/shared/providers/user_provider.dart';
 import 'package:capstone/core/shared/providers/user_repository_provider.dart';
 import 'package:capstone/core/shared/widgets/custom_alert_dialog.dart';
 import 'package:capstone/core/shared/widgets/custom_app_bar.dart';
@@ -59,6 +58,8 @@ class _UpdatePersonalInformationScreenState extends ConsumerState<UpdatePersonal
 
   @override
   void dispose() {
+    birthDateController.dispose();
+    sexController.dispose();
     contactNumController.dispose();
     addressController.dispose();
     super.dispose();
@@ -204,7 +205,9 @@ class _UpdatePersonalInformationScreenState extends ConsumerState<UpdatePersonal
                           ),
                         ],
                         onChanged: (value) {
-                          religion = value!;
+                          setState(() {
+                            religion = value!;
+                          });
                         },
                         isRequired: true,
                       ),
@@ -215,7 +218,8 @@ class _UpdatePersonalInformationScreenState extends ConsumerState<UpdatePersonal
                           onPressed: () async {
                             final confirmed = await showConfirmationDialog(
                               context,
-                              title: "Do you wish to update your personal information?",
+                              title: "Confirmation",
+                              content: "Do you wish to update your personal information?",
                             );
 
                             if (confirmed != true) {
@@ -226,6 +230,22 @@ class _UpdatePersonalInformationScreenState extends ConsumerState<UpdatePersonal
                             final e164Number = "+63$localNumber";
 
                             final numberChanged = e164Number != widget.user.contactNumber;
+
+                            if (numberChanged) {
+                              if (!context.mounted) {
+                                return;
+                              }
+
+                              final confirmNumberChange = await showConfirmationDialog(
+                                context,
+                                title: "Note:",
+                                content: "You will have to re-verify your number, confirm?",
+                              );
+
+                              if (confirmNumberChange != true) {
+                                return;
+                              }
+                            }
 
                             await ref.read(userRepositoryProvider).updateUser(
                               widget.user.userID,

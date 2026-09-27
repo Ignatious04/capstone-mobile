@@ -12,7 +12,6 @@ class ReportModel {
   final String reportID;
   final String referenceNumber;
   final String userID;
-  final String responderID;
   final ReportTypeEnum reportType;
   final ReportPriorityEnum? priority;
   final PoliceConcernTypeEnum? policeConcernType;
@@ -32,7 +31,6 @@ class ReportModel {
     this.reportID = '',
     this.referenceNumber = '',
     this.userID = '',
-    this.responderID = '',
     this.reportType = ReportTypeEnum.normal,
     this.priority,
     this.policeConcernType,
@@ -53,7 +51,6 @@ class ReportModel {
     String? reportID,
     String? referenceNumber,
     String? userID,
-    String? responderID,
     ReportTypeEnum? reportType,
     ReportPriorityEnum? priority,
     PoliceConcernTypeEnum? policeConcernType,
@@ -73,7 +70,6 @@ class ReportModel {
       reportID: reportID ?? this.reportID,
       referenceNumber: referenceNumber ?? this.referenceNumber,
       userID: userID ?? this.userID,
-      responderID: responderID ?? this.responderID,
       reportType: reportType ?? this.reportType,
       priority: priority ?? this.priority,
       policeConcernType: policeConcernType ?? this.policeConcernType,
@@ -96,7 +92,6 @@ class ReportModel {
       'reportID': reportID,
       'referenceNumber': referenceNumber,
       'userID': userID,
-      'responderID': responderID,
       'reportType': reportType.name,
       'priority': priority?.name,
       'policeConcernType': policeConcernType?.name,
@@ -119,7 +114,6 @@ class ReportModel {
       reportID: map['reportID'] ?? '',
       referenceNumber: map['referenceNumber'] ?? '',
       userID: map['userID'] ?? '',
-      responderID: map['responderID'] ?? '',
       reportType: map['reportType'] != null
           ? ReportTypeEnum.values.firstWhere((e) => e.name == map['reportType'])
           : ReportTypeEnum.normal,
