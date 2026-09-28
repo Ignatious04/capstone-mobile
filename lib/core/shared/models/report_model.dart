@@ -25,6 +25,9 @@ class ReportModel {
   final GeoPoint? location;
   final DateTime? createdAt;
   final String? assignedTo;
+  final double? locationAccuracy;
+  final String? locationDescription;
+  final GeoPoint? originalGpsLocation;
   final DateTime? resolvedAt;
 
   const ReportModel({
@@ -44,6 +47,9 @@ class ReportModel {
     this.location,
     this.createdAt,
     this.assignedTo,
+    this.locationAccuracy,
+    this.locationDescription,
+    this.originalGpsLocation,
     this.resolvedAt,
   });
 
@@ -64,6 +70,9 @@ class ReportModel {
     GeoPoint? location,
     DateTime? createdAt,
     String? assignedTo,
+    double? locationAccuracy,
+    String? locationDescription,
+    GeoPoint? originalGpsLocation,
     DateTime? resolvedAt,
   }) {
     return ReportModel(
@@ -83,6 +92,9 @@ class ReportModel {
       location: location ?? this.location,
       createdAt: createdAt ?? this.createdAt,
       assignedTo: assignedTo ?? this.assignedTo,
+      locationAccuracy: locationAccuracy ?? this.locationAccuracy,
+      locationDescription: locationDescription ?? this.locationDescription,
+      originalGpsLocation: originalGpsLocation ?? this.originalGpsLocation,
       resolvedAt: resolvedAt ?? this.resolvedAt,
     );
   }
@@ -104,7 +116,10 @@ class ReportModel {
       'status': status?.name,
       'location': location,
       'createdAt': createdAt,
-      "assignedTo" : assignedTo,
+      "assignedTo": assignedTo,
+      'locationAccuracy': locationAccuracy,
+      'locationDescription': locationDescription,
+      'originalGpsLocation': originalGpsLocation,
       'resolvedAt': resolvedAt,
     };
   }
@@ -139,6 +154,9 @@ class ReportModel {
       location: map['location'],
       createdAt: (map['createdAt'] as Timestamp?)?.toDate(),
       assignedTo: map["assignedTo"] ?? "",
+      locationAccuracy: (map['locationAccuracy'] as num?)?.toDouble(),
+      locationDescription: map['locationDescription'],
+      originalGpsLocation: map['originalGpsLocation'],
       resolvedAt: (map['resolvedAt'] as Timestamp?)?.toDate(),
     );
   }

@@ -9,7 +9,7 @@ final activeCaseProvider = StreamProvider<ReportModel?>((ref) {
   return responderAsync.when(
     data: (responder) {
       if (responder == null) return Stream.value(null);
-      return ref.read(reportRepositoryProvider).watchAssignedReport(responder.responderId);
+      return ref.read(reportRepositoryProvider).watchAssignedReport(responder.id);
     },
     loading: () => const Stream.empty(),
     error: (_, _) => Stream.value(null),

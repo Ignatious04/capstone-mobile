@@ -6,62 +6,32 @@ class ActiveCaseActionBar extends StatelessWidget {
   const ActiveCaseActionBar({
     super.key,
     required this.status,
-    required this.onAccept,
-    required this.onDecline,
     required this.onAdvance,
   });
 
   final ReportStatusEnum status;
-  final VoidCallback onAccept;
-  final VoidCallback onDecline;
   final VoidCallback onAdvance;
 
   @override
   Widget build(BuildContext context) {
-    if (status == ReportStatusEnum.pending) {
-      // Awaiting the responder's confirmation of an operator-made assignment.
-      return Row(
-        children: [
-          Expanded(
-            child: OutlinedButton(
-              onPressed: onDecline,
-              style: OutlinedButton.styleFrom(
-                foregroundColor: Colors.red,
-                side: const BorderSide(color: Colors.red),
-                padding: const EdgeInsets.symmetric(vertical: 16),
-              ),
-              child: const Text('Decline'),
-            ),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: ElevatedButton(
-              onPressed: onAccept,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.deepOrange,
-                foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(vertical: 16),
-              ),
-              child: const Text('Accept Case'),
-            ),
-          ),
-        ],
-      );
-    }
-
-    final (label, icon) = switch (status) {
-      ReportStatusEnum.accepted => ('En Route', Icons.directions_car),
-      ReportStatusEnum.dispatched => ('Arrived on Scene', Icons.place),
-      ReportStatusEnum.onScene => ('Resolve Case', Icons.check_circle),
-      _ => ('', Icons.check),
+    final action = switch (status) {
+      ReportStatusEnum.accepted => (label: 'En Route', icon: Icons.directions_car),
+      ReportStatusEnum.dispatched => (label: 'Arrived on Scene', icon: Icons.place),
+      ReportStatusEnum.onScene => (label: 'Resolve Case', icon: Icons.check_circle),
+      _ => null,
     };
+
+    // A responder's active case should never be `pending` or `resolved`
+    // by the time it reaches this screen (see watchAssignedReport), but
+    // fail safe rather than showing a broken button if it ever is.
+    if (action == null) return const SizedBox.shrink();
 
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton.icon(
         onPressed: onAdvance,
-        icon: Icon(icon),
-        label: Text(label),
+        icon: Icon(action.icon),
+        label: Text(action.label),
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.deepOrange,
           foregroundColor: Colors.white,

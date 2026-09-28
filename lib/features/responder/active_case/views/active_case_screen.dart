@@ -28,18 +28,13 @@ class ActiveCaseScreen extends ConsumerWidget {
   Future<void> _advanceStatus(WidgetRef ref, ReportModel report) async {
     final repo = ref.read(reportRepositoryProvider);
     final next = switch (report.status) {
-      ReportStatusEnum.pending => ReportStatusEnum.accepted, // Accept
       ReportStatusEnum.accepted => ReportStatusEnum.dispatched, // En Route
       ReportStatusEnum.dispatched => ReportStatusEnum.onScene, // Arrived
       ReportStatusEnum.onScene => ReportStatusEnum.resolved, // Resolve
-      _ => null,
+      _ => null, // pending/resolved: nothing for the responder to do here
     };
     if (next == null) return;
     await repo.updateReportStatus(report.reportID, next);
-  }
-
-  Future<void> _decline(WidgetRef ref, ReportModel report) async {
-    await ref.read(reportRepositoryProvider).declineAssignment(report.reportID);
   }
 
   @override
@@ -56,8 +51,6 @@ class ActiveCaseScreen extends ConsumerWidget {
             }
             return _ActiveCaseBody(
               report: report,
-              onAccept: () => _advanceStatus(ref, report),
-              onDecline: () => _decline(ref, report),
               onAdvance: () => _advanceStatus(ref, report),
             );
           },
@@ -98,14 +91,10 @@ class _NoActiveCase extends StatelessWidget {
 class _ActiveCaseBody extends StatelessWidget {
   const _ActiveCaseBody({
     required this.report,
-    required this.onAccept,
-    required this.onDecline,
     required this.onAdvance,
   });
 
   final ReportModel report;
-  final VoidCallback onAccept;
-  final VoidCallback onDecline;
   final VoidCallback onAdvance;
 
   @override
@@ -142,21 +131,25 @@ class _ActiveCaseBody extends StatelessWidget {
                       ),
                     ),
                     Positioned(
-                      right: 16,
-                      bottom: 16,
-                      child: FloatingActionButton.small(
-                        heroTag: 'directionsFAB',
-                        backgroundColor: Colors.white,
-                        foregroundColor: Colors.deepOrange,
-                        onPressed: () async {
-                          final uri = Uri.parse(
-                            'https://www.google.com/maps/dir/?api=1'
-                            '&destination=${location.latitude},${location.longitude}'
-                            '&travelmode=driving',
-                          );
-                          await launchUrl(uri, mode: LaunchMode.externalApplication);
-                        },
-                        child: const Icon(Icons.directions),
+                      right: 20,
+                      bottom: 20,
+                      child: SizedBox(
+                        width: 50,
+                        height: 50,
+                        child: FloatingActionButton(
+                          heroTag: 'directionsFAB',
+                          backgroundColor: Colors.white,
+                          foregroundColor: Colors.deepOrange,
+                          onPressed: () async {
+                            final uri = Uri.parse(
+                              'https://www.google.com/maps/dir/?api=1'
+                              '&destination=${location.latitude},${location.longitude}'
+                              '&travelmode=driving',
+                            );
+                            await launchUrl(uri, mode: LaunchMode.externalApplication);
+                          },
+                          child: const Icon(Icons.directions, size: 40),
+                        ),
                       ),
                     ),
                   ],
@@ -210,7 +203,10 @@ class _ActiveCaseBody extends StatelessWidget {
                         ReportStatusWidget(status: report.status!.name),
                         const SizedBox(height: 10),
                         const LabelText(value: 'REFERENCE NUMBER'),
-                        BodyText(value: report.referenceNumber),
+                        BodyText(
+                          value: report.referenceNumber,
+                          isBold: true,
+                        ),
                         const SizedBox(height: 10),
                         const LabelText(value: 'DESCRIPTION'),
                         BodyText(
@@ -235,8 +231,6 @@ class _ActiveCaseBody extends StatelessWidget {
                 const SizedBox(height: 20),
                 ActiveCaseActionBar(
                   status: report.status!,
-                  onAccept: onAccept,
-                  onDecline: onDecline,
                   onAdvance: onAdvance,
                 ),
               ],

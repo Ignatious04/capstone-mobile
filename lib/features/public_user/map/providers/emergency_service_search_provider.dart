@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final emergencyServiceSearchProvider = NotifierProvider<EmergencyServiceSearchNotifier, String>(
@@ -9,7 +10,7 @@ class EmergencyServiceSearchNotifier extends Notifier<String> {
   String build() => '';
 
   void setQuery(String query) {
-    print("Query set to: $query");
+    debugPrint("Query set to: $query");
     state = query;
   }
 }

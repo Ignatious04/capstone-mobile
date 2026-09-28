@@ -1,9 +1,7 @@
-// lib/features/responder/views/responder_main_screen.dart
+import 'package:capstone/core/shared/widgets/custom_navigation_bar.dart';
+import 'package:capstone/features/responder/active_case/views/active_case_screen.dart';
 import 'package:capstone/features/responder/history/views/history_screen.dart';
-import 'package:capstone/features/responder/main/views/responder_home_screen.dart';
 import 'package:capstone/features/responder/profile/views/responder_profile_screen.dart';
-import 'package:curved_labeled_navigation_bar/curved_navigation_bar.dart';
-import 'package:curved_labeled_navigation_bar/curved_navigation_bar_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -17,14 +15,20 @@ class ResponderMainScreen extends StatefulWidget {
 class _ResponderMainScreenState extends State<ResponderMainScreen> {
   int currentPageIndex = 0;
 
+  static const _navItems = [
+    CustomNavigationBarItem(
+      icon: Icons.local_hospital_outlined,
+      activeIcon: Icons.local_hospital,
+      label: 'Active Case',
+    ),
+    CustomNavigationBarItem(icon: Icons.history, activeIcon: Icons.history, label: 'History'),
+    CustomNavigationBarItem(icon: Icons.account_circle_outlined, activeIcon: Icons.account_circle, label: 'Profile'),
+  ];
+
   @override
   Widget build(BuildContext context) {
-    final labelStyle = Theme.of(context).textTheme.labelMedium?.copyWith(
-      color: Colors.white,
-    );
-
     final pages = const [
-      ResponderHomeScreen(),
+      ActiveCaseScreen(),
       ResponderHistoryScreen(),
       ResponderProfileScreen(),
     ];
@@ -37,34 +41,10 @@ class _ResponderMainScreenState extends State<ResponderMainScreen> {
           children: pages,
         ),
       ),
-      bottomNavigationBar: CurvedNavigationBar(
-        color: Colors.deepOrange,
-        backgroundColor: Colors.deepOrangeAccent,
-        buttonBackgroundColor: Colors.deepOrange,
-        index: currentPageIndex,
-        animationDuration: const Duration(milliseconds: 300),
-        items: [
-          CurvedNavigationBarItem(
-            child: const Icon(Icons.local_hospital, color: Colors.white),
-            label: "Active Case",
-            labelStyle: labelStyle,
-          ),
-          CurvedNavigationBarItem(
-            child: const Icon(Icons.history, color: Colors.white),
-            label: "History",
-            labelStyle: labelStyle,
-          ),
-          CurvedNavigationBarItem(
-            child: const Icon(Icons.account_circle, color: Colors.white),
-            label: "Profile",
-            labelStyle: labelStyle,
-          ),
-        ],
-        onTap: (value) {
-          setState(() {
-            currentPageIndex = value;
-          });
-        },
+      bottomNavigationBar: CustomNavigationBar(
+        currentIndex: currentPageIndex,
+        onTap: (value) => setState(() => currentPageIndex = value),
+        items: _navItems,
       ),
     );
   }

@@ -1,37 +1,58 @@
 import 'package:capstone/core/enums/service_type_enum.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ResponderModel {
-  final String responderId;
-  final String firstName;
-  final String lastName;
-  final ServiceTypeEnum serviceType;
+  final String id;
+  final String fullName;
+  final String email;
+  final String contactNumber;
+  final ServiceTypeEnum department;
+  final String role;
+  final String responderCode;
   final bool isActive;
+  final bool isAvailable;
+  final DateTime? createdAt;
 
   const ResponderModel({
-    this.responderId = "",
-    this.firstName = "",
-    this.lastName = "",
-    this.serviceType = ServiceTypeEnum.medical,
+    this.id = "",
+    this.fullName = "",
+    this.email = "",
+    this.contactNumber = "",
+    this.department = ServiceTypeEnum.medical,
+    this.role = "",
+    this.responderCode = "",
     this.isActive = true,
+    this.isAvailable = true,
+    this.createdAt,
   });
 
   factory ResponderModel.fromMap(Map<dynamic, dynamic> map) {
     return ResponderModel(
-      responderId: map['responderId'] ?? '',
-      firstName: map['firstName'] ?? '',
-      lastName: map['lastName'] ?? '',
-      serviceType: ServiceTypeEnum.values.byName(map['serviceType'] ?? 'medical'),
+      id: map['id'] ?? '',
+      fullName: map['fullName'] ?? '',
+      email: map['email'] ?? '',
+      contactNumber: map['contactNumber'] ?? '',
+      department: ServiceTypeEnum.values.byName(map['department'] ?? 'medical'),
+      role: map['role'] ?? '',
+      responderCode: map['responderCode'] ?? '',
       isActive: map['isActive'] ?? true,
+      isAvailable: map['isAvailable'] ?? true,
+      createdAt: (map['createdAt'] as Timestamp?)?.toDate(),
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
-      'responderId': responderId,
-      'firstName': firstName,
-      'lastName': lastName,
-      'serviceType': serviceType.name,
+      'id': id,
+      'fullName': fullName,
+      'email': email,
+      'contactNumber': contactNumber,
+      'department': department.name,
+      'role': role,
+      'responderCode': responderCode,
       'isActive': isActive,
+      'isAvailable': isAvailable,
+      'createdAt': createdAt,
     };
   }
 }

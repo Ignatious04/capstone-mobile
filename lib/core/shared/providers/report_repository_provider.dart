@@ -1,7 +1,7 @@
 import 'package:capstone/core/shared/providers/firebase_auth_provider.dart';
 import 'package:capstone/core/shared/providers/firestore_provider.dart';
 import 'package:capstone/core/shared/models/report_model.dart';
-import 'package:capstone/features/public_user/reporting/repositories/report_repository.dart';
+import 'package:capstone/core/shared/repositories/report_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final reportRepositoryProvider = Provider<ReportRepository>(

@@ -1,3 +1,4 @@
+import 'package:capstone/core/shared/providers/connectivity_stream_provider.dart';
 import 'package:capstone/core/shared/providers/location_provider.dart';
 import 'package:capstone/core/shared/providers/report_provider.dart';
 import 'package:capstone/core/shared/widgets/custom_alert_dialog.dart';
@@ -10,21 +11,37 @@ import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/widgets/text/label_text.dart';
 import 'package:capstone/core/shared/widgets/text/title_text.dart';
 import 'package:capstone/features/public_user/pre_call_guidance/providers/guidance_provider.dart';
+import 'package:capstone/features/public_user/reporting/views/select_location_screen.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-class PreCallGuidanceSummaryScreen extends ConsumerWidget {
+class PreCallGuidanceSummaryScreen extends ConsumerStatefulWidget {
   const PreCallGuidanceSummaryScreen({super.key, required this.pageController, required this.onCancel});
 
   final PageController pageController;
   final VoidCallback onCancel;
-  static const size = 25.0;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<PreCallGuidanceSummaryScreen> createState() => _PreCallGuidanceSummaryScreenState();
+}
+
+class _PreCallGuidanceSummaryScreenState extends ConsumerState<PreCallGuidanceSummaryScreen> {
+  final _noteController = TextEditingController();
+  LatLng? _adjustedLocation;
+
+  @override
+  void dispose() {
+    _noteController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final state = ref.watch(guidanceProvider);
     final location = ref.watch(currentLocationProvider);
+    final isOnline = ref.watch(connectivityStreamProvider).value?.contains(ConnectivityResult.none) == false;
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -109,6 +126,38 @@ class PreCallGuidanceSummaryScreen extends ConsumerWidget {
                 ],
               ),
             ),
+          if (location.hasValue) ...[
+            if (location.value!.accuracy > 50)
+              BodyText(
+                value:
+                    "Weak GPS signal (±${location.value!.accuracy.round()} m). "
+                    "Add a landmark or adjust your pin so responders can find you.",
+              ),
+            TextField(
+              controller: _noteController,
+              maxLength: 80,
+              decoration: const InputDecoration(
+                labelText: "Where exactly are you? (optional)",
+                hintText: "Landmark, building, floor…",
+              ),
+            ),
+            if (isOnline) // hide when offline; use whatever your connectivity listener exposes
+              TextButton.icon(
+                icon: const Icon(Icons.edit_location_alt),
+                label: Text(_adjustedLocation == null ? "Adjust location on map" : "Location adjusted ✓"),
+                onPressed: () async {
+                  final picked = await Navigator.push<LatLng>(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => SelectLocationScreen(
+                        initialLocation: _adjustedLocation ?? location.value!.latLng,
+                      ),
+                    ),
+                  );
+                  if (picked != null && mounted) setState(() => _adjustedLocation = picked);
+                },
+              ),
+          ],
           CustomElevatedButton(
             onPressed: location.isLoading
                 ? null
@@ -159,6 +208,10 @@ class PreCallGuidanceSummaryScreen extends ConsumerWidget {
                       }
                     }
 
+                    if (!context.mounted) {
+                      return;
+                    }
+
                     showDialog(
                       context: context,
                       barrierDismissible: false,
@@ -166,10 +219,15 @@ class PreCallGuidanceSummaryScreen extends ConsumerWidget {
                     );
 
                     try {
+                      final fix = location.value!;
+
                       final isSMS = await ref
                           .read(guidanceProvider.notifier)
                           .submitGuidanceReport(
-                            location: currentLocation,
+                            location: _adjustedLocation ?? fix.latLng,
+                            originalGPS: _adjustedLocation != null ? fix.latLng : null,
+                            accuracy: fix.accuracy,
+                            locationNote: _noteController.text.trim(),
                             isOnline: isOnline,
                           );
 
@@ -212,7 +270,7 @@ class PreCallGuidanceSummaryScreen extends ConsumerWidget {
             backgroundColor: Colors.deepOrange,
           ),
           CustomElevatedButton(
-            onPressed: onCancel,
+            onPressed: widget.onCancel,
             value: "Cancel",
             color: Colors.white,
             backgroundColor: Colors.black54,

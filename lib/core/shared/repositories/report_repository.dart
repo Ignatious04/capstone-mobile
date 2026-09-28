@@ -35,13 +35,15 @@ class ReportRepository {
   }
 
   /// Watches the responder's single active case: the most recent report
-  /// assigned to them that hasn't been resolved yet. Covers both the
-  /// "awaiting confirmation" state (status still `pending`, responderID set)
-  /// and every state after acceptance.
+  /// assigned to them that hasn't been resolved yet. By the time a report
+  /// reaches the responder, the operator has already reviewed it and
+  /// confirmed the assignment on the dashboard, so status here starts at
+  /// `accepted` and only moves forward through `dispatched` → `onScene` →
+  /// `resolved`.
   Stream<ReportModel?> watchAssignedReport(String responderID) {
     return firestore
         .collection("reports")
-        .where("responderID", isEqualTo: responderID)
+        .where("assignedTo", isEqualTo: responderID)
         .where("status", isNotEqualTo: ReportStatusEnum.resolved.name)
         .snapshots()
         .map((snapshot) {

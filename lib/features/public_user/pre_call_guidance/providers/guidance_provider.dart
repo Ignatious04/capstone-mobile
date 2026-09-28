@@ -37,7 +37,13 @@ class GuidanceNotifier extends Notifier<QuestionState> {
     );
   }
 
-  Future<bool> submitGuidanceReport({required LatLng location, required bool isOnline}) async {
+  Future<bool> submitGuidanceReport({
+    required LatLng location,
+    required bool isOnline,
+    LatLng? originalGPS,
+    double? accuracy,
+    String? locationNote,
+  }) async {
     final incidentType = ref.read(reportProvider).incidentType;
 
     if (incidentType == null) {
@@ -52,6 +58,7 @@ class GuidanceNotifier extends Notifier<QuestionState> {
         incidentType: incidentType,
         referenceNumber: referenceNumber,
         location: location,
+        locationNote: locationNote,
       );
       return true;
     }
@@ -71,6 +78,9 @@ class GuidanceNotifier extends Notifier<QuestionState> {
           guidanceAnswers: state.questions,
           status: ReportStatusEnum.pending,
           location: GeoPoint(location.latitude, location.longitude),
+          locationAccuracy: accuracy,
+          locationDescription: (locationNote == null || locationNote.isEmpty) ? null : locationNote,
+          originalGpsLocation: originalGPS == null ? null : GeoPoint(originalGPS.latitude, originalGPS.longitude),
           createdAt: now,
         );
 
@@ -94,6 +104,7 @@ class GuidanceNotifier extends Notifier<QuestionState> {
     required ServiceTypeEnum incidentType,
     required String referenceNumber,
     required LatLng location,
+    String? locationNote,
   }) async {
     final number = await ref.read(contactNumberRepositoryProvider).getNumber(incidentType);
 
@@ -112,6 +123,9 @@ class GuidanceNotifier extends Notifier<QuestionState> {
       buffer.writeln('${q.question} $answer');
     }
 
+    if (locationNote != null && locationNote.isNotEmpty) {
+      buffer.writeln('Landmark: $locationNote');
+    }
     buffer.writeln('Location: https://maps.google.com/?q=${location.latitude},${location.longitude}');
 
     await launchSms(number, buffer.toString());

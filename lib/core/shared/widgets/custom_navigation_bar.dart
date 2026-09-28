@@ -1,23 +1,29 @@
 import 'package:capstone/core/shared/widgets/text/label_text.dart';
 import 'package:flutter/material.dart';
 
-class FloatingNavBar extends StatelessWidget {
-  const FloatingNavBar({
+class CustomNavigationBarItem {
+  const CustomNavigationBarItem({
+    required this.icon,
+    required this.activeIcon,
+    required this.label,
+  });
+
+  final IconData icon;
+  final IconData activeIcon;
+  final String label;
+}
+
+class CustomNavigationBar extends StatelessWidget {
+  const CustomNavigationBar({
     super.key,
     required this.currentIndex,
     required this.onTap,
+    required this.items,
   });
 
   final int currentIndex;
   final ValueChanged<int> onTap;
-
-  static const _items = [
-    _NavItem(Icons.map_outlined, Icons.map, 'Map',),
-    _NavItem(Icons.chat_bubble_outline, Icons.chat_bubble, 'Reports'),
-    _NavItem(Icons.home_outlined, Icons.home, 'Home'),
-    _NavItem(Icons.menu_book_outlined, Icons.menu_book, 'Guidance'),
-    _NavItem(Icons.account_circle_outlined, Icons.account_circle, 'Profile'),
-  ];
+  final List<CustomNavigationBarItem> items;
 
   @override
   Widget build(BuildContext context) {
@@ -30,10 +36,10 @@ class FloatingNavBar extends StatelessWidget {
           height: 75,
           child: Row(
             children: [
-              for (int i = 0; i < _items.length; i++)
+              for (int i = 0; i < items.length; i++)
                 Expanded(
                   child: _NavButton(
-                    item: _items[i],
+                    item: items[i],
                     selected: i == currentIndex,
                     onTap: () => onTap(i),
                   ),
@@ -46,13 +52,6 @@ class FloatingNavBar extends StatelessWidget {
   }
 }
 
-class _NavItem {
-  const _NavItem(this.icon, this.activeIcon, this.label);
-  final IconData icon;
-  final IconData activeIcon;
-  final String label;
-}
-
 class _NavButton extends StatelessWidget {
   const _NavButton({
     required this.item,
@@ -60,7 +59,7 @@ class _NavButton extends StatelessWidget {
     required this.onTap,
   });
 
-  final _NavItem item;
+  final CustomNavigationBarItem item;
   final bool selected;
   final VoidCallback onTap;
 

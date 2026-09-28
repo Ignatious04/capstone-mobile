@@ -13,10 +13,8 @@ final locationStatusProvider = FutureProvider<LocationStatusEnum>((ref) async {
   return locationService.checkLocationStatus();
 });
 
-final currentLocationProvider = FutureProvider<LatLng>((ref) async {
-  final locationService = ref.read(locationServiceProvider);
-
-  return locationService.getCurrentLocation();
+final currentLocationProvider = FutureProvider.autoDispose<LocationFix>((ref) {
+  return ref.read(locationServiceProvider).getCurrentLocation();
 });
 
 final locationStreamProvider = StreamProvider<LatLng>((ref) {

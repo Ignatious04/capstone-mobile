@@ -1,5 +1,5 @@
+import 'package:capstone/core/shared/widgets/custom_navigation_bar.dart';
 import 'package:capstone/features/public_user/main/views/home_screen.dart';
-import 'package:capstone/features/public_user/main/widgets/floating_nav_bar.dart';
 import 'package:capstone/features/public_user/map/views/map_screen.dart';
 import 'package:capstone/features/public_user/pre_call_guidance/views/pre_call_guidance_screen.dart';
 import 'package:capstone/features/public_user/profile/views/profile_screen.dart';
@@ -18,15 +18,13 @@ class _MainScreenState extends State<MainScreen> {
   String address = "Brgy. Balibago, Angeles City";
   int currentPageIndex = 2;
 
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
+  static const _navItems = [
+    CustomNavigationBarItem(icon: Icons.map_outlined, activeIcon: Icons.map, label: 'Map'),
+    CustomNavigationBarItem(icon: Icons.chat_bubble_outline, activeIcon: Icons.chat_bubble, label: 'Reports'),
+    CustomNavigationBarItem(icon: Icons.home_outlined, activeIcon: Icons.home, label: 'Home'),
+    CustomNavigationBarItem(icon: Icons.menu_book_outlined, activeIcon: Icons.menu_book, label: 'Guidance'),
+    CustomNavigationBarItem(icon: Icons.account_circle_outlined, activeIcon: Icons.account_circle, label: 'Profile'),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -46,9 +44,10 @@ class _MainScreenState extends State<MainScreen> {
           children: pages,
         ),
       ),
-      bottomNavigationBar: FloatingNavBar(
+      bottomNavigationBar: CustomNavigationBar(
         currentIndex: currentPageIndex,
         onTap: (value) => setState(() => currentPageIndex = value),
+        items: _navItems,
       ),
     );
   }

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:capstone/core/enums/location_status_enum.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:timezone/tzdata.dart';
 
 class LocationService {
   LatLng? currentLatLng;
@@ -53,7 +54,7 @@ class LocationService {
     await Geolocator.openAppSettings();
   }
 
-  Future<LatLng> getCurrentLocation() async {
+  Future<LocationFix> getCurrentLocation() async {
     Position position;
     try {
       position = await Geolocator.getCurrentPosition(
@@ -78,7 +79,7 @@ class LocationService {
     }
 
     currentLatLng = LatLng(position.latitude, position.longitude);
-    return currentLatLng!;
+    return LocationFix(latLng: currentLatLng!, accuracy: position.accuracy);
   }
 
   Stream<LatLng> getLocationStream() {
@@ -96,4 +97,10 @@ class LocationService {
       return currentLatLng!;
     });
   }
+}
+
+class LocationFix {
+  const LocationFix({required this.latLng, required this.accuracy});
+  final LatLng latLng;
+  final double accuracy; // meters
 }
