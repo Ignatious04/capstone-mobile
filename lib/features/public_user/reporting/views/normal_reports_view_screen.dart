@@ -1,4 +1,5 @@
 import 'package:capstone/core/enums/service_type_enum.dart';
+import 'package:capstone/core/shared/providers/responder_provider.dart';
 import 'package:capstone/core/shared/widgets/emergency_guidance_sheet.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/widgets/text/label_text.dart';
@@ -10,10 +11,12 @@ import 'package:capstone/features/public_user/reporting/widgets/attachments_card
 import 'package:capstone/features/public_user/reporting/widgets/location_card.dart';
 import 'package:capstone/features/public_user/reporting/widgets/report_status_widget.dart';
 import 'package:capstone/core/shared/widgets/section_title.dart';
+import 'package:capstone/features/public_user/reporting/widgets/responder_card.dart';
 import 'package:capstone/features/public_user/reporting/widgets/victims_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class NormalReportsViewScreen extends StatelessWidget {
+class NormalReportsViewScreen extends ConsumerStatefulWidget {
   const NormalReportsViewScreen({
     super.key,
     required this.report,
@@ -22,11 +25,20 @@ class NormalReportsViewScreen extends StatelessWidget {
   final ReportModel report;
 
   @override
+  ConsumerState<NormalReportsViewScreen> createState() => _NormalReportsViewScreenState();
+}
+
+class _NormalReportsViewScreenState extends ConsumerState<NormalReportsViewScreen> {
+  @override
   Widget build(BuildContext context) {
-    final status = report.status!.name;
-    final location = report.location;
-    final information = report.additionalInformation.trim();
-    final showGuidanceEntry = !(report.incidentType == ServiceTypeEnum.police && report.policeConcernType != null);
+    final status = widget.report.status!.name;
+    final location = widget.report.location;
+    final information = widget.report.additionalInformation.trim();
+    final showGuidanceEntry =
+        !(widget.report.incidentType == ServiceTypeEnum.police && widget.report.policeConcernType != null);
+    final assignedResponderID = widget.report.assignedTo ?? "";
+    final responderAsync = assignedResponderID.isEmpty ? null : ref.watch(responderByIdProvider(assignedResponderID));
+
     return Scaffold(
       appBar: CustomAppBar(
         value: "View Report",
@@ -38,7 +50,7 @@ class NormalReportsViewScreen extends StatelessWidget {
                     size: 25,
                   ),
                   tooltip: "While you wait",
-                  onPressed: () => EmergencyGuidanceSheet.show(context, report.incidentType!),
+                  onPressed: () => EmergencyGuidanceSheet.show(context, widget.report.incidentType!),
                 ),
               ]
             : null,
@@ -84,7 +96,7 @@ class NormalReportsViewScreen extends StatelessWidget {
                                     value: 'INCIDENT TYPE',
                                   ),
                                   BodyText(
-                                    value: Formatter.formatEnumName(report.incidentType!.name),
+                                    value: Formatter.formatEnumName(widget.report.incidentType!.name),
                                     isBold: true,
                                   ),
                                 ],
@@ -101,12 +113,30 @@ class NormalReportsViewScreen extends StatelessWidget {
                           value: 'DESCRIPTION',
                         ),
                         BodyText(
-                          value: report.description.isEmpty ? 'No description provided.' : report.description,
+                          value: widget.report.description.isEmpty
+                              ? 'No description provided.'
+                              : widget.report.description,
                         ),
                       ],
                     ),
                   ),
                 ),
+                if (responderAsync != null) ...[
+                  const SizedBox(height: 10),
+                  responderAsync.when(
+                    data: (responder) => responder == null
+                        ? const SizedBox.shrink()
+                        : Column(
+                            children: [
+                              SectionTitle(icon: Icons.support_agent, title: 'Responder'),
+                              const SizedBox(height: 10),
+                              ResponderCard(responder: responder),
+                            ],
+                          ),
+                    loading: () => const SizedBox.shrink(),
+                    error: (_, _) => const SizedBox.shrink(),
+                  ),
+                ],
                 const SizedBox(height: 10),
                 SectionTitle(
                   icon: Icons.location_on_outlined,
@@ -121,7 +151,7 @@ class NormalReportsViewScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 10),
                 VictimsCard(
-                  victims: report.victims,
+                  victims: widget.report.victims,
                 ),
                 const SizedBox(height: 10),
                 SectionTitle(
@@ -130,7 +160,7 @@ class NormalReportsViewScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 10),
                 AttachmentsCard(
-                  attachments: report.attachments,
+                  attachments: widget.report.attachments,
                 ),
                 const SizedBox(height: 10),
                 SectionTitle(

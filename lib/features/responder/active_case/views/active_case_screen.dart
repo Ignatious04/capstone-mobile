@@ -34,7 +34,7 @@ class ActiveCaseScreen extends ConsumerWidget {
       _ => null, // pending/resolved: nothing for the responder to do here
     };
     if (next == null) return;
-    await repo.updateReportStatus(report.reportID, next);
+    await repo.updateReportStatus(report.reportID, next, responderID: report.assignedTo);
   }
 
   @override

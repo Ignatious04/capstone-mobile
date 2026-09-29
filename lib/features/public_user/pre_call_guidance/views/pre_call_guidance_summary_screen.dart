@@ -141,7 +141,7 @@ class _PreCallGuidanceSummaryScreenState extends ConsumerState<PreCallGuidanceSu
                 hintText: "Landmark, building, floor…",
               ),
             ),
-            if (isOnline) // hide when offline; use whatever your connectivity listener exposes
+            if (isOnline)
               TextButton.icon(
                 icon: const Icon(Icons.edit_location_alt),
                 label: Text(_adjustedLocation == null ? "Adjust location on map" : "Location adjusted ✓"),
@@ -190,9 +190,9 @@ class _PreCallGuidanceSummaryScreenState extends ConsumerState<PreCallGuidanceSu
                     }
 
                     final connectivityResult = await Connectivity().checkConnectivity();
-                    final isOnline = !connectivityResult.contains(ConnectivityResult.none);
+                    final isOnlineNow = !connectivityResult.contains(ConnectivityResult.none);
 
-                    if (!isOnline) {
+                    if (!isOnlineNow) {
                       if (!context.mounted) {
                         return;
                       }
@@ -228,7 +228,7 @@ class _PreCallGuidanceSummaryScreenState extends ConsumerState<PreCallGuidanceSu
                             originalGPS: _adjustedLocation != null ? fix.latLng : null,
                             accuracy: fix.accuracy,
                             locationNote: _noteController.text.trim(),
-                            isOnline: isOnline,
+                            isOnline: isOnlineNow,
                           );
 
                       if (context.mounted) {

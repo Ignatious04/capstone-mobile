@@ -1,9 +1,7 @@
 import 'dart:async';
-
 import 'package:capstone/core/enums/location_status_enum.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:timezone/tzdata.dart';
 
 class LocationService {
   LatLng? currentLatLng;

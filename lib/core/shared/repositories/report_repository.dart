@@ -52,11 +52,19 @@ class ReportRepository {
         });
   }
 
-  Future<void> updateReportStatus(String reportID, ReportStatusEnum status) async {
-    await firestore.collection('reports').doc(reportID).update({
+  Future<void> updateReportStatus(String reportID, ReportStatusEnum status, {String? responderID}) async {
+    final batch = firestore.batch();
+
+    batch.update(firestore.collection('reports').doc(reportID), {
       'status': status.name,
       if (status == ReportStatusEnum.resolved) 'resolvedAt': FieldValue.serverTimestamp(),
     });
+
+    if (status == ReportStatusEnum.resolved && responderID != null && responderID.isNotEmpty) {
+      batch.update(firestore.collection("responders").doc(responderID), {"isAvailable": true});
+    }
+
+    await batch.commit();
   }
 
   /// Responder declines an assigned case: frees it back up for the operator

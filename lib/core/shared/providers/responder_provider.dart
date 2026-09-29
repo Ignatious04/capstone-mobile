@@ -12,3 +12,13 @@ final currentAuthenticatedResponderProvider = StreamProvider<ResponderModel?>((r
 
   return ref.read(responderRepositoryProvider).watchResponder(currentUser.uid);
 });
+
+final responderByIdProvider = StreamProvider.family<ResponderModel?, String>(
+  (ref, responderID) {
+    if (responderID.isEmpty) {
+      return Stream.value(null);
+    }
+
+    return ref.read(responderRepositoryProvider).watchResponder(responderID);
+  },
+);

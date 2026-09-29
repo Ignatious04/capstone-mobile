@@ -116,7 +116,7 @@ class ReportCard extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => NormalReportsViewScreen(report: report),
+                            builder: (context) => NormalReportsViewScreen(report: report, ),
                           ),
                         );
                       }
