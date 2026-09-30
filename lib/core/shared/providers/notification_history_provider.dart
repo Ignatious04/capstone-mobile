@@ -40,6 +40,8 @@ class NotificationHistoryNotifier extends Notifier<List<NotificationModel>> {
     final userID = ref.read(firebaseAuthProvider).currentUser?.uid;
     if (userID == null) return;
 
+    if (state.any((n) => n.id == notification.id)) return;
+
     await ref.read(notificationHistoryRepositoryProvider).add(userID, notification);
     state = [notification, ...state];
   }

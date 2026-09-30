@@ -229,6 +229,13 @@ class _ActiveCaseBody extends StatelessWidget {
                 const SizedBox(height: 10),
                 AdditionalInformationCard(additionalInfo: report.additionalInformation.trim()),
                 const SizedBox(height: 20),
+                const Center(
+                  child: LabelText(
+                    value: "Hold for 2 seconds to update",
+                    color: Colors.black54,
+                  ),
+                ),
+                const SizedBox(height: 10),
                 ActiveCaseActionBar(
                   status: report.status!,
                   onAdvance: onAdvance,

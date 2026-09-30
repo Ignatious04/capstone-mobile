@@ -10,9 +10,19 @@ const STATUS_COPY = {
   pending: {title: "Report reopened", body: "Your report is back in the queue for review."},
 };
 
+const {logger} = require("firebase-functions");
+
 exports.onReportStatusChange = onDocumentUpdated("reports/{reportID}", async (event) => {
   const before = event.data.before.data();
   const after = event.data.after.data();
+
+  logger.info("report update", {
+    eventId: event.id,
+    reportID: event.params.reportID,
+    beforeStatus: before.status,
+    afterStatus: after.status,
+    updateTime: event.data.after.updateTime?.toDate().toISOString(),
+  });
 
   if (before.status === after.status) return;
 

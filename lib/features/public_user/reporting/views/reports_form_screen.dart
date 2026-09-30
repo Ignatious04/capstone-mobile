@@ -73,9 +73,9 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> {
     for (final controller in _controllers) {
       controller.dispose();
     }
-    super.dispose();
     incidentDescriptionController.dispose();
     additionalInformationController.dispose();
+    super.dispose();
   }
 
   Widget showLoadingOverlay() {
@@ -305,6 +305,12 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> {
                                                 mode: MapModeEnum.view,
                                                 onMapCreated: (controller) {
                                                   _mapController = controller;
+                                                },
+                                                extraMarkers: {
+                                                  Marker(
+                                                    markerId: const MarkerId('selected_location'),
+                                                    position: _selectedLocation!,
+                                                  ),
                                                 },
                                               ),
                                               Positioned(
@@ -550,6 +556,11 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> {
                                   return;
                                 }
 
+                                if (!location.hasValue) {
+                                  CustomSnackbar(text: "Unable to get your current location.");
+                                  return;
+                                }
+
                                 if (!context.mounted) {
                                   return;
                                 }
@@ -559,11 +570,6 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> {
                                   barrierDismissible: false,
                                   builder: (context) => showLoadingOverlay(),
                                 );
-
-                                if (!location.hasValue) {
-                                  CustomSnackbar(text: "Unable to get your current location.");
-                                  return;
-                                }
 
                                 try {
                                   await ref

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:capstone/core/enums/notification_type_enum.dart';
 import 'package:capstone/core/enums/report_type_enum.dart';
 import 'package:capstone/core/shared/models/notification_model.dart';
@@ -49,19 +51,34 @@ class PushNotificationService {
   final Ref ref;
   final _messaging = FirebaseMessaging.instance;
 
+  StreamSubscription<RemoteMessage>? _onMessageSub;
+  StreamSubscription<RemoteMessage>? _onOpenedSub;
+  StreamSubscription<String>? _tokenRefreshSub;
+  bool _initialized = false;
+
   Future<void> init() async {
+    if (_initialized) return;
+    _initialized = true;
+
     await _messaging.requestPermission(alert: true, badge: true, sound: true);
 
-    FirebaseMessaging.onMessage.listen(_handleForegroundMessage);
+    _onMessageSub = FirebaseMessaging.onMessage.listen(_handleForegroundMessage);
+    _onOpenedSub = FirebaseMessaging.onMessageOpenedApp.listen(_handleNotificationTap);
 
-    // App opened by tapping a notification (background, not terminated)
-    FirebaseMessaging.onMessageOpenedApp.listen(_handleNotificationTap);
-
-    // App launched cold by tapping a notification
     final initialMessage = await _messaging.getInitialMessage();
     if (initialMessage != null) {
       _handleNotificationTap(initialMessage);
     }
+  }
+
+  Future<void> dispose() async {
+    await _onMessageSub?.cancel();
+    await _onOpenedSub?.cancel();
+    await _tokenRefreshSub?.cancel();
+    _onMessageSub = null;
+    _onOpenedSub = null;
+    _tokenRefreshSub = null;
+    _initialized = false;
   }
 
   /// Call once after login (user is authenticated, email-verified, setup).
@@ -71,8 +88,8 @@ class PushNotificationService {
       await ref.read(userRepositoryProvider).updateFcmToken(userID, token);
     }
 
-    // Token can rotate at any time, not just on login.
-    _messaging.onTokenRefresh.listen((newToken) {
+    await _tokenRefreshSub?.cancel();
+    _tokenRefreshSub = _messaging.onTokenRefresh.listen((newToken) {
       ref.read(userRepositoryProvider).updateFcmToken(userID, newToken);
     });
   }
@@ -88,6 +105,7 @@ class PushNotificationService {
   }
 
   void _handleForegroundMessage(RemoteMessage message) {
+    debugPrint('FG message ${message.messageId} handled by service #${identityHashCode(this)}');
     final title = message.notification?.title ?? message.data['title'] ?? '';
     final body = message.notification?.body ?? message.data['body'] ?? '';
     final reportID = message.data['reportID'] as String?;
@@ -130,5 +148,7 @@ class PushNotificationService {
 }
 
 final pushNotificationServiceProvider = Provider<PushNotificationService>((ref) {
-  return PushNotificationService(ref);
+  final service = PushNotificationService(ref);
+  ref.onDispose(service.dispose);
+  return service;
 });

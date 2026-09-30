@@ -52,6 +52,16 @@ class ReportRepository {
         });
   }
 
+  Stream<List<ReportModel>> watchResolvedReports(String responderID) {
+    return firestore
+        .collection('reports')
+        .where('assignedTo', isEqualTo: responderID)
+        .where('status', isEqualTo: ReportStatusEnum.resolved.name)
+        .orderBy('resolvedAt', descending: true)
+        .snapshots()
+        .map((snapshot) => snapshot.docs.map((doc) => ReportModel.fromMap(doc.data())).toList());
+  }
+
   Future<void> updateReportStatus(String reportID, ReportStatusEnum status, {String? responderID}) async {
     final batch = firestore.batch();
 

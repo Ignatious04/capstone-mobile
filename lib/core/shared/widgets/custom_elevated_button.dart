@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 class CustomElevatedButton extends StatelessWidget {
   const CustomElevatedButton({
     super.key,
-    required this.onPressed,
+    this.onPressed,
+    this.onLongPress,
     required this.value,
     this.icon,
     this.color = Colors.white,
@@ -13,6 +14,7 @@ class CustomElevatedButton extends StatelessWidget {
   });
 
   final VoidCallback? onPressed;
+  final VoidCallback? onLongPress;
   final String value;
   final Widget? icon;
   final Color color;
@@ -23,6 +25,7 @@ class CustomElevatedButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton.icon(
       onPressed: onPressed,
+      onLongPress: onLongPress,
       icon: icon,
       style: ElevatedButton.styleFrom(
         iconColor: color,

@@ -1,3 +1,5 @@
+import 'package:intl/intl.dart';
+
 abstract final class Formatter {
   static String formatEnumName(String value) {
     final formatted = value.replaceAllMapped(
@@ -14,4 +16,6 @@ abstract final class Formatter {
         )
         .join(' ');
   }
+
+  static String formatDateTime(DateTime value) => DateFormat('MMM dd, yyyy • h:mm a').format(value);
 }
