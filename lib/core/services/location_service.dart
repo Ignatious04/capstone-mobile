@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:capstone/core/enums/location_status_enum.dart';
+import 'package:flutter/foundation.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -92,6 +93,34 @@ class LocationService {
         position.longitude,
       );
 
+      return currentLatLng!;
+    });
+  }
+
+  Stream<LatLng> getResponderLocationStream() {
+    final LocationSettings settings = defaultTargetPlatform == TargetPlatform.android
+        ? AndroidSettings(
+            accuracy: LocationAccuracy.high,
+            distanceFilter: 10,
+            intervalDuration: const Duration(seconds: 5),
+            foregroundNotificationConfig: const ForegroundNotificationConfig(
+              notificationTitle: 'Sharing your live location',
+              notificationText: 'Dispatch and the reporter can see where you are while this case is active.',
+              enableWakeLock: true,
+              setOngoing: true,
+            ),
+          )
+        : AppleSettings(
+            accuracy: LocationAccuracy.high,
+            distanceFilter: 10,
+            activityType: ActivityType.automotiveNavigation,
+            pauseLocationUpdatesAutomatically: false,
+            showBackgroundLocationIndicator: true,
+            allowBackgroundLocationUpdates: true,
+          );
+
+    return Geolocator.getPositionStream(locationSettings: settings).map((p) {
+      currentLatLng = LatLng(p.latitude, p.longitude);
       return currentLatLng!;
     });
   }

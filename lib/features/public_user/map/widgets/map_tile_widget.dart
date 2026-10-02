@@ -1,3 +1,4 @@
+import 'package:capstone/core/constants/map_bounds.dart';
 import 'package:capstone/core/enums/map_mode_enum.dart';
 import 'package:capstone/core/enums/service_type_enum.dart';
 import 'package:capstone/features/public_user/map/models/emergency_service_model.dart';
@@ -79,8 +80,10 @@ class _MapTileWidgetState extends State<MapTileWidget> {
   void initState() {
     super.initState();
 
+    final start = AngelesCityMap.contains(widget.initialLocation) ? widget.initialLocation : AngelesCityMap.center;
+
     _cameraPosition = CameraPosition(
-      target: widget.initialLocation,
+      target: start,
       zoom: 15,
     );
   }
@@ -90,9 +93,11 @@ class _MapTileWidgetState extends State<MapTileWidget> {
     return Stack(
       children: [
         GoogleMap(
-          initialCameraPosition: CameraPosition(
-            target: widget.initialLocation,
-            zoom: 15,
+          initialCameraPosition: _cameraPosition!,
+          cameraTargetBounds: CameraTargetBounds(AngelesCityMap.bounds),
+          minMaxZoomPreference: const MinMaxZoomPreference(
+            AngelesCityMap.minZoom,
+            AngelesCityMap.maxZoom,
           ),
           scrollGesturesEnabled: _gesturesEnabled,
           zoomGesturesEnabled: _gesturesEnabled,

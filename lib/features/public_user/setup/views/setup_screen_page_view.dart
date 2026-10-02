@@ -3,6 +3,7 @@ import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
 import 'package:capstone/core/shared/widgets/custom_header_widget.dart';
 import 'package:capstone/core/shared/widgets/custom_snackbar_helper.dart';
 import 'package:capstone/core/shared/widgets/loading_overlay_widget.dart';
+import 'package:capstone/features/public_user/setup/views/phone_verification_screen.dart';
 import 'package:capstone/features/public_user/setup/views/setup_screen_user_card_page.dart';
 import 'package:capstone/features/public_user/setup/views/setup_screen_personal_info_page.dart';
 import 'package:capstone/features/public_user/setup/views/setup_screen_medical_info_page.dart';
@@ -23,14 +24,33 @@ class _SetupScreenPageView extends ConsumerState<SetupScreenPageView> {
   final userContactNumPageKey = GlobalKey<FormState>();
   final userInfoPageKey = GlobalKey<FormState>();
   final userCardPageKey = GlobalKey<FormState>();
-  final pageController = PageController(initialPage: 0);
+  late final PageController pageController;
   int currentPage = 0;
-  final numberOfPages = 4;
+  final numberOfPages = 5;
+
+  @override
+  void initState() {
+    super.initState();
+
+    pageController = PageController(initialPage: 0);
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      checkPhoneStatus();
+    });
+  }
 
   @override
   void dispose() {
     pageController.dispose();
     super.dispose();
+  }
+
+  void checkPhoneStatus() {
+    final alreadyVerified = ref.read(userProvider.notifier).syncVerifiedPhone();
+
+    if (alreadyVerified && mounted) {
+      pageController.jumpToPage(1);
+    }
   }
 
   void navigateFromPage() {
@@ -56,6 +76,7 @@ class _SetupScreenPageView extends ConsumerState<SetupScreenPageView> {
   @override
   Widget build(BuildContext context) {
     final formKeys = [
+      userContactNumPageKey,
       userInfoPageKey,
       userCardPageKey,
     ];
@@ -100,6 +121,10 @@ class _SetupScreenPageView extends ConsumerState<SetupScreenPageView> {
                       },
                       children: [
                         Form(
+                          key: userContactNumPageKey,
+                          child: PhoneVerificationScreen(),
+                        ),
+                        Form(
                           key: userInfoPageKey,
                           child: SetupScreenPersonalInfoPage(),
                         ),
@@ -135,7 +160,7 @@ class _SetupScreenPageView extends ConsumerState<SetupScreenPageView> {
                       Expanded(
                         child: CustomElevatedButton(
                           onPressed: () async {
-                            if (currentPage < 2) {
+                            if (currentPage < 3) {
                               if (!formKeys[currentPage].currentState!.validate()) {
                                 return;
                               }

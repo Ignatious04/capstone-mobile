@@ -1,0 +1,125 @@
+import 'dart:async';
+
+import 'package:capstone/core/enums/location_status_enum.dart';
+import 'package:capstone/core/enums/report_status_enum.dart';
+import 'package:capstone/core/services/location_service.dart';
+import 'package:capstone/core/shared/models/realtime_responder_location_model.dart';
+import 'package:capstone/core/shared/models/report_model.dart';
+import 'package:capstone/core/shared/providers/location_provider.dart';
+import 'package:capstone/core/shared/providers/realtime_database_repository_provider.dart';
+import 'package:capstone/core/shared/repositories/realtime_database_repository.dart';
+import 'package:capstone/features/responder/active_case/providers/active_case_provider.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+
+final responderLocationSharingProvider = Provider<void>((ref) {
+  final sharer = _ResponderLocationSharer(
+    database: ref.read(realtimeDatabaseRepositoryProvider),
+    locationService: ref.read(locationServiceProvider),
+  );
+  ref.onDispose(sharer.dispose);
+
+  ref.listen<AsyncValue<ReportModel?>>(
+    activeCaseProvider,
+    (_, next) {
+      final data = next.asData;
+      if (data == null) return; // still loading: don't stop sharing on a blip
+      sharer.sync(data.value);
+    },
+    fireImmediately: true,
+  );
+});
+
+class _ResponderLocationSharer {
+  _ResponderLocationSharer({required this.database, required this.locationService});
+
+  final RealtimeDatabaseRepository database;
+  final LocationService locationService;
+
+  StreamSubscription<LatLng>? _subscription;
+  String? _sharingReportID;
+
+  static bool _shouldShare(ReportModel? report) =>
+      report != null &&
+      (report.status == ReportStatusEnum.dispatched || report.status == ReportStatusEnum.onScene);
+
+  String _path(String reportID) => 'responderLocations/$reportID';
+
+  Future<void> sync(ReportModel? report) async {
+    if (report == null || !_shouldShare(report)) {
+      await _stop();
+      return;
+    }
+    if (_sharingReportID == report.reportID) return; // already sharing this case
+    await _stop();
+    await _start(report);
+  }
+
+  Future<void> _start(ReportModel report) async {
+    final reportID = report.reportID;
+    _sharingReportID = reportID;
+
+    // Responders skip LocationGate, so nothing else asks them for permission.
+    final permission = await locationService.requestPermission();
+    if (_sharingReportID != reportID) return; // case ended while we waited
+    if (permission != LocationStatusEnum.ready) {
+      _sharingReportID = null;
+      return;
+    }
+
+    // The stream only fires after movement, so publish an initial fix first.
+    try {
+      final fix = await locationService.getCurrentLocation();
+      await _publish(report, fix.latLng);
+    } catch (e) {
+      debugPrint('Initial responder location failed: $e');
+    }
+    if (_sharingReportID != reportID) return;
+
+    _subscription = locationService.getResponderLocationStream().listen(
+      (latLng) => _publish(report, latLng),
+      onError: (e) => debugPrint('Responder location stream error: $e'),
+    );
+  }
+
+  Future<void> _publish(ReportModel report, LatLng latLng) async {
+    if (_sharingReportID != report.reportID) return;
+
+    final model = RealtimeResponderLocationModel(
+      reportID: report.reportID,
+      responderID: report.assignedTo ?? '',
+      userID: report.userID,
+      latitude: latLng.latitude,
+      longitude: latLng.longitude,
+      updatedAt: DateTime.now(),
+    );
+
+    try {
+      await database.create(path: _path(report.reportID), data: model.toMap());
+    } catch (e) {
+      debugPrint('Publishing responder location failed: $e');
+    }
+  }
+
+  Future<void> _stop() async {
+    await _subscription?.cancel();
+    _subscription = null;
+
+    final reportID = _sharingReportID;
+    _sharingReportID = null;
+    if (reportID == null) return;
+
+    try {
+      await database.delete(path: _path(reportID));
+    } catch (e) {
+      debugPrint('Removing responder location failed: $e');
+    }
+  }
+
+  void dispose() {
+    _subscription?.cancel();
+    _subscription = null;
+    _sharingReportID = null;
+  }
+}

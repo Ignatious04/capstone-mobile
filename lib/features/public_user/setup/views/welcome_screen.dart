@@ -1,15 +1,17 @@
+import 'package:capstone/core/shared/providers/firebase_auth_provider.dart';
 import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/widgets/text/title_text.dart';
 import 'package:capstone/features/public_user/setup/views/setup_screen_page_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class WelcomeScreen extends StatelessWidget {
+class WelcomeScreen extends ConsumerWidget {
   const WelcomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       body: AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle(
@@ -50,6 +52,16 @@ class WelcomeScreen extends StatelessWidget {
                         );
                       },
                       value: "Proceed",
+                    ),
+                  ),
+                  SizedBox(
+                    width: double.infinity,
+                    child: CustomElevatedButton(
+                      backgroundColor: Colors.black54,
+                      onPressed: () async {
+                        await ref.read(firebaseAuthRepositoryProvider).signOut();
+                      },
+                      value: "Sign out",
                     ),
                   ),
                 ],

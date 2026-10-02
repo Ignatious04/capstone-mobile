@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:capstone/core/shared/widgets/custom_dropdown_button.dart';
@@ -176,42 +177,48 @@ class _SetupScreenUserCardPage extends ConsumerState<SetupScreenUserCardPage> {
                   SizedBox(
                     width: double.infinity,
                     child: CustomElevatedButton(
-                      onPressed: () {
-                        !isCameraInitialized || isProcessing
-                            ? null
-                            : () async {
-                                if (field.value != null) {
-                                  field.didChange(null);
-                                  setState(() {
-                                    idCheckError = null;
-                                  });
-                                  return;
-                                }
+                      onPressed: !isCameraInitialized || isProcessing
+                          ? null
+                          : () async {
+                              if (field.value != null) {
+                                field.didChange(null);
+                                setState(() => idCheckError = null);
+                                return;
+                              }
 
-                                File file = await takePicture();
+                              setState(() {
+                                isProcessing = true;
+                                idCheckError = null;
+                              });
 
-                                setState(() {
-                                  isProcessing = true;
-                                  idCheckError = null;
-                                });
+                              try {
+                                final file = await takePicture();
+                                final error = await getIDFromCard(file).timeout(const Duration(seconds: 15));
 
-                                String? error = await getIDFromCard(file);
-                                debugPrint(error);
-
-                                setState(() {
-                                  isProcessing = false;
-                                });
+                                if (!mounted) return;
 
                                 if (error != null) {
-                                  setState(() {
-                                    idCheckError = error;
-                                  });
+                                  setState(() => idCheckError = error);
                                   return;
                                 }
-
                                 field.didChange(file);
-                              };
-                      },
+                              } on TimeoutException {
+                                if (mounted) {
+                                  setState(
+                                    () => idCheckError =
+                                        "Couldn't reach the server. Check your connection and try again.",
+                                  );
+                                }
+                              } catch (e) {
+                                debugPrint('ID capture failed: $e');
+                                if (mounted) {
+                                  setState(() => idCheckError = "Something went wrong. Please try again.");
+                                }
+                              } finally {
+                                if (mounted) setState(() => isProcessing = false);
+                              }
+                            },
+
                       value: isProcessing ? "Checking..." : (field.value != null ? "Retake photo" : "Capture ID"),
                     ),
                   ),

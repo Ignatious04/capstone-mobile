@@ -30,7 +30,7 @@ class _SetupScreenMedicalInfoPage extends ConsumerState<SetupScreenMedicalInfoPa
             alignment: Alignment.centerLeft,
             child: SectionTitle(
               icon: Icons.medical_information,
-              title: "MEDICAL INFORMATION (OPTIONAL)",
+              title: "MEDICAL INFO (OPTIONAL)",
             ),
           ),
           const SizedBox(

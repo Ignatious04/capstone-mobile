@@ -23,8 +23,6 @@ class _PhoneVerificationScreenState extends ConsumerState<PhoneVerificationScree
   @override
   void initState() {
     super.initState();
-    final user = ref.read(userProvider);
-    contactNumController.text = user.contactNumber.replaceFirst('+63', '');
   }
 
   @override

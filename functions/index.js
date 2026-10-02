@@ -26,6 +26,10 @@ exports.onReportStatusChange = onDocumentUpdated("reports/{reportID}", async (ev
 
   if (before.status === after.status) return;
 
+  if (after.status === "resolved") {
+    await admin.database().ref(`responderLocations/${event.params.reportID}`).remove();
+  }
+
   const copy = STATUS_COPY[after.status];
   if (!copy) return;
 

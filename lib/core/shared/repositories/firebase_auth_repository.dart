@@ -10,6 +10,9 @@ class FirebaseAuthRepository {
   User? get currentUser => firebaseAuth.currentUser;
   Stream<User?> get authStateChanges => firebaseAuth.authStateChanges();
   bool get hasPasswordProvider => currentUser?.providerData.any((p) => p.providerId == 'password') ?? false;
+  bool isPhoneVerified(String e164Number) => e164Number.isNotEmpty && currentUser?.phoneNumber == e164Number;
+
+  String? get verifiedPhoneNumber => currentUser?.phoneNumber;
 
   static const _webClientId = '794094290044-usbas125bbnvnlb9rm69nrcfm2uenhl7.apps.googleusercontent.com';
   static Future<void>? _googleInit;

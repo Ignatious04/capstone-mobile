@@ -28,9 +28,11 @@ class SectionTitle extends StatelessWidget {
           color: Colors.black54,
         ),
         const SizedBox(width: 10),
-        TitleText(
-          value: title,
-          isBold: isBold,
+        Expanded(
+          child: TitleText(
+            value: title,
+            isBold: isBold,
+          ),
         ),
       ],
     );

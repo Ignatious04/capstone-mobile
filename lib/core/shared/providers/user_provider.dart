@@ -116,6 +116,31 @@ class UserNotifier extends Notifier<UserModel> {
     return null;
   }
 
+  void prefillFromGoogle({String? givenName, String? familyName, String? displayName}) {
+    var first = givenName?.trim() ?? '';
+    var last = familyName?.trim() ?? '';
+
+    // Fallback if Google didn't send the separate parts.
+    if (first.isEmpty && last.isEmpty && displayName != null && displayName.trim().isNotEmpty) {
+      final parts = displayName.trim().split(RegExp(r'\s+'));
+      last = parts.length > 1 ? parts.removeLast() : '';
+      first = parts.join(' ');
+    }
+
+    state = state.copyWith(
+      firstName: state.firstName.isEmpty ? first : state.firstName,
+      lastName: state.lastName.isEmpty ? last : state.lastName,
+    );
+  }
+
+  bool syncVerifiedPhone() {
+    final verified = ref.read(firebaseAuthRepositoryProvider).verifiedPhoneNumber;
+    if (verified == null || verified.isEmpty) return false;
+    setContactNumber(verified);
+    setIsContactNumberVerified(true);
+    return true;
+  }
+
   void setUserID(String value) {
     state = state.copyWith(userID: value);
   }
@@ -157,8 +182,9 @@ class UserNotifier extends Notifier<UserModel> {
   }
 
   void setContactNumber(String value) {
+    final digits = value.replaceFirst(RegExp(r'^\+63'), '');
     state = state.copyWith(
-      contactNumber: "+63$value",
+      contactNumber: "+63$digits",
     );
   }
 

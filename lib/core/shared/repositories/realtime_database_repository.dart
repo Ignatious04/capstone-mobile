@@ -30,6 +30,10 @@ class RealtimeDatabaseRepository {
     await _firebaseDatabase.ref(path).remove();
   }
 
+  Stream<DatabaseEvent> watch({required String path}) {
+    return _firebaseDatabase.ref(path).onValue;
+  }
+
   Future<bool> getSetupStatus(String userID) async {
     final snapshot = await read(
       path: 'users/$userID/isSetup',

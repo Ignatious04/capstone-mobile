@@ -1,3 +1,5 @@
+import 'package:capstone/core/enums/map_mode_enum.dart';
+import 'package:capstone/core/enums/report_status_enum.dart';
 import 'package:capstone/core/enums/service_type_enum.dart';
 import 'package:capstone/core/shared/providers/responder_provider.dart';
 import 'package:capstone/core/shared/widgets/emergency_guidance_sheet.dart';
@@ -6,6 +8,8 @@ import 'package:capstone/core/shared/widgets/text/label_text.dart';
 import 'package:capstone/core/utilities/formatter.dart';
 import 'package:capstone/core/shared/widgets/custom_app_bar.dart';
 import 'package:capstone/core/shared/models/report_model.dart';
+import 'package:capstone/features/public_user/map/widgets/map_tile_widget.dart';
+import 'package:capstone/features/public_user/reporting/providers/responder_location_provider.dart';
 import 'package:capstone/features/public_user/reporting/widgets/additional_information_card.dart';
 import 'package:capstone/features/public_user/reporting/widgets/attachments_card.dart';
 import 'package:capstone/features/public_user/reporting/widgets/location_card.dart';
@@ -15,6 +19,7 @@ import 'package:capstone/features/public_user/reporting/widgets/responder_card.d
 import 'package:capstone/features/public_user/reporting/widgets/victims_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class NormalReportsViewScreen extends ConsumerStatefulWidget {
   const NormalReportsViewScreen({
@@ -136,6 +141,44 @@ class _NormalReportsViewScreenState extends ConsumerState<NormalReportsViewScree
                     loading: () => const SizedBox.shrink(),
                     error: (_, _) => const SizedBox.shrink(),
                   ),
+                  if (assignedResponderID.isNotEmpty && widget.report.status != ReportStatusEnum.resolved)
+                    ...ref
+                        .watch(responderLocationProvider(widget.report.reportID))
+                        .maybeWhen(
+                          data: (responderLatLng) {
+                            if (responderLatLng == null) return <Widget>[];
+                            final incident = LatLng(location!.latitude, location.longitude);
+                            return [
+                              const SizedBox(height: 10),
+                              SectionTitle(icon: Icons.my_location, title: 'Responder Location'),
+                              const SizedBox(height: 10),
+                              SizedBox(
+                                height: 250,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(12),
+                                  child: MapTileWidget(
+                                    initialLocation: incident,
+                                    mode: MapModeEnum.view,
+                                    gesturesEnabled: true,
+                                    extraMarkers: {
+                                      Marker(
+                                        markerId: const MarkerId('incident'),
+                                        position: incident,
+                                        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+                                      ),
+                                      Marker(
+                                        markerId: const MarkerId('responder'),
+                                        position: responderLatLng,
+                                        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
+                                      ),
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ];
+                          },
+                          orElse: () => <Widget>[],
+                        ),
                 ],
                 const SizedBox(height: 10),
                 SectionTitle(

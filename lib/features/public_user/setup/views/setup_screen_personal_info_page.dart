@@ -367,7 +367,7 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
               return null;
             },
             onChanged: (value) {
-              ref.read(userProvider.notifier).setContactNumber("value"); // was: setContactNumber(value)
+              ref.read(userProvider.notifier).setContactNumber(value); // was: setContactNumber(value)
             },
             isRequired: true,
           ),

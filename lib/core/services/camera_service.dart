@@ -8,7 +8,8 @@ class CameraService {
 
     cameraController = CameraController(
       cameras.first,
-      ResolutionPreset.medium,
+      ResolutionPreset.veryHigh,
+      enableAudio: false,
     );
 
     await cameraController.initialize();
