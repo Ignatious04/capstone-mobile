@@ -2,13 +2,11 @@ import 'package:capstone/core/enums/report_status_enum.dart';
 import 'package:capstone/core/enums/report_type_enum.dart';
 import 'package:capstone/core/enums/service_type_enum.dart';
 import 'package:capstone/core/shared/providers/firebase_auth_provider.dart';
-import 'package:capstone/core/shared/providers/realtime_database_repository_provider.dart';
 import 'package:capstone/core/utilities/reference_number_generator.dart';
 import 'package:capstone/core/utilities/sms_launcher.dart';
 import 'package:capstone/features/public_user/map/providers/contact_number_repository_provider.dart';
 import 'package:capstone/features/public_user/pre_call_guidance/models/pre_call_guidance_model.dart';
 import 'package:capstone/features/public_user/pre_call_guidance/models/question_state.dart';
-import 'package:capstone/core/shared/models/realtime_report_model.dart';
 import 'package:capstone/core/shared/providers/report_provider.dart';
 import 'package:capstone/core/shared/providers/report_repository_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -64,7 +62,7 @@ class GuidanceNotifier extends Notifier<QuestionState> {
     }
 
     final reportRepository = ref.read(reportRepositoryProvider);
-    final realtimeRepository = ref.read(realtimeDatabaseRepositoryProvider);
+    // final realtimeRepository = ref.read(realtimeDatabaseRepositoryProvider);
     final userID = ref.read(firebaseAuthProvider).currentUser!.uid;
     final reportID = reportRepository.getReportID();
 
@@ -86,16 +84,16 @@ class GuidanceNotifier extends Notifier<QuestionState> {
 
     await reportRepository.createReport(report);
 
-    final realtimeReport = RealtimeReportModel(
-      reportID: report.reportID,
-      referenceNumber: report.referenceNumber,
-      status: report.status ?? ReportStatusEnum.pending,
-      latitude: report.location?.latitude ?? 0,
-      longitude: report.location?.longitude ?? 0,
-      updatedAt: DateTime.now(),
-    );
+    // final realtimeReport = RealtimeReportModel(
+    //   reportID: report.reportID,
+    //   referenceNumber: report.referenceNumber,
+    //   status: report.status ?? ReportStatusEnum.pending,
+    //   latitude: report.location?.latitude ?? 0,
+    //   longitude: report.location?.longitude ?? 0,
+    //   updatedAt: DateTime.now(),
+    // );
 
-    await realtimeRepository.create(path: "activeReports/${report.reportID}", data: realtimeReport.toMap());
+    // await realtimeRepository.create(path: "activeReports/${report.reportID}", data: realtimeReport.toMap());
 
     return false;
   }

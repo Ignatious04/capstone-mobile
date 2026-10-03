@@ -67,6 +67,8 @@ class ReportRepository {
 
     batch.update(firestore.collection('reports').doc(reportID), {
       'status': status.name,
+      if (status == ReportStatusEnum.dispatched) 'dispatchedAt': FieldValue.serverTimestamp(),
+      if (status == ReportStatusEnum.onScene) 'arrivedAt': FieldValue.serverTimestamp(),
       if (status == ReportStatusEnum.resolved) 'resolvedAt': FieldValue.serverTimestamp(),
     });
 

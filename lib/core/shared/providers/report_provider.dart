@@ -5,9 +5,7 @@ import 'package:capstone/core/enums/report_status_enum.dart';
 import 'package:capstone/core/enums/report_type_enum.dart';
 import 'package:capstone/core/enums/service_type_enum.dart';
 import 'package:capstone/core/shared/providers/firebase_auth_provider.dart';
-import 'package:capstone/core/shared/providers/realtime_database_repository_provider.dart';
 import 'package:capstone/core/utilities/reference_number_generator.dart';
-import 'package:capstone/core/shared/models/realtime_report_model.dart';
 import 'package:capstone/core/shared/models/report_model.dart';
 import 'package:capstone/features/public_user/reporting/models/victim_model.dart';
 import 'package:capstone/features/public_user/reporting/providers/pending_attachments_provider.dart';
@@ -37,7 +35,7 @@ class ReportNotifier extends Notifier<ReportModel> {
   }) async {
     final reportRepository = ref.read(reportRepositoryProvider);
     final storageRepository = ref.read(storageRepositoryProvider);
-    final realtimeRepository = ref.read(realtimeDatabaseRepositoryProvider);
+    // final realtimeRepository = ref.read(realtimeDatabaseRepositoryProvider);
     final userID = ref.read(firebaseAuthProvider).currentUser!.uid;
 
     final reportID = reportRepository.getReportID();
@@ -66,16 +64,16 @@ class ReportNotifier extends Notifier<ReportModel> {
 
     await reportRepository.createReport(report);
 
-    final realtimeReport = RealtimeReportModel(
-      reportID: report.reportID,
-      referenceNumber: report.referenceNumber,
-      status: report.status ?? ReportStatusEnum.pending,
-      latitude: report.location?.latitude ?? 0,
-      longitude: report.location?.longitude ?? 0,
-      updatedAt: DateTime.now(),
-    );
+    // final realtimeReport = RealtimeReportModel(
+    //   reportID: report.reportID,
+    //   referenceNumber: report.referenceNumber,
+    //   status: report.status ?? ReportStatusEnum.pending,
+    //   latitude: report.location?.latitude ?? 0,
+    //   longitude: report.location?.longitude ?? 0,
+    //   updatedAt: DateTime.now(),
+    // );
 
-    await realtimeRepository.create(path: "activeReports/${report.reportID}", data: realtimeReport.toMap());
+    // await realtimeRepository.create(path: "activeReports/${report.reportID}", data: realtimeReport.toMap());
 
     ref.read(pendingAttachmentsProvider.notifier).state = [];
   }
@@ -85,7 +83,7 @@ class ReportNotifier extends Notifier<ReportModel> {
     required LatLng location,
   }) async {
     final reportRepository = ref.read(reportRepositoryProvider);
-    final realtimeRepository = ref.read(realtimeDatabaseRepositoryProvider);
+    // final realtimeRepository = ref.read(realtimeDatabaseRepositoryProvider);
     final userID = ref.read(firebaseAuthProvider).currentUser!.uid;
 
     final reportID = reportRepository.getReportID();
@@ -105,16 +103,16 @@ class ReportNotifier extends Notifier<ReportModel> {
 
     await reportRepository.createReport(report);
 
-    final realtimeReport = RealtimeReportModel(
-      reportID: report.reportID,
-      referenceNumber: report.referenceNumber,
-      status: report.status ?? ReportStatusEnum.pending,
-      latitude: report.location?.latitude ?? 0,
-      longitude: report.location?.longitude ?? 0,
-      updatedAt: now,
-    );
+    // final realtimeReport = RealtimeReportModel(
+    //   reportID: report.reportID,
+    //   referenceNumber: report.referenceNumber,
+    //   status: report.status ?? ReportStatusEnum.pending,
+    //   latitude: report.location?.latitude ?? 0,
+    //   longitude: report.location?.longitude ?? 0,
+    //   updatedAt: now,
+    // );
 
-    await realtimeRepository.create(path: "activeReports/${report.reportID}", data: realtimeReport.toMap());
+    // await realtimeRepository.create(path: "activeReports/${report.reportID}", data: realtimeReport.toMap());
   }
 
   void setIncidentType(ServiceTypeEnum value) {

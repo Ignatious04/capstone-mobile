@@ -28,6 +28,8 @@ class ReportModel {
   final double? locationAccuracy;
   final String? locationDescription;
   final GeoPoint? originalGpsLocation;
+  final DateTime? dispatchedAt;
+  final DateTime? arrivedAt;
   final DateTime? resolvedAt;
 
   const ReportModel({
@@ -50,6 +52,8 @@ class ReportModel {
     this.locationAccuracy,
     this.locationDescription,
     this.originalGpsLocation,
+    this.dispatchedAt,
+    this.arrivedAt,
     this.resolvedAt,
   });
 
@@ -73,6 +77,8 @@ class ReportModel {
     double? locationAccuracy,
     String? locationDescription,
     GeoPoint? originalGpsLocation,
+    DateTime? dispatchedAt,
+    DateTime? arrivedAt,
     DateTime? resolvedAt,
   }) {
     return ReportModel(
@@ -95,6 +101,8 @@ class ReportModel {
       locationAccuracy: locationAccuracy ?? this.locationAccuracy,
       locationDescription: locationDescription ?? this.locationDescription,
       originalGpsLocation: originalGpsLocation ?? this.originalGpsLocation,
+      dispatchedAt: dispatchedAt ?? this.dispatchedAt,
+      arrivedAt: arrivedAt ?? this.arrivedAt,
       resolvedAt: resolvedAt ?? this.resolvedAt,
     );
   }
@@ -120,6 +128,8 @@ class ReportModel {
       'locationAccuracy': locationAccuracy,
       'locationDescription': locationDescription,
       'originalGpsLocation': originalGpsLocation,
+      'dispatchedAt': dispatchedAt,
+      "arrivedAt": arrivedAt,
       'resolvedAt': resolvedAt,
     };
   }
@@ -157,6 +167,8 @@ class ReportModel {
       locationAccuracy: (map['locationAccuracy'] as num?)?.toDouble(),
       locationDescription: map['locationDescription'],
       originalGpsLocation: map['originalGpsLocation'],
+      dispatchedAt: (map["dispatchedAt"] as Timestamp?)?.toDate(),
+      arrivedAt: (map["arrivedAt"] as Timestamp?)?.toDate(),
       resolvedAt: (map['resolvedAt'] as Timestamp?)?.toDate(),
     );
   }
