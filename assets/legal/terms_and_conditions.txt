@@ -1,0 +1,368 @@
+# TERMS AND CONDITIONS
+
+**Saup Angeles (Mobile Emergency Access System)**
+**Effective Date:** September 19, 2026
+
+## 1. Acceptance of These Terms
+
+These Terms and Conditions ("Terms") govern your access to and use of the Saup Angeles App ("MEAS" "the System," "the Application," "we," "us," or "our").
+
+By creating an account, accessing, or using Saup Angeles, you acknowledge that you have read, understood, and agreed to these Terms. If you do not agree with these Terms, you should not use the Application.
+
+For the current capstone project, Saup Angeles is a localized pilot system intended for residents and participating emergency personnel in Angeles City, Philippines.
+
+## 2. Purpose of the Application
+
+Saup Angeles is designed to provide a structured digital interface that assists users in preparing and submitting emergency information.
+
+The Application may provide:
+
+* Pre-call guidance for selected emergency situations;
+* Structured emergency reporting;
+* Emergency-service recommendations based on information provided by the user;
+* Location and map-based information;
+* Direct access to configured emergency telephone numbers, including 911 where available;
+* Digital emergency reports;
+* Image attachments for incident reports;
+* Notifications regarding submitted reports;
+* Status updates regarding emergency reports; and
+* An SMS-based fallback mechanism when internet connectivity is unavailable or unreliable.
+
+Saup Angeles is intended to complement existing emergency communication systems and is not intended to replace national or local emergency hotlines, emergency dispatch centers, or professional emergency responders.
+
+## 3. Emergency Disclaimer
+
+**Saup Angeles must not be relied upon as the sole means of obtaining emergency assistance.**
+
+In an actual emergency, users should contact the appropriate emergency service or the national emergency hotline (911) directly when appropriate.
+
+Saup Angeles does not guarantee that an emergency report will be received, reviewed, accepted, dispatched, or acted upon within a particular period.
+
+Submitting a report through Saup Angeles does not itself guarantee that emergency personnel will immediately arrive at the reported location.
+
+Actual emergency response, prioritization, dispatch, travel time, and actions taken at the scene remain under the control and authority of the participating emergency service or responding personnel.
+
+The Application may experience interruptions or inaccuracies caused by circumstances outside the developers' control, including but not limited to:
+
+* Internet or mobile-network outages;
+* SMS or telecommunications failures;
+* Device malfunction;
+* GPS inaccuracies;
+* Location-permission restrictions;
+* Server or cloud-service interruptions;
+* Delayed notifications;
+* Incorrect information entered by users; and
+* Other technical or environmental conditions.
+
+## 4. Pre-Call Guidance
+
+The Pre-Call Guidance feature provides structured questions intended to help users organize relevant information before contacting or reporting to emergency services.
+
+The guidance provided by Saup Angeles is informational and system-generated. It does not constitute professional medical, legal, law-enforcement, firefighting, or other emergency advice.
+
+Users remain responsible for exercising appropriate judgment and contacting professional emergency services when necessary.
+
+The guidance system may not cover every possible emergency situation, and users should not delay contacting emergency services merely to complete the guidance process.
+
+## 5. Emergency Reports
+
+Users may submit emergency reports containing information such as:
+
+* Emergency or incident type;
+* Incident description;
+* Location;
+* Victim information;
+* Answers provided through Pre-Call Guidance;
+* Additional information;
+* Photographs or other supported attachments; and
+* Information associated with the user's account.
+
+Users are responsible for ensuring that information submitted through the Application is truthful, accurate, and reasonably complete to the best of their knowledge.
+
+Users should provide only information that is relevant to the emergency or report.
+
+## 6. Location Information
+
+Saup Angeles may request access to the device's location services in order to determine the user's location, identify nearby emergency services, and attach a location to an emergency report.
+
+Users may also be permitted to manually select or adjust the reported incident location.
+
+GPS information may not always be accurate. Location accuracy can be affected by the device, environmental conditions, signal strength, network availability, and other technical factors.
+
+Users should verify the displayed location whenever circumstances allow and should provide additional location information when necessary.
+
+The Application does not guarantee that a reported location will precisely identify the actual location of an incident.
+
+## 7. User Accounts
+
+Certain Saup Angeles features require users to create and maintain an account.
+
+Users are responsible for:
+
+* Providing accurate account information;
+* Keeping their login credentials confidential;
+* Maintaining access to their registered email address and/or verified contact information;
+* Not sharing their account with another person; and
+* Immediately reporting or addressing unauthorized access to their account.
+
+Users must not create accounts using false identities or impersonate another individual, emergency responder, government official, or organization.
+
+## 8. Personal and Emergency Information
+
+Saup Angeles may process information associated with a user's account and emergency reports.
+
+Depending on the features used, this may include personal information such as:
+
+* Name;
+* Date of birth;
+* Sex;
+* Contact number;
+* Address;
+* Nationality;
+* Civil status;
+* Religion;
+* Email address;
+* Identification information;
+* Identification-document information or images;
+* Blood type;
+* Height and weight;
+* Vaccination-related information;
+* Profile photographs;
+* Emergency-report information;
+* Victim information;
+* Photographs or attachments submitted with reports;
+* Location information; and
+* Information necessary to deliver account and report notifications.
+
+Users should not submit unnecessary personal information belonging to themselves or another person.
+
+Information submitted by a user may be accessible to authorized personnel who require it for emergency coordination, system administration, verification, evaluation, or other legitimate purposes associated with Saup Angeles.
+
+The handling of personal information is subject to the applicable privacy notice and privacy requirements governing the deployment of the Application.
+
+## 9. Identification Documents and Verification
+
+Where the Application requests identification information or identification-document images, users must provide information that belongs to them and must not submit another person's identification without proper authorization.
+
+Saup Angeles may use automated image-processing features during account setup or verification, including document text recognition and facial-feature detection, where implemented.
+
+These features are intended to support the application's verification process and do not constitute government identity verification, biometric identification, or a determination of a person's legal identity.
+
+## 10. Emergency Report Attachments
+
+Users may be permitted to attach photographs to emergency reports.
+
+Users represent that they have the right or appropriate authorization to submit any photograph or other material they upload.
+
+Users should avoid submitting photographs containing unnecessary sensitive personal information, particularly information unrelated to the reported emergency.
+
+Users should not intentionally upload illegal, abusive, fraudulent, misleading, or malicious material.
+
+## 11. SMS Fallback
+
+When the Application's internet-based reporting functionality is unavailable, Saup Angeles may provide an SMS fallback option.
+
+The SMS fallback may prepare an emergency message containing information such as the report reference number, incident type, guidance answers, and reported location.
+
+The Application may open the device's native messaging application for the user to review and send the prepared message.
+
+SMS delivery depends on the user's mobile device, SIM card, telecommunications provider, network availability, and other factors outside the control of Saup Angeles.
+
+The user is responsible for reviewing the prepared message and completing the sending process when required.
+
+SMS charges or other telecommunications fees imposed by the user's mobile service provider may apply.
+
+## 12. Emergency Service Information
+
+Saup Angeles may display emergency-service information such as agency names, telephone numbers, addresses, locations, and approximate distances.
+
+Users acknowledge that such information may change over time.
+
+Although reasonable efforts may be made to maintain accurate information, Saup Angeles does not guarantee that every displayed telephone number, address, operating status, or location will always be current or accurate.
+
+Users should verify emergency contact information when circumstances permit.
+
+## 13. Report Status and Notifications
+
+Saup Angeles may provide users with notifications concerning submitted emergency reports.
+
+Report statuses may include, depending on the system configuration:
+
+* Pending;
+* Accepted;
+* Dispatched;
+* On Scene; and
+* Resolved.
+
+These statuses are based on information entered or updated by authorized personnel and should not be interpreted as an independent guarantee of the actual physical status of an emergency response.
+
+Notifications may be delayed, unavailable, or affected by device, operating-system, internet, Firebase, or telecommunications conditions.
+
+Users should not rely exclusively on application notifications during an emergency.
+
+## 14. Responsible Use
+
+Users agree to use Saup Angeles only for legitimate and appropriate purposes.
+
+Users must not:
+
+1. Submit knowingly false emergency reports;
+2. Submit prank, fraudulent, or intentionally misleading reports;
+3. Deliberately provide inaccurate locations;
+4. Impersonate emergency personnel, government officials, or another person;
+5. Attempt to access another user's account;
+6. Attempt to access restricted responder or administrative functions;
+7. Interfere with the operation or security of the Application;
+8. Upload malicious software or harmful content;
+9. Abuse emergency-service contact information;
+10. Use Saup Angeles to harass, threaten, defame, or unlawfully target another person;
+11. Submit another person's personal information without a legitimate reason or appropriate authorization; or
+12. Use the Application for purposes that violate applicable laws, regulations, or lawful instructions of emergency authorities.
+
+False or abusive emergency reports may interfere with legitimate emergency response activities.
+
+## 15. Responder and Administrative Access
+
+Certain Saup Angeles functions are restricted to authorized responders and system administrators.
+
+Authorized personnel may receive, review, classify, assign, update, or resolve emergency reports through the system.
+
+Access to responder and administrative functions is subject to role-based authorization.
+
+Users must not attempt to obtain or use responder or administrative privileges without authorization.
+
+## 16. System Availability and Technical Limitations
+
+Saup Angeles is dependent on various technologies and services, including mobile devices, location services, internet connectivity, telecommunications networks, cloud infrastructure, authentication services, mapping services, storage services, and notification services.
+
+Accordingly, Saup Angeles may not always be available or operate without interruption.
+
+The Application may provide limited offline functionality, but real-time reporting and synchronization generally depend on available connectivity.
+
+GPS-based functionality may also be unavailable or inaccurate.
+
+Saup Angeles does not guarantee uninterrupted availability, continuous connectivity, absolute location accuracy, or error-free operation.
+
+## 17. Third-Party Services
+
+Saup Angeles may rely on third-party technologies and service providers to provide functionality such as authentication, cloud storage, databases, maps, location services, notifications, and telecommunications-related functions.
+
+These services may have their own terms, policies, limitations, and privacy practices.
+
+Saup Angeles developers do not control all third-party services and are not responsible for outages, changes, restrictions, or failures originating from those services.
+
+## 18. Privacy
+
+Your use of Saup Angeles involves the processing of information necessary to provide account, reporting, location, notification, and emergency-support functionality.
+
+The collection, use, storage, disclosure, protection, and retention of personal information should be explained in the Saup Angeles Privacy Policy.
+
+Where applicable, personal information shall be handled in accordance with the requirements of the Philippine Data Privacy Act of 2012 (Republic Act No. 10173) and other applicable rules and regulations.
+
+**The Terms and Conditions should be read together with the Saup Angeles Privacy Policy.**
+
+## 19. Data Security
+
+Saup Angeles uses technical measures intended to protect information transmitted through and stored by the system.
+
+However, no electronic system, internet transmission, cloud service, or storage mechanism can be guaranteed to be completely secure.
+
+Users acknowledge that they use the Application with this understanding.
+
+Users should also protect their own devices, passwords, authentication information, and other credentials.
+
+## 20. Account Deactivation or Termination
+
+Users may discontinue their use of Saup Angeles.
+
+Saup Angeles administrators may restrict, suspend, or terminate access where necessary to protect the system, its users, emergency services, or the integrity of emergency reporting.
+
+Termination or deactivation of an account does not necessarily mean that previously submitted emergency records or information will immediately be deleted where retention is required for legitimate operational, legal, security, research, or documentation purposes.
+
+Any applicable deletion or retention rights should be addressed in the Saup Angeles Privacy Policy and according to applicable requirements.
+
+## 21. Intellectual Property
+
+The Saup Angeles software, interface, design, documentation, source code, branding, and other materials developed for the project are protected by applicable intellectual-property laws and agreements.
+
+Users are granted permission to use the Application for its intended purposes only.
+
+Users may not reproduce, modify, distribute, reverse engineer, sell, or otherwise exploit Saup Angeles or its proprietary components except where permitted by applicable law or by written authorization from the appropriate rights holder.
+
+Third-party software, libraries, maps, and services remain subject to their respective licenses and terms.
+
+## 22. No Guarantee of Emergency Response
+
+Saup Angeles is a communication and reporting support system.
+
+Use of the Application does not create a guarantee, promise, or contractual obligation that an emergency agency will:
+
+* Accept a report;
+* Dispatch a responder;
+* Respond within a specific period;
+* Reach the reported location;
+* Resolve the reported incident; or
+* Provide a particular emergency service.
+
+Emergency agencies retain operational authority over their response decisions and procedures.
+
+## 23. Limitation of Responsibility
+
+To the extent permitted by applicable law, the developers and project stakeholders are not responsible for consequences arising solely from:
+
+* User-provided inaccurate or incomplete information;
+* Inaccurate GPS information;
+* Loss of mobile or internet connectivity;
+* SMS delivery failure;
+* Device failure;
+* Delayed or failed notifications;
+* Third-party service interruptions;
+* Unauthorized access resulting from compromised user credentials or devices; or
+* Actions or omissions of independent emergency agencies or responders.
+
+Nothing in these Terms is intended to exclude or limit any responsibility that cannot lawfully be excluded or limited.
+
+## 24. Capstone and Pilot Status
+
+The current version of Saup Angeles is developed as a capstone project and pilot implementation focused on selected participating institutions in Angeles City.
+
+During research and evaluation activities, the system may be tested through controlled simulated emergency scenarios.
+
+**Participants in testing and evaluation must not use simulated scenarios to request actual emergency assistance or create false emergency incidents.**
+
+The developers may modify, suspend, or discontinue features as development, testing, evaluation, or deployment requirements change.
+
+## 25. Changes to These Terms
+
+These Terms may be updated when Saup Angeles functionality, deployment conditions, participating institutions, applicable requirements, or project policies change.
+
+When material changes are made, the updated Terms should be presented to users before continued use where reasonably practicable.
+
+The effective date at the beginning of this document should be updated whenever a new version is issued.
+
+## 26. Governing Law
+
+These Terms shall be interpreted in accordance with the laws and applicable regulations of the Republic of the Philippines, subject to applicable legal requirements.
+
+Any dispute arising from the use of Saup Angeles shall be addressed through the appropriate legal and institutional mechanisms applicable to the project and its deployment.
+
+## 27. Contact and Support
+
+For questions, concerns, technical issues, or requests relating to Saup Angeles, users should contact the designated Saup Angeles project administrators or the participating institution responsible for the deployment.
+
+The application should provide an appropriate contact method before production deployment.
+
+## 28. Acknowledgment
+
+By using Saup Angeles, you acknowledge that:
+
+* You have read and understood these Terms and Conditions;
+* Saup Angeles is intended to support, rather than replace, established emergency services;
+* Emergency response cannot be guaranteed through the Application;
+* Location information may be inaccurate;
+* Internet, mobile-network, SMS, device, and third-party service failures may affect the system;
+* You are responsible for the accuracy and appropriateness of information you submit;
+* You will not intentionally submit false or abusive emergency reports; and
+* You understand that personal information and emergency-report information may be processed in accordance with the Saup Angeles Privacy Policy and applicable law.
+
+**If you do not agree to these Terms and Conditions, please do not use Saup Angeles.**

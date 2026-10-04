@@ -1,4 +1,5 @@
 import 'package:capstone/core/shared/widgets/custom_app_bar.dart';
+import 'package:capstone/core/shared/widgets/legal_document_view.dart';
 import 'package:flutter/material.dart';
 
 class PrivacyPolicyScreen extends StatelessWidget {
@@ -8,8 +9,8 @@ class PrivacyPolicyScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(value: "Privacy Policy"),
-      body: SafeArea(
-        child: SingleChildScrollView(),
+      body: const SafeArea(
+        child: LegalDocumentView(assetPath: 'assets/legal/privacy_policy.txt'),
       ),
     );
   }
