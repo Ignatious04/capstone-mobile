@@ -1,10 +1,14 @@
+import 'package:capstone/core/enums/audit_action_enum.dart';
+import 'package:capstone/core/shared/providers/audit_log_repository_provider.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/widgets/text/title_text.dart';
 import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/core/utilities/call_launcher.dart';
+import 'package:capstone/core/utilities/distance_helper.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class NearbyServicesCard extends StatelessWidget {
+class NearbyServicesCard extends ConsumerWidget {
   const NearbyServicesCard({
     super.key,
     required this.icon,
@@ -23,7 +27,7 @@ class NearbyServicesCard extends StatelessWidget {
   final double distance;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Card(
       elevation: 0,
       margin: const EdgeInsets.only(bottom: 10),
@@ -73,7 +77,7 @@ class NearbyServicesCard extends StatelessWidget {
                         color: Colors.black54,
                       ),
                       BodyText(
-                        value: "${distance.toStringAsFixed(2)} km",
+                        value: DistanceHelper.formatDistance(distance),
                         color: Colors.black54,
                       ),
                     ],
@@ -86,6 +90,12 @@ class NearbyServicesCard extends StatelessWidget {
             ),
             IconButton(
               onPressed: () {
+                ref
+                    .read(auditLogRepositoryProvider)
+                    .log(
+                      AuditAction.emergencyCallInitiated,
+                      metadata: {'source': 'home_nearby', 'number': contactNumber},
+                    );
                 launchPhoneCall(contactNumber);
               },
               icon: Icon(

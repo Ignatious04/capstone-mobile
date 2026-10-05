@@ -1,6 +1,8 @@
+import 'package:capstone/core/enums/audit_action_enum.dart';
 import 'package:capstone/core/enums/report_status_enum.dart';
 import 'package:capstone/core/enums/report_type_enum.dart';
 import 'package:capstone/core/enums/service_type_enum.dart';
+import 'package:capstone/core/shared/providers/audit_log_repository_provider.dart';
 import 'package:capstone/core/shared/providers/firebase_auth_provider.dart';
 import 'package:capstone/core/utilities/reference_number_generator.dart';
 import 'package:capstone/core/utilities/sms_launcher.dart';
@@ -41,61 +43,66 @@ class GuidanceNotifier extends Notifier<QuestionState> {
     LatLng? originalGPS,
     double? accuracy,
     String? locationNote,
-  }) async {
-    final incidentType = ref.read(reportProvider).incidentType;
+  }) {
+    return ref.read(auditLogRepositoryProvider).trackFailure(
+      "preCallGuidance",
+      () async {
+        final incidentType = ref.read(reportProvider).incidentType;
 
-    if (incidentType == null) {
-      throw Exception('No incident type selected.');
-    }
+        if (incidentType == null) {
+          throw Exception('No incident type selected.');
+        }
 
-    final now = DateTime.now();
-    final referenceNumber = ReferenceNumberGenerator.generate(now);
+        final now = DateTime.now();
+        final referenceNumber = ReferenceNumberGenerator.generate(now);
 
-    if (!isOnline) {
-      await _submitViaSms(
-        incidentType: incidentType,
-        referenceNumber: referenceNumber,
-        location: location,
-        locationNote: locationNote,
-      );
-      return true;
-    }
+        if (!isOnline) {
+          await _submitViaSms(
+            incidentType: incidentType,
+            referenceNumber: referenceNumber,
+            location: location,
+            locationNote: locationNote,
+          );
+          return true;
+        }
 
-    final reportRepository = ref.read(reportRepositoryProvider);
-    // final realtimeRepository = ref.read(realtimeDatabaseRepositoryProvider);
-    final userID = ref.read(firebaseAuthProvider).currentUser!.uid;
-    final reportID = reportRepository.getReportID();
+        final reportRepository = ref.read(reportRepositoryProvider);
+        // final realtimeRepository = ref.read(realtimeDatabaseRepositoryProvider);
+        final userID = ref.read(firebaseAuthProvider).currentUser!.uid;
+        final reportID = reportRepository.getReportID();
 
-    final report = ref
-        .read(reportProvider)
-        .copyWith(
-          reportID: reportID,
-          referenceNumber: referenceNumber,
-          userID: userID,
-          reportType: ReportTypeEnum.preCallGuidance,
-          guidanceAnswers: state.questions,
-          status: ReportStatusEnum.pending,
-          location: GeoPoint(location.latitude, location.longitude),
-          locationAccuracy: accuracy,
-          locationDescription: (locationNote == null || locationNote.isEmpty) ? null : locationNote,
-          originalGpsLocation: originalGPS == null ? null : GeoPoint(originalGPS.latitude, originalGPS.longitude),
-          createdAt: now,
-        );
+        final report = ref
+            .read(reportProvider)
+            .copyWith(
+              reportID: reportID,
+              referenceNumber: referenceNumber,
+              userID: userID,
+              reportType: ReportTypeEnum.preCallGuidance,
+              guidanceAnswers: state.questions,
+              status: ReportStatusEnum.pending,
+              location: GeoPoint(location.latitude, location.longitude),
+              locationAccuracy: accuracy,
+              locationDescription: (locationNote == null || locationNote.isEmpty) ? null : locationNote,
+              originalGpsLocation: originalGPS == null ? null : GeoPoint(originalGPS.latitude, originalGPS.longitude),
+              createdAt: now,
+            );
 
-    await reportRepository.createReport(report);
+        await reportRepository.createReport(report);
 
-    // final realtimeReport = RealtimeReportModel(
-    //   reportID: report.reportID,
-    //   referenceNumber: report.referenceNumber,
-    //   status: report.status ?? ReportStatusEnum.pending,
-    //   latitude: report.location?.latitude ?? 0,
-    //   longitude: report.location?.longitude ?? 0,
-    //   updatedAt: DateTime.now(),
-    // );
+        // final realtimeReport = RealtimeReportModel(
+        //   reportID: report.reportID,
+        //   referenceNumber: report.referenceNumber,
+        //   status: report.status ?? ReportStatusEnum.pending,
+        //   latitude: report.location?.latitude ?? 0,
+        //   longitude: report.location?.longitude ?? 0,
+        //   updatedAt: DateTime.now(),
+        // );
 
-    // await realtimeRepository.create(path: "activeReports/${report.reportID}", data: realtimeReport.toMap());
+        // await realtimeRepository.create(path: "activeReports/${report.reportID}", data: realtimeReport.toMap());
 
-    return false;
+        return false;
+      },
+    );
   }
 
   Future<void> _submitViaSms({
@@ -126,6 +133,17 @@ class GuidanceNotifier extends Notifier<QuestionState> {
     }
     buffer.writeln('Location: https://maps.google.com/?q=${location.latitude},${location.longitude}');
 
+    ref
+        .read(auditLogRepositoryProvider)
+        .log(
+          AuditAction.smsFallbackLaunched,
+          targetType: 'report',
+          metadata: {
+            'referenceNumber': referenceNumber,
+            'incidentType': incidentType.name,
+            'destination': number,
+          },
+        );
     await launchSms(number, buffer.toString());
   }
 

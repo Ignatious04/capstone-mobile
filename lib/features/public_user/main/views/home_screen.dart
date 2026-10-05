@@ -1,5 +1,7 @@
+import 'package:capstone/core/enums/audit_action_enum.dart';
 import 'package:capstone/core/enums/map_mode_enum.dart';
 import 'package:capstone/core/enums/service_type_enum.dart';
+import 'package:capstone/core/shared/providers/audit_log_repository_provider.dart';
 import 'package:capstone/core/shared/providers/location_provider.dart';
 import 'package:capstone/core/shared/providers/notification_history_provider.dart';
 import 'package:capstone/core/shared/widgets/custom_alert_dialog.dart';
@@ -63,10 +65,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   Future<void> _submitQuickReport(ServiceTypeEnum incidentType) async {
     final label = Formatter.formatEnumName(incidentType.name);
-    final location = ref.read(locationStreamProvider).value;
+    final fix = await ref.read(locationServiceProvider).getCurrentLocation();
+    final location = fix.latLng;
 
-    if (location == null) {
-      CustomSnackbarHelper.show(context, text: "Unable to get your current location.");
+    if (!mounted) {
       return;
     }
 
@@ -121,7 +123,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
     ref.listen(nearestEmergencyServicesProvider, (previous, next) {
       next.whenData((nearest) {
-        ref.read(contactNumberRepositoryProvider).saveNearest(nearest);
+        final prev = previous?.value; // use `.value` on Riverpod 3.x
+        final changed = ServiceTypeEnum.values.any(
+          (t) => prev?[t]?.contactNumber != nearest[t]?.contactNumber,
+        );
+        if (changed) {
+          ref.read(contactNumberRepositoryProvider).saveNearest(nearest);
+        }
       });
     });
 
@@ -297,6 +305,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           width: double.infinity,
                           child: ElevatedButton(
                             onPressed: () {
+                              ref
+                                  .read(auditLogRepositoryProvider)
+                                  .log(
+                                    AuditAction.emergencyCallInitiated,
+                                    metadata: {'source': 'home_911'},
+                                  );
                               launchPhoneCall("*123#");
                             },
                             style: ElevatedButton.styleFrom(

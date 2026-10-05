@@ -1,11 +1,14 @@
+import 'package:capstone/core/enums/audit_action_enum.dart';
 import 'package:capstone/core/exceptions/auth_exception.dart';
+import 'package:capstone/core/shared/repositories/audit_log_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class FirebaseAuthRepository {
   final FirebaseAuth firebaseAuth;
-  FirebaseAuthRepository(this.firebaseAuth);
+  final AuditLogRepository _audit;
+  FirebaseAuthRepository(this.firebaseAuth, this._audit);
 
   User? get currentUser => firebaseAuth.currentUser;
   Stream<User?> get authStateChanges => firebaseAuth.authStateChanges();
@@ -32,7 +35,15 @@ class FirebaseAuthRepository {
         throw AuthException('Google sign-in failed. Please try again.');
       }
       final credential = GoogleAuthProvider.credential(idToken: idToken);
-      return await firebaseAuth.signInWithCredential(credential);
+      final result = await firebaseAuth.signInWithCredential(credential);
+      _audit.log(
+        AuditAction.login,
+        metadata: {
+          'method': 'google',
+          'isNewUser': result.additionalUserInfo?.isNewUser ?? false,
+        },
+      );
+      return result;
     } on GoogleSignInException catch (e) {
       if (e.code == GoogleSignInExceptionCode.canceled) return null;
       debugPrint('Google sign-in error: ${e.code} ${e.description}');
@@ -61,10 +72,12 @@ class FirebaseAuthRepository {
     required String password,
   }) async {
     try {
-      return await firebaseAuth.signInWithEmailAndPassword(
+      final credential = await firebaseAuth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
+      _audit.log(AuditAction.login, metadata: {"method": "password"});
+      return credential;
     } on FirebaseAuthException catch (e) {
       throw _mapAuthError(e);
     }
@@ -86,7 +99,9 @@ class FirebaseAuthRepository {
         EmailAuthProvider.credential(email: user.email!, password: currentPassword),
       );
       await user.updatePassword(newPassword);
+      _audit.log(AuditAction.passwordChanged);
     } on FirebaseAuthException catch (e) {
+      _audit.log(AuditAction.passwordChangeFailed, metadata: {"reason": e.code});
       throw _mapAuthError(e);
     }
   }
@@ -137,7 +152,9 @@ class FirebaseAuthRepository {
         smsCode: smsCode,
       );
       await user.reauthenticateWithCredential(credential);
+      _audit.log(AuditAction.reactivationOtpVerified);
     } on FirebaseAuthException catch (e) {
+      _audit.log(AuditAction.reactivationOtpFailed, metadata: {'reason': e.code});
       throw _mapAuthError(e);
     }
   }
@@ -178,6 +195,7 @@ class FirebaseAuthRepository {
   }
 
   Future<void> signOut() async {
+    _audit.log(AuditAction.logout);
     try {
       await firebaseAuth.signOut();
     } on FirebaseAuthException catch (e) {
@@ -287,6 +305,7 @@ class FirebaseAuthRepository {
         throw AuthException('No user is currently signed in.');
       }
       await user.linkWithCredential(credential);
+      _audit.log(AuditAction.phoneLinked);
     } on FirebaseAuthException catch (e) {
       throw _mapAuthError(e);
     }

@@ -1,9 +1,12 @@
+import 'package:capstone/core/enums/audit_action_enum.dart';
 import 'package:capstone/core/enums/service_type_enum.dart';
+import 'package:capstone/core/shared/providers/audit_log_repository_provider.dart';
 import 'package:capstone/core/shared/widgets/custom_text_field.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/widgets/text/title_text.dart';
 import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/core/utilities/call_launcher.dart';
+import 'package:capstone/core/utilities/distance_helper.dart';
 import 'package:capstone/core/utilities/formatter.dart';
 import 'package:capstone/features/public_user/map/models/emergency_service_model.dart';
 import 'package:capstone/features/public_user/map/providers/emergency_service_filter_provider.dart';
@@ -80,16 +83,6 @@ class _EmergencyServicesPanelState extends ConsumerState<EmergencyServicesPanel>
     );
   }
 
-  String _formatDistance(EmergencyServiceModel service) {
-    final distance = _getDistance(service);
-
-    if (distance < 1000) {
-      return '${distance.round()} m';
-    }
-
-    return '${(distance / 1000).toStringAsFixed(1)} km';
-  }
-
   void _moveToService(LatLng location) {
     _panelController.animateTo(
       0.15,
@@ -121,11 +114,9 @@ class _EmergencyServicesPanelState extends ConsumerState<EmergencyServicesPanel>
 
   @override
   Widget build(BuildContext context) {
-    final sortedServices = [...widget.services];
-
-    sortedServices.sort((a, b) {
-      return _getDistance(a).compareTo(_getDistance(b));
-    });
+    final withDistance = [
+      for (final s in widget.services) (service: s, meters: _getDistance(s)),
+    ]..sort((a, b) => a.meters.compareTo(b.meters));
 
     return DraggableScrollableSheet(
       controller: _panelController,
@@ -243,9 +234,10 @@ class _EmergencyServicesPanelState extends ConsumerState<EmergencyServicesPanel>
                     ),
                   ),
                   SliverList.builder(
-                    itemCount: sortedServices.length,
+                    itemCount: withDistance.length,
                     itemBuilder: (context, index) {
-                      final service = sortedServices[index];
+                      final item = withDistance[index];
+                      final service = item.service;
 
                       return EmergencyServiceCard(
                         icon: _getServiceIcon(service),
@@ -254,9 +246,20 @@ class _EmergencyServicesPanelState extends ConsumerState<EmergencyServicesPanel>
                         title: service.name,
                         contactNumber: service.contactNumber,
                         address: service.address,
-                        distance: _formatDistance(service),
+                        distance: DistanceHelper.formatDistance(item.meters),
                         status: service.isActive ? 'Open' : 'Unavailable',
                         onCallTap: () {
+                          ref
+                              .read(auditLogRepositoryProvider)
+                              .log(
+                                AuditAction.emergencyCallInitiated,
+                                targetType: 'emergencyService',
+                                metadata: {
+                                  'source': 'map',
+                                  'serviceName': service.name,
+                                  'number': service.contactNumber,
+                                },
+                              );
                           launchPhoneCall(service.contactNumber);
                         },
                         onTap: () {

@@ -39,7 +39,7 @@ class UserModel {
   final int createdAt;
   final int updatedAt;
   final bool isSetup;
-  final VerificationStatusEnum isVerified;
+  final VerificationStatusEnum verificationStatus;
 
   final bool isDeactivated;
   final int? deactivatedAt;
@@ -76,7 +76,7 @@ class UserModel {
     this.createdAt = 0,
     this.updatedAt = 0,
     this.isSetup = false,
-    this.isVerified = VerificationStatusEnum.pending,
+    this.verificationStatus = VerificationStatusEnum.pending,
     this.isDeactivated = false,
     this.deactivatedAt,
   });
@@ -109,7 +109,7 @@ class UserModel {
       createdAt: map['createdAt'] ?? 0,
       updatedAt: map['updatedAt'] ?? 0,
       isSetup: map["isSetup"] ?? false,
-      isVerified: VerificationStatusEnum.values.byName(map['isVerified'] ?? 'pending'),
+      verificationStatus: VerificationStatusEnum.values.byName(map['isVerified'] ?? 'pending'),
       isDeactivated: map['isDeactivated'] ?? false,
       deactivatedAt: map['deactivatedAt'],
     );
@@ -143,7 +143,7 @@ class UserModel {
       'createdAt': createdAt,
       'updatedAt': updatedAt,
       'isSetup': isSetup,
-      'isVerified': isVerified.name,
+      'verificationStatus': verificationStatus.name,
       'isDeactivated': isDeactivated,
       'deactivatedAt': deactivatedAt,
     };
@@ -183,7 +183,7 @@ class UserModel {
     int? createdAt,
     int? updatedAt,
     bool? isSetup,
-    VerificationStatusEnum? isVerified,
+    VerificationStatusEnum? verificationStatus,
     final bool? isDeactivated,
     final int? deactivatedAt,
   }) {
@@ -219,7 +219,7 @@ class UserModel {
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
       isSetup: isSetup ?? this.isSetup,
-      isVerified: isVerified ?? this.isVerified,
+      verificationStatus: verificationStatus ?? this.verificationStatus,
       isDeactivated: isDeactivated ?? this.isDeactivated,
       deactivatedAt: deactivatedAt ?? this.deactivatedAt,
     );

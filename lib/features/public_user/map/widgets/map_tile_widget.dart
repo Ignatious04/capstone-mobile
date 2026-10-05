@@ -92,7 +92,7 @@ class _MapTileWidgetState extends State<MapTileWidget> {
       for (final service in widget.services) {
         markers.add(
           Marker(
-            markerId: MarkerId(service.name),
+            markerId: MarkerId(service.id),
             position: LatLng(
               service.location.latitude,
               service.location.longitude,

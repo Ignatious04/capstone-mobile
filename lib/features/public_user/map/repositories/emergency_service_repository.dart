@@ -14,7 +14,7 @@ class EmergencyServicesRepository {
         .map(
           (snapshot) => snapshot.docs
               .map(
-                (doc) => EmergencyServiceModel.fromMap(doc.data()),
+                (doc) => EmergencyServiceModel.fromMap(doc.data(), id: doc.id),
               )
               .toList(),
         );

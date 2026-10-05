@@ -2,6 +2,7 @@ import 'package:capstone/core/enums/service_type_enum.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class EmergencyServiceModel {
+  final String id;
   final String name;
   final ServiceTypeEnum type;
   final String contactNumber;
@@ -10,6 +11,7 @@ class EmergencyServiceModel {
   final bool isActive;
 
   const EmergencyServiceModel({
+    this.id = "",
     this.name = '',
     this.type = ServiceTypeEnum.police,
     this.contactNumber = "",
@@ -31,8 +33,10 @@ class EmergencyServiceModel {
 
   factory EmergencyServiceModel.fromMap(
     Map<String, dynamic> map,
+    {String id = "",}
   ) {
     return EmergencyServiceModel(
+      id: id,
       name: map['name'] ?? '',
       type: map['type'] != null
           ? ServiceTypeEnum.values.firstWhere(

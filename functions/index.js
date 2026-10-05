@@ -2,6 +2,8 @@ const {onDocumentUpdated} = require("firebase-functions/v2/firestore");
 const admin = require("firebase-admin");
 admin.initializeApp();
 
+Object.assign(exports, require("./audit"));
+
 const STATUS_COPY = {
   accepted: {title: "Report accepted", body: "A responder has accepted your report."},
   dispatched: {title: "Help is on the way", body: "A responder has been dispatched to your location."},

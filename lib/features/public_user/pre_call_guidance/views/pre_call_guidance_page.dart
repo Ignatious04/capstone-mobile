@@ -37,7 +37,7 @@ class PreCallGuidancePage extends ConsumerWidget {
                 ref.read(guidanceProvider.notifier).answerQuestion(index, false);
                 onNext();
               },
-              value: "No",
+              value: "NO",
               color: Colors.white,
               backgroundColor: Colors.deepOrange,
               hasPadding: true,
@@ -50,7 +50,7 @@ class PreCallGuidancePage extends ConsumerWidget {
                 ref.read(guidanceProvider.notifier).answerQuestion(index, true);
                 onNext();
               },
-              value: "Yes",
+              value: "YES",
               color: Colors.white,
               backgroundColor: Colors.deepOrange,
               hasPadding: true,

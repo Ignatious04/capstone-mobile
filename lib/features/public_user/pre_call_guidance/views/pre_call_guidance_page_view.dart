@@ -1,5 +1,11 @@
+import 'package:capstone/core/shared/providers/report_provider.dart';
 import 'package:capstone/core/shared/widgets/custom_app_bar.dart';
 import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
+import 'package:capstone/core/shared/widgets/custom_snackbar_helper.dart';
+import 'package:capstone/core/shared/widgets/text/label_text.dart';
+import 'package:capstone/core/utilities/call_launcher.dart';
+import 'package:capstone/features/public_user/main/providers/nearest_emergency_services_provider.dart';
+import 'package:capstone/features/public_user/map/providers/contact_number_repository_provider.dart';
 import 'package:capstone/features/public_user/pre_call_guidance/providers/guidance_provider.dart';
 import 'package:capstone/features/public_user/pre_call_guidance/views/pre_call_guidance_page.dart';
 import 'package:capstone/features/public_user/pre_call_guidance/views/pre_call_guidance_summary_screen.dart';
@@ -26,6 +32,31 @@ class _PreCallGuidancePageViewState extends ConsumerState<PreCallGuidancePageVie
     WidgetsBinding.instance.addPostFrameCallback((_) {
       ref.read(guidanceProvider.notifier).resetAnswers();
     });
+  }
+
+  Future<void> _callNearestService() async {
+    final type = ref.read(reportProvider).incidentType;
+    if (type == null) return;
+
+    // Live nearest service first, cached number as the fallback
+    String? number = ref.read(nearestEmergencyServicesProvider).value?[type]?.contactNumber;
+    if (number == null || number.isEmpty) {
+      number = await ref.read(contactNumberRepositoryProvider).getNumber(type);
+    }
+
+    if (!mounted) return;
+
+    if (number == null || number.isEmpty) {
+      CustomSnackbarHelper.show(context, text: "No contact number available for this service.");
+      return;
+    }
+
+    try {
+      await launchPhoneCall(number);
+    } catch (e) {
+      if (!mounted) return;
+      CustomSnackbarHelper.show(context, text: "Unable to open the dialer.");
+    }
   }
 
   void navigateToPage() {
@@ -55,6 +86,15 @@ class _PreCallGuidancePageViewState extends ConsumerState<PreCallGuidancePageVie
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(guidanceProvider);
+    final incidentType = ref.watch(reportProvider).incidentType;
+    final nearestServiceName = incidentType == null
+        ? null
+        : ref.watch(nearestEmergencyServicesProvider).value?[incidentType]?.name;
+
+    final callLabel = (nearestServiceName != null && nearestServiceName.isNotEmpty)
+        ? nearestServiceName
+        : "Call nearest related service";
+
     return Scaffold(
       appBar: CustomAppBar(value: "Pre-Call Guidance"),
       body: SafeArea(
@@ -100,16 +140,21 @@ class _PreCallGuidancePageViewState extends ConsumerState<PreCallGuidancePageVie
                 ),
               ),
             ),
-            if (state.currentPage < state.questions.length)
+            if (state.currentPage < state.questions.length) ...[
+              LabelText(value: callLabel),
               Padding(
                 padding: const EdgeInsets.only(bottom: 20.0),
                 child: CustomElevatedButton(
-                  onPressed: () {},
-                  value: "Call nearest related service",
+                  onPressed: () {
+                    _callNearestService();
+                  },
+                  value: "CALL",
+                  icon: const Icon(Icons.call),
                   color: Colors.white,
                   backgroundColor: Colors.deepOrange,
                 ),
               ),
+            ],
           ],
         ),
       ),

@@ -81,20 +81,16 @@ class LocationService {
     return LocationFix(latLng: currentLatLng!, accuracy: position.accuracy);
   }
 
-  Stream<LatLng> getLocationStream() {
-    return Geolocator.getPositionStream(
+  Stream<LatLng> getLocationStream() async* {
+    final last = await Geolocator.getLastKnownPosition();
+    if (last != null) yield LatLng(last.latitude, last.longitude);
+
+    yield* Geolocator.getPositionStream(
       locationSettings: const LocationSettings(
         accuracy: LocationAccuracy.high,
         distanceFilter: 5,
       ),
-    ).map((position) {
-      currentLatLng = LatLng(
-        position.latitude,
-        position.longitude,
-      );
-
-      return currentLatLng!;
-    });
+    ).map((p) => currentLatLng = LatLng(p.latitude, p.longitude));
   }
 
   Stream<LatLng> getResponderLocationStream() {
