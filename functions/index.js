@@ -14,6 +14,48 @@ const STATUS_COPY = {
 
 const {logger} = require("firebase-functions");
 
+exports.onReportAssigned = onDocumentUpdated("reports/{reportID}", async (event) => {
+  const before = event.data.before.data();
+  const after = event.data.after.data();
+
+  const responderID = after.assignedTo;
+  if (!responderID || before.assignedTo === responderID) return;
+  if (after.status === "resolved") return;
+
+  logger.info("report assigned", {
+    eventId: event.id,
+    reportID: event.params.reportID,
+    responderID,
+  });
+
+  const responderRef = admin.firestore().collection("responders").doc(responderID);
+  const responderSnap = await responderRef.get();
+  const responder = responderSnap.data();
+  if (!responder || responder.isActive === false) return;
+
+  const token = responder.fcmToken;
+  if (!token) return;
+
+  try {
+    await admin.messaging().send({
+      token,
+      notification: {
+        title: "New case assigned",
+        body: "You have been assigned a new report. Open the app to view it.",
+      },
+      data: {type: "reportAssigned", reportID: event.params.reportID},
+      android: {priority: "high"},
+      apns: {headers: {"apns-priority": "10"}},
+    });
+  } catch (err) {
+    if (err.code === "messaging/registration-token-not-registered") {
+      await responderRef.update({fcmToken: admin.firestore.FieldValue.delete()});
+    } else {
+      throw err;
+    }
+  }
+});
+
 exports.onReportStatusChange = onDocumentUpdated("reports/{reportID}", async (event) => {
   const before = event.data.before.data();
   const after = event.data.after.data();
