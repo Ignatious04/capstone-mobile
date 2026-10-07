@@ -4,6 +4,7 @@ import 'package:capstone/core/enums/report_type_enum.dart';
 import 'package:capstone/core/enums/service_type_enum.dart';
 import 'package:capstone/core/shared/providers/audit_log_repository_provider.dart';
 import 'package:capstone/core/shared/providers/firebase_auth_provider.dart';
+import 'package:capstone/core/utilities/priority_calculator.dart';
 import 'package:capstone/core/utilities/reference_number_generator.dart';
 import 'package:capstone/core/utilities/sms_launcher.dart';
 import 'package:capstone/features/public_user/map/providers/contact_number_repository_provider.dart';
@@ -79,6 +80,7 @@ class GuidanceNotifier extends Notifier<QuestionState> {
               userID: userID,
               reportType: ReportTypeEnum.preCallGuidance,
               guidanceAnswers: state.questions,
+              priority: PriorityCalculator.forGuidance(incidentType, state.questions),
               status: ReportStatusEnum.pending,
               location: GeoPoint(location.latitude, location.longitude),
               locationAccuracy: accuracy,
@@ -153,9 +155,9 @@ class GuidanceNotifier extends Notifier<QuestionState> {
         state = QuestionState(
           currentPage: 0,
           questions: [
-            PreCallGuidanceModel(question: "Is the person conscious?"),
-            PreCallGuidanceModel(question: "Is there life threatening injuries?"),
-            PreCallGuidanceModel(question: "Is their current condition intentional?"),
+            PreCallGuidanceModel(id: 'medical_conscious', question: "Is the person conscious?"),
+            PreCallGuidanceModel(id: 'medical_life_threatening', question: "Is there life threatening injuries?"),
+            PreCallGuidanceModel(id: 'medical_intentional', question: "Is their current condition intentional?"),
           ],
         );
         break;
@@ -164,9 +166,9 @@ class GuidanceNotifier extends Notifier<QuestionState> {
         state = QuestionState(
           currentPage: 0,
           questions: [
-            PreCallGuidanceModel(question: "Is the suspect present?"),
-            PreCallGuidanceModel(question: "Are there weapons involved?"),
-            PreCallGuidanceModel(question: "Is someone injured?"),
+            PreCallGuidanceModel(id: 'police_suspect_present', question: "Is the suspect present?"),
+            PreCallGuidanceModel(id: 'police_weapons', question: "Are there weapons involved?"),
+            PreCallGuidanceModel(id: 'police_injured', question: "Is someone injured?"),
           ],
         );
         break;
@@ -175,8 +177,8 @@ class GuidanceNotifier extends Notifier<QuestionState> {
         state = QuestionState(
           currentPage: 0,
           questions: [
-            PreCallGuidanceModel(question: "Are there people trapped inside?"),
-            PreCallGuidanceModel(question: "Is the fire spreading?"),
+            PreCallGuidanceModel(id: 'fire_trapped', question: "Are there people trapped inside?"),
+            PreCallGuidanceModel(id: 'fire_spreading', question: "Is the fire spreading?"),
           ],
         );
         break;

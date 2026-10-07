@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:capstone/core/enums/notification_type_enum.dart';
 import 'package:capstone/core/enums/report_type_enum.dart';
 import 'package:capstone/core/shared/models/notification_model.dart';
@@ -7,6 +6,7 @@ import 'package:capstone/core/shared/providers/app_notification_provider.dart';
 import 'package:capstone/core/shared/providers/navigator_key_provider.dart';
 import 'package:capstone/core/shared/providers/notification_history_provider.dart';
 import 'package:capstone/core/shared/providers/report_repository_provider.dart';
+import 'package:capstone/core/shared/providers/responder_repository_provider.dart';
 import 'package:capstone/core/shared/providers/user_repository_provider.dart';
 import 'package:capstone/core/shared/repositories/notification_history_repository.dart';
 import 'package:capstone/features/public_user/reporting/views/normal_reports_view_screen.dart';
@@ -20,6 +20,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// Must be a top-level function — this is what the OS calls when a
 /// data message arrives while the app is backgrounded/terminated.
+NotificationTypeEnum _notificationTypeOf(RemoteMessage message) =>
+    message.data['type'] == 'reportAssigned' ? NotificationTypeEnum.reportAssigned : NotificationTypeEnum.reportStatus;
+
 @pragma('vm:entry-point')
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
@@ -35,7 +38,7 @@ Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {
     userID,
     NotificationModel(
       id: message.messageId ?? DateTime.now().millisecondsSinceEpoch.toString(),
-      type: NotificationTypeEnum.reportStatus,
+      type: _notificationTypeOf(message),
       title: title,
       message: body,
       createdAt: DateTime.now(),
@@ -83,22 +86,32 @@ class PushNotificationService {
 
   /// Call once after login (user is authenticated, email-verified, setup).
   Future<void> registerToken(String userID) async {
+    final responderRepo = ref.read(responderRepositoryProvider);
+    final isResponder = await responderRepo.exists(userID);
+
+    Future<void> save(String token) => isResponder
+        ? responderRepo.updateFcmToken(userID, token)
+        : ref.read(userRepositoryProvider).updateFcmToken(userID, token);
+
     final token = await _messaging.getToken();
     if (token != null) {
-      await ref.read(userRepositoryProvider).updateFcmToken(userID, token);
+      await save(token);
     }
 
     await _tokenRefreshSub?.cancel();
-    _tokenRefreshSub = _messaging.onTokenRefresh.listen((newToken) {
-      ref.read(userRepositoryProvider).updateFcmToken(userID, newToken);
-    });
+    _tokenRefreshSub = _messaging.onTokenRefresh.listen(save);
   }
 
   /// Call on sign-out so a stale token doesn't keep receiving another
   /// account's pushes on a shared device.
   Future<void> clearToken(String userID) async {
     try {
-      await ref.read(userRepositoryProvider).clearFcmToken(userID);
+      final responderRepo = ref.read(responderRepositoryProvider);
+      if (await responderRepo.exists(userID)) {
+        await responderRepo.clearFcmToken(userID);
+      } else {
+        await ref.read(userRepositoryProvider).clearFcmToken(userID);
+      }
     } catch (e) {
       debugPrint('clearToken failed: $e');
     }
@@ -117,7 +130,7 @@ class PushNotificationService {
         .add(
           NotificationModel(
             id: message.messageId ?? DateTime.now().millisecondsSinceEpoch.toString(),
-            type: NotificationTypeEnum.reportStatus,
+            type: _notificationTypeOf(message),
             title: title,
             message: body,
             createdAt: DateTime.now(),
@@ -127,6 +140,9 @@ class PushNotificationService {
   }
 
   Future<void> _handleNotificationTap(RemoteMessage message) async {
+    // Responders land on the Active Case tab, which already streams their assigned report.
+    if (message.data['type'] == 'reportAssigned') return;
+
     final reportID = message.data['reportID'] as String?;
     debugPrint('Notification tapped, reportID: $reportID');
     if (reportID == null) return;

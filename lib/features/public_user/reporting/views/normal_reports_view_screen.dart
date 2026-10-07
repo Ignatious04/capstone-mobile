@@ -12,6 +12,7 @@ import 'package:capstone/features/public_user/map/widgets/map_tile_widget.dart';
 import 'package:capstone/features/public_user/reporting/providers/responder_location_provider.dart';
 import 'package:capstone/features/public_user/reporting/widgets/additional_information_card.dart';
 import 'package:capstone/features/public_user/reporting/widgets/attachments_card.dart';
+import 'package:capstone/features/public_user/reporting/widgets/eta_card.dart';
 import 'package:capstone/features/public_user/reporting/widgets/location_card.dart';
 import 'package:capstone/features/public_user/reporting/widgets/report_status_widget.dart';
 import 'package:capstone/core/shared/widgets/section_title.dart';
@@ -151,6 +152,12 @@ class _NormalReportsViewScreenState extends ConsumerState<NormalReportsViewScree
                             return [
                               const SizedBox(height: 10),
                               SectionTitle(icon: Icons.my_location, title: 'Responder Location'),
+                              const SizedBox(height: 10),
+                               EtaCard(
+                                responder: responderLatLng,
+                                incident: incident,
+                                isOnScene: widget.report.status == ReportStatusEnum.onScene,
+                              ),
                               const SizedBox(height: 10),
                               SizedBox(
                                 height: 250,

@@ -21,6 +21,8 @@ class NotificationCard extends StatelessWidget {
         return Icons.wifi_off;
       case NotificationTypeEnum.reportStatus:
         return Icons.assignment_turned_in;
+      case NotificationTypeEnum.reportAssigned:
+        return Icons.assignment_ind;
     }
   }
 

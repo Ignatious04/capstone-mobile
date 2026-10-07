@@ -1,1 +1,1 @@
-enum NotificationTypeEnum { connectivity, reportStatus }
+enum NotificationTypeEnum { connectivity, reportStatus, reportAssigned }

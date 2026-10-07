@@ -1,6 +1,5 @@
 import 'package:capstone/core/controllers/victim_controllers.dart';
 import 'package:capstone/core/enums/police_concern_enum.dart';
-import 'package:capstone/core/enums/report_priority_enum.dart';
 import 'package:capstone/core/enums/service_type_enum.dart';
 import 'package:capstone/core/enums/map_mode_enum.dart';
 import 'package:capstone/core/shared/widgets/custom_app_bar.dart';
@@ -14,6 +13,7 @@ import 'package:capstone/core/shared/widgets/emergency_guidance_sheet.dart';
 import 'package:capstone/core/shared/widgets/loading_overlay_widget.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/widgets/text/label_text.dart';
+import 'package:capstone/core/utilities/priority_calculator.dart';
 import 'package:capstone/features/public_user/map/widgets/map_tile_widget.dart';
 import 'package:capstone/features/public_user/reporting/providers/pending_attachments_provider.dart';
 import 'package:capstone/core/shared/providers/location_provider.dart';
@@ -578,9 +578,7 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> {
                                         description: incidentDescriptionController.text,
                                         additionalInformation: additionalInformationController.text,
                                         selectedLocation: _selectedLocation!,
-                                        priority: ref.read(reportProvider).incidentType == ServiceTypeEnum.police
-                                            ? (_isPoliceEmergency ? ReportPriorityEnum.high : ReportPriorityEnum.low)
-                                            : ReportPriorityEnum.high,
+                                        priority: PriorityCalculator.forManualReport(ref.read(reportProvider).incidentType!, isPoliceEmergency: _isPoliceEmergency),
                                         policeConcernType:
                                             ref.read(reportProvider).incidentType == ServiceTypeEnum.police &&
                                                 !_isPoliceEmergency

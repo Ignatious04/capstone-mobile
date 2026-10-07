@@ -78,13 +78,4 @@ class ReportRepository {
 
     await batch.commit();
   }
-
-  /// Responder declines an assigned case: frees it back up for the operator
-  /// to reassign.
-  Future<void> declineAssignment(String reportID) async {
-    await firestore.collection('reports').doc(reportID).update({
-      'responderID': '',
-      'status': ReportStatusEnum.pending.name,
-    });
-  }
 }

@@ -1,5 +1,6 @@
 // lib/features/responder/views/responder_profile_screen.dart
 import 'package:capstone/core/enums/service_type_enum.dart';
+import 'package:capstone/core/services/push_notification_service.dart';
 import 'package:capstone/core/shared/models/responder_model.dart';
 import 'package:capstone/core/shared/providers/firebase_auth_provider.dart';
 import 'package:capstone/core/shared/providers/responder_provider.dart';
@@ -129,6 +130,10 @@ class _ResponderProfileBody extends ConsumerWidget {
                         title: "Do you wish to log out?",
                       );
                       if (confirmed != true) return;
+                      final uid = ref.read(firebaseAuthProvider).currentUser?.uid;
+                      if (uid != null) {
+                        await ref.read(pushNotificationServiceProvider).clearToken(uid);
+                      }
                       await ref.read(firebaseAuthRepositoryProvider).signOut();
                     },
                     icon: const Icon(Icons.logout, size: 25),

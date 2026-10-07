@@ -6,6 +6,7 @@ import 'package:capstone/core/enums/report_type_enum.dart';
 import 'package:capstone/core/enums/service_type_enum.dart';
 import 'package:capstone/core/shared/providers/audit_log_repository_provider.dart';
 import 'package:capstone/core/shared/providers/firebase_auth_provider.dart';
+import 'package:capstone/core/utilities/priority_calculator.dart';
 import 'package:capstone/core/utilities/reference_number_generator.dart';
 import 'package:capstone/core/shared/models/report_model.dart';
 import 'package:capstone/features/public_user/reporting/models/victim_model.dart';
@@ -105,6 +106,7 @@ class ReportNotifier extends Notifier<ReportModel> {
           userID: userID,
           reportType: ReportTypeEnum.quick,
           incidentType: incidentType,
+          priority: PriorityCalculator.forQuickReport(incidentType),
           status: ReportStatusEnum.pending,
           location: GeoPoint(location.latitude, location.longitude),
           createdAt: now,
