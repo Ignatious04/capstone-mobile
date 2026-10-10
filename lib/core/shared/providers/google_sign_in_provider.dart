@@ -1,3 +1,4 @@
+import 'package:capstone/core/services/push_notification_service.dart';
 import 'package:capstone/core/shared/providers/firebase_auth_provider.dart';
 import 'package:capstone/core/shared/providers/user_provider.dart';
 import 'package:capstone/core/shared/providers/user_repository_provider.dart';
@@ -28,7 +29,7 @@ class GoogleSignInNotifier extends Notifier<AsyncValue<void>> {
       // Only create the Firestore doc the first time. createUser() writes every
       // field in toMap(), so calling it for a returning user would reset their
       // setup data (isSetup, names, ID, etc.) to empty defaults.
-      if (existing == null) {
+      if (existing == null || existing.userID.isEmpty) {
         final userNotifier = ref.read(userProvider.notifier);
         userNotifier.setUserID(authUser.uid);
         userNotifier.setEmail(authUser.email ?? '');
@@ -36,16 +37,19 @@ class GoogleSignInNotifier extends Notifier<AsyncValue<void>> {
         userNotifier.setCreatedAt(now);
         userNotifier.setUpdatedAt(now);
         await userRepository.createUser(ref.read(userProvider));
+        await ref.read(pushNotificationServiceProvider).registerToken(authUser.uid);
       }
 
       // Seed the setup form (in memory only; updateUserSetup() writes it to Firestore).
       if (existing == null || !existing.isSetup) {
         final profile = credential.additionalUserInfo?.profile;
-        ref.read(userProvider.notifier).prefillFromGoogle(
-          givenName: profile?['given_name'] as String?,
-          familyName: profile?['family_name'] as String?,
-          displayName: authUser.displayName,
-        );
+        ref
+            .read(userProvider.notifier)
+            .prefillFromGoogle(
+              givenName: profile?['given_name'] as String?,
+              familyName: profile?['family_name'] as String?,
+              displayName: authUser.displayName,
+            );
       }
     });
 

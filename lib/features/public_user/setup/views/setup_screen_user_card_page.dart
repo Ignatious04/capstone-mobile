@@ -103,6 +103,7 @@ class _SetupScreenUserCardPage extends ConsumerState<SetupScreenUserCardPage> {
             ],
             onChanged: (value) {
               ref.read(userProvider.notifier).setIDType(value!);
+              setState(() => idCheckError = null);
             },
             isRequired: true,
           ),
@@ -110,6 +111,7 @@ class _SetupScreenUserCardPage extends ConsumerState<SetupScreenUserCardPage> {
             height: 10,
           ),
           FormField<File>(
+            key: ValueKey(user.idType), // resets the preview when the type changes
             initialValue: user.idImage,
             validator: (value) {
               if (value == null) {
@@ -177,7 +179,7 @@ class _SetupScreenUserCardPage extends ConsumerState<SetupScreenUserCardPage> {
                   SizedBox(
                     width: double.infinity,
                     child: CustomElevatedButton(
-                      onPressed: !isCameraInitialized || isProcessing
+                      onPressed: !isCameraInitialized || isProcessing || user.idType.isEmpty
                           ? null
                           : () async {
                               if (field.value != null) {

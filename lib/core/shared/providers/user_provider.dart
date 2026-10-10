@@ -146,7 +146,7 @@ class UserNotifier extends Notifier<UserModel> {
   }
 
   void removeProfilePicture(int index) {
-    state = state.copyWith(profileImage: null);
+    state = state.copyWith(clearProfileImage: true);
   }
 
   void setIdImage(File value) {
@@ -221,7 +221,8 @@ class UserNotifier extends Notifier<UserModel> {
   }
 
   void setIDType(String value) {
-    state = state.copyWith(idType: value);
+    if (value == state.idType) return;
+    state = state.copyWith(idType: value, clearIdImage: true, idNumber: '');
   }
 
   void setEmail(String value) {

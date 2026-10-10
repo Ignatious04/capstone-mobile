@@ -195,7 +195,7 @@ class FirebaseAuthRepository {
   }
 
   Future<void> signOut() async {
-    _audit.log(AuditAction.logout);
+    await _audit.logAndWait(AuditAction.logout);
     try {
       await firebaseAuth.signOut();
     } on FirebaseAuthException catch (e) {

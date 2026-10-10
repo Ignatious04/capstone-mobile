@@ -109,7 +109,7 @@ class UserModel {
       createdAt: map['createdAt'] ?? 0,
       updatedAt: map['updatedAt'] ?? 0,
       isSetup: map["isSetup"] ?? false,
-      verificationStatus: VerificationStatusEnum.values.byName(map['isVerified'] ?? 'pending'),
+      verificationStatus: VerificationStatusEnum.values.byName(map['verificationStatus'] ?? 'pending'),
       isDeactivated: map['isDeactivated'] ?? false,
       deactivatedAt: map['deactivatedAt'],
     );

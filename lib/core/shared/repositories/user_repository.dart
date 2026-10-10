@@ -44,9 +44,12 @@ class UserRepository {
   }
 
   Future<void> updateFcmToken(String uid, String token) async {
-    await firestore.collection('users').doc(uid).set({
-      'fcmToken': token,
-    }, SetOptions(merge: true));
+    try {
+      await firestore.collection('users').doc(uid).update({'fcmToken': token});
+    } on FirebaseException catch (e) {
+      // User doc not created yet; the token is saved on the next registerToken call.
+      if (e.code != 'not-found') rethrow;
+    }
   }
 
   Future<void> clearFcmToken(String uid) async {
