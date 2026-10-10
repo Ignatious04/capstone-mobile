@@ -18,6 +18,7 @@ class _LocationGateState extends ConsumerState<LocationGate> with WidgetsBinding
   bool _loading = true;
   String? _message;
   LocationStatusEnum? _status;
+  bool _checking = false;
 
   @override
   void initState() {
@@ -40,69 +41,70 @@ class _LocationGateState extends ConsumerState<LocationGate> with WidgetsBinding
   }
 
   Future<void> _checkLocation({bool silent = false}) async {
-    final locationService = ref.read(locationServiceProvider);
+    if (_checking) return;
+    _checking = true;
 
-    final status = await locationService.checkLocationStatus();
-    if (!mounted) return;
+    try {
+      final locationService = ref.read(locationServiceProvider);
 
-    if (status == LocationStatusEnum.ready) {
-      setState(() {
-        _loading = false;
-        _message = null;
-        _status = null;
-      });
-      return;
-    }
+      final status = await locationService.checkLocationStatus();
+      if (!mounted) return;
 
-    // A silent (app-resumed) recheck should only ever *clear* an error,
-    // never pop up a new one or reopen Settings on its own.
-    if (silent) return;
+      if (status == LocationStatusEnum.ready) {
+        _setReady();
+        return;
+      }
 
-    setState(() {
-      _loading = true;
-      _message = null;
-    });
+      final fixedServiceToggle =
+          _status == LocationStatusEnum.serviceDisabled && status != LocationStatusEnum.serviceDisabled;
 
-    switch (status) {
-      case LocationStatusEnum.ready:
-        return; // handled above
+      if (silent && !fixedServiceToggle) {
+        // Keep an already-visible error in sync, but never pop up a new one.
+        if (_status != null && status != _status) _showError(status);
+        return;
+      }
 
-      case LocationStatusEnum.permissionDenied:
+      if (status == LocationStatusEnum.permissionDenied) {
+        setState(() {
+          _loading = true;
+          _message = null;
+        });
+
         final result = await locationService.requestPermission();
         if (!mounted) return;
 
         if (result == LocationStatusEnum.ready) {
-          setState(() {
-            _loading = false;
-            _message = null;
-            _status = null;
-          });
-          return;
+          _setReady();
+        } else {
+          _showError(result);
         }
-
-        setState(() {
-          _loading = false;
-          _message = "Location permission is required to continue.";
-          _status = LocationStatusEnum.permissionDenied;
-        });
-        return;
-
-      case LocationStatusEnum.permissionDeniedForever:
-        setState(() {
-          _loading = false;
-          _message = "Location permission has been permanently denied. Please enable it in Settings.";
-          _status = LocationStatusEnum.permissionDeniedForever;
-        });
-        return;
-
-      case LocationStatusEnum.serviceDisabled:
-        setState(() {
-          _loading = false;
-          _message = "Please enable Location Services to continue.";
-          _status = LocationStatusEnum.serviceDisabled;
-        });
-        return;
+      }
+      _showError(status);
+    } finally {
+      _checking = false;
     }
+  }
+
+  void _setReady() {
+    setState(() {
+      _loading = false;
+      _message = null;
+      _status = null;
+    });
+  }
+
+  void _showError(LocationStatusEnum status) {
+    setState(() {
+      _loading = false;
+      _status = status;
+      _message = switch (status) {
+        LocationStatusEnum.permissionDenied => "Location permission is required to continue.",
+        LocationStatusEnum.permissionDeniedForever =>
+          "Location permission has been permanently denied. Please enable it in Settings.",
+        LocationStatusEnum.serviceDisabled => "Please enable Location Services to continue.",
+        LocationStatusEnum.ready => null,
+      };
+    });
   }
 
   Future<void> _handleRetry() async {
@@ -132,23 +134,38 @@ class _LocationGateState extends ConsumerState<LocationGate> with WidgetsBinding
 
     if (_message != null) {
       return Scaffold(
-        body: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                BodyText(
-                  value: _message!,
-                  alignment: TextAlign.center,
+        body: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            children: [
+              Expanded(
+                child: Center(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.location_off,
+                        size: 100,
+                        color: Colors.black54,
+                      ),
+                      const SizedBox(height: 10),
+                      BodyText(
+                        value: _message!,
+                        alignment: TextAlign.center,
+                      ),
+                    ],
+                  ),
                 ),
-                const SizedBox(height: 10),
-                CustomElevatedButton(
+              ),
+              const SizedBox(height: 10),
+              SizedBox(
+                width: double.infinity,
+                child: CustomElevatedButton(
                   onPressed: _handleRetry,
                   value: "Open Settings",
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       );

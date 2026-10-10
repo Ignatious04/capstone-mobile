@@ -102,20 +102,6 @@ class EmergencyServiceCard extends StatelessWidget {
                             color: Colors.black54,
                           ),
                           const SizedBox(width: 10),
-                          // Container(
-                          //   padding: const EdgeInsets.symmetric(
-                          //     horizontal: 10,
-                          //     vertical: 5,
-                          //   ),
-                          //   decoration: BoxDecoration(
-                          //     color: AppColors.lighterGreen,
-                          //     borderRadius: BorderRadius.circular(12),
-                          //   ),
-                          //   child: LabelText(
-                          //     value: status,
-                          //     color: AppColors.darkerGreen,
-                          //   ),
-                          // ),
                         ],
                       ),
                       const SizedBox(height: 10),

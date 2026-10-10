@@ -36,8 +36,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.sizeOf(context).width;
-    double screenHeight = MediaQuery.sizeOf(context).height;
     final loginState = ref.watch(loginProvider);
     final isLoading = loginState is AsyncLoading;
 

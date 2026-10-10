@@ -22,13 +22,18 @@ class AuditLogRepository {
     final uid = auth.currentUser?.uid;
     if (uid == null) return;
 
+    // Pre-generate the ID so eventId can match the document ID (the rules require it).
+    final doc = firestore.collection('audit_logs').doc();
+
     unawaited(
-      firestore
-          .collection('audit_logs')
-          .add({
+      doc
+          .set({
+            'eventId': doc.id,
             'action': action.code,
             'category': action.code.split('.').first,
             'actorId': uid,
+            'actorType': 'user',
+            'authType': 'client',
             'targetType': targetType,
             'targetId': targetId,
             'metadata': metadata ?? <String, dynamic>{},

@@ -63,6 +63,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     }
   }
 
+  Color _getServiceBackgroundColor(EmergencyServiceModel service) {
+    switch (service.type) {
+      case ServiceTypeEnum.fire:
+        return AppColors.lighterRed;
+      case ServiceTypeEnum.police:
+        return AppColors.lighterBlue;
+      case ServiceTypeEnum.medical:
+        return AppColors.lighterGreen;
+    }
+  }
+
   Future<void> _submitQuickReport(ServiceTypeEnum incidentType) async {
     final label = Formatter.formatEnumName(incidentType.name);
     final fix = await ref.read(locationServiceProvider).getCurrentLocation();
@@ -231,7 +242,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         ),
                         const SectionTitle(
                           icon: Icons.select_all,
-                          title: "Select Emergency Type",
+                          title: "Quick Reporting",
                         ),
                         const SizedBox(
                           height: 10,
@@ -373,6 +384,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                               NearbyServicesCard(
                                 icon: _getServiceIcon(service),
                                 iconColor: _getServiceColor(service),
+                                backgroundColor: _getServiceBackgroundColor(service),
                                 name: service.name,
                                 contactNumber: service.contactNumber,
                                 address: service.address,

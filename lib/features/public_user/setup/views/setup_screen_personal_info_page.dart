@@ -52,6 +52,10 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
       value: "Married",
       child: BodyText(value: "Married"),
     ),
+    DropdownMenuItem(
+      value: "Widowed",
+      child: BodyText(value: "Widowed"),
+    ),
   ];
 
   final List<String> _barangays = const [
@@ -87,6 +91,21 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
     'Sapangbato',
     'Tabun',
     'Virgen Delos Remedios',
+  ];
+
+  static const _religions = [
+    DropdownMenuItem(
+      value: "Iglesia ni Cristo",
+      child: Text("Iglesia ni Cristo"),
+    ),
+    DropdownMenuItem(
+      value: "Islam",
+      child: Text("Islam"),
+    ),
+    DropdownMenuItem(
+      value: "Roman Catholic",
+      child: Text("Roman Catholic"),
+    ),
   ];
 
   @override
@@ -506,16 +525,7 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
 
               return null;
             },
-            items: [
-              const DropdownMenuItem(
-                value: "Catholic",
-                child: Text("Catholic"),
-              ),
-              const DropdownMenuItem(
-                value: "Iglesia ni Cristo",
-                child: Text("Iglesia ni Cristo"),
-              ),
-            ],
+            items: _religions,
             onChanged: (value) {
               ref.read(userProvider.notifier).setReligion(value!);
             },
