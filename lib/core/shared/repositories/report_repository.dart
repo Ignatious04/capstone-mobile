@@ -1,4 +1,5 @@
 import 'package:capstone/core/enums/report_status_enum.dart';
+import 'package:capstone/core/shared/models/attachment_model.dart';
 import 'package:capstone/core/shared/models/report_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -77,5 +78,11 @@ class ReportRepository {
     }
 
     await batch.commit();
+  }
+
+  Future<void> addResponderAttachment(String reportID, AttachmentModel attachment) {
+    return firestore.collection('reports').doc(reportID).update({
+      'responderAttachments': FieldValue.arrayUnion([attachment.toMap()]),
+    });
   }
 }

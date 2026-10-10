@@ -163,12 +163,15 @@ class _MapTileWidgetState extends State<MapTileWidget> {
         ),
 
         if (_showCenterPin)
-          const IgnorePointer(
+           IgnorePointer(
             child: Center(
-              child: Icon(
-                Icons.location_pin,
-                size: 50,
-                color: Colors.red,
+              child: Transform.translate(
+                offset: const Offset(0, -21),
+                child: Icon(
+                  Icons.location_pin,
+                  size: 50,
+                  color: Colors.red,
+                ),
               ),
             ),
           ),

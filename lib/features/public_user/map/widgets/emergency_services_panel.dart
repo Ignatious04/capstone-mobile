@@ -6,6 +6,7 @@ import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/widgets/text/title_text.dart';
 import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/core/utilities/call_launcher.dart';
+import 'package:capstone/core/utilities/directions_launcher.dart';
 import 'package:capstone/core/utilities/distance_helper.dart';
 import 'package:capstone/core/utilities/formatter.dart';
 import 'package:capstone/features/public_user/map/models/emergency_service_model.dart';
@@ -261,6 +262,22 @@ class _EmergencyServicesPanelState extends ConsumerState<EmergencyServicesPanel>
                                 },
                               );
                           launchPhoneCall(service.contactNumber);
+                        },
+                        onDirectionsTap: () {
+                          ref
+                              .read(auditLogRepositoryProvider)
+                              .log(
+                                AuditAction.directionsRequested,
+                                targetType: 'emergencyService',
+                                metadata: {
+                                  'source': 'map',
+                                  'serviceName': service.name,
+                                },
+                              );
+                          launchDirections(
+                            service.location.latitude,
+                            service.location.longitude,
+                          );
                         },
                         onTap: () {
                           _moveToService(LatLng(service.location.latitude, service.location.longitude));

@@ -1,4 +1,4 @@
-import 'package:capstone/features/public_user/reporting/models/attachment_model.dart';
+import 'package:capstone/core/shared/models/attachment_model.dart';
 import 'package:capstone/features/public_user/reporting/widgets/attachments_card_item.dart';
 import 'package:capstone/features/public_user/reporting/widgets/empty_card.dart';
 import 'package:flutter/material.dart';

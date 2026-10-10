@@ -5,6 +5,7 @@ import 'package:capstone/core/shared/widgets/custom_circular_progress_indicator.
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/widgets/text/label_text.dart';
 import 'package:capstone/core/shared/widgets/text/title_text.dart';
+import 'package:capstone/core/utilities/directions_launcher.dart';
 import 'package:capstone/core/utilities/formatter.dart';
 import 'package:capstone/features/public_user/map/widgets/map_tile_widget.dart';
 import 'package:capstone/core/shared/models/report_model.dart';
@@ -15,10 +16,10 @@ import 'package:capstone/features/public_user/reporting/widgets/report_status_wi
 import 'package:capstone/core/shared/widgets/section_title.dart';
 import 'package:capstone/features/public_user/reporting/widgets/victims_card.dart';
 import 'package:capstone/features/responder/active_case/widgets/active_case_action_bar.dart';
+import 'package:capstone/features/responder/active_case/widgets/responder_attachments_section.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../providers/active_case_provider.dart';
 
@@ -140,14 +141,7 @@ class _ActiveCaseBody extends StatelessWidget {
                           heroTag: 'directionsFAB',
                           backgroundColor: Colors.white,
                           foregroundColor: Colors.deepOrange,
-                          onPressed: () async {
-                            final uri = Uri.parse(
-                              'https://www.google.com/maps/dir/?api=1'
-                              '&destination=${location.latitude},${location.longitude}'
-                              '&travelmode=driving',
-                            );
-                            await launchUrl(uri, mode: LaunchMode.externalApplication);
-                          },
+                          onPressed: () => launchDirections(location.latitude, location.longitude),
                           child: const Icon(Icons.directions, size: 40),
                         ),
                       ),
@@ -221,7 +215,13 @@ class _ActiveCaseBody extends StatelessWidget {
                 const SizedBox(height: 10),
                 VictimsCard(victims: report.victims),
                 const SizedBox(height: 10),
-                SectionTitle(icon: Icons.attach_file, title: 'Attachments'),
+                SectionTitle(icon: Icons.attach_file, title: 'Reporter Attachments'),
+                 const SizedBox(height: 10),
+                 AttachmentsCard(attachments: report.attachments),
+                const SizedBox(height: 10),
+                ResponderAttachmentsSection(report: report),
+                 const SizedBox(height: 10),
+                 SectionTitle(icon: Icons.notes, title: 'Additional Information'),
                 const SizedBox(height: 10),
                 AttachmentsCard(attachments: report.attachments),
                 const SizedBox(height: 10),

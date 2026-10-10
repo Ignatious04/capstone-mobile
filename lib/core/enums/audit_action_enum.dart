@@ -9,6 +9,7 @@ enum AuditAction {
   emergencyCallInitiated('emergency.call_initiated'),
   smsFallbackLaunched('emergency.sms_fallback_launched'),
   reportSubmitFailed('report.submit_failed'),
+  directionsRequested('emergency.directions_requested'),
   ;
 
   const AuditAction(this.code);

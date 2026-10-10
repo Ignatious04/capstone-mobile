@@ -1,3 +1,4 @@
+import 'package:capstone/core/constants/map_bounds.dart';
 import 'package:capstone/core/enums/map_mode_enum.dart';
 import 'package:capstone/core/shared/widgets/custom_app_bar.dart';
 import 'package:capstone/features/public_user/map/widgets/map_tile_widget.dart';
@@ -22,7 +23,9 @@ class _SelectLocationScreenState extends State<SelectLocationScreen> {
   @override
   void initState() {
     super.initState();
-    _selectedLocation = widget.initialLocation;
+    _selectedLocation = AngelesCityMap.contains(widget.initialLocation)
+        ? widget.initialLocation
+        : AngelesCityMap.center;
   }
 
   @override

@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:capstone/core/enums/attachment_type_enum.dart';
-import 'package:capstone/features/public_user/reporting/models/attachment_model.dart';
+import 'package:capstone/core/shared/models/attachment_model.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:path/path.dart' as path;
 
@@ -25,6 +25,27 @@ class StorageRepository {
       fileName: fileName,
       url: url,
       type: AttachmentTypeEnum.image.name,
+    );
+  }
+
+  Future<AttachmentModel> uploadResponderAttachment({
+    required File file,
+    required String reportID,
+    required String responderID,
+  }) async {
+    final extension = path.extension(file.path);
+    final stamp = DateTime.now().millisecondsSinceEpoch;
+    final ref = _storage.ref().child('reports/$reportID/responder/$stamp$extension');
+
+    await ref.putFile(file);
+    final url = await ref.getDownloadURL();
+
+    return AttachmentModel(
+      fileName: 'responder_$stamp$extension',
+      url: url,
+      type: AttachmentTypeEnum.image.name,
+      uploadedBy: responderID,
+      uploadedAt: DateTime.now(),
     );
   }
 

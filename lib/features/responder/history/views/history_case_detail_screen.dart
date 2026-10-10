@@ -82,6 +82,12 @@ class HistoryCaseDetailScreen extends StatelessWidget {
               SectionTitle(icon: Icons.attach_file, title: 'Attachments'),
               const SizedBox(height: 10),
               AttachmentsCard(attachments: report.attachments),
+              if (report.responderAttachments.isNotEmpty) ...[
+                const SizedBox(height: 10),
+                SectionTitle(icon: Icons.add_a_photo_outlined, title: 'Responder Attachments'),
+                const SizedBox(height: 10),
+                AttachmentsCard(attachments: report.responderAttachments),
+              ],
               const SizedBox(height: 10),
               SectionTitle(icon: Icons.notes, title: 'Additional Information'),
               const SizedBox(height: 10),

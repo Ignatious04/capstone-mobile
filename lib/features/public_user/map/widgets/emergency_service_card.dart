@@ -16,6 +16,7 @@ class EmergencyServiceCard extends StatelessWidget {
     required this.distance,
     required this.status,
     required this.onCallTap,
+    required this.onDirectionsTap,
     required this.onTap,
   });
 
@@ -28,6 +29,7 @@ class EmergencyServiceCard extends StatelessWidget {
   final String distance;
   final String status;
   final VoidCallback onCallTap;
+  final VoidCallback onDirectionsTap;
   final VoidCallback onTap;
 
   @override
@@ -106,36 +108,35 @@ class EmergencyServiceCard extends StatelessWidget {
                       ),
                       const SizedBox(height: 10),
                       Row(
-                        children: [
-                          Expanded(
-                            flex: 3,
-                            child: CustomElevatedButton(
-                              onPressed: onTap,
-                              icon: const Icon(
-                                Icons.near_me,
-                                color: Colors.white,
-                                size: 25,
-                              ),
-                              value: "Show on map",
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          Expanded(
-                            flex: 2,
-                            child: CustomElevatedButton(
-                              onPressed: onCallTap,
-                              icon: const Icon(
-                                Icons.call,
-                                color: Colors.white,
-                                size: 25,
-                              ),
-                              value: "Call",
-                            ),
-                          ),
-                        ],
-                      ),
+  children: [
+    Expanded(
+      flex: 3,
+      child: CustomElevatedButton(
+        onPressed: onTap,
+        icon: const Icon(Icons.near_me, color: Colors.white, size: 25),
+        value: "Show on map",
+      ),
+    ),
+    const SizedBox(width: 10),
+    Expanded(
+      flex: 2,
+      child: CustomElevatedButton(
+        onPressed: onCallTap,
+        icon: const Icon(Icons.call, color: Colors.white, size: 25),
+        value: "Call",
+      ),
+    ),
+  ],
+),
+const SizedBox(height: 10),
+SizedBox(
+  width: double.infinity,
+  child: CustomElevatedButton(
+    onPressed: onDirectionsTap,
+    icon: const Icon(Icons.directions, color: Colors.white, size: 25),
+    value: "Get directions",
+  ),
+),
                     ],
                   ),
                 ),
