@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:capstone/core/enums/notification_type_enum.dart';
 import 'package:capstone/core/enums/report_type_enum.dart';
+import 'package:capstone/core/services/local_notification_service.dart';
 import 'package:capstone/core/shared/models/notification_model.dart';
 import 'package:capstone/core/shared/providers/app_notification_provider.dart';
 import 'package:capstone/core/shared/providers/navigator_key_provider.dart';
@@ -72,6 +73,10 @@ class PushNotificationService {
     if (initialMessage != null) {
       _handleNotificationTap(initialMessage);
     }
+
+    LocalNotificationService.instance.onTap = _openFromData;
+    final launchData = await LocalNotificationService.instance.launchData();
+    if (launchData != null) _openFromData(launchData);
   }
 
   Future<void> dispose() async {
@@ -81,6 +86,7 @@ class PushNotificationService {
     _onMessageSub = null;
     _onOpenedSub = null;
     _tokenRefreshSub = null;
+    LocalNotificationService.instance.onTap = null;
     _initialized = false;
   }
 
@@ -125,6 +131,15 @@ class PushNotificationService {
 
     ref.read(appNotificationProvider.notifier).show('$title: $body');
 
+    // FCM doesn't show anything while the app is open, so raise a local
+    // notification to get the device's sound/vibration.
+    LocalNotificationService.instance.show(
+      id: message.hashCode,
+      title: title,
+      body: body,
+      data: message.data,
+    );
+
     ref
         .read(notificationHistoryProvider.notifier)
         .add(
@@ -139,11 +154,13 @@ class PushNotificationService {
         );
   }
 
-  Future<void> _handleNotificationTap(RemoteMessage message) async {
-    // Responders land on the Active Case tab, which already streams their assigned report.
-    if (message.data['type'] == 'reportAssigned') return;
+  Future<void> _handleNotificationTap(RemoteMessage message) => _openFromData(message.data);
+  // Responders land on the Active Case tab, which already streams their assigned report.
 
-    final reportID = message.data['reportID'] as String?;
+  Future<void> _openFromData(Map<String, dynamic> data) async {
+    if (data['type'] == 'reportAssigned') return;
+
+    final reportID = data['reportID'] as String?;
     debugPrint('Notification tapped, reportID: $reportID');
     if (reportID == null) return;
 

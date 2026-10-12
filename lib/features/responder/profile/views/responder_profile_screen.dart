@@ -11,6 +11,7 @@ import 'package:capstone/core/shared/widgets/custom_header_widget.dart';
 import 'package:capstone/core/shared/widgets/info_column.dart';
 import 'package:capstone/core/shared/widgets/text/headline_text.dart';
 import 'package:capstone/core/utilities/formatter.dart';
+import 'package:capstone/features/responder/active_case/providers/responder_location_sharing_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -130,6 +131,7 @@ class _ResponderProfileBody extends ConsumerWidget {
                         title: "Do you wish to log out?",
                       );
                       if (confirmed != true) return;
+                      await ref.read(responderLocationSharingProvider).stopSharing();
                       final uid = ref.read(firebaseAuthProvider).currentUser?.uid;
                       if (uid != null) {
                         await ref.read(pushNotificationServiceProvider).clearToken(uid);

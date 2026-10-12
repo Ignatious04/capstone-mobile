@@ -1,4 +1,5 @@
 import 'package:capstone/core/enums/service_type_enum.dart';
+import 'package:capstone/core/shared/providers/verification_provider.dart';
 import 'package:capstone/core/shared/widgets/custom_header_widget.dart';
 import 'package:capstone/core/shared/widgets/service_button.dart';
 import 'package:capstone/features/public_user/pre_call_guidance/providers/guidance_provider.dart';
@@ -6,6 +7,7 @@ import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/public_user/pre_call_guidance/views/pre_call_guidance_page_view.dart';
 import 'package:capstone/core/shared/providers/report_provider.dart';
 import 'package:capstone/core/shared/widgets/section_title.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -17,6 +19,13 @@ class PreCallGuidanceScreen extends ConsumerStatefulWidget {
 }
 
 class _PreCallGuidanceScreenState extends ConsumerState<PreCallGuidanceScreen> {
+  Future<bool> _canStart() async {
+    final results = await Connectivity().checkConnectivity();
+    final isOnline = !results.contains(ConnectivityResult.none);
+    if (!mounted) return false;
+    return !isOnline || await ensureVerified(context, ref);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,9 +60,12 @@ class _PreCallGuidanceScreenState extends ConsumerState<PreCallGuidanceScreen> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       ServiceButton(
-                        onPressed: () {
+                        onPressed: () async {
+                          if (!await _canStart()) return;
                           ref.read(reportProvider.notifier).setIncidentType(ServiceTypeEnum.medical);
                           ref.read(guidanceProvider.notifier).loadQuestions(ServiceTypeEnum.medical);
+
+                          if (!context.mounted) return;
 
                           Navigator.push(
                             context,
@@ -73,9 +85,12 @@ class _PreCallGuidanceScreenState extends ConsumerState<PreCallGuidanceScreen> {
                         height: 10,
                       ),
                       ServiceButton(
-                        onPressed: () {
+                        onPressed: () async {
+                          if (!await _canStart()) return;
                           ref.read(reportProvider.notifier).setIncidentType(ServiceTypeEnum.police);
                           ref.read(guidanceProvider.notifier).loadQuestions(ServiceTypeEnum.police);
+
+                          if (!context.mounted) return;
 
                           Navigator.push(
                             context,
@@ -95,10 +110,13 @@ class _PreCallGuidanceScreenState extends ConsumerState<PreCallGuidanceScreen> {
                         height: 10,
                       ),
                       ServiceButton(
-                        onPressed: () {
+                        onPressed: () async {
+                          if (!await _canStart()) return;
                           ref.read(reportProvider.notifier).setIncidentType(ServiceTypeEnum.fire);
                           ref.read(guidanceProvider.notifier).loadQuestions(ServiceTypeEnum.fire);
-                          
+
+                          if (!context.mounted) return;
+
                           Navigator.push(
                             context,
                             MaterialPageRoute(

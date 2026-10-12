@@ -4,6 +4,7 @@ import 'package:capstone/core/enums/service_type_enum.dart';
 import 'package:capstone/core/shared/providers/audit_log_repository_provider.dart';
 import 'package:capstone/core/shared/providers/location_provider.dart';
 import 'package:capstone/core/shared/providers/notification_history_provider.dart';
+import 'package:capstone/core/shared/providers/verification_provider.dart';
 import 'package:capstone/core/shared/widgets/custom_alert_dialog.dart';
 import 'package:capstone/core/shared/widgets/custom_circular_progress_indicator.dart';
 import 'package:capstone/core/shared/widgets/custom_header_widget.dart';
@@ -11,6 +12,7 @@ import 'package:capstone/core/shared/widgets/custom_snackbar_helper.dart';
 import 'package:capstone/core/shared/widgets/loading_overlay_widget.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/widgets/service_button.dart';
+import 'package:capstone/core/shared/widgets/verification_banner.dart';
 import 'package:capstone/core/utilities/call_launcher.dart';
 import 'package:capstone/core/utilities/distance_helper.dart';
 import 'package:capstone/core/utilities/formatter.dart';
@@ -75,6 +77,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }
 
   Future<void> _submitQuickReport(ServiceTypeEnum incidentType) async {
+    if (!await ensureVerified(context, ref)) return;
     final label = Formatter.formatEnumName(incidentType.name);
     final fix = await ref.read(locationServiceProvider).getCurrentLocation();
     final location = fix.latLng;
@@ -240,6 +243,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         const SizedBox(
                           height: 10,
                         ),
+                        const VerificationBanner(),
                         const SectionTitle(
                           icon: Icons.select_all,
                           title: "Quick Reporting",

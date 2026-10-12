@@ -16,6 +16,7 @@ class MapTileWidget extends StatefulWidget {
     this.mode = MapModeEnum.view,
     this.gesturesEnabled,
     this.extraMarkers = const {},
+    this.fitToPoints = const [],
   });
 
   final void Function(GoogleMapController controller)? onMapCreated;
@@ -25,6 +26,7 @@ class MapTileWidget extends StatefulWidget {
   final MapModeEnum mode;
   final bool? gesturesEnabled;
   final Set<Marker> extraMarkers;
+  final List<LatLng> fitToPoints;
 
   @override
   State<MapTileWidget> createState() => _MapTileWidgetState();
@@ -32,6 +34,32 @@ class MapTileWidget extends StatefulWidget {
 
 class _MapTileWidgetState extends State<MapTileWidget> {
   CameraPosition? _cameraPosition;
+
+  GoogleMapController? _controller;
+
+  @override
+  void didUpdateWidget(covariant MapTileWidget old) {
+    super.didUpdateWidget(old);
+    if (widget.fitToPoints.length >= 2 && widget.fitToPoints != old.fitToPoints) {
+      _fit();
+    }
+  }
+
+  Future<void> _fit() async {
+    final c = _controller;
+    if (c == null) return;
+    final pts = widget.fitToPoints;
+    final south = pts.map((p) => p.latitude).reduce((a, b) => a < b ? a : b);
+    final north = pts.map((p) => p.latitude).reduce((a, b) => a > b ? a : b);
+    final west = pts.map((p) => p.longitude).reduce((a, b) => a < b ? a : b);
+    final east = pts.map((p) => p.longitude).reduce((a, b) => a > b ? a : b);
+    await c.animateCamera(
+      CameraUpdate.newLatLngBounds(
+        LatLngBounds(southwest: LatLng(south, west), northeast: LatLng(north, east)),
+        60,
+      ),
+    );
+  }
 
   bool get _showCenterPin => widget.mode == MapModeEnum.selectLocation;
 
@@ -146,8 +174,10 @@ class _MapTileWidgetState extends State<MapTileWidget> {
           myLocationButtonEnabled: false,
           compassEnabled: false,
           mapToolbarEnabled: false,
-          onMapCreated: (controller) {
-            widget.onMapCreated?.call(controller);
+          onMapCreated: (c) {
+            _controller = c;
+            widget.onMapCreated?.call(c);
+            if (widget.fitToPoints.length >= 2) _fit();
           },
           markers: _showCenterPin ? {} : _buildMarkers(),
           onCameraIdle: () {
@@ -163,7 +193,7 @@ class _MapTileWidgetState extends State<MapTileWidget> {
         ),
 
         if (_showCenterPin)
-           IgnorePointer(
+          IgnorePointer(
             child: Center(
               child: Transform.translate(
                 offset: const Offset(0, -21),

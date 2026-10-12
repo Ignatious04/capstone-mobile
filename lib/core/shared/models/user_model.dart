@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:capstone/core/enums/rejection_code_enum.dart';
 import 'package:capstone/core/enums/verification_status_enum.dart';
 
 class UserModel {
@@ -41,8 +42,16 @@ class UserModel {
   final bool isSetup;
   final VerificationStatusEnum verificationStatus;
 
+  final RejectionCodeEnum? rejectionCode;
+  final String? rejectionReason;
+  final bool canResubmit;
+  final int? reviewedAt;
+  final String? reviewedBy;
+
   final bool isDeactivated;
   final int? deactivatedAt;
+
+  final int resubmissionCount;
 
   const UserModel({
     this.userID = "",
@@ -77,8 +86,14 @@ class UserModel {
     this.updatedAt = 0,
     this.isSetup = false,
     this.verificationStatus = VerificationStatusEnum.pending,
+    this.rejectionCode,
+    this.rejectionReason,
+    this.canResubmit = true,
+    this.reviewedAt,
+    this.reviewedBy,
     this.isDeactivated = false,
     this.deactivatedAt,
+    this.resubmissionCount = 0,
   });
 
   factory UserModel.fromMap(Map<dynamic, dynamic> map) {
@@ -92,6 +107,9 @@ class UserModel {
       sex: map['sex'] ?? '',
       contactNumber: map['contactNumber'] ?? '',
       isContactNumberVerified: map["isContactNumberVerified"] ?? false,
+      houseNum: map['houseNum'] ?? '',
+      street: map['street'] ?? '',
+      barangay: map['barangay'] ?? '',
       address: map['address'] ?? '',
       nationality: map['nationality'] ?? '',
       civilStatus: map['civilStatus'] ?? '',
@@ -109,9 +127,16 @@ class UserModel {
       createdAt: map['createdAt'] ?? 0,
       updatedAt: map['updatedAt'] ?? 0,
       isSetup: map["isSetup"] ?? false,
-      verificationStatus: VerificationStatusEnum.values.byName(map['verificationStatus'] ?? 'pending'),
+      verificationStatus:
+          VerificationStatusEnum.values.asNameMap()[map['verificationStatus']] ?? VerificationStatusEnum.pending,
+      rejectionCode: RejectionCodeEnum.tryParse(map['rejectionCode']),
+      rejectionReason: map['rejectionReason'],
+      canResubmit: map['canResubmit'] ?? true,
+      reviewedAt: map['reviewedAt'],
+      reviewedBy: map['reviewedBy'],
       isDeactivated: map['isDeactivated'] ?? false,
       deactivatedAt: map['deactivatedAt'],
+      resubmissionCount: map['resubmissionCount'] ?? 0,
     );
   }
 
@@ -126,6 +151,9 @@ class UserModel {
       'sex': sex,
       'contactNumber': contactNumber,
       "isContactNumberVerified": isContactNumberVerified,
+      'houseNum': houseNum,
+      'street': street,
+      'barangay': barangay,
       'address': address,
       'nationality': nationality,
       'civilStatus': civilStatus,
@@ -220,8 +248,14 @@ class UserModel {
       updatedAt: updatedAt ?? this.updatedAt,
       isSetup: isSetup ?? this.isSetup,
       verificationStatus: verificationStatus ?? this.verificationStatus,
+      rejectionCode: rejectionCode,
+      rejectionReason: rejectionReason,
+      canResubmit: canResubmit,
+      reviewedAt: reviewedAt,
+      reviewedBy: reviewedBy,
       isDeactivated: isDeactivated ?? this.isDeactivated,
       deactivatedAt: deactivatedAt ?? this.deactivatedAt,
+      resubmissionCount: resubmissionCount,
     );
   }
 }

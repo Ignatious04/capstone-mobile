@@ -4,6 +4,7 @@ import 'package:capstone/core/enums/report_type_enum.dart';
 import 'package:capstone/core/enums/service_type_enum.dart';
 import 'package:capstone/core/shared/providers/audit_log_repository_provider.dart';
 import 'package:capstone/core/shared/providers/firebase_auth_provider.dart';
+import 'package:capstone/core/shared/providers/verification_provider.dart';
 import 'package:capstone/core/utilities/priority_calculator.dart';
 import 'package:capstone/core/utilities/reference_number_generator.dart';
 import 'package:capstone/core/utilities/sms_launcher.dart';
@@ -58,6 +59,7 @@ class GuidanceNotifier extends Notifier<QuestionState> {
         final referenceNumber = ReferenceNumberGenerator.generate(now);
 
         if (!isOnline) {
+          if (!ref.read(isVerifiedProvider)) throw NotVerifiedException();
           await _submitViaSms(
             incidentType: incidentType,
             referenceNumber: referenceNumber,

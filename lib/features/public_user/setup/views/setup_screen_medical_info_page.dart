@@ -20,6 +20,15 @@ class _SetupScreenMedicalInfoPage extends ConsumerState<SetupScreenMedicalInfoPa
   TextEditingController vaccineDateController = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+    final user = ref.read(userProvider);
+    heightController.text = user.height == 0 ? '' : user.height.toString();
+    weightController.text = user.weight == 0 ? '' : user.weight.toString();
+    vaccineDateController.text = user.vaccineDate;
+  }
+
+  @override
   Widget build(BuildContext context) {
     final user = ref.watch(userProvider);
 

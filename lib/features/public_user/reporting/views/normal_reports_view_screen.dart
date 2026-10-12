@@ -153,7 +153,7 @@ class _NormalReportsViewScreenState extends ConsumerState<NormalReportsViewScree
                               const SizedBox(height: 10),
                               SectionTitle(icon: Icons.my_location, title: 'Responder Location'),
                               const SizedBox(height: 10),
-                               EtaCard(
+                              EtaCard(
                                 responder: responderLatLng,
                                 incident: incident,
                                 isOnScene: widget.report.status == ReportStatusEnum.onScene,
@@ -165,6 +165,7 @@ class _NormalReportsViewScreenState extends ConsumerState<NormalReportsViewScree
                                   borderRadius: BorderRadius.circular(12),
                                   child: MapTileWidget(
                                     initialLocation: incident,
+                                    fitToPoints: [incident, responderLatLng],
                                     mode: MapModeEnum.view,
                                     gesturesEnabled: true,
                                     extraMarkers: {

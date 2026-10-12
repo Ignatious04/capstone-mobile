@@ -1,6 +1,7 @@
 import 'package:capstone/core/shared/providers/connectivity_stream_provider.dart';
 import 'package:capstone/core/shared/providers/location_provider.dart';
 import 'package:capstone/core/shared/providers/report_provider.dart';
+import 'package:capstone/core/shared/providers/verification_provider.dart';
 import 'package:capstone/core/shared/widgets/custom_alert_dialog.dart';
 import 'package:capstone/core/shared/widgets/custom_circular_progress_indicator.dart';
 import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
@@ -191,6 +192,9 @@ class _PreCallGuidanceSummaryScreenState extends ConsumerState<PreCallGuidanceSu
 
                     final connectivityResult = await Connectivity().checkConnectivity();
                     final isOnlineNow = !connectivityResult.contains(ConnectivityResult.none);
+
+                    if (!context.mounted) return;
+                    if (isOnlineNow && !await ensureVerified(context, ref)) return;
 
                     if (!isOnlineNow) {
                       if (!context.mounted) {

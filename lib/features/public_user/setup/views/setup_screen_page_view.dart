@@ -1,8 +1,11 @@
+import 'package:capstone/core/shared/models/user_model.dart';
 import 'package:capstone/core/shared/providers/user_provider.dart';
 import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
 import 'package:capstone/core/shared/widgets/custom_header_widget.dart';
 import 'package:capstone/core/shared/widgets/custom_snackbar_helper.dart';
 import 'package:capstone/core/shared/widgets/loading_overlay_widget.dart';
+import 'package:capstone/core/shared/widgets/text/body_text.dart';
+import 'package:capstone/core/shared/widgets/text/title_text.dart';
 import 'package:capstone/features/public_user/setup/views/phone_verification_screen.dart';
 import 'package:capstone/features/public_user/setup/views/setup_screen_user_card_page.dart';
 import 'package:capstone/features/public_user/setup/views/setup_screen_personal_info_page.dart';
@@ -14,7 +17,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SetupScreenPageView extends ConsumerStatefulWidget {
-  const SetupScreenPageView({super.key});
+  const SetupScreenPageView({super.key, this.resubmitFrom});
+
+  final UserModel? resubmitFrom;
 
   @override
   ConsumerState<SetupScreenPageView> createState() => _SetupScreenPageView();
@@ -35,6 +40,10 @@ class _SetupScreenPageView extends ConsumerState<SetupScreenPageView> {
     pageController = PageController(initialPage: 0);
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      final previous = widget.resubmitFrom;
+      if (previous != null) {
+        ref.read(userProvider.notifier).prefillForResubmission(previous);
+      }
       checkPhoneStatus();
     });
   }
@@ -96,8 +105,8 @@ class _SetupScreenPageView extends ConsumerState<SetupScreenPageView> {
             child: Column(
               children: [
                 CustomHeaderWidget(
-                  title: "Create Account",
-                  body: "Set up your safety profile",
+                  title: widget.resubmitFrom == null ? "Create Account" : "Update Your Information",
+                  body: widget.resubmitFrom == null ? "Set up your safety profile" : "Fix the details we flagged",
                   progressIndicator: LinearProgressIndicator(
                     value: (currentPage + 1) / numberOfPages,
                     color: Colors.white,
@@ -173,18 +182,36 @@ class _SetupScreenPageView extends ConsumerState<SetupScreenPageView> {
                                 builder: (context) => showLoadingOverlay(),
                               );
 
+                              final isResubmission = widget.resubmitFrom != null;
+
                               try {
-                                await ref.read(userProvider.notifier).updateUserSetup();
+                                await ref.read(userProvider.notifier).updateUserSetup(isResubmission: isResubmission);
 
                                 if (!context.mounted) return;
 
                                 Navigator.pop(context); // dismiss the loading overlay
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => OnboardingScreen(),
-                                  ),
-                                );
+                                if (isResubmission) {
+                                  await showDialog(
+                                    context: context,
+                                    builder: (_) => AlertDialog(
+                                      title: const TitleText(value: "Resubmitted"),
+                                      content: const BodyText(
+                                        value:
+                                            "Your information is back in the review queue. We'll notify you of the result.",
+                                      ),
+                                      actions: [
+                                        TextButton(onPressed: () => Navigator.pop(context), child: const Text("OK")),
+                                      ],
+                                    ),
+                                  );
+                                  if (!context.mounted) return;
+                                  Navigator.popUntil(context, (route) => route.isFirst);
+                                } else {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => OnboardingScreen()),
+                                  );
+                                }
                               } catch (e) {
                                 if (!context.mounted) return;
 
@@ -196,7 +223,9 @@ class _SetupScreenPageView extends ConsumerState<SetupScreenPageView> {
                             }
                           },
 
-                          value: currentPage == numberOfPages - 1 ? "Create" : "Next",
+                          value: currentPage == numberOfPages - 1
+                              ? (widget.resubmitFrom == null ? "Create" : "Resubmit")
+                              : "Next",
                         ),
                       ),
                     ],

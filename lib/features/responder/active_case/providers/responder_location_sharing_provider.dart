@@ -13,8 +13,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-final responderLocationSharingProvider = Provider<void>((ref) {
-  final sharer = _ResponderLocationSharer(
+final responderLocationSharingProvider = Provider<ResponderLocationSharer>((ref) {
+  final sharer = ResponderLocationSharer(
     database: ref.read(realtimeDatabaseRepositoryProvider),
     locationService: ref.read(locationServiceProvider),
   );
@@ -29,10 +29,13 @@ final responderLocationSharingProvider = Provider<void>((ref) {
     },
     fireImmediately: true,
   );
+  return sharer;
 });
 
-class _ResponderLocationSharer {
-  _ResponderLocationSharer({required this.database, required this.locationService});
+class ResponderLocationSharer {
+  ResponderLocationSharer({required this.database, required this.locationService});
+
+  Future<void> stopSharing() => _stop();
 
   final RealtimeDatabaseRepository database;
   final LocationService locationService;
@@ -41,8 +44,7 @@ class _ResponderLocationSharer {
   String? _sharingReportID;
 
   static bool _shouldShare(ReportModel? report) =>
-      report != null &&
-      (report.status == ReportStatusEnum.dispatched || report.status == ReportStatusEnum.onScene);
+      report != null && (report.status == ReportStatusEnum.dispatched || report.status == ReportStatusEnum.onScene);
 
   String _path(String reportID) => 'responderLocations/$reportID';
 

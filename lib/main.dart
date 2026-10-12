@@ -1,5 +1,6 @@
 import 'package:capstone/core/enums/notification_type_enum.dart';
 import 'package:capstone/core/l10n/app_localizations.dart';
+import 'package:capstone/core/services/local_notification_service.dart';
 import 'package:capstone/core/services/push_notification_service.dart';
 import 'package:capstone/core/shared/models/notification_model.dart';
 import 'package:capstone/core/shared/providers/app_notification_provider.dart';
@@ -24,6 +25,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler); // register before runApp
+  await LocalNotificationService.instance.init();
   runApp(ProviderScope(child: const MyApp()));
 }
 

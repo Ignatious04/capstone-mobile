@@ -66,4 +66,32 @@ class UserRepository {
       'updatedAt': now,
     });
   }
+
+  Future<void> resubmitVerification(
+    String uid,
+    Map<String, dynamic> data, {
+    required Map<String, dynamic> previousRejection,
+  }) async {
+    final userRef = firestore.collection('users').doc(uid);
+    final batch = firestore.batch();
+
+    // Keep the old rejection so reviewers can see what was asked before.
+    batch.set(userRef.collection('verificationHistory').doc(), {
+      ...previousRejection,
+      'archivedAt': DateTime.now().millisecondsSinceEpoch,
+    });
+
+    batch.set(userRef, {
+      ...data,
+      'verificationStatus': 'pending',
+      'rejectionCode': FieldValue.delete(),
+      'rejectionReason': FieldValue.delete(),
+      'reviewedAt': FieldValue.delete(),
+      'reviewedBy': FieldValue.delete(),
+      'canResubmit': true,
+      'resubmissionCount': FieldValue.increment(1),
+    }, SetOptions(merge: true));
+
+    await batch.commit();
+  }
 }

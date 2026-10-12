@@ -4,7 +4,7 @@ import 'package:capstone/core/shared/providers/responder_repository_provider.dar
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final currentAuthenticatedResponderProvider = StreamProvider<ResponderModel?>((ref) {
-  final currentUser = ref.watch(firebaseAuthProvider).currentUser;
+  final currentUser = ref.watch(authStateProvider).value;
 
   if (currentUser == null) {
     return Stream.value(null);

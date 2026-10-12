@@ -1,3 +1,4 @@
+import 'package:capstone/core/enums/verification_status_enum.dart';
 import 'package:capstone/core/shared/providers/responder_provider.dart';
 import 'package:capstone/core/shared/providers/user_provider.dart';
 import 'package:capstone/core/shared/widgets/custom_circular_progress_indicator.dart';
@@ -7,6 +8,7 @@ import 'package:capstone/features/public_user/login/views/login_screen.dart';
 import 'package:capstone/core/shared/providers/firebase_auth_provider.dart';
 import 'package:capstone/features/public_user/register/views/email_verification_screen.dart';
 import 'package:capstone/features/public_user/setup/views/welcome_screen.dart';
+import 'package:capstone/features/rejected_screen.dart';
 import 'package:capstone/features/responder/main/views/responder_main_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -52,6 +54,10 @@ class AuthWrapper extends ConsumerWidget {
 
                 if (user == null || !user.isSetup) {
                   return const WelcomeScreen();
+                }
+
+                if (user.verificationStatus == VerificationStatusEnum.rejected) {
+                  return RejectedScreen(user: user); // reason, resubmit button, hotline buttons, logout
                 }
 
                 return const LocationGate();

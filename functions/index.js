@@ -44,8 +44,14 @@ exports.onReportAssigned = onDocumentUpdated("reports/{reportID}", async (event)
         body: "You have been assigned a new report. Open the app to view it.",
       },
       data: {type: "reportAssigned", reportID: event.params.reportID},
-      android: {priority: "high"},
-      apns: {headers: {"apns-priority": "10"}},
+      android: {
+        priority: "high",
+        notification: {channelId: "high_importance_channel", sound: "default"},
+      },
+      apns: {
+        headers: {"apns-priority": "10"},
+        payload: {aps: {sound: "default"}},
+      },
     });
   } catch (err) {
     if (err.code === "messaging/registration-token-not-registered") {
@@ -88,6 +94,11 @@ exports.onReportStatusChange = onDocumentUpdated("reports/{reportID}", async (ev
       token,
       notification: {title: copy.title, body: copy.body},
       data: {type: "reportStatus", reportID: event.params.reportID, status: after.status},
+      android: {
+        priority: "high",
+        notification: {channelId: "high_importance_channel", sound: "default"},
+      },
+      apns: {payload: {aps: {sound: "default"}}},
     });
   } catch (err) {
     if (err.code === "messaging/registration-token-not-registered") {
@@ -96,4 +107,22 @@ exports.onReportStatusChange = onDocumentUpdated("reports/{reportID}", async (ev
       throw err;
     }
   }
+});
+
+exports.onVerificationChange = onDocumentUpdated("users/{uid}", async (event) => {
+  const before = event.data.before.data();
+  const after = event.data.after.data();
+  if (before.verificationStatus === after.verificationStatus) return;
+
+  const copy = {
+    approved: {title: "Account verified", body: "Your account has been approved."},
+    rejected: {title: "Verification needs attention", body: "Open the app to see why and what to do next."},
+  }[after.verificationStatus];
+  if (!copy || !after.fcmToken) return;
+
+  await admin.messaging().send({
+    token: after.fcmToken,
+    notification: copy,
+    data: {type: "verification", status: after.verificationStatus},
+  });
 });

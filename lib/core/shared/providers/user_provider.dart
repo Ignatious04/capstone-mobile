@@ -53,7 +53,7 @@ class UserNotifier extends Notifier<UserModel> {
     return null;
   }
 
-  Future<void> updateUserSetup() async {
+  Future<void> updateUserSetup({bool isResubmission = false}) async {
     final authUser = ref.read(firebaseAuthProvider).currentUser!;
     final userID = authUser.uid;
     var user = state;
@@ -89,6 +89,23 @@ class UserNotifier extends Notifier<UserModel> {
 
     final data = user.toMap();
     if (user.createdAt == 0) data.remove('createdAt'); // keep the original from registration
+
+    if (isResubmission) {
+      await ref
+          .read(userRepositoryProvider)
+          .resubmitVerification(
+            userID,
+            data,
+            previousRejection: {
+              'rejectionCode': user.rejectionCode?.name,
+              'rejectionReason': user.rejectionReason,
+              'reviewedAt': user.reviewedAt,
+              'reviewedBy': user.reviewedBy,
+              'attempt': user.resubmissionCount + 1,
+            },
+          );
+      return;
+    }
 
     await ref
         .read(userRepositoryProvider)
@@ -139,6 +156,23 @@ class UserNotifier extends Notifier<UserModel> {
     setContactNumber(verified);
     setIsContactNumberVerified(true);
     return true;
+  }
+
+  void prefillForResubmission(UserModel existing) {
+    var user = existing;
+
+    // Older docs only stored the combined address ("house, street, barangay").
+    if (user.houseNum.isEmpty && user.street.isEmpty && user.barangay.isEmpty && user.address.isNotEmpty) {
+      final parts = user.address.split(', ');
+      if (parts.length >= 3) {
+        user = user.copyWith(
+          houseNum: parts.first,
+          street: parts.sublist(1, parts.length - 1).join(', '),
+          barangay: parts.last,
+        );
+      }
+    }
+    state = user; // fromMap leaves profileImage/idImage null, so both must be recaptured
   }
 
   void setUserID(String value) {

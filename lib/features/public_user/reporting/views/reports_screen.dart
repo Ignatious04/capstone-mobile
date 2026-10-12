@@ -1,7 +1,9 @@
 import 'package:capstone/core/enums/report_status_enum.dart';
+import 'package:capstone/core/shared/providers/verification_provider.dart';
 import 'package:capstone/core/shared/widgets/custom_circular_progress_indicator.dart';
 import 'package:capstone/core/shared/widgets/custom_header_widget.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
+import 'package:capstone/core/shared/widgets/verification_banner.dart';
 import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/core/shared/models/report_model.dart';
 import 'package:capstone/features/public_user/reporting/widgets/report_card.dart';
@@ -73,6 +75,7 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
               width: double.infinity,
               child: const CustomHeaderWidget(title: "Reports", body: "Tell us what you need"),
             ),
+            const VerificationBanner(),
             Expanded(
               child: reports.when(
                 data: (reports) {
@@ -115,6 +118,10 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
       floatingActionButton: FloatingActionButton(
         heroTag: "reportsFAB",
         onPressed: () async {
+          if (!await ensureVerified(context, ref)) return;
+
+          if (!context.mounted) return;
+
           final submitted = await Navigator.push<bool>(
             context,
             MaterialPageRoute(
