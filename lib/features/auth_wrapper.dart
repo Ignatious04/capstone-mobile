@@ -3,7 +3,7 @@ import 'package:capstone/core/shared/providers/responder_provider.dart';
 import 'package:capstone/core/shared/providers/session_provider.dart';
 import 'package:capstone/core/shared/providers/user_provider.dart';
 import 'package:capstone/core/shared/widgets/custom_circular_progress_indicator.dart';
-import 'package:capstone/core/shared/widgets/location_gate.dart';
+import 'package:capstone/features/location_gate.dart';
 import 'package:capstone/features/deactivated_screen.dart';
 import 'package:capstone/features/public_user/login/views/login_screen.dart';
 import 'package:capstone/core/shared/providers/firebase_auth_provider.dart';

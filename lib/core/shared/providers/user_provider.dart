@@ -80,15 +80,18 @@ class UserNotifier extends Notifier<UserModel> {
 
     setIsSetup(true);
 
+    final now = DateTime.now().millisecondsSinceEpoch;
+
     user = state.copyWith(
       userID: userID,
       email: authUser.email ?? state.email,
       address: "${user.houseNum}, ${user.street}, ${user.barangay}",
-      updatedAt: DateTime.now().millisecondsSinceEpoch,
+      updatedAt: now,
     );
 
     final data = user.toMap();
     if (user.createdAt == 0) data.remove('createdAt'); // keep the original from registration
+    data['verificationSubmittedAt'] = now;
 
     if (isResubmission) {
       await ref

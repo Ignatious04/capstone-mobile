@@ -78,8 +78,13 @@ class _LocationGateState extends ConsumerState<LocationGate> with WidgetsBinding
         } else {
           _showError(result);
         }
+        return;
       }
       _showError(status);
+    } catch (e) {
+      // Without this, any platform exception leaves the spinner up forever.
+      debugPrint('Location check failed: $e');
+      if (mounted) _showError(LocationStatusEnum.permissionDenied);
     } finally {
       _checking = false;
     }

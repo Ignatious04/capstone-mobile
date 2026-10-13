@@ -47,6 +47,7 @@ class UserModel {
   final bool canResubmit;
   final int? reviewedAt;
   final String? reviewedBy;
+  final int? verificationSubmittedAt;
 
   final bool isDeactivated;
   final int? deactivatedAt;
@@ -91,6 +92,7 @@ class UserModel {
     this.canResubmit = true,
     this.reviewedAt,
     this.reviewedBy,
+    this.verificationSubmittedAt,
     this.isDeactivated = false,
     this.deactivatedAt,
     this.resubmissionCount = 0,
@@ -134,6 +136,7 @@ class UserModel {
       canResubmit: map['canResubmit'] ?? true,
       reviewedAt: map['reviewedAt'],
       reviewedBy: map['reviewedBy'],
+      verificationSubmittedAt: map['verificationSubmittedAt'],
       isDeactivated: map['isDeactivated'] ?? false,
       deactivatedAt: map['deactivatedAt'],
       resubmissionCount: map['resubmissionCount'] ?? 0,
@@ -214,6 +217,7 @@ class UserModel {
     VerificationStatusEnum? verificationStatus,
     final bool? isDeactivated,
     final int? deactivatedAt,
+    final int? verificationSubmittedAt,
   }) {
     return UserModel(
       userID: userID ?? this.userID,
@@ -255,6 +259,7 @@ class UserModel {
       reviewedBy: reviewedBy,
       isDeactivated: isDeactivated ?? this.isDeactivated,
       deactivatedAt: deactivatedAt ?? this.deactivatedAt,
+      verificationSubmittedAt: verificationSubmittedAt ?? this.verificationSubmittedAt,
       resubmissionCount: resubmissionCount,
     );
   }
