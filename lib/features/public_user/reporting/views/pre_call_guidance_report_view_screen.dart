@@ -167,7 +167,10 @@ class PreCallGuidanceReportViewScreen extends ConsumerWidget {
                 ),
                 const SizedBox(height: 10),
               ],
-              LocationCard(location: location, responderLocation: responderLatLng),
+              LocationCard(
+                  location: location,
+                  responderLocation: responderLatLng,
+                ),
               const SizedBox(height: 10),
               SectionTitle(
                 icon: Icons.info,

@@ -1,20 +1,28 @@
 import 'package:capstone/core/enums/map_mode_enum.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
+import 'package:capstone/core/utilities/case_marker_icons.dart';
 import 'package:capstone/features/public_user/map/widgets/map_tile_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-class LocationCard extends StatelessWidget {
-  const LocationCard({super.key, required this.location, this.responderLocation});
+class LocationCard extends ConsumerWidget {
+  const LocationCard({
+    super.key,
+    required this.location,
+    this.responderLocation,
+  });
 
   final GeoPoint location;
   final LatLng? responderLocation;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final incident = LatLng(location.latitude, location.longitude);
     final responder = responderLocation;
+    // null while the bitmaps render; buildCaseMarkers falls back to default pins.
+    final icons = ref.watch(caseMarkerIconsProvider).value;
 
     return Card(
       color: Colors.white,
@@ -31,19 +39,11 @@ class LocationCard extends StatelessWidget {
               fitToPoints: responder == null ? const [] : [incident, responder],
               mode: MapModeEnum.view,
               gesturesEnabled: responder != null,
-              extraMarkers: {
-                Marker(
-                  markerId: const MarkerId('incident'),
-                  position: incident,
-                  icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
-                ),
-                if (responder != null)
-                  Marker(
-                    markerId: const MarkerId('responder'),
-                    position: responder,
-                    icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
-                  ),
-              },
+              extraMarkers: buildCaseMarkers(
+                icons: icons,
+                incident: incident,
+                responder: responder,
+              ),
             ),
           ),
           Padding(
