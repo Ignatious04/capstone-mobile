@@ -11,6 +11,10 @@ final isVerifiedProvider = Provider<bool>((ref) {
   return user?.verificationStatus == VerificationStatusEnum.approved;
 });
 
+final minuteTickProvider = StreamProvider.autoDispose<DateTime>(
+  (ref) => Stream.periodic(const Duration(minutes: 1), (_) => DateTime.now()),
+);
+
 class NotVerifiedException implements Exception {
   @override
   String toString() => "Your account must be verified before you can send reports.";

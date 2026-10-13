@@ -1,5 +1,5 @@
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
-import 'package:capstone/core/shared/widgets/text/title_text.dart';
+import 'package:capstone/core/shared/widgets/text/headline_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -20,16 +20,20 @@ class OnboardingScreen extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const TitleText(
-                    value: "Saup Angeles",
-                    isBold: true,
+                  Icon(
+                    Icons.check,
+                    size: 75,
+                    color: Colors.green,
                   ),
                   const SizedBox(
-                    height: 20,
+                    height: 10,
                   ),
-                  const BodyText(value: "Account and Safety Profile Saved"),
+                  const HeadlineText(
+                    value: "Account and Safety Profile Saved",
+                    alignment: TextAlign.center,
+                  ),
                   const SizedBox(
-                    height: 20,
+                    height: 10,
                   ),
                   const BodyText(
                     value:
@@ -38,7 +42,7 @@ class OnboardingScreen extends StatelessWidget {
                     color: Colors.black54,
                   ),
                   const SizedBox(
-                    height: 20,
+                    height: 10,
                   ),
                   SizedBox(
                     width: double.infinity,

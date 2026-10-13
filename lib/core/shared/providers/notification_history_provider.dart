@@ -61,4 +61,12 @@ class NotificationHistoryNotifier extends Notifier<List<NotificationModel>> {
     await ref.read(notificationHistoryRepositoryProvider).markAllAsRead(userID);
     state = state.map((n) => n.copyWith(isRead: true)).toList();
   }
+
+  Future<void> delete(String notificationID) async {
+    final userID = ref.read(firebaseAuthProvider).currentUser?.uid;
+    if (userID == null) return;
+
+    await ref.read(notificationHistoryRepositoryProvider).delete(userID, notificationID);
+    state = state.where((n) => n.id != notificationID).toList();
+  }
 }

@@ -49,4 +49,16 @@ class NotificationHistoryRepository {
       updated.map((n) => jsonEncode(n.toMap())).toList(),
     );
   }
+
+  Future<void> delete(String userID, String notificationID) async {
+    final prefs = await SharedPreferences.getInstance();
+    final current = await getAll(userID);
+
+    final updated = current.where((n) => n.id != notificationID).toList();
+
+    await prefs.setStringList(
+      _key(userID),
+      updated.map((n) => jsonEncode(n.toMap())).toList(),
+    );
+  }
 }

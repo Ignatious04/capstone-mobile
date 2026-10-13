@@ -1,6 +1,7 @@
 import 'package:capstone/core/shared/providers/firebase_auth_provider.dart';
 import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
+import 'package:capstone/core/shared/widgets/text/headline_text.dart';
 import 'package:capstone/core/shared/widgets/text/title_text.dart';
 import 'package:capstone/features/public_user/setup/views/setup_screen_page_view.dart';
 import 'package:flutter/material.dart';
@@ -24,20 +25,34 @@ class WelcomeScreen extends ConsumerWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  TitleText(value: "Saup Angeles"),
-                  SizedBox(
+                  Icon(
+                    Icons.emergency_outlined,
+                    size: 75,
+                    color: Colors.black54,
+                  ),
+                  const SizedBox(
                     height: 10,
                   ),
-                  TitleText(value: "Hello!"),
-                  SizedBox(
+                  const HeadlineText(
+                    value: "Saup Angeles",
+                    isBold: true,
+                  ),
+                  const SizedBox(
                     height: 10,
                   ),
-                  BodyText(
+                  TitleText(
+                    value: "Hello!",
+                    color: Colors.black54,
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  const BodyText(
                     value: "Let's start off by setting up your account.",
                     alignment: TextAlign.center,
                     color: Colors.black54,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   SizedBox(

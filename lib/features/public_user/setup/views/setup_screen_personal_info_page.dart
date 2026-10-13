@@ -225,7 +225,7 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
                       style:
                           Theme.of(
                             context,
-                          ).textTheme.titleMedium?.copyWith(
+                          ).textTheme.bodyMedium?.copyWith(
                             color: Colors.black,
                           ),
                       decoration: InputDecoration(
@@ -311,7 +311,7 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
               return null;
             },
             onChanged: (value) {
-              ref.read(userProvider.notifier).setContactNumber(value); // was: setContactNumber(value)
+              // ref.read(userProvider.notifier).setContactNumber(value);
             },
             isRequired: true,
           ),

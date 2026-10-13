@@ -57,7 +57,7 @@ class NearbyServicesCard extends ConsumerWidget {
                   child: Icon(
                     icon,
                     color: iconColor,
-                    size: 50,
+                    size: 40,
                   ),
                 ),
                 const SizedBox(width: 10),

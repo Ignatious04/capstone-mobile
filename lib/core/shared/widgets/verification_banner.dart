@@ -2,6 +2,7 @@ import 'package:capstone/core/enums/verification_status_enum.dart';
 import 'package:capstone/core/shared/providers/user_provider.dart';
 import 'package:capstone/core/shared/providers/verification_provider.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
+import 'package:capstone/core/shared/widgets/text/label_text.dart';
 import 'package:capstone/core/themes/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -25,6 +26,8 @@ class VerificationBanner extends ConsumerWidget {
     final submittedAt = user?.verificationSubmittedAt;
     final isPending = user?.verificationStatus == VerificationStatusEnum.pending;
 
+    if (isPending && submittedAt != null) ref.watch(minuteTickProvider);
+
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
       padding: const EdgeInsets.all(12),
@@ -35,16 +38,21 @@ class VerificationBanner extends ConsumerWidget {
       ),
       child: Row(
         children: [
-          const Icon(Icons.lock_outline, color: Colors.deepOrange),
+          const Icon(
+            Icons.lock_outline,
+            color: Colors.deepOrange,
+            size: 25,
+          ),
           const SizedBox(width: 10),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const BodyText(
-                  value: "Reporting unlocks once your account is verified. You can still call emergency services.",
+                  value:
+                      "Realtime reporting unlocks once your account is verified. You can still call emergency services.",
                 ),
-                if (isPending && submittedAt != null) BodyText(value: "Submitted ${_timeAgo(submittedAt)}."),
+                if (isPending && submittedAt != null) LabelText(value: "Submitted ${_timeAgo(submittedAt)}."),
               ],
             ),
           ),

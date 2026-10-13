@@ -2,6 +2,16 @@ import 'dart:io';
 
 import 'package:capstone/core/enums/rejection_code_enum.dart';
 import 'package:capstone/core/enums/verification_status_enum.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+int? _toMillis(dynamic v) {
+  if (v == null) return null;
+  if (v is int) return v;
+  if (v is num) return v.toInt();
+  if (v is Timestamp) return v.millisecondsSinceEpoch;
+  if (v is DateTime) return v.millisecondsSinceEpoch;
+  return null;
+}
 
 class UserModel {
   final String userID;
@@ -105,7 +115,7 @@ class UserModel {
       firstName: map['firstName'] ?? '',
       middleName: map['middleName'] ?? '',
       lastName: map['lastName'] ?? '',
-      birthDate: map['birthDate'] ?? 0,
+      birthDate: _toMillis(map['birthDate']) ?? 0,
       sex: map['sex'] ?? '',
       contactNumber: map['contactNumber'] ?? '',
       isContactNumberVerified: map["isContactNumberVerified"] ?? false,
@@ -126,19 +136,19 @@ class UserModel {
       isVaccinated: map['isVaccinated'] ?? false,
       vaccineType: map['vaccineType'] ?? '',
       vaccineDate: map['vaccineDate'] ?? '',
-      createdAt: map['createdAt'] ?? 0,
-      updatedAt: map['updatedAt'] ?? 0,
+      createdAt: _toMillis(map['createdAt']) ?? 0,
+      updatedAt: _toMillis(map['updatedAt']) ?? 0,
       isSetup: map["isSetup"] ?? false,
       verificationStatus:
           VerificationStatusEnum.values.asNameMap()[map['verificationStatus']] ?? VerificationStatusEnum.pending,
       rejectionCode: RejectionCodeEnum.tryParse(map['rejectionCode']),
       rejectionReason: map['rejectionReason'],
       canResubmit: map['canResubmit'] ?? true,
-      reviewedAt: map['reviewedAt'],
+      reviewedAt: _toMillis(map['reviewedAt']),
       reviewedBy: map['reviewedBy'],
-      verificationSubmittedAt: map['verificationSubmittedAt'],
+      verificationSubmittedAt: _toMillis(map['verificationSubmittedAt']),
       isDeactivated: map['isDeactivated'] ?? false,
-      deactivatedAt: map['deactivatedAt'],
+      deactivatedAt: _toMillis(map['deactivatedAt']),
       resubmissionCount: map['resubmissionCount'] ?? 0,
     );
   }

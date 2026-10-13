@@ -10,10 +10,12 @@ class NotificationCard extends StatelessWidget {
     super.key,
     required this.notification,
     this.onTap,
+    this.onDelete,
   });
 
   final NotificationModel notification;
   final VoidCallback? onTap;
+  final VoidCallback? onDelete;
 
   IconData get _icon {
     switch (notification.type) {
@@ -61,6 +63,14 @@ class NotificationCard extends StatelessWidget {
                   height: 10,
                   margin: const EdgeInsets.only(left: 8, top: 4),
                   decoration: const BoxDecoration(color: Colors.deepOrange, shape: BoxShape.circle),
+                ),
+              if (onDelete != null)
+                IconButton(
+                  icon: const Icon(Icons.delete_outline, color: Colors.grey),
+                  tooltip: "Delete notification",
+                  padding: EdgeInsets.zero,
+                  constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
+                  onPressed: onDelete,
                 ),
             ],
           ),
