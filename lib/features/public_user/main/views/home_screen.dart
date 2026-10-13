@@ -232,6 +232,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                               data: (latLng) => MapTileWidget(
                                 initialLocation: latLng,
                                 mode: MapModeEnum.view,
+                                followLocation: true,
                               ),
                               loading: () => const Center(
                                 child: CustomCircularProgressIndicator(),

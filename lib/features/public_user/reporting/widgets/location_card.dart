@@ -6,12 +6,16 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class LocationCard extends StatelessWidget {
-  const LocationCard({super.key, required this.location});
+  const LocationCard({super.key, required this.location, this.responderLocation});
 
   final GeoPoint location;
+  final LatLng? responderLocation;
 
   @override
   Widget build(BuildContext context) {
+    final incident = LatLng(location.latitude, location.longitude);
+    final responder = responderLocation;
+
     return Card(
       color: Colors.white,
       elevation: 1,
@@ -23,11 +27,23 @@ class LocationCard extends StatelessWidget {
           SizedBox(
             height: 250,
             child: MapTileWidget(
-              initialLocation: LatLng(
-                location.latitude,
-                location.longitude,
-              ),
+              initialLocation: incident,
+              fitToPoints: responder == null ? const [] : [incident, responder],
               mode: MapModeEnum.view,
+              gesturesEnabled: responder != null,
+              extraMarkers: {
+                Marker(
+                  markerId: const MarkerId('incident'),
+                  position: incident,
+                  icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+                ),
+                if (responder != null)
+                  Marker(
+                    markerId: const MarkerId('responder'),
+                    position: responder,
+                    icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
+                  ),
+              },
             ),
           ),
           Padding(

@@ -3,6 +3,7 @@ import 'package:capstone/core/enums/map_mode_enum.dart';
 import 'package:capstone/core/enums/service_type_enum.dart';
 import 'package:capstone/core/utilities/icon_to_bitmap_descriptor.dart';
 import 'package:capstone/features/public_user/map/models/emergency_service_model.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -17,6 +18,7 @@ class MapTileWidget extends StatefulWidget {
     this.gesturesEnabled,
     this.extraMarkers = const {},
     this.fitToPoints = const [],
+    this.followLocation = false,
   });
 
   final void Function(GoogleMapController controller)? onMapCreated;
@@ -27,6 +29,10 @@ class MapTileWidget extends StatefulWidget {
   final bool? gesturesEnabled;
   final Set<Marker> extraMarkers;
   final List<LatLng> fitToPoints;
+
+  /// When true, the camera re-centers whenever [initialLocation] changes.
+  /// Off by default so other map views keep their current behavior.
+  final bool followLocation;
 
   @override
   State<MapTileWidget> createState() => _MapTileWidgetState();
@@ -40,8 +46,15 @@ class _MapTileWidgetState extends State<MapTileWidget> {
   @override
   void didUpdateWidget(covariant MapTileWidget old) {
     super.didUpdateWidget(old);
-    if (widget.fitToPoints.length >= 2 && widget.fitToPoints != old.fitToPoints) {
-      _fit();
+    if (widget.fitToPoints.length >= 2 && !listEquals(widget.fitToPoints, old.fitToPoints)) {
+  _fit();
+}
+
+    if (widget.followLocation &&
+        widget.initialLocation != old.initialLocation &&
+        AngelesCityMap.contains(widget.initialLocation)) {
+      // newLatLng keeps the current zoom level.
+      _controller?.animateCamera(CameraUpdate.newLatLng(widget.initialLocation));
     }
   }
 

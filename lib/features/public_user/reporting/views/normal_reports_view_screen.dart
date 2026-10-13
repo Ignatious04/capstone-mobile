@@ -1,6 +1,6 @@
-import 'package:capstone/core/enums/map_mode_enum.dart';
 import 'package:capstone/core/enums/report_status_enum.dart';
 import 'package:capstone/core/enums/service_type_enum.dart';
+import 'package:capstone/core/shared/providers/report_repository_provider.dart';
 import 'package:capstone/core/shared/providers/responder_provider.dart';
 import 'package:capstone/core/shared/widgets/emergency_guidance_sheet.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
@@ -8,7 +8,6 @@ import 'package:capstone/core/shared/widgets/text/label_text.dart';
 import 'package:capstone/core/utilities/formatter.dart';
 import 'package:capstone/core/shared/widgets/custom_app_bar.dart';
 import 'package:capstone/core/shared/models/report_model.dart';
-import 'package:capstone/features/public_user/map/widgets/map_tile_widget.dart';
 import 'package:capstone/features/public_user/reporting/providers/responder_location_provider.dart';
 import 'package:capstone/features/public_user/reporting/widgets/additional_information_card.dart';
 import 'package:capstone/features/public_user/reporting/widgets/attachments_card.dart';
@@ -37,13 +36,20 @@ class NormalReportsViewScreen extends ConsumerStatefulWidget {
 class _NormalReportsViewScreenState extends ConsumerState<NormalReportsViewScreen> {
   @override
   Widget build(BuildContext context) {
-    final status = widget.report.status!.name;
-    final location = widget.report.location;
-    final information = widget.report.additionalInformation.trim();
-    final showGuidanceEntry =
-        !(widget.report.incidentType == ServiceTypeEnum.police && widget.report.policeConcernType != null);
-    final assignedResponderID = widget.report.assignedTo ?? "";
+    // Live copy of the report; falls back to the one passed in while loading/on error.
+    final report = ref
+        .watch(reportByIdProvider(widget.report.reportID))
+        .maybeWhen(data: (r) => r ?? widget.report, orElse: () => widget.report);
+
+    final status = report.status!.name;
+    final location = report.location!;
+    final information = report.additionalInformation.trim();
+    final showGuidanceEntry = !(report.incidentType == ServiceTypeEnum.police && report.policeConcernType != null);
+    final assignedResponderID = report.assignedTo ?? "";
     final responderAsync = assignedResponderID.isEmpty ? null : ref.watch(responderByIdProvider(assignedResponderID));
+    final showResponderLocation = assignedResponderID.isNotEmpty && report.status != ReportStatusEnum.resolved;
+    final responderLatLng = showResponderLocation ? ref.watch(responderLocationProvider(report.reportID)).value : null;
+    final incidentLatLng = LatLng(location.latitude, location.longitude);
 
     return Scaffold(
       appBar: CustomAppBar(
@@ -56,7 +62,7 @@ class _NormalReportsViewScreenState extends ConsumerState<NormalReportsViewScree
                     size: 25,
                   ),
                   tooltip: "While you wait",
-                  onPressed: () => EmergencyGuidanceSheet.show(context, widget.report.incidentType!),
+                  onPressed: () => EmergencyGuidanceSheet.show(context, report.incidentType!),
                 ),
               ]
             : null,
@@ -102,7 +108,7 @@ class _NormalReportsViewScreenState extends ConsumerState<NormalReportsViewScree
                                     value: 'INCIDENT TYPE',
                                   ),
                                   BodyText(
-                                    value: Formatter.formatEnumName(widget.report.incidentType!.name),
+                                    value: Formatter.formatEnumName(report.incidentType!.name),
                                     isBold: true,
                                   ),
                                 ],
@@ -119,9 +125,7 @@ class _NormalReportsViewScreenState extends ConsumerState<NormalReportsViewScree
                           value: 'DESCRIPTION',
                         ),
                         BodyText(
-                          value: widget.report.description.isEmpty
-                              ? 'No description provided.'
-                              : widget.report.description,
+                          value: report.description.isEmpty ? 'No description provided.' : report.description,
                         ),
                       ],
                     ),
@@ -142,59 +146,22 @@ class _NormalReportsViewScreenState extends ConsumerState<NormalReportsViewScree
                     loading: () => const SizedBox.shrink(),
                     error: (_, _) => const SizedBox.shrink(),
                   ),
-                  if (assignedResponderID.isNotEmpty && widget.report.status != ReportStatusEnum.resolved)
-                    ...ref
-                        .watch(responderLocationProvider(widget.report.reportID))
-                        .maybeWhen(
-                          data: (responderLatLng) {
-                            if (responderLatLng == null) return <Widget>[];
-                            final incident = LatLng(location!.latitude, location.longitude);
-                            return [
-                              const SizedBox(height: 10),
-                              SectionTitle(icon: Icons.my_location, title: 'Responder Location'),
-                              const SizedBox(height: 10),
-                              EtaCard(
-                                responder: responderLatLng,
-                                incident: incident,
-                                isOnScene: widget.report.status == ReportStatusEnum.onScene,
-                              ),
-                              const SizedBox(height: 10),
-                              SizedBox(
-                                height: 250,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(12),
-                                  child: MapTileWidget(
-                                    initialLocation: incident,
-                                    fitToPoints: [incident, responderLatLng],
-                                    mode: MapModeEnum.view,
-                                    gesturesEnabled: true,
-                                    extraMarkers: {
-                                      Marker(
-                                        markerId: const MarkerId('incident'),
-                                        position: incident,
-                                        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
-                                      ),
-                                      Marker(
-                                        markerId: const MarkerId('responder'),
-                                        position: responderLatLng,
-                                        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
-                                      ),
-                                    },
-                                  ),
-                                ),
-                              ),
-                            ];
-                          },
-                          orElse: () => <Widget>[],
-                        ),
                 ],
                 const SizedBox(height: 10),
                 SectionTitle(
                   icon: Icons.location_on_outlined,
-                  title: 'Incident Location',
+                  title: responderLatLng == null ? 'Incident Location' : 'Incident & Responder Location',
                 ),
                 const SizedBox(height: 10),
-                LocationCard(location: location!),
+                if (responderLatLng != null) ...[
+                  EtaCard(
+                    responder: responderLatLng,
+                    incident: incidentLatLng,
+                    isOnScene: report.status == ReportStatusEnum.onScene,
+                  ),
+                  const SizedBox(height: 10),
+                ],
+                LocationCard(location: location, responderLocation: responderLatLng),
                 const SizedBox(height: 10),
                 SectionTitle(
                   icon: Icons.people_outline,
@@ -202,7 +169,7 @@ class _NormalReportsViewScreenState extends ConsumerState<NormalReportsViewScree
                 ),
                 const SizedBox(height: 10),
                 VictimsCard(
-                  victims: widget.report.victims,
+                  victims: report.victims,
                 ),
                 const SizedBox(height: 10),
                 SectionTitle(
@@ -211,7 +178,7 @@ class _NormalReportsViewScreenState extends ConsumerState<NormalReportsViewScree
                 ),
                 const SizedBox(height: 10),
                 AttachmentsCard(
-                  attachments: widget.report.attachments,
+                  attachments: report.attachments,
                 ),
                 const SizedBox(height: 10),
                 SectionTitle(

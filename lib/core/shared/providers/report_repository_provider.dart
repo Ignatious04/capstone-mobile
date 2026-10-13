@@ -10,10 +10,13 @@ final reportRepositoryProvider = Provider<ReportRepository>(
   },
 );
 
-final reportsStreamProvider =
-    StreamProvider<List<ReportModel>>((ref) {
+final reportsStreamProvider = StreamProvider<List<ReportModel>>((ref) {
   final repository = ref.watch(reportRepositoryProvider);
   final user = ref.watch(firebaseAuthProvider).currentUser!;
 
   return repository.getReports(user.uid);
+});
+
+final reportByIdProvider = StreamProvider.autoDispose.family<ReportModel?, String>((ref, reportID) {
+  return ref.watch(reportRepositoryProvider).watchReport(reportID);
 });

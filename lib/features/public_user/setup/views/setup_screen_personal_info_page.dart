@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:capstone/core/constants/dropdown_lists.dart';
 import 'package:capstone/core/shared/widgets/custom_dropdown_button.dart';
 import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
 import 'package:capstone/core/shared/widgets/custom_snackbar_helper.dart';
@@ -31,82 +32,6 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
   TextEditingController houseNumController = TextEditingController();
   TextEditingController streetController = TextEditingController();
   TextEditingController barangayController = TextEditingController();
-
-  static const _sexItems = [
-    DropdownMenuItem(
-      value: "Male",
-      child: BodyText(value: "Male"),
-    ),
-    DropdownMenuItem(
-      value: "Female",
-      child: BodyText(value: "Female"),
-    ),
-  ];
-
-  static const _civilStatusItems = [
-    DropdownMenuItem(
-      value: "Single",
-      child: BodyText(value: "Single"),
-    ),
-    DropdownMenuItem(
-      value: "Married",
-      child: BodyText(value: "Married"),
-    ),
-    DropdownMenuItem(
-      value: "Widowed",
-      child: BodyText(value: "Widowed"),
-    ),
-  ];
-
-  final List<String> _barangays = const [
-    'Agapito del Rosario',
-    'Amsic',
-    'Anunas',
-    'Balibago',
-    'Capaya',
-    'Claro M. Recto',
-    'Cuayan',
-    'Cutud',
-    'Lourdes North West',
-    'Lourdes Sur (Talimundoc)',
-    'Lourdes Sur East',
-    'Malabañas (Malabanias)',
-    'Margot',
-    'Mining',
-    'Marisol (Ninoy Aquino)',
-    'Pampang (Santo Niño)',
-    'Pandan',
-    'Pulung Bulu (Pulungbulu)',
-    'Pulung Cacutud',
-    'Pulung Maragul',
-    'Salapungan',
-    'San José',
-    'San Nicolas',
-    'Santa Teresita',
-    'Santa Trinidad',
-    'Santo Cristo',
-    'Santo Domingo',
-    'Santo Rosario',
-    'Sapalibutad',
-    'Sapangbato',
-    'Tabun',
-    'Virgen Delos Remedios',
-  ];
-
-  static const _religions = [
-    DropdownMenuItem(
-      value: "Iglesia ni Cristo",
-      child: Text("Iglesia ni Cristo"),
-    ),
-    DropdownMenuItem(
-      value: "Islam",
-      child: Text("Islam"),
-    ),
-    DropdownMenuItem(
-      value: "Roman Catholic",
-      child: Text("Roman Catholic"),
-    ),
-  ];
 
   @override
   void initState() {
@@ -354,7 +279,7 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
 
                     return null;
                   },
-                  items: _sexItems,
+                  items: DropdownLists.sexItems,
                   onChanged: (value) {
                     ref.read(userProvider.notifier).setSex(value!);
                   },
@@ -442,7 +367,7 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
           CustomDropdownButton(
             title: "BARANGAY",
             value: user.barangay.isEmpty ? null : user.barangay,
-            items: _barangays.map((String barangay) {
+            items: DropdownLists.barangays.map((String barangay) {
               return DropdownMenuItem<String>(
                 value: barangay,
                 child: BodyText(value: barangay),
@@ -476,12 +401,7 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
 
                     return null;
                   },
-                  items: [
-                    const DropdownMenuItem(
-                      value: "Filipino",
-                      child: BodyText(value: "Filipino"),
-                    ),
-                  ],
+                  items: DropdownLists.nationalityItems,
                   onChanged: (value) {
                     ref.read(userProvider.notifier).setNationality(value!);
                   },
@@ -503,7 +423,7 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
 
                     return null;
                   },
-                  items: _civilStatusItems,
+                  items: DropdownLists.civilStatusItems,
                   onChanged: (value) {
                     ref.read(userProvider.notifier).setCivilStatus(value!);
                   },
@@ -525,7 +445,7 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
 
               return null;
             },
-            items: _religions,
+            items: DropdownLists.religions,
             onChanged: (value) {
               ref.read(userProvider.notifier).setReligion(value!);
             },

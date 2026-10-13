@@ -1,3 +1,4 @@
+import 'package:capstone/core/constants/dropdown_lists.dart';
 import 'package:capstone/core/shared/models/user_model.dart';
 import 'package:capstone/core/shared/providers/user_repository_provider.dart';
 import 'package:capstone/core/shared/widgets/custom_alert_dialog.dart';
@@ -5,7 +6,6 @@ import 'package:capstone/core/shared/widgets/custom_app_bar.dart';
 import 'package:capstone/core/shared/widgets/custom_dropdown_button.dart';
 import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
 import 'package:capstone/core/shared/widgets/custom_text_field.dart';
-import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -142,12 +142,7 @@ class _UpdatePersonalInformationScreenState extends ConsumerState<UpdatePersonal
 
                           return null;
                         },
-                        items: [
-                          DropdownMenuItem(
-                            value: "Filipino",
-                            child: BodyText(value: "Filipino"),
-                          ),
-                        ],
+                        items: DropdownLists.nationalityItems,
                         onChanged: (value) {
                           setState(() {
                             nationality = value!;
@@ -166,16 +161,7 @@ class _UpdatePersonalInformationScreenState extends ConsumerState<UpdatePersonal
 
                           return null;
                         },
-                        items: [
-                          DropdownMenuItem(
-                            value: "Single",
-                            child: BodyText(value: "Single"),
-                          ),
-                          DropdownMenuItem(
-                            value: "Married",
-                            child: BodyText(value: "Married"),
-                          ),
-                        ],
+                        items: DropdownLists.sexItems,
                         onChanged: (value) {
                           setState(() {
                             civilStatus = value!;
@@ -194,16 +180,7 @@ class _UpdatePersonalInformationScreenState extends ConsumerState<UpdatePersonal
 
                           return null;
                         },
-                        items: [
-                          DropdownMenuItem(
-                            value: "Catholic",
-                            child: BodyText(value: "Catholic"),
-                          ),
-                          DropdownMenuItem(
-                            value: "Iglesia ni Cristo",
-                            child: BodyText(value: "Iglesia ni Cristo"),
-                          ),
-                        ],
+                        items: DropdownLists.religions,
                         onChanged: (value) {
                           setState(() {
                             religion = value!;

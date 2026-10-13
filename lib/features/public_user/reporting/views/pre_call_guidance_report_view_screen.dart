@@ -1,5 +1,5 @@
-import 'package:capstone/core/enums/map_mode_enum.dart';
 import 'package:capstone/core/enums/report_status_enum.dart';
+import 'package:capstone/core/shared/providers/report_repository_provider.dart';
 import 'package:capstone/core/shared/providers/responder_provider.dart';
 import 'package:capstone/core/shared/widgets/emergency_guidance_sheet.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
@@ -8,9 +8,9 @@ import 'package:capstone/core/utilities/formatter.dart';
 import 'package:capstone/core/shared/widgets/custom_app_bar.dart';
 import 'package:capstone/core/shared/widgets/info_column.dart';
 import 'package:capstone/core/shared/models/report_model.dart';
-import 'package:capstone/features/public_user/map/widgets/map_tile_widget.dart';
 import 'package:capstone/features/public_user/reporting/providers/responder_location_provider.dart';
 import 'package:capstone/features/public_user/reporting/widgets/eta_card.dart';
+import 'package:capstone/features/public_user/reporting/widgets/location_card.dart';
 import 'package:capstone/features/public_user/reporting/widgets/report_status_widget.dart';
 import 'package:capstone/core/shared/widgets/section_title.dart';
 import 'package:capstone/features/public_user/reporting/widgets/responder_card.dart';
@@ -29,10 +29,19 @@ class PreCallGuidanceReportViewScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final status = report.status!.name;
-    final location = report.location;
-    final assignedResponderID = report.assignedTo ?? "";
+    final currentReport = ref
+        .watch(reportByIdProvider(report.reportID))
+        .maybeWhen(data: (r) => r ?? report, orElse: () => report);
+
+    final status = currentReport.status!.name;
+    final location = currentReport.location;
+    final assignedResponderID = currentReport.assignedTo ?? "";
     final responderAsync = assignedResponderID.isEmpty ? null : ref.watch(responderByIdProvider(assignedResponderID));
+    final showResponderLocation = assignedResponderID.isNotEmpty && currentReport.status != ReportStatusEnum.resolved;
+    final responderLatLng = showResponderLocation
+        ? ref.watch(responderLocationProvider(currentReport.reportID)).value
+        : null;
+    final incidentLatLng = LatLng(location!.latitude, location.longitude);
     // final information = report.additionalInformation.trim();
     return Scaffold(
       appBar: CustomAppBar(
@@ -41,7 +50,7 @@ class PreCallGuidanceReportViewScreen extends ConsumerWidget {
           IconButton(
             icon: const Icon(Icons.info_outline),
             tooltip: "While you wait",
-            onPressed: () => EmergencyGuidanceSheet.show(context, report.incidentType!),
+            onPressed: () => EmergencyGuidanceSheet.show(context, currentReport.incidentType!),
           ),
         ],
       ),
@@ -85,7 +94,7 @@ class PreCallGuidanceReportViewScreen extends ConsumerWidget {
                                   value: 'EMERGENCY TYPE',
                                 ),
                                 BodyText(
-                                  value: Formatter.formatEnumName(report.incidentType!.name),
+                                  value: Formatter.formatEnumName(currentReport.incidentType!.name),
                                   isBold: true,
                                 ),
                               ],
@@ -143,52 +152,22 @@ class PreCallGuidanceReportViewScreen extends ConsumerWidget {
                   loading: () => const SizedBox.shrink(),
                   error: (_, _) => const SizedBox.shrink(),
                 ),
-                if (assignedResponderID.isNotEmpty && report.status != ReportStatusEnum.resolved)
-                  ...ref
-                      .watch(responderLocationProvider(report.reportID))
-                      .maybeWhen(
-                        data: (responderLatLng) {
-                          if (responderLatLng == null) return <Widget>[];
-                          final incident = LatLng(location!.latitude, location.longitude);
-                          return [
-                            const SizedBox(height: 10),
-                            SectionTitle(icon: Icons.my_location, title: 'Responder Location'),
-                            const SizedBox(height: 10),
-                            EtaCard(
-                              responder: responderLatLng,
-                              incident: incident,
-                              isOnScene: report.status == ReportStatusEnum.onScene,
-                            ),
-                            const SizedBox(height: 10),
-                            SizedBox(
-                              height: 250,
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(12),
-                                child: MapTileWidget(
-                                  initialLocation: incident,
-                                  fitToPoints: [incident, responderLatLng],
-                                  mode: MapModeEnum.view,
-                                  gesturesEnabled: true,
-                                  extraMarkers: {
-                                    Marker(
-                                      markerId: const MarkerId('incident'),
-                                      position: incident,
-                                      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
-                                    ),
-                                    Marker(
-                                      markerId: const MarkerId('responder'),
-                                      position: responderLatLng,
-                                      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
-                                    ),
-                                  },
-                                ),
-                              ),
-                            ),
-                          ];
-                        },
-                        orElse: () => <Widget>[],
-                      ),
               ],
+              const SizedBox(height: 10),
+              SectionTitle(
+                icon: Icons.location_on_outlined,
+                title: responderLatLng == null ? 'Incident Location' : 'Incident & Responder Location',
+              ),
+              const SizedBox(height: 10),
+              if (responderLatLng != null) ...[
+                EtaCard(
+                  responder: responderLatLng,
+                  incident: incidentLatLng,
+                  isOnScene: currentReport.status == ReportStatusEnum.onScene,
+                ),
+                const SizedBox(height: 10),
+              ],
+              LocationCard(location: location, responderLocation: responderLatLng),
               const SizedBox(height: 10),
               SectionTitle(
                 icon: Icons.info,
@@ -204,25 +183,25 @@ class PreCallGuidanceReportViewScreen extends ConsumerWidget {
                     children: [
                       InfoColumn(
                         title: "REFERENCE NUMBER",
-                        value: report.referenceNumber,
+                        value: currentReport.referenceNumber,
                       ),
                       const SizedBox(height: 10),
                       InfoColumn(
                         title: "STATUS",
-                        value: Formatter.formatEnumName(report.status!.name),
+                        value: Formatter.formatEnumName(currentReport.status!.name),
                       ),
                       const SizedBox(height: 10),
                       InfoColumn(
                         title: "INCIDENT TYPE",
-                        value: Formatter.formatEnumName(report.incidentType!.name),
+                        value: Formatter.formatEnumName(currentReport.incidentType!.name),
                       ),
                       const SizedBox(height: 10),
                       InfoColumn(
                         title: "SUBMITTED",
-                        value: report.createdAt != null
+                        value: currentReport.createdAt != null
                             ? DateFormat(
                                 "MMMM dd, yyyy • hh:mm a",
-                              ).format(report.createdAt!)
+                              ).format(currentReport.createdAt!)
                             : "-",
                       ),
                     ],
@@ -240,10 +219,10 @@ class PreCallGuidanceReportViewScreen extends ConsumerWidget {
                 child: ListView.separated(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
-                  itemCount: report.guidanceAnswers.length,
+                  itemCount: currentReport.guidanceAnswers.length,
                   separatorBuilder: (_, _) => const Divider(height: 1),
                   itemBuilder: (_, index) {
-                    final item = report.guidanceAnswers[index];
+                    final item = currentReport.guidanceAnswers[index];
                     return ListTile(
                       title: BodyText(
                         value: item.question,

@@ -80,6 +80,14 @@ class ReportRepository {
     await batch.commit();
   }
 
+  Stream<ReportModel?> watchReport(String reportID) {
+    return firestore.collection('reports').doc(reportID).snapshots().map((doc) {
+      final data = doc.data();
+      if (data == null) return null;
+      return ReportModel.fromMap(data);
+    });
+  }
+
   Future<void> addResponderAttachment(String reportID, AttachmentModel attachment) {
     return firestore.collection('reports').doc(reportID).update({
       'responderAttachments': FieldValue.arrayUnion([attachment.toMap()]),
