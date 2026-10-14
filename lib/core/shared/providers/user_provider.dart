@@ -286,7 +286,7 @@ class UserNotifier extends Notifier<UserModel> {
     state = state.copyWith(vaccineType: value);
   }
 
-  void setVaccineDate(String value) {
+  void setVaccineDate(int value) {
     state = state.copyWith(vaccineDate: value);
   }
 

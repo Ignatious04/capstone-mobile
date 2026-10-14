@@ -88,4 +88,11 @@ class DropdownLists {
       child: BodyText(value: "Roman Catholic"),
     ),
   ];
+
+  static const vaccineItems = [
+    DropdownMenuItem(
+      value: "Anti-Rabies",
+      child: Text("Anti-Rabies"),
+    ),
+  ];
 }

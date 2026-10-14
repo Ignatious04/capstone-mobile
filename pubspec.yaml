@@ -62,8 +62,20 @@ dependencies:
   firebase_messaging: ^16.7.0
   google_sign_in: ^7.2.0
   flutter_local_notifications: ^22.3.1
+  flutter_launcher_icons: ^0.14.4
+  flutter_native_splash: ^2.4.7
   
-  
+flutter_launcher_icons:
+  image_path: "assets/images/app_icon.png"
+  android: true
+  ios: true
+
+flutter_native_splash:
+color: "#FFFFFF"
+image: "assets/images/app_icon.png" # Path to your logo/icon asset
+android_12:
+  color: "#FFFFFF"
+  image: "assets/images/app_icon.png"
 
 dev_dependencies:
   flutter_test:

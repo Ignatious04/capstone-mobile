@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:capstone/core/constants/dropdown_lists.dart';
+import 'package:capstone/core/shared/widgets/custom_date_picker_widget.dart';
 import 'package:capstone/core/shared/widgets/custom_dropdown_button.dart';
 import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
 import 'package:capstone/core/shared/widgets/custom_snackbar_helper.dart';
@@ -205,63 +206,25 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
             children: [
               Expanded(
                 flex: 3,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    LabelText(value: "DATE OF BIRTH"),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    TextFormField(
-                      controller: birthDateController,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "Birth date is required";
-                        }
+                child: CustomDatePickerWidget(
+                  title: "BIRTH DATE",
+                  controller: birthDateController,
+                  onTap: () async {
+                    final date = await showDatePicker(
+                      context: context,
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime(1900),
+                      lastDate: DateTime.now(),
+                    );
 
-                        return null;
-                      },
-                      readOnly: true,
-                      style:
-                          Theme.of(
-                            context,
-                          ).textTheme.bodyMedium?.copyWith(
-                            color: Colors.black,
-                          ),
-                      decoration: InputDecoration(
-                        errorStyle: TextStyle(fontSize: 0),
-                        isDense: true,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        contentPadding: EdgeInsets.symmetric(
-                          vertical: 10,
-                          horizontal: 10,
-                        ),
-                        suffixIconConstraints: BoxConstraints(
-                          minWidth: 36,
-                          minHeight: 36,
-                        ),
-                        suffixIcon: Icon(Icons.calendar_today),
-                      ),
-                      onTap: () async {
-                        final date = await showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime(1900),
-                          lastDate: DateTime.now(),
-                        );
-
-                        if (date != null) {
-                          final formattedDate = DateFormat(
-                            "MM/dd/yy",
-                          ).format(date);
-                          birthDateController.text = formattedDate;
-                          ref.read(userProvider.notifier).setBirthDate(date.millisecondsSinceEpoch);
-                        }
-                      },
-                    ),
-                  ],
+                    if (date != null) {
+                      final formattedDate = DateFormat(
+                        "MM/dd/yy",
+                      ).format(date);
+                      birthDateController.text = formattedDate;
+                      ref.read(userProvider.notifier).setBirthDate(date.millisecondsSinceEpoch);
+                    }
+                  },
                 ),
               ),
               const SizedBox(

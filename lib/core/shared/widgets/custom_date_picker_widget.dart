@@ -1,6 +1,5 @@
 import 'package:capstone/core/shared/widgets/text/label_text.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class CustomDatePickerWidget extends StatelessWidget {
   const CustomDatePickerWidget({
@@ -8,13 +7,13 @@ class CustomDatePickerWidget extends StatelessWidget {
     required this.title,
     required this.controller,
     this.validator,
-    this.onChanged,
+    this.onTap,
   });
 
   final String title;
   final TextEditingController controller;
   final String? Function(String?)? validator;
-  final ValueChanged<String>? onChanged;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -25,11 +24,18 @@ class CustomDatePickerWidget extends StatelessWidget {
         SizedBox(
           height: 10,
         ),
-        TextField(
+        TextFormField(
           controller: controller,
+          validator: validator,
           readOnly: true,
-          style: TextStyle(fontSize: 14),
+          style:
+              Theme.of(
+                context,
+              ).textTheme.bodyMedium?.copyWith(
+                color: Colors.black,
+              ),
           decoration: InputDecoration(
+            errorStyle: TextStyle(fontSize: 0),
             isDense: true,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10.0),
@@ -44,21 +50,7 @@ class CustomDatePickerWidget extends StatelessWidget {
             ),
             suffixIcon: Icon(Icons.calendar_today),
           ),
-          onTap: () async {
-            final date = await showDatePicker(
-              context: context,
-              initialDate: DateTime.now(),
-              firstDate: DateTime(1900),
-              lastDate: DateTime.now(),
-            );
-
-            if (date != null) {
-              controller.text = DateFormat(
-                "MM/dd/yy",
-              ).format(date);
-            }
-          },
-          onChanged: onChanged,
+          onTap: onTap,
         ),
       ],
     );

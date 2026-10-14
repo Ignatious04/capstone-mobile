@@ -1,3 +1,4 @@
+import 'package:capstone/core/constants/dropdown_lists.dart';
 import 'package:capstone/core/shared/widgets/custom_date_picker_widget.dart';
 import 'package:capstone/core/shared/widgets/custom_dropdown_button.dart';
 import 'package:capstone/core/shared/widgets/custom_text_field.dart';
@@ -6,6 +7,7 @@ import 'package:capstone/core/shared/widgets/section_title.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 
 class SetupScreenMedicalInfoPage extends ConsumerStatefulWidget {
   const SetupScreenMedicalInfoPage({super.key});
@@ -25,7 +27,9 @@ class _SetupScreenMedicalInfoPage extends ConsumerState<SetupScreenMedicalInfoPa
     final user = ref.read(userProvider);
     heightController.text = user.height == 0 ? '' : user.height.toString();
     weightController.text = user.weight == 0 ? '' : user.weight.toString();
-    vaccineDateController.text = user.vaccineDate;
+    vaccineDateController.text = user.vaccineDate == 0
+        ? ""
+        : DateFormat("MM/dd/yy").format(DateTime.fromMillisecondsSinceEpoch(user.vaccineDate));
   }
 
   @override
@@ -134,12 +138,7 @@ class _SetupScreenMedicalInfoPage extends ConsumerState<SetupScreenMedicalInfoPa
                 child: CustomDropdownButton(
                   title: "VACCINE TYPE",
                   value: user.vaccineType.isEmpty ? null : user.vaccineType,
-                  items: [
-                    DropdownMenuItem(
-                      value: "Anti-Rabies",
-                      child: Text("Anti-Rabies"),
-                    ),
-                  ],
+                  items: DropdownLists.vaccineItems,
                   onChanged: (value) {
                     ref.read(userProvider.notifier).setVaccineType(value!);
                   },
@@ -152,8 +151,21 @@ class _SetupScreenMedicalInfoPage extends ConsumerState<SetupScreenMedicalInfoPa
                 child: CustomDatePickerWidget(
                   title: "VACCINE DATE",
                   controller: vaccineDateController,
-                  onChanged: (value) {
-                    ref.read(userProvider.notifier).setVaccineDate(value);
+                  onTap: () async {
+                    final date = await showDatePicker(
+                      context: context,
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime(1900),
+                      lastDate: DateTime.now(),
+                    );
+
+                    if (date != null) {
+                      final formattedDate = DateFormat(
+                        "MM/dd/yy",
+                      ).format(date);
+                      vaccineDateController.text = formattedDate;
+                      ref.read(userProvider.notifier).setVaccineDate(date.millisecondsSinceEpoch);
+                    }
                   },
                 ),
               ),

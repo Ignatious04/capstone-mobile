@@ -45,7 +45,7 @@ class UserModel {
   final double weight;
   final bool isVaccinated;
   final String vaccineType;
-  final String vaccineDate;
+  final int vaccineDate;
 
   final int createdAt;
   final int updatedAt;
@@ -92,7 +92,7 @@ class UserModel {
     this.weight = 0,
     this.isVaccinated = false,
     this.vaccineType = "",
-    this.vaccineDate = "",
+    this.vaccineDate = 0,
     this.createdAt = 0,
     this.updatedAt = 0,
     this.isSetup = false,
@@ -135,7 +135,7 @@ class UserModel {
       weight: (map['weight'] as num?)?.toDouble() ?? 0.0,
       isVaccinated: map['isVaccinated'] ?? false,
       vaccineType: map['vaccineType'] ?? '',
-      vaccineDate: map['vaccineDate'] ?? '',
+      vaccineDate: _toMillis(map['vaccineDate']) ?? 0,
       createdAt: _toMillis(map['createdAt']) ?? 0,
       updatedAt: _toMillis(map['updatedAt']) ?? 0,
       isSetup: map["isSetup"] ?? false,
@@ -220,7 +220,7 @@ class UserModel {
     double? weight,
     bool? isVaccinated,
     String? vaccineType,
-    String? vaccineDate,
+    int? vaccineDate,
     int? createdAt,
     int? updatedAt,
     bool? isSetup,
