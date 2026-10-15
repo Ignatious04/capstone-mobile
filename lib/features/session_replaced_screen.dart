@@ -1,3 +1,4 @@
+import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/shared/providers/session_provider.dart';
 import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
@@ -10,6 +11,8 @@ class SessionReplacedScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -20,18 +23,16 @@ class SessionReplacedScreen extends ConsumerWidget {
             children: [
               const Icon(Icons.devices_other, size: 50, color: Colors.deepOrange),
               const SizedBox(height: 10),
-              const TitleText(value: "You've been signed out", alignment: TextAlign.center),
+              TitleText(value: l10n.signedOutTitle, alignment: TextAlign.center),
               const SizedBox(height: 10),
-              const BodyText(
-                value:
-                    "Your account was signed in on another device, so this device was logged out. "
-                    "If this wasn't you, change your password after logging back in.",
+              BodyText(
+                value: l10n.signedOutBody,
                 color: Colors.black54,
                 alignment: TextAlign.center,
               ),
               const SizedBox(height: 20),
               CustomElevatedButton(
-                value: "Back to Login",
+                value: l10n.backToLogin,
                 onPressed: () => ref.read(sessionReplacedProvider.notifier).dismiss(),
               ),
             ],

@@ -1,3 +1,5 @@
+import 'package:capstone/core/l10n/enum_labels.dart';
+import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/enums/audit_action_enum.dart';
 import 'package:capstone/core/enums/service_type_enum.dart';
 import 'package:capstone/core/shared/providers/audit_log_repository_provider.dart';
@@ -8,7 +10,6 @@ import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/core/utilities/call_launcher.dart';
 import 'package:capstone/core/utilities/directions_launcher.dart';
 import 'package:capstone/core/utilities/distance_helper.dart';
-import 'package:capstone/core/utilities/formatter.dart';
 import 'package:capstone/features/public_user/map/models/emergency_service_model.dart';
 import 'package:capstone/features/public_user/map/providers/emergency_service_filter_provider.dart';
 import 'package:capstone/features/public_user/map/providers/emergency_service_search_provider.dart';
@@ -115,6 +116,8 @@ class _EmergencyServicesPanelState extends ConsumerState<EmergencyServicesPanel>
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     final withDistance = [
       for (final s in widget.services) (service: s, meters: _getDistance(s)),
     ]..sort((a, b) => a.meters.compareTo(b.meters));
@@ -182,14 +185,14 @@ class _EmergencyServicesPanelState extends ConsumerState<EmergencyServicesPanel>
                                 children: [
                                   Row(
                                     children: [
-                                      const Expanded(
+                                      Expanded(
                                         child: TitleText(
-                                          value: 'Nearby Emergency Services',
+                                          value: l10n.nearbyEmergencyServices,
                                           isBold: true,
                                         ),
                                       ),
                                       BodyText(
-                                        value: "${widget.services.length} location(s)",
+                                        value: l10n.locationCount(widget.services.length),
                                       ),
                                     ],
                                   ),
@@ -197,7 +200,7 @@ class _EmergencyServicesPanelState extends ConsumerState<EmergencyServicesPanel>
                                     height: 10,
                                   ),
                                   CustomTextField(
-                                    title: "SEARCH",
+                                    title: l10n.search.toUpperCase(),
                                     onChanged: (value) {
                                       ref.read(emergencyServiceSearchProvider.notifier).setQuery(value);
                                     },
@@ -212,7 +215,7 @@ class _EmergencyServicesPanelState extends ConsumerState<EmergencyServicesPanel>
 
                                       return ChoiceChip(
                                         label: BodyText(
-                                          value: Formatter.formatEnumName(type.name),
+                                          value: type.label(l10n),
                                           isBold: true,
                                         ),
                                         selected: isSelected,
@@ -248,7 +251,7 @@ class _EmergencyServicesPanelState extends ConsumerState<EmergencyServicesPanel>
                         contactNumber: service.contactNumber,
                         address: service.address,
                         distance: DistanceHelper.formatDistance(item.meters),
-                        status: service.isActive ? 'Open' : 'Unavailable',
+                        status: service.isActive ? l10n.open : l10n.unavailable,
                         onCallTap: () {
                           ref
                               .read(auditLogRepositoryProvider)

@@ -1,3 +1,4 @@
+import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/features/public_user/reporting/widgets/empty_card.dart';
 import 'package:flutter/material.dart';
@@ -9,10 +10,12 @@ class AdditionalInformationCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     if (additionalInfo?.isEmpty ?? true) {
       return EmptyCard(
         icon: Icons.notes_outlined,
-        message: 'No additional information provided.',
+        message: l10n.noAdditionalInfo,
       );
     }
 

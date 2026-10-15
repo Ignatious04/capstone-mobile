@@ -1,3 +1,4 @@
+import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/exceptions/auth_exception.dart';
 import 'package:capstone/core/shared/providers/user_provider.dart';
 import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
@@ -34,7 +35,7 @@ class _PhoneVerificationScreenState extends ConsumerState<PhoneVerificationScree
 
   void handleSendCode() {
     if (contactNumController.text.trim().length != 10) {
-      CustomSnackbarHelper.show(context, text: "Enter a valid 10-digit number.");
+      CustomSnackbarHelper.show(context, text: AppLocalizations.of(context)!.invalidPhone10);
       return;
     }
     final e164Number = "+63${contactNumController.text.trim()}";
@@ -48,6 +49,8 @@ class _PhoneVerificationScreenState extends ConsumerState<PhoneVerificationScree
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     final phoneState = ref.watch(phoneVerificationProvider);
     final isVerified = ref.watch(userProvider.select((u) => u.isContactNumberVerified));
     final isSending = phoneState.status is AsyncLoading && !phoneState.codeSent;
@@ -58,12 +61,14 @@ class _PhoneVerificationScreenState extends ConsumerState<PhoneVerificationScree
         final e164Number = "+63${contactNumController.text.trim()}";
         ref.read(userProvider.notifier).setContactNumber(e164Number);
         ref.read(userProvider.notifier).setIsContactNumberVerified(true);
-        CustomSnackbarHelper.show(context, text: "Phone number verified!");
+        CustomSnackbarHelper.show(context, text: l10n.phoneVerifiedOk);
       }
 
       next.status.whenOrNull(
         error: (error, _) {
-          final message = error is AuthException ? error.message : "Something went wrong.";
+          final message = error is AuthException
+              ? error.localized(AppLocalizations.of(context)!)
+              : AppLocalizations.of(context)!.somethingWentWrong;
           CustomSnackbarHelper.show(context, text: message);
         },
       );
@@ -72,10 +77,10 @@ class _PhoneVerificationScreenState extends ConsumerState<PhoneVerificationScree
     return SingleChildScrollView(
       child: Column(
         children: [
-          const SectionTitle(icon: Icons.contact_phone, title: "REGISTER PHONE NUMBER"),
+          SectionTitle(icon: Icons.contact_phone, title: l10n.registerPhoneNumber.toUpperCase()),
           const SizedBox(height: 10),
           CustomTextField(
-            title: "CONTACT NUMBER",
+            title: l10n.contactNumber.toUpperCase(),
             prefixText: "+63 ",
             autovalidateMode: AutovalidateMode.onUserInteractionIfError,
             controller: contactNumController,
@@ -85,9 +90,9 @@ class _PhoneVerificationScreenState extends ConsumerState<PhoneVerificationScree
               LengthLimitingTextInputFormatter(10),
             ],
             validator: (value) {
-              if (value == null || value.isEmpty) return "Contact number is required";
-              if (value.length != 10) return "Enter a valid 10-digit number";
-              if (!isVerified) return "Please verify your phone number";
+              if (value == null || value.isEmpty) return l10n.fieldRequired(l10n.contactNumber);
+              if (value.length != 10) return l10n.invalidPhone10;
+              if (!isVerified) return l10n.pleaseVerifyPhone;
               return null;
             },
             onChanged: (value) {
@@ -102,21 +107,21 @@ class _PhoneVerificationScreenState extends ConsumerState<PhoneVerificationScree
           ),
           const SizedBox(height: 10),
           if (isVerified) ...[
-            const Row(
+            Row(
               children: [
                 Icon(Icons.check_circle, color: Colors.green, size: 20),
                 SizedBox(width: 6),
-                Text("Phone number verified", style: TextStyle(color: Colors.green)),
+                Text(l10n.phoneVerified, style: TextStyle(color: Colors.green)),
               ],
             ),
           ] else if (!phoneState.codeSent) ...[
             CustomElevatedButton(
-              value: isSending ? "Sending..." : "Send verification code",
+              value: isSending ? l10n.sending : l10n.sendVerificationCode,
               onPressed: isSending ? () {} : handleSendCode,
             ),
           ] else ...[
             CustomTextField(
-              title: "ENTER CODE",
+              title: l10n.enterCode.toUpperCase(),
               controller: otpController,
               keyboardType: TextInputType.number,
               inputFormatters: [FilteringTextInputFormatter.digitsOnly],
@@ -125,10 +130,10 @@ class _PhoneVerificationScreenState extends ConsumerState<PhoneVerificationScree
             ),
             const SizedBox(height: 10),
             CustomElevatedButton(
-              value: isVerifying ? "Verifying..." : "Verify code",
+              value: isVerifying ? l10n.verifying : l10n.verifyCode,
               onPressed: isVerifying ? () {} : handleVerifyCode,
             ),
-            TextButton(onPressed: isSending ? null : handleSendCode, child: const Text("Resend code")),
+            TextButton(onPressed: isSending ? null : handleSendCode, child: Text(l10n.resendCode)),
           ],
         ],
       ),

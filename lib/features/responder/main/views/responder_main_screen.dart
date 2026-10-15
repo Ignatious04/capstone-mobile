@@ -1,3 +1,4 @@
+import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/shared/widgets/custom_navigation_bar.dart';
 import 'package:capstone/features/responder/active_case/providers/responder_location_sharing_provider.dart';
 import 'package:capstone/features/responder/active_case/views/active_case_screen.dart';
@@ -17,18 +18,19 @@ class ResponderMainScreen extends ConsumerStatefulWidget {
 class _ResponderMainScreenState extends ConsumerState<ResponderMainScreen> {
   int currentPageIndex = 0;
 
-  static const _navItems = [
+  List<CustomNavigationBarItem> _navItems(AppLocalizations l10n) => [
     CustomNavigationBarItem(
       icon: Icons.local_hospital_outlined,
       activeIcon: Icons.local_hospital,
-      label: 'Active Case',
+      label: l10n.activeCase,
     ),
-    CustomNavigationBarItem(icon: Icons.history, activeIcon: Icons.history, label: 'History'),
-    CustomNavigationBarItem(icon: Icons.account_circle_outlined, activeIcon: Icons.account_circle, label: 'Profile'),
+    CustomNavigationBarItem(icon: Icons.history, activeIcon: Icons.history, label: l10n.history),
+    CustomNavigationBarItem(icon: Icons.account_circle_outlined, activeIcon: Icons.account_circle, label: l10n.profile),
   ];
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     ref.watch(responderLocationSharingProvider);
     final pages = const [
       ActiveCaseScreen(),
@@ -47,7 +49,7 @@ class _ResponderMainScreenState extends ConsumerState<ResponderMainScreen> {
       bottomNavigationBar: CustomNavigationBar(
         currentIndex: currentPageIndex,
         onTap: (value) => setState(() => currentPageIndex = value),
-        items: _navItems,
+        items: _navItems(l10n),
       ),
     );
   }

@@ -1,3 +1,4 @@
+import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/exceptions/auth_exception.dart';
 import 'package:capstone/core/shared/widgets/custom_app_bar.dart';
 import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
@@ -44,12 +45,14 @@ class _ReactivationVerificationScreenState extends ConsumerState<ReactivationVer
     await ref.read(deactivateAccountProvider.notifier).reactivate();
     if (!mounted || ref.read(deactivateAccountProvider).hasError) return;
 
-    CustomSnackbarHelper.show(context, text: "Your account has been reactivated.");
+    CustomSnackbarHelper.show(context, text: AppLocalizations.of(context)!.accountReactivated);
     Navigator.of(context).popUntil((route) => route.isFirst);
   }
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     final phoneState = ref.watch(reactivationPhoneProvider);
     final isSending = phoneState.status is AsyncLoading && !phoneState.codeSent;
     final isVerifying = phoneState.status is AsyncLoading && phoneState.codeSent;
@@ -58,7 +61,9 @@ class _ReactivationVerificationScreenState extends ConsumerState<ReactivationVer
     ref.listen(reactivationPhoneProvider, (previous, next) {
       next.status.whenOrNull(
         error: (error, _) {
-          final message = error is AuthException ? error.message : "Invalid or expired code.";
+          final message = error is AuthException
+              ? error.localized(AppLocalizations.of(context)!)
+              : AppLocalizations.of(context)!.invalidOrExpiredCode;
           CustomSnackbarHelper.show(context, text: message);
         },
       );
@@ -67,14 +72,16 @@ class _ReactivationVerificationScreenState extends ConsumerState<ReactivationVer
     ref.listen(deactivateAccountProvider, (previous, next) {
       next.whenOrNull(
         error: (error, _) {
-          final message = error is AuthException ? error.message : "Something went wrong. Please try again.";
+          final message = error is AuthException
+              ? error.localized(AppLocalizations.of(context)!)
+              : AppLocalizations.of(context)!.somethingWentWrong;
           CustomSnackbarHelper.show(context, text: message);
         },
       );
     });
 
     return Scaffold(
-      appBar: CustomAppBar(value: "Verify It's You"),
+      appBar: CustomAppBar(value: l10n.verifyItsYou),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(20),
@@ -83,14 +90,14 @@ class _ReactivationVerificationScreenState extends ConsumerState<ReactivationVer
             children: [
               BodyText(
                 value: !phoneState.codeSent
-                    ? "Sending a code to ${widget.contactNumber}..."
-                    : "Enter the code we sent to ${widget.contactNumber}.",
+                    ? l10n.sendingCodeTo(widget.contactNumber)
+                    : l10n.enterCodeSentTo(widget.contactNumber),
                 color: Colors.black54,
                 alignment: TextAlign.center,
               ),
               const SizedBox(height: 20),
               CustomTextField(
-                title: "ENTER CODE",
+                title: l10n.enterCode.toUpperCase(),
                 controller: otpController,
                 keyboardType: TextInputType.number,
                 inputFormatters: [FilteringTextInputFormatter.digitsOnly],
@@ -100,12 +107,12 @@ class _ReactivationVerificationScreenState extends ConsumerState<ReactivationVer
               ),
               const SizedBox(height: 10),
               CustomElevatedButton(
-                value: (isVerifying || isReactivating) ? "Verifying..." : "Verify & Reactivate",
+                value: (isVerifying || isReactivating) ? l10n.verifying : l10n.verifyAndReactivate,
                 onPressed: (isVerifying || isReactivating || !phoneState.codeSent) ? null : _verifyAndReactivate,
               ),
               TextButton(
                 onPressed: isSending ? null : () => ref.read(reactivationPhoneProvider.notifier).sendCode(widget.contactNumber),
-                child: const Text("Resend code"),
+                child: Text(l10n.resendCode),
               ),
             ],
           ),

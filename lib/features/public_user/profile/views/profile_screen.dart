@@ -1,3 +1,4 @@
+import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:capstone/core/exceptions/auth_exception.dart';
 import 'package:capstone/core/services/push_notification_service.dart';
@@ -21,6 +22,8 @@ class ProfileScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
+
     final userAsync = ref.watch(currentAuthenticatedUserProvider);
     return userAsync.when(
       data: (user) {
@@ -34,7 +37,7 @@ class ProfileScreen extends ConsumerWidget {
             children: [
               SizedBox(
                 width: double.infinity,
-                child: const CustomHeaderWidget(title: "Safety Profile", body: "View and manage your account"),
+                child: CustomHeaderWidget(title: l10n.safetyProfile, body: l10n.viewManageAccount),
               ),
               Padding(
                 padding: const EdgeInsets.all(20),
@@ -89,7 +92,7 @@ class ProfileScreen extends ConsumerWidget {
                         ),
                         backgroundColor: Colors.white,
                         color: Colors.black,
-                        value: "Personal Information",
+                        value: l10n.personalInformation,
                       ),
                     ),
                     SizedBox(
@@ -111,7 +114,7 @@ class ProfileScreen extends ConsumerWidget {
                         ),
                         backgroundColor: Colors.white,
                         color: Colors.black,
-                        value: "Settings",
+                        value: l10n.settings,
                       ),
                     ),
                     SizedBox(
@@ -122,7 +125,7 @@ class ProfileScreen extends ConsumerWidget {
                             context: context,
                             builder: (context) {
                               return AlertDialog(
-                                title: const BodyText(value: "Do you wish to log out?"),
+                                title: BodyText(value: l10n.logoutConfirm),
                                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                                 backgroundColor: Colors.white,
                                 actions: [
@@ -130,13 +133,13 @@ class ProfileScreen extends ConsumerWidget {
                                     onPressed: () {
                                       Navigator.pop(context, false);
                                     },
-                                    value: "No",
+                                    value: l10n.no,
                                   ),
                                   CustomElevatedButton(
                                     onPressed: () {
                                       Navigator.pop(context, true);
                                     },
-                                    value: "Yes",
+                                    value: l10n.yes,
                                   ),
                                 ],
                               );
@@ -168,7 +171,7 @@ class ProfileScreen extends ConsumerWidget {
                         ),
                         color: Colors.red,
                         backgroundColor: Colors.white,
-                        value: "Log Out",
+                        value: l10n.logout,
                       ),
                     ),
                   ],

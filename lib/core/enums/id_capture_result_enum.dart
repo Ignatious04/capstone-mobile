@@ -1,14 +1,16 @@
+import 'package:capstone/core/l10n/app_localizations.dart';
+
 enum IdCaptureResult { ok, unreadable, duplicate }
 
 extension IdCaptureResultMessage on IdCaptureResult {
-  String get message {
+  String message(AppLocalizations l10n) {
     switch (this) {
       case IdCaptureResult.ok:
         return '';
       case IdCaptureResult.unreadable:
-        return "Couldn't read the ID number. Retake with better lighting.";
+        return l10n.idCaptureUnreadable;
       case IdCaptureResult.duplicate:
-        return "This ID is already registered to another account.";
+        return l10n.idCaptureDuplicate;
     }
   }
 }

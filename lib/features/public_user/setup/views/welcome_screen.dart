@@ -1,3 +1,4 @@
+import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/shared/providers/firebase_auth_provider.dart';
 import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
@@ -13,6 +14,8 @@ class WelcomeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
       body: AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle(
@@ -41,14 +44,14 @@ class WelcomeScreen extends ConsumerWidget {
                     height: 10,
                   ),
                   TitleText(
-                    value: "Hello!",
+                    value: l10n.hello,
                     color: Colors.black54,
                   ),
                   const SizedBox(
                     height: 10,
                   ),
-                  const BodyText(
-                    value: "Let's start off by setting up your account.",
+                  BodyText(
+                    value: l10n.welcomeSetup,
                     alignment: TextAlign.center,
                     color: Colors.black54,
                   ),
@@ -66,7 +69,7 @@ class WelcomeScreen extends ConsumerWidget {
                           ),
                         );
                       },
-                      value: "Proceed",
+                      value: l10n.proceed,
                     ),
                   ),
                   SizedBox(
@@ -76,7 +79,7 @@ class WelcomeScreen extends ConsumerWidget {
                       onPressed: () async {
                         await ref.read(firebaseAuthRepositoryProvider).signOut();
                       },
-                      value: "Sign out",
+                      value: l10n.signOut,
                     ),
                   ),
                 ],

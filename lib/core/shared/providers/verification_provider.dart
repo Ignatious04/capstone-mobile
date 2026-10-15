@@ -1,3 +1,4 @@
+import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/enums/verification_status_enum.dart';
 import 'package:capstone/core/shared/providers/user_provider.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
@@ -25,21 +26,23 @@ class NotVerifiedException implements Exception {
 Future<bool> ensureVerified(BuildContext context, WidgetRef ref) async {
   if (ref.read(isVerifiedProvider)) return true;
 
+  final l10n = AppLocalizations.of(context)!;
+
   final status = ref.read(currentAuthenticatedUserProvider).value?.verificationStatus;
   final rejected = status == VerificationStatusEnum.rejected;
 
   await showDialog<void>(
     context: context,
     builder: (_) => AlertDialog(
-      title: TitleText(value: rejected ? "Account not verified" : "Verification pending"),
+      title: TitleText(value: rejected ? l10n.verificationNotVerified : l10n.verificationPendingTitle),
       content: BodyText(
         value: rejected
-            ? "Your account couldn't be verified, so reporting is unavailable. You can still call emergency services."
-            : "Reporting unlocks once an administrator verifies your account. You can still call emergency services in the meantime.",
+            ? l10n.verificationRejectedBody
+            : l10n.verificationPendingBody,
       ),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       actions: [
-        TextButton(onPressed: () => Navigator.pop(context), child: const Text("OK")),
+        TextButton(onPressed: () => Navigator.pop(context), child: Text(l10n.ok)),
       ],
     ),
   );

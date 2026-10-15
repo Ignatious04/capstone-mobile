@@ -1,3 +1,5 @@
+import 'package:capstone/core/l10n/enum_labels.dart';
+import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/shared/models/report_model.dart';
 import 'package:capstone/core/shared/widgets/custom_app_bar.dart';
 import 'package:capstone/core/shared/widgets/section_title.dart';
@@ -18,12 +20,14 @@ class HistoryCaseDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     final location = report.location;
     final createdAt = report.createdAt;
     final resolvedAt = report.resolvedAt;
 
     return Scaffold(
-      appBar: const CustomAppBar(value: 'Case Details'),
+      appBar: CustomAppBar(value: l10n.caseDetails),
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(20),
@@ -39,30 +43,30 @@ class HistoryCaseDetailScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const LabelText(value: 'EMERGENCY TYPE'),
+                      LabelText(value: l10n.emergencyType.toUpperCase()),
                       BodyText(
-                        value: Formatter.formatEnumName(report.incidentType?.name ?? '—'),
+                        value: report.incidentType?.label(l10n) ?? '—',
                         isBold: true,
                       ),
                       const SizedBox(height: 10),
                       ReportStatusWidget(status: report.status?.name ?? 'resolved'),
                       const SizedBox(height: 10),
-                      const LabelText(value: 'REFERENCE NUMBER'),
+                      LabelText(value: l10n.referenceNumber.toUpperCase()),
                       BodyText(value: report.referenceNumber, isBold: true),
                       if (createdAt != null) ...[
                         const SizedBox(height: 10),
-                        const LabelText(value: 'REPORTED'),
+                        LabelText(value: l10n.reported.toUpperCase()),
                         BodyText(value: Formatter.formatDateTime(createdAt)),
                       ],
                       if (resolvedAt != null) ...[
                         const SizedBox(height: 10),
-                        const LabelText(value: 'RESOLVED'),
+                        LabelText(value: l10n.resolved.toUpperCase()),
                         BodyText(value: Formatter.formatDateTime(resolvedAt)),
                       ],
                       const SizedBox(height: 10),
-                      const LabelText(value: 'DESCRIPTION'),
+                      LabelText(value: l10n.description.toUpperCase()),
                       BodyText(
-                        value: report.description.isEmpty ? 'No description provided.' : report.description,
+                        value: report.description.isEmpty ? l10n.noDescriptionProvided : report.description,
                       ),
                     ],
                   ),
@@ -70,26 +74,26 @@ class HistoryCaseDetailScreen extends StatelessWidget {
               ),
               if (location != null) ...[
                 const SizedBox(height: 10),
-                SectionTitle(icon: Icons.location_on_outlined, title: 'Incident Location'),
+                SectionTitle(icon: Icons.location_on_outlined, title: l10n.incidentLocation),
                 const SizedBox(height: 10),
                 LocationCard(location: location),
               ],
               const SizedBox(height: 10),
-              SectionTitle(icon: Icons.people_outline, title: 'Victims'),
+              SectionTitle(icon: Icons.people_outline, title: l10n.victims),
               const SizedBox(height: 10),
               VictimsCard(victims: report.victims),
               const SizedBox(height: 10),
-              SectionTitle(icon: Icons.attach_file, title: 'Attachments'),
+              SectionTitle(icon: Icons.attach_file, title: l10n.attachments),
               const SizedBox(height: 10),
               AttachmentsCard(attachments: report.attachments),
               if (report.responderAttachments.isNotEmpty) ...[
                 const SizedBox(height: 10),
-                SectionTitle(icon: Icons.add_a_photo_outlined, title: 'Responder Attachments'),
+                SectionTitle(icon: Icons.add_a_photo_outlined, title: l10n.responderAttachments),
                 const SizedBox(height: 10),
                 AttachmentsCard(attachments: report.responderAttachments),
               ],
               const SizedBox(height: 10),
-              SectionTitle(icon: Icons.notes, title: 'Additional Information'),
+              SectionTitle(icon: Icons.notes, title: l10n.additionalInformation),
               const SizedBox(height: 10),
               AdditionalInformationCard(additionalInfo: report.additionalInformation.trim()),
             ],

@@ -1,3 +1,4 @@
+import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/shared/models/report_model.dart';
 import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
 import 'package:capstone/core/shared/widgets/custom_snackbar_helper.dart';
@@ -22,12 +23,12 @@ class ResponderAttachmentsSection extends ConsumerWidget {
           children: [
             ListTile(
               leading: const Icon(Icons.photo_camera),
-              title: const Text('Take a photo'),
+              title: Text(AppLocalizations.of(context)!.takePhoto),
               onTap: () => Navigator.pop(sheetContext, ImageSource.camera),
             ),
             ListTile(
               leading: const Icon(Icons.photo_library),
-              title: const Text('Choose from gallery'),
+              title: Text(AppLocalizations.of(context)!.chooseFromGallery),
               onTap: () => Navigator.pop(sheetContext, ImageSource.gallery),
             ),
           ],
@@ -38,7 +39,7 @@ class ResponderAttachmentsSection extends ConsumerWidget {
 
     final error = await ref
         .read(responderAttachmentProvider.notifier)
-        .addImage(reportID: report.reportID, source: source);
+        .addImage(reportID: report.reportID, source: source, l10n: AppLocalizations.of(context)!);
 
     if (error != null && context.mounted) {
       CustomSnackbarHelper.show(context, text: error, color: Colors.red);
@@ -47,18 +48,20 @@ class ResponderAttachmentsSection extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
+
     final isUploading = ref.watch(responderAttachmentProvider);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        SectionTitle(icon: Icons.add_a_photo_outlined, title: 'Responder Attachments'),
+        SectionTitle(icon: Icons.add_a_photo_outlined, title: l10n.responderAttachments),
         const SizedBox(height: 10),
         AttachmentsCard(attachments: report.responderAttachments),
         const SizedBox(height: 10),
         CustomElevatedButton(
           onPressed: isUploading ? null : () => _pick(context, ref),
-          value: isUploading ? 'Uploading...' : 'Add image',
+          value: isUploading ? l10n.uploading : l10n.addImage,
           icon: isUploading
               ? const SizedBox(
                   width: 18,

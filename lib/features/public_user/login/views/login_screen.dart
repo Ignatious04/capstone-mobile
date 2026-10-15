@@ -1,3 +1,4 @@
+import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/exceptions/auth_exception.dart';
 import 'package:capstone/core/shared/widgets/custom_circular_progress_indicator.dart';
 import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
@@ -38,17 +39,18 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   Widget build(BuildContext context) {
     final loginState = ref.watch(loginProvider);
     final isLoading = loginState is AsyncLoading;
+    final l10n = AppLocalizations.of(context)!;
 
     ref.listen(loginProvider, (previous, next) {
       next.whenOrNull(
         error: (error, _) {
           setState(() {
-            errorMessage = error is AuthException ? error.message : "Something went wrong";
+            errorMessage = error is AuthException ? error.localized(l10n) : l10n.somethingWentWrong;
           });
         },
         data: (_) {
           if (previous is AsyncLoading) {
-            CustomSnackbarHelper.show(context, text: "Logged in successfully!");
+            CustomSnackbarHelper.show(context, text: l10n.loginSuccess);
           }
         },
       );
@@ -80,8 +82,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   color: Colors.white,
                   isBold: true,
                 ),
-                const TitleText(
-                  value: "Mobile Emergency Access System",
+                TitleText(
+                  value: l10n.appTagline,
                   color: Colors.white,
                 ),
               ],
@@ -102,23 +104,23 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const TitleText(
-                        value: "Welcome!",
+                      TitleText(
+                        value: l10n.loginWelcome,
                         color: Colors.black,
                       ),
-                      const BodyText(
-                        value: "Log in to your account",
+                      BodyText(
+                        value: l10n.loginSubtitle,
                         color: Colors.black54,
                       ),
                       const SizedBox(
                         height: 20.0,
                       ),
                       CustomTextField(
-                        title: "EMAIL ADDRESS",
+                        title: l10n.emailAddress.toUpperCase(),
                         controller: emailController,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Email is required";
+                            return l10n.fieldRequired(l10n.emailAddress);
                           }
 
                           return null;
@@ -130,11 +132,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         height: 10.0,
                       ),
                       CustomTextField(
-                        title: "PASSWORD",
+                        title: l10n.password.toUpperCase(),
                         controller: passwordController,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Password is required";
+                            return l10n.fieldRequired(l10n.password);
                           }
 
                           return null;
@@ -167,8 +169,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           },
                           child: Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                            child: const LabelText(
-                              value: "Forgot password?",
+                            child: LabelText(
+                              value: l10n.forgotPassword,
                               color: Colors.deepOrange,
                             ),
                           ),
@@ -196,7 +198,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                         password: passwordController.text,
                                       );
                                 },
-                                value: "Log In",
+                                value: l10n.login,
                               ),
                       ),
                       const SizedBox(
@@ -213,8 +215,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           const SizedBox(
                             width: 10,
                           ),
-                          const BodyText(
-                            value: "OR",
+                          BodyText(
+                            value: l10n.or.toUpperCase(),
                             color: Colors.black54,
                           ),
                           const SizedBox(
@@ -238,7 +240,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const LabelText(value: "Didn't have an account?", color: Colors.black54),
+                          LabelText(value: l10n.noAccountPrompt, color: Colors.black54),
                           SizedBox(width: 5),
                           InkWell(
                             onTap: () {
@@ -254,7 +256,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             child: Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 5.0),
                               child: LabelText(
-                                value: "Create one",
+                                value: l10n.createOne,
                                 color: Colors.deepOrange,
                               ),
                             ),

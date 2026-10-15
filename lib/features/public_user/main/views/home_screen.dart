@@ -1,3 +1,5 @@
+import 'package:capstone/core/l10n/enum_labels.dart';
+import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/enums/audit_action_enum.dart';
 import 'package:capstone/core/enums/map_mode_enum.dart';
 import 'package:capstone/core/enums/service_type_enum.dart';
@@ -15,7 +17,6 @@ import 'package:capstone/core/shared/widgets/service_button.dart';
 import 'package:capstone/core/shared/widgets/verification_banner.dart';
 import 'package:capstone/core/utilities/call_launcher.dart';
 import 'package:capstone/core/utilities/distance_helper.dart';
-import 'package:capstone/core/utilities/formatter.dart';
 import 'package:capstone/features/public_user/main/providers/nearest_emergency_services_provider.dart';
 import 'package:capstone/features/public_user/map/models/emergency_service_model.dart';
 import 'package:capstone/features/public_user/map/providers/contact_number_repository_provider.dart';
@@ -77,8 +78,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }
 
   Future<void> _submitQuickReport(ServiceTypeEnum incidentType) async {
+    final l10n = AppLocalizations.of(context)!;
+
     if (!await ensureVerified(context, ref)) return;
-    final label = Formatter.formatEnumName(incidentType.name);
+    final label = incidentType.label(l10n);
     final fix = await ref.read(locationServiceProvider).getCurrentLocation();
     final location = fix.latLng;
 
@@ -88,13 +91,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
     final confirmed = await showConfirmationDialog(
       context,
-      title: "Send a quick $label report?",
-      content:
-          "This immediately sends your current location as an emergency report. "
-          "Only use this for real emergencies. "
-          "Angeles City's declared emergency response time is 10–15 minutes; "
-          "please note that actual response time may vary depending on "
-          "responder availability, traffic, and the nature of each case.",
+      title: l10n.quickReportTitle(label),
+      content: "${l10n.quickReportBody} ${l10n.responseTimeNotice}",
     );
 
     if (confirmed != true) return;
@@ -116,7 +114,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
       if (!mounted) return;
       Navigator.pop(context);
-      CustomSnackbarHelper.show(context, text: "Report sent!");
+      CustomSnackbarHelper.show(context, text: l10n.reportSent);
     } catch (e, stack) {
       debugPrint("ERROR: $e");
       debugPrintStack(stackTrace: stack);
@@ -124,13 +122,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       Navigator.pop(context);
       CustomSnackbarHelper.show(
         context,
-        text: "An error has occurred while trying to send your report!",
+        text: l10n.reportSendError,
       );
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final location = ref.watch(locationStreamProvider);
     final nearestServicesAsync = ref.watch(nearestEmergencyServicesProvider);
     final unreadCount = ref.watch(unreadNotificationCountProvider);
@@ -245,9 +244,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           height: 10,
                         ),
                         const VerificationBanner(),
-                        const SectionTitle(
+                        SectionTitle(
                           icon: Icons.select_all,
-                          title: "Quick Reporting",
+                          title: l10n.quickReporting,
                         ),
                         const SizedBox(
                           height: 10,
@@ -257,7 +256,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             Expanded(
                               child: ServiceButton(
                                 onPressed: () => _submitQuickReport(ServiceTypeEnum.fire),
-                                value: "Fire",
+                                value: ServiceTypeEnum.fire.label(l10n),
                                 icon: Icons.fire_truck,
                                 color: Colors.red,
                                 backgroundColor: AppColors.lighterRed,
@@ -267,7 +266,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             Expanded(
                               child: ServiceButton(
                                 onPressed: () => _submitQuickReport(ServiceTypeEnum.police),
-                                value: "Crime",
+                                value: l10n.quickCrime,
                                 icon: Icons.local_police,
                                 color: Colors.blue,
                                 backgroundColor: AppColors.lighterBlue,
@@ -277,7 +276,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             Expanded(
                               child: ServiceButton(
                                 onPressed: () => _submitQuickReport(ServiceTypeEnum.medical),
-                                value: "Medical",
+                                value: ServiceTypeEnum.medical.label(l10n),
                                 icon: Icons.medical_services,
                                 color: Colors.green,
                                 backgroundColor: AppColors.lighterGreen,
@@ -299,8 +298,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             const SizedBox(
                               width: 10,
                             ),
-                            const BodyText(
-                              value: "OR",
+                            BodyText(
+                              value: l10n.or.toUpperCase(),
                               color: Colors.black54,
                             ),
                             const SizedBox(
@@ -337,7 +336,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                 borderRadius: BorderRadius.circular(radius),
                               ),
                             ),
-                            child: const Column(
+                            child: Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 Icon(
@@ -348,7 +347,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                   height: 10,
                                 ),
                                 BodyText(
-                                  value: "CALL 911",
+                                  value: l10n.call911Button,
                                   color: Colors.white,
                                   isBold: true,
                                 ),
@@ -359,9 +358,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         const SizedBox(
                           height: 10,
                         ),
-                        const SectionTitle(
+                        SectionTitle(
                           icon: Icons.miscellaneous_services,
-                          title: "Nearby Services",
+                          title: l10n.nearbyServices,
                         ),
                         const SizedBox(
                           height: 10,

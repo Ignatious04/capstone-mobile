@@ -1,3 +1,4 @@
+import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/widgets/text/headline_text.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +9,8 @@ class OnboardingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
       body: AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle(
@@ -28,16 +31,16 @@ class OnboardingScreen extends StatelessWidget {
                   const SizedBox(
                     height: 10,
                   ),
-                  const HeadlineText(
-                    value: "Account and Safety Profile Saved",
+                  HeadlineText(
+                    value: l10n.onboardingTitle,
                     alignment: TextAlign.center,
                   ),
                   const SizedBox(
                     height: 10,
                   ),
-                  const BodyText(
+                  BodyText(
                     value:
-                        "Your personal information has been successfully saved and secured. You're now ready to access emergency services through the application.",
+                        l10n.onboardingBody,
                     alignment: TextAlign.center,
                     color: Colors.black54,
                   ),
@@ -54,7 +57,7 @@ class OnboardingScreen extends StatelessWidget {
                         debugPrint("Pressed");
                         Navigator.popUntil(context, (route) => route.isFirst);
                       },
-                      child: const Text("Proceed to Home"),
+                      child: Text(l10n.proceedToHome),
                     ),
                   ),
                 ],

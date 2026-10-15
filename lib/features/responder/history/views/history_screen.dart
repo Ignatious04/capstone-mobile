@@ -1,3 +1,4 @@
+import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/shared/widgets/custom_circular_progress_indicator.dart';
 import 'package:capstone/core/shared/widgets/custom_header_widget.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
@@ -11,24 +12,26 @@ class ResponderHistoryScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
+
     final history = ref.watch(responderHistoryProvider);
 
     return Scaffold(
       body: SafeArea(
         child: Column(
           children: [
-            const SizedBox(
+            SizedBox(
               width: double.infinity,
               child: CustomHeaderWidget(
-                title: "History",
-                body: "Your resolved cases",
+                title: l10n.history,
+                body: l10n.historySubtitle,
               ),
             ),
             Expanded(
               child: history.when(
                 data: (cases) {
                   if (cases.isEmpty) {
-                    return const Center(child: BodyText(value: "No resolved cases yet"));
+                    return Center(child: BodyText(value: l10n.noResolvedCases));
                   }
                   return ListView.builder(
                     padding: const EdgeInsets.all(20),

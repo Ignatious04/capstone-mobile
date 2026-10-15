@@ -1,3 +1,4 @@
+import 'package:capstone/core/l10n/app_localizations.dart';
 import 'dart:io';
 
 import 'package:capstone/core/constants/dropdown_lists.dart';
@@ -54,16 +55,18 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     final user = ref.watch(userProvider);
 
     return SingleChildScrollView(
       child: Column(
         children: [
-          const Align(
+          Align(
             alignment: Alignment.centerLeft,
             child: SectionTitle(
               icon: Icons.person,
-              title: "PERSONAL INFORMATION",
+              title: l10n.personalInformation.toUpperCase(),
             ),
           ),
           const SizedBox(
@@ -73,7 +76,7 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
             initialValue: user.profileImage,
             validator: (value) {
               if (value == null) {
-                return "Profile photo is required";
+                return l10n.fieldRequired(l10n.profilePhoto);
               }
               return null;
             },
@@ -102,7 +105,7 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
                     width: double.infinity,
                     child: CustomElevatedButton(
                       onPressed: () async {
-                        final error = await ref.read(userProvider.notifier).addProfilePicture(ImageSource.camera);
+                        final error = await ref.read(userProvider.notifier).addProfilePicture(ImageSource.camera, l10n);
 
                         if (error != null && error.isNotEmpty) {
                           if (context.mounted) {
@@ -117,7 +120,7 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
                           );
                         }
                       },
-                      value: "Tap to take photo",
+                      value: l10n.tapToTakePhoto,
                     ),
                   ),
                   if (field.hasError)
@@ -135,8 +138,8 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
           const SizedBox(
             height: 10,
           ),
-          const LabelText(
-            value: "NOTE: REQUIRED FIELDS ARE DENOTED BY AN ASTERISK (*)",
+          LabelText(
+            value: l10n.requiredNote.toUpperCase(),
             color: Colors.red,
             isBold: false,
           ),
@@ -148,11 +151,11 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
               Expanded(
                 flex: 3,
                 child: CustomTextField(
-                  title: "FIRST NAME",
+                  title: l10n.firstName.toUpperCase(),
                   controller: firstNameController,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return "First name is required";
+                      return l10n.fieldRequired(l10n.firstName);
                     }
 
                     return null;
@@ -169,7 +172,7 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
               Expanded(
                 flex: 2,
                 child: CustomTextField(
-                  title: "MIDDLE NAME",
+                  title: l10n.middleName.toUpperCase(),
                   controller: middleNameController,
                   validator: (value) {
                     return null;
@@ -185,11 +188,11 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
             height: 10,
           ),
           CustomTextField(
-            title: "LAST NAME",
+            title: l10n.lastName.toUpperCase(),
             controller: lastNameController,
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return "Last name is required";
+                return l10n.fieldRequired(l10n.lastName);
               }
 
               return null;
@@ -207,7 +210,7 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
               Expanded(
                 flex: 3,
                 child: CustomDatePickerWidget(
-                  title: "BIRTH DATE",
+                  title: l10n.birthDate.toUpperCase(),
                   controller: birthDateController,
                   onTap: () async {
                     final date = await showDatePicker(
@@ -233,16 +236,16 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
               Expanded(
                 flex: 2,
                 child: CustomDropdownButton(
-                  title: "SEX",
+                  title: l10n.sex.toUpperCase(),
                   value: user.sex.isEmpty ? null : user.sex,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return "Sex is required";
+                      return l10n.fieldRequired(l10n.sex);
                     }
 
                     return null;
                   },
-                  items: DropdownLists.sexItems,
+                  items: DropdownLists.sexItems(l10n),
                   onChanged: (value) {
                     ref.read(userProvider.notifier).setSex(value!);
                   },
@@ -255,7 +258,7 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
             height: 10,
           ),
           CustomTextField(
-            title: "CONTACT NO.",
+            title: l10n.contactNumber.toUpperCase(),
             prefixText: "+63 ",
             controller: contactNumController,
             keyboardType: const TextInputType.numberWithOptions(decimal: false),
@@ -265,10 +268,10 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
             ],
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return "Contact no. is required";
+                return l10n.fieldRequired(l10n.contactNumber);
               }
               if (value.length != 10) {
-                return "Enter a valid 10-digit number";
+                return l10n.invalidPhone10;
               }
 
               return null;
@@ -286,11 +289,11 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
               Expanded(
                 flex: 2,
                 child: CustomTextField(
-                  title: "HOUSE NO.",
+                  title: l10n.houseNumber.toUpperCase(),
                   controller: houseNumController,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return "House no. is required";
+                      return l10n.fieldRequired(l10n.houseNumber);
                     }
 
                     return null;
@@ -307,11 +310,11 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
               Expanded(
                 flex: 3,
                 child: CustomTextField(
-                  title: "STREET",
+                  title: l10n.street.toUpperCase(),
                   controller: streetController,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return "Street is required";
+                      return l10n.fieldRequired(l10n.street);
                     }
 
                     return null;
@@ -328,7 +331,7 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
             height: 10,
           ),
           CustomDropdownButton(
-            title: "BARANGAY",
+            title: l10n.barangay.toUpperCase(),
             value: user.barangay.isEmpty ? null : user.barangay,
             items: DropdownLists.barangays.map((String barangay) {
               return DropdownMenuItem<String>(
@@ -341,7 +344,7 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
             },
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return "Barangay is required";
+                return l10n.fieldRequired(l10n.barangay);
               }
               return null;
             },
@@ -355,16 +358,16 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
               Expanded(
                 flex: 3,
                 child: CustomDropdownButton(
-                  title: "NATIONALITY",
+                  title: l10n.nationality.toUpperCase(),
                   value: user.nationality.isEmpty ? null : user.nationality,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return "Nationality is required";
+                      return l10n.fieldRequired(l10n.nationality);
                     }
 
                     return null;
                   },
-                  items: DropdownLists.nationalityItems,
+                  items: DropdownLists.nationalityItems(l10n),
                   onChanged: (value) {
                     ref.read(userProvider.notifier).setNationality(value!);
                   },
@@ -377,16 +380,16 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
               Expanded(
                 flex: 2,
                 child: CustomDropdownButton(
-                  title: "CIVIL STATUS",
+                  title: l10n.civilStatus.toUpperCase(),
                   value: user.civilStatus.isEmpty ? null : user.civilStatus,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return "Civil status is required";
+                      return l10n.fieldRequired(l10n.civilStatus);
                     }
 
                     return null;
                   },
-                  items: DropdownLists.civilStatusItems,
+                  items: DropdownLists.civilStatusItems(l10n),
                   onChanged: (value) {
                     ref.read(userProvider.notifier).setCivilStatus(value!);
                   },
@@ -399,16 +402,16 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
             height: 10,
           ),
           CustomDropdownButton(
-            title: "RELIGION",
+            title: l10n.religion.toUpperCase(),
             value: user.religion.isEmpty ? null : user.religion,
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return "Religion is required";
+                return l10n.fieldRequired(l10n.religion);
               }
 
               return null;
             },
-            items: DropdownLists.religions,
+            items: DropdownLists.religions(l10n),
             onChanged: (value) {
               ref.read(userProvider.notifier).setReligion(value!);
             },

@@ -1,3 +1,4 @@
+import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/widgets/text/label_text.dart';
 import 'package:capstone/core/shared/widgets/text/title_text.dart';
@@ -17,6 +18,8 @@ class VictimCardItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
@@ -49,7 +52,7 @@ class VictimCardItem extends StatelessWidget {
                 const SizedBox(width: 10),
                 Expanded(
                   child: TitleText(
-                    value: name.isEmpty ? 'Unnamed victim' : name,
+                    value: name.isEmpty ? l10n.unnamedVictim : name,
                     color: Colors.white,
                     isBold: false,
                   ),

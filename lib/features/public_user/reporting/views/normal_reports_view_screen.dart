@@ -1,3 +1,5 @@
+import 'package:capstone/core/l10n/enum_labels.dart';
+import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/enums/report_status_enum.dart';
 import 'package:capstone/core/enums/service_type_enum.dart';
 import 'package:capstone/core/shared/providers/report_repository_provider.dart';
@@ -5,7 +7,6 @@ import 'package:capstone/core/shared/providers/responder_provider.dart';
 import 'package:capstone/core/shared/widgets/emergency_guidance_sheet.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/widgets/text/label_text.dart';
-import 'package:capstone/core/utilities/formatter.dart';
 import 'package:capstone/core/shared/widgets/custom_app_bar.dart';
 import 'package:capstone/core/shared/models/report_model.dart';
 import 'package:capstone/features/public_user/reporting/providers/responder_location_provider.dart';
@@ -36,6 +37,8 @@ class NormalReportsViewScreen extends ConsumerStatefulWidget {
 class _NormalReportsViewScreenState extends ConsumerState<NormalReportsViewScreen> {
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     // Live copy of the report; falls back to the one passed in while loading/on error.
     final report = ref
         .watch(reportByIdProvider(widget.report.reportID))
@@ -53,7 +56,7 @@ class _NormalReportsViewScreenState extends ConsumerState<NormalReportsViewScree
 
     return Scaffold(
       appBar: CustomAppBar(
-        value: "View Report",
+        value: l10n.viewReport,
         actions: showGuidanceEntry
             ? [
                 IconButton(
@@ -61,7 +64,7 @@ class _NormalReportsViewScreenState extends ConsumerState<NormalReportsViewScree
                     Icons.info_outline,
                     size: 25,
                   ),
-                  tooltip: "While you wait",
+                  tooltip: l10n.whileYouWait,
                   onPressed: () => EmergencyGuidanceSheet.show(context, report.incidentType!),
                 ),
               ]
@@ -104,11 +107,11 @@ class _NormalReportsViewScreenState extends ConsumerState<NormalReportsViewScree
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const BodyText(
-                                    value: 'INCIDENT TYPE',
+                                  BodyText(
+                                    value: l10n.incidentType.toUpperCase(),
                                   ),
                                   BodyText(
-                                    value: Formatter.formatEnumName(report.incidentType!.name),
+                                    value: report.incidentType!.label(l10n),
                                     isBold: true,
                                   ),
                                 ],
@@ -121,11 +124,11 @@ class _NormalReportsViewScreenState extends ConsumerState<NormalReportsViewScree
                           status: status,
                         ),
                         const SizedBox(height: 10),
-                        const LabelText(
-                          value: 'DESCRIPTION',
+                        LabelText(
+                          value: l10n.description.toUpperCase(),
                         ),
                         BodyText(
-                          value: report.description.isEmpty ? 'No description provided.' : report.description,
+                          value: report.description.isEmpty ? l10n.noDescriptionProvided : report.description,
                         ),
                       ],
                     ),
@@ -138,7 +141,7 @@ class _NormalReportsViewScreenState extends ConsumerState<NormalReportsViewScree
                         ? const SizedBox.shrink()
                         : Column(
                             children: [
-                              SectionTitle(icon: Icons.support_agent, title: 'Responder'),
+                              SectionTitle(icon: Icons.support_agent, title: l10n.responder),
                               const SizedBox(height: 10),
                               ResponderCard(responder: responder),
                             ],
@@ -150,7 +153,7 @@ class _NormalReportsViewScreenState extends ConsumerState<NormalReportsViewScree
                 const SizedBox(height: 10),
                 SectionTitle(
                   icon: Icons.location_on_outlined,
-                  title: responderLatLng == null ? 'Incident Location' : 'Incident & Responder Location',
+                  title: responderLatLng == null ? l10n.incidentLocation : l10n.incidentAndResponderLocation,
                 ),
                 const SizedBox(height: 10),
                 if (responderLatLng != null) ...[
@@ -168,7 +171,7 @@ class _NormalReportsViewScreenState extends ConsumerState<NormalReportsViewScree
                 const SizedBox(height: 10),
                 SectionTitle(
                   icon: Icons.people_outline,
-                  title: 'Victims',
+                  title: l10n.victims,
                 ),
                 const SizedBox(height: 10),
                 VictimsCard(
@@ -177,7 +180,7 @@ class _NormalReportsViewScreenState extends ConsumerState<NormalReportsViewScree
                 const SizedBox(height: 10),
                 SectionTitle(
                   icon: Icons.attach_file,
-                  title: 'Attachments',
+                  title: l10n.attachments,
                 ),
                 const SizedBox(height: 10),
                 AttachmentsCard(
@@ -186,7 +189,7 @@ class _NormalReportsViewScreenState extends ConsumerState<NormalReportsViewScree
                 const SizedBox(height: 10),
                 SectionTitle(
                   icon: Icons.notes,
-                  title: 'Additional Information',
+                  title: l10n.additionalInformation,
                 ),
                 const SizedBox(height: 10),
                 AdditionalInformationCard(

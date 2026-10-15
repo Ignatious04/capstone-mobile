@@ -1,3 +1,4 @@
+import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/shared/widgets/custom_circular_progress_indicator.dart';
 import 'package:capstone/core/shared/widgets/custom_header_widget.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
@@ -20,12 +21,14 @@ class _LegalDocumentViewState extends State<LegalDocumentView> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return FutureBuilder<_LegalDocument>(
       future: documentFuture,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return const Center(
-            child: BodyText(value: "Unable to load this document.", color: Colors.black54),
+          return Center(
+            child: BodyText(value: l10n.legalLoadError, color: Colors.black54),
           );
         }
 

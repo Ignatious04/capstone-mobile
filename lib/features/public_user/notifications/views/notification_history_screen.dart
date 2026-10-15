@@ -1,3 +1,4 @@
+import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/enums/report_type_enum.dart';
 import 'package:capstone/core/shared/providers/notification_history_provider.dart';
 import 'package:capstone/core/shared/providers/report_repository_provider.dart';
@@ -16,11 +17,12 @@ class NotificationHistoryScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
     final notifications = ref.watch(notificationHistoryProvider);
     final hasUnread = notifications.any((n) => !n.isRead);
 
     return Scaffold(
-      appBar: CustomAppBar(value: "Notifications"),
+      appBar: CustomAppBar(value: l10n.notifications),
       body: SafeArea(
         child: Column(
           children: [
@@ -29,7 +31,7 @@ class NotificationHistoryScreen extends ConsumerWidget {
                 alignment: Alignment.centerRight,
                 child: TextButton(
                   onPressed: () => ref.read(notificationHistoryProvider.notifier).markAllAsRead(),
-                  child: const Text("Mark all as read"),
+                  child: Text(l10n.markAllRead),
                 ),
               ),
             Expanded(
@@ -43,8 +45,8 @@ class NotificationHistoryScreen extends ConsumerWidget {
                           color: Colors.black54,
                         ),
                         const SizedBox(height: 10),
-                        const Center(
-                          child: TitleText(value: "No notifications yet."),
+                        Center(
+                          child: TitleText(value: l10n.noNotifications),
                         ),
                       ],
                     )
@@ -60,14 +62,14 @@ class NotificationHistoryScreen extends ConsumerWidget {
                             onDelete: () async {
                               final confirmed = await showConfirmationDialog(
                                 context,
-                                title: "Delete notification?",
-                                content: "This will remove it from your notification history.",
+                                title: l10n.deleteNotificationTitle,
+                                content: l10n.deleteNotificationBody,
                               );
                               if (confirmed != true) return;
 
                               await ref.read(notificationHistoryProvider.notifier).delete(notification.id);
                               if (!context.mounted) return;
-                              CustomSnackbarHelper.show(context, text: "Notification deleted");
+                              CustomSnackbarHelper.show(context, text: l10n.notificationDeleted);
                             },
                             onTap: () async {
                               if (!notification.isRead) {

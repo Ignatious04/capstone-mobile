@@ -1,6 +1,7 @@
+import 'package:capstone/core/l10n/enum_labels.dart';
+import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/enums/service_type_enum.dart';
 import 'package:capstone/core/utilities/emergency_guidance_tips.dart';
-import 'package:capstone/core/utilities/formatter.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/widgets/text/title_text.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +14,7 @@ class EmergencyGuidanceSheet extends StatelessWidget {
   /// Shows the sheet, or does nothing if there's no guidance content
   /// for this incident type (e.g. non-emergency police reports).
   static Future<void> show(BuildContext context, ServiceTypeEnum incidentType) {
-    if (EmergencyGuidanceTips.forType(incidentType).isEmpty) {
+    if (EmergencyGuidanceTips.forType(incidentType, AppLocalizations.of(context)!).isEmpty) {
       return Future.value();
     }
 
@@ -29,7 +30,9 @@ class EmergencyGuidanceSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final tips = EmergencyGuidanceTips.forType(incidentType);
+    final l10n = AppLocalizations.of(context)!;
+
+    final tips = EmergencyGuidanceTips.forType(incidentType, l10n);
 
     return SafeArea(
       child: Padding(
@@ -55,14 +58,14 @@ class EmergencyGuidanceSheet extends StatelessWidget {
                 const SizedBox(width: 10),
                 Expanded(
                   child: TitleText(
-                    value: "While You Wait — ${Formatter.formatEnumName(incidentType.name)}",
+                    value: l10n.whileYouWaitTitle(incidentType.label(l10n)),
                   ),
                 ),
               ],
             ),
             const SizedBox(height: 5),
-            const BodyText(
-              value: "Responders are on the way. These general steps may help in the meantime.",
+            BodyText(
+              value: l10n.guidanceSheetIntro,
               color: Colors.black54,
             ),
             const SizedBox(height: 20),
@@ -83,8 +86,8 @@ class EmergencyGuidanceSheet extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 5),
-            const BodyText(
-              value: "This is general guidance only and does not replace instructions from responders.",
+            BodyText(
+              value: l10n.guidanceSheetDisclaimer,
               color: Colors.black54,
             ),
           ],

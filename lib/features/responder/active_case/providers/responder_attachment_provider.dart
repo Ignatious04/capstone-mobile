@@ -1,3 +1,4 @@
+import 'package:capstone/core/l10n/app_localizations.dart';
 import 'dart:io';
 import 'package:capstone/core/shared/providers/firebase_auth_provider.dart';
 import 'package:capstone/core/shared/providers/report_repository_provider.dart';
@@ -18,6 +19,7 @@ class ResponderAttachmentNotifier extends Notifier<bool> {
   Future<String?> addImage({
     required String reportID,
     required ImageSource source,
+    required AppLocalizations l10n,
   }) async {
     if (state) return null;
 
@@ -41,7 +43,7 @@ class ResponderAttachmentNotifier extends Notifier<bool> {
       await ref.read(reportRepositoryProvider).addResponderAttachment(reportID, attachment);
       return null;
     } catch (_) {
-      return 'Could not upload the image. Check your connection and try again.';
+      return l10n.uploadError;
     } finally {
       state = false;
     }

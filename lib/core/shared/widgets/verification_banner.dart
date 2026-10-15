@@ -1,3 +1,4 @@
+import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/enums/verification_status_enum.dart';
 import 'package:capstone/core/shared/providers/user_provider.dart';
 import 'package:capstone/core/shared/providers/verification_provider.dart';
@@ -10,16 +11,18 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class VerificationBanner extends ConsumerWidget {
   const VerificationBanner({super.key});
 
-  String _timeAgo(int millis) {
+  String _timeAgo(AppLocalizations l10n, int millis) {
     final diff = DateTime.now().difference(DateTime.fromMillisecondsSinceEpoch(millis));
-    if (diff.inMinutes < 1) return "just now";
-    if (diff.inHours < 1) return "${diff.inMinutes} min ago";
-    if (diff.inDays < 1) return "${diff.inHours} hr ago";
-    return "${diff.inDays} day${diff.inDays == 1 ? '' : 's'} ago";
+    if (diff.inMinutes < 1) return l10n.timeJustNow;
+    if (diff.inHours < 1) return l10n.timeMinutesAgo(diff.inMinutes);
+    if (diff.inDays < 1) return l10n.timeHoursAgo(diff.inHours);
+    return l10n.timeDaysAgo(diff.inDays);
   }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
+
     if (ref.watch(isVerifiedProvider)) return const SizedBox.shrink();
 
     final user = ref.watch(currentAuthenticatedUserProvider).value;
@@ -48,11 +51,10 @@ class VerificationBanner extends ConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const BodyText(
-                  value:
-                      "Realtime reporting unlocks once your account is verified. You can still call emergency services.",
+                BodyText(
+                  value: l10n.verificationBannerBody,
                 ),
-                if (isPending && submittedAt != null) LabelText(value: "Submitted ${_timeAgo(submittedAt)}."),
+                if (isPending && submittedAt != null) LabelText(value: l10n.verificationSubmittedAgo(_timeAgo(l10n, submittedAt))),
               ],
             ),
           ),

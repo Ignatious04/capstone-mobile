@@ -1,3 +1,4 @@
+import 'package:capstone/core/l10n/app_localizations.dart';
 import 'dart:io';
 import 'package:capstone/core/enums/facecheck_result_enum.dart';
 import 'package:capstone/core/enums/id_capture_result_enum.dart';
@@ -35,7 +36,7 @@ class UserNotifier extends Notifier<UserModel> {
     state = build();
   }
 
-  Future<String?> addProfilePicture(ImageSource source) async {
+  Future<String?> addProfilePicture(ImageSource source, AppLocalizations l10n) async {
     final picker = ImagePicker();
     final image = await picker.pickImage(source: source);
 
@@ -46,7 +47,7 @@ class UserNotifier extends Notifier<UserModel> {
     final faceCheck = await ref.read(faceDetectionServiceProvider).checkFace(image.path);
 
     if (faceCheck != FaceCheckResult.ok) {
-      return faceCheck.message;
+      return faceCheck.message(l10n);
     }
 
     state = state.copyWith(profileImage: File(image.path));
@@ -118,18 +119,18 @@ class UserNotifier extends Notifier<UserModel> {
         );
   }
 
-  Future<String?> captureId(File file) async {
+  Future<String?> captureId(File file, AppLocalizations l10n) async {
     final idNumber = await ref.read(ocrServiceProvider).extractIdNumber(file.path, state.idType);
 
     if (idNumber == null) {
-      return IdCaptureResult.unreadable.message;
+      return IdCaptureResult.unreadable.message(l10n);
     }
 
     final userID = ref.read(firebaseAuthProvider).currentUser!.uid;
     final isDuplicate = await ref.read(userRepositoryProvider).isIdNumberTaken(idNumber, excludeUserID: userID);
 
     if (isDuplicate) {
-      return IdCaptureResult.duplicate.message;
+      return IdCaptureResult.duplicate.message(l10n);
     }
 
     state = state.copyWith(idImage: file, idNumber: idNumber);

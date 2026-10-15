@@ -1,3 +1,4 @@
+import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/features/public_user/reporting/models/victim_model.dart';
 import 'package:capstone/features/public_user/reporting/widgets/empty_card.dart';
 import 'package:capstone/features/public_user/reporting/widgets/victim_card_item.dart';
@@ -10,10 +11,12 @@ class VictimsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     if (victims?.isEmpty ?? true) {
       return EmptyCard(
         icon: Icons.person_off_outlined,
-        message: 'No victim information provided.',
+        message: l10n.noVictimInfo,
       );
     }
 

@@ -1,3 +1,4 @@
+import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/shared/widgets/custom_navigation_bar.dart';
 import 'package:capstone/features/public_user/main/views/home_screen.dart';
 import 'package:capstone/features/public_user/map/views/map_screen.dart';
@@ -18,16 +19,17 @@ class _MainScreenState extends State<MainScreen> {
   String address = "Brgy. Balibago, Angeles City";
   int currentPageIndex = 2;
 
-  static const _navItems = [
-    CustomNavigationBarItem(icon: Icons.map_outlined, activeIcon: Icons.map, label: 'Map'),
-    CustomNavigationBarItem(icon: Icons.chat_bubble_outline, activeIcon: Icons.chat_bubble, label: 'Reports'),
-    CustomNavigationBarItem(icon: Icons.home_outlined, activeIcon: Icons.home, label: 'Home'),
-    CustomNavigationBarItem(icon: Icons.menu_book_outlined, activeIcon: Icons.menu_book, label: 'Guidance'),
-    CustomNavigationBarItem(icon: Icons.account_circle_outlined, activeIcon: Icons.account_circle, label: 'Profile'),
+  List<CustomNavigationBarItem> _navItems(AppLocalizations l10n) => [
+    CustomNavigationBarItem(icon: Icons.map_outlined, activeIcon: Icons.map, label: l10n.map),
+    CustomNavigationBarItem(icon: Icons.chat_bubble_outline, activeIcon: Icons.chat_bubble, label: l10n.reports),
+    CustomNavigationBarItem(icon: Icons.home_outlined, activeIcon: Icons.home, label: l10n.home),
+    CustomNavigationBarItem(icon: Icons.menu_book_outlined, activeIcon: Icons.menu_book, label: l10n.guidance),
+    CustomNavigationBarItem(icon: Icons.account_circle_outlined, activeIcon: Icons.account_circle, label: l10n.profile),
   ];
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final pages = const [
       MapScreen(),
       ReportsScreen(),
@@ -47,7 +49,7 @@ class _MainScreenState extends State<MainScreen> {
       bottomNavigationBar: CustomNavigationBar(
         currentIndex: currentPageIndex,
         onTap: (value) => setState(() => currentPageIndex = value),
-        items: _navItems,
+        items: _navItems(l10n),
       ),
     );
   }

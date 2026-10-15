@@ -26,13 +26,13 @@ class DeactivateAccountNotifier extends Notifier<AsyncValue<void>> {
       // 0. Must have a verified number before you're allowed to deactivate at all.
       final user = await ref.read(userRepositoryProvider).getUser(userID);
       if (user == null || !user.isContactNumberVerified) {
-        throw AuthException('Please verify your phone number before deactivating your account.');
+        throw AuthException(AuthErrorCode.verifyPhoneFirst);
       }
 
       // 1. Don't cut someone off from status updates mid-emergency.
       final reports = await ref.read(reportRepositoryProvider).getReports(userID).first;
       if (reports.any((report) => report.status != ReportStatusEnum.resolved)) {
-        throw AuthException('You have an ongoing report. You can deactivate once it is resolved.');
+        throw AuthException(AuthErrorCode.ongoingReport);
       }
 
       // 2. Prove it's them (password, or the Google picker for Google accounts).

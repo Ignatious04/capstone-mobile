@@ -1,10 +1,11 @@
+import 'package:capstone/core/l10n/enum_labels.dart';
+import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/enums/report_status_enum.dart';
 import 'package:capstone/core/shared/providers/report_repository_provider.dart';
 import 'package:capstone/core/shared/providers/responder_provider.dart';
 import 'package:capstone/core/shared/widgets/emergency_guidance_sheet.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/widgets/text/title_text.dart';
-import 'package:capstone/core/utilities/formatter.dart';
 import 'package:capstone/core/shared/widgets/custom_app_bar.dart';
 import 'package:capstone/core/shared/widgets/info_column.dart';
 import 'package:capstone/core/shared/models/report_model.dart';
@@ -29,6 +30,8 @@ class PreCallGuidanceReportViewScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
+
     final currentReport = ref
         .watch(reportByIdProvider(report.reportID))
         .maybeWhen(data: (r) => r ?? report, orElse: () => report);
@@ -45,11 +48,11 @@ class PreCallGuidanceReportViewScreen extends ConsumerWidget {
     // final information = report.additionalInformation.trim();
     return Scaffold(
       appBar: CustomAppBar(
-        value: "View Report",
+        value: l10n.viewReport,
         actions: [
           IconButton(
             icon: const Icon(Icons.info_outline),
-            tooltip: "While you wait",
+            tooltip: l10n.whileYouWait,
             onPressed: () => EmergencyGuidanceSheet.show(context, currentReport.incidentType!),
           ),
         ],
@@ -90,11 +93,11 @@ class PreCallGuidanceReportViewScreen extends ConsumerWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const BodyText(
-                                  value: 'EMERGENCY TYPE',
+                                BodyText(
+                                  value: l10n.emergencyType.toUpperCase(),
                                 ),
                                 BodyText(
-                                  value: Formatter.formatEnumName(currentReport.incidentType!.name),
+                                  value: currentReport.incidentType!.label(l10n),
                                   isBold: true,
                                 ),
                               ],
@@ -122,13 +125,13 @@ class PreCallGuidanceReportViewScreen extends ConsumerWidget {
                       const SizedBox(height: 10),
                       Align(
                         alignment: Alignment.center,
-                        child: const TitleText(
-                          value: "Pre-Call Guidance",
+                        child: TitleText(
+                          value: l10n.preCallGuidance,
                         ),
                       ),
                       const SizedBox(height: 10),
-                      const BodyText(
-                        value: "This report was submitted through the pre-call guidance module.",
+                      BodyText(
+                        value: l10n.preCallReportNote,
                         alignment: TextAlign.center,
                         isOverflow: false,
                       ),
@@ -144,7 +147,7 @@ class PreCallGuidanceReportViewScreen extends ConsumerWidget {
                       ? const SizedBox.shrink()
                       : Column(
                           children: [
-                            SectionTitle(icon: Icons.support_agent, title: 'Responder'),
+                            SectionTitle(icon: Icons.support_agent, title: l10n.responder),
                             const SizedBox(height: 10),
                             ResponderCard(responder: responder),
                           ],
@@ -156,7 +159,7 @@ class PreCallGuidanceReportViewScreen extends ConsumerWidget {
               const SizedBox(height: 10),
               SectionTitle(
                 icon: Icons.location_on_outlined,
-                title: responderLatLng == null ? 'Incident Location' : 'Incident & Responder Location',
+                title: responderLatLng == null ? l10n.incidentLocation : l10n.incidentAndResponderLocation,
               ),
               const SizedBox(height: 10),
               if (responderLatLng != null) ...[
@@ -174,7 +177,7 @@ class PreCallGuidanceReportViewScreen extends ConsumerWidget {
               const SizedBox(height: 10),
               SectionTitle(
                 icon: Icons.info,
-                title: 'Incident Information',
+                title: l10n.incidentInformation,
               ),
               const SizedBox(height: 10),
               Card(
@@ -187,16 +190,6 @@ class PreCallGuidanceReportViewScreen extends ConsumerWidget {
                       InfoColumn(
                         title: "REFERENCE NUMBER",
                         value: currentReport.referenceNumber,
-                      ),
-                      const SizedBox(height: 10),
-                      InfoColumn(
-                        title: "STATUS",
-                        value: Formatter.formatEnumName(currentReport.status!.name),
-                      ),
-                      const SizedBox(height: 10),
-                      InfoColumn(
-                        title: "INCIDENT TYPE",
-                        value: Formatter.formatEnumName(currentReport.incidentType!.name),
                       ),
                       const SizedBox(height: 10),
                       InfoColumn(
@@ -214,7 +207,7 @@ class PreCallGuidanceReportViewScreen extends ConsumerWidget {
               const SizedBox(height: 10),
               SectionTitle(
                 icon: Icons.question_answer,
-                title: "Questions and Answers",
+                title: l10n.questionsAndAnswers,
               ),
               const SizedBox(height: 10),
               Card(
@@ -228,14 +221,14 @@ class PreCallGuidanceReportViewScreen extends ConsumerWidget {
                     final item = currentReport.guidanceAnswers[index];
                     return ListTile(
                       title: BodyText(
-                        value: item.question,
+                        value: item.localizedQuestion(l10n),
                       ),
                       subtitle: BodyText(
                         value: item.answer == null
-                            ? "Not answered"
+                            ? l10n.notAnswered
                             : item.answer!
-                            ? "Yes"
-                            : "No",
+                            ? l10n.yes
+                            : l10n.no,
                         isBold: true,
                       ),
                       leading: Icon(

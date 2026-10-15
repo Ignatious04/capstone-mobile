@@ -1,3 +1,5 @@
+import 'package:capstone/core/l10n/enum_labels.dart';
+import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/controllers/victim_controllers.dart';
 import 'package:capstone/core/enums/police_concern_enum.dart';
 import 'package:capstone/core/enums/service_type_enum.dart';
@@ -44,28 +46,12 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> {
   bool _isPoliceEmergency = true;
   PoliceConcernTypeEnum? _policeConcernType;
 
-  static const _emergencyType = [
-    DropdownMenuItem(
-      value: ServiceTypeEnum.medical,
-      child: BodyText(
-        value: "Medical",
-        isBold: true,
+  List<DropdownMenuItem<ServiceTypeEnum>> _emergencyTypes(AppLocalizations l10n) => [
+    for (final type in const [ServiceTypeEnum.medical, ServiceTypeEnum.police, ServiceTypeEnum.fire])
+      DropdownMenuItem(
+        value: type,
+        child: BodyText(value: type.label(l10n), isBold: true),
       ),
-    ),
-    DropdownMenuItem(
-      value: ServiceTypeEnum.police,
-      child: BodyText(
-        value: "Police",
-        isBold: true,
-      ),
-    ),
-    DropdownMenuItem(
-      value: ServiceTypeEnum.fire,
-      child: BodyText(
-        value: "Fire",
-        isBold: true,
-      ),
-    ),
   ];
 
   @override
@@ -84,12 +70,14 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     final attachmentsList = ref.watch(pendingAttachmentsProvider);
     final victimsList = ref.watch(reportProvider).victims;
     final location = ref.watch(locationStreamProvider);
 
     return Scaffold(
-      appBar: CustomAppBar(value: "Emergency Report"),
+      appBar: CustomAppBar(value: l10n.emergencyReport),
       body: SafeArea(
         child: Column(
           children: [
@@ -108,28 +96,28 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const SectionTitle(
+                              SectionTitle(
                                 icon: Icons.perm_device_information,
-                                title: "Required Information",
+                                title: l10n.requiredInformation,
                               ),
                               const SizedBox(height: 10),
-                              const BodyText(
-                                value: "NOTE: REQUIRED FIELDS ARE DENOTED BY AN ASTERISK (*)",
+                              BodyText(
+                                value: l10n.requiredNote.toUpperCase(),
                                 color: Colors.red,
                                 isBold: false,
                               ),
                               const SizedBox(height: 10),
                               CustomDropdownButton(
-                                title: "EMERGENCY TYPE",
+                                title: l10n.emergencyType.toUpperCase(),
                                 validator: (value) {
                                   if (value == null) {
-                                    return "Emergency type is required";
+                                    return l10n.fieldRequired(l10n.emergencyType);
                                   }
 
                                   return null;
                                 },
                                 hideErrorText: false,
-                                items: _emergencyType,
+                                items: _emergencyTypes(l10n),
                                 onChanged: (value) {
                                   ref.read(reportProvider.notifier).setIncidentType(value!);
                                   setState(() {
@@ -141,7 +129,7 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> {
                               ),
                               const SizedBox(height: 10),
                               if (ref.watch(reportProvider).incidentType == ServiceTypeEnum.police) ...[
-                                const LabelText(value: "IS THIS AN EMERGENCY?", color: Colors.black54),
+                                LabelText(value: l10n.isThisEmergency.toUpperCase(), color: Colors.black54),
                                 const SizedBox(height: 10),
                                 SizedBox(
                                   width: double.infinity,
@@ -160,7 +148,7 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> {
                                       ButtonSegment(
                                         value: true,
                                         label: BodyText(
-                                          value: "Emergency",
+                                          value: l10n.emergency,
                                           isBold: true,
                                           color: _isPoliceEmergency ? Colors.white : Colors.black,
                                         ),
@@ -168,7 +156,7 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> {
                                       ButtonSegment(
                                         value: false,
                                         label: BodyText(
-                                          value: "Non-emergency",
+                                          value: l10n.nonEmergency,
                                           isBold: true,
                                           color: _isPoliceEmergency ? Colors.black : Colors.white,
                                         ),
@@ -185,39 +173,39 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> {
                                 if (!_isPoliceEmergency) ...[
                                   const SizedBox(height: 10),
                                   CustomDropdownButton<PoliceConcernTypeEnum>(
-                                    title: "CONCERN TYPE",
+                                    title: l10n.concernType.toUpperCase(),
                                     value: _policeConcernType,
-                                    validator: (value) => value == null ? "Concern type is required" : null,
+                                    validator: (value) => value == null ? l10n.fieldRequired(l10n.concernType) : null,
                                     hideErrorText: false,
                                     isRequired: true,
-                                    items: const [
+                                    items: [
                                       DropdownMenuItem(
                                         value: PoliceConcernTypeEnum.noiseComplaint,
-                                        child: BodyText(value: "Noise complaint", isBold: true),
+                                        child: BodyText(value: l10n.concernNoiseComplaint, isBold: true),
                                       ),
                                       DropdownMenuItem(
                                         value: PoliceConcernTypeEnum.lostItem,
-                                        child: BodyText(value: "Lost/stolen item", isBold: true),
+                                        child: BodyText(value: l10n.concernLostItem, isBold: true),
                                       ),
                                       DropdownMenuItem(
                                         value: PoliceConcernTypeEnum.minorDispute,
-                                        child: BodyText(value: "Minor dispute", isBold: true),
+                                        child: BodyText(value: l10n.concernMinorDispute, isBold: true),
                                       ),
                                       DropdownMenuItem(
                                         value: PoliceConcernTypeEnum.suspiciousActivity,
-                                        child: BodyText(value: "Suspicious activity", isBold: true),
+                                        child: BodyText(value: l10n.concernSuspiciousActivity, isBold: true),
                                       ),
                                       DropdownMenuItem(
                                         value: PoliceConcernTypeEnum.vandalism,
-                                        child: BodyText(value: "Vandalism", isBold: true),
+                                        child: BodyText(value: l10n.concernVandalism, isBold: true),
                                       ),
                                       DropdownMenuItem(
                                         value: PoliceConcernTypeEnum.requestForReport,
-                                        child: BodyText(value: "Request for a police report", isBold: true),
+                                        child: BodyText(value: l10n.concernRequestForReport, isBold: true),
                                       ),
                                       DropdownMenuItem(
                                         value: PoliceConcernTypeEnum.other,
-                                        child: BodyText(value: "Other", isBold: true),
+                                        child: BodyText(value: l10n.concernOther, isBold: true),
                                       ),
                                     ],
                                     onChanged: (value) => setState(() => _policeConcernType = value),
@@ -228,11 +216,11 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> {
                                 height: 10,
                               ),
                               CustomTextField(
-                                title: "DESCRIPTION",
+                                title: l10n.description.toUpperCase(),
                                 controller: incidentDescriptionController,
                                 validator: (value) {
                                   if (value == null || value.trim().isEmpty) {
-                                    return "Description is required";
+                                    return l10n.fieldRequired(l10n.description);
                                   }
 
                                   return null;
@@ -246,8 +234,8 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> {
                               const SizedBox(
                                 height: 10,
                               ),
-                              const LabelText(
-                                value: "LOCATION",
+                              LabelText(
+                                value: l10n.location.toUpperCase(),
                                 color: Colors.black54,
                               ),
                               const SizedBox(
@@ -316,14 +304,14 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> {
                                               Positioned(
                                                 right: 12,
                                                 top: 12,
-                                                child: const Chip(
+                                                child: Chip(
                                                   avatar: Icon(
                                                     Icons.edit_location_alt,
                                                     size: 20,
                                                     color: Colors.white,
                                                   ),
                                                   label: BodyText(
-                                                    value: "Change location",
+                                                    value: l10n.changeLocation,
                                                     color: Colors.white,
                                                     isBold: true,
                                                   ),
@@ -341,9 +329,9 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> {
                               const SizedBox(
                                 height: 10,
                               ),
-                              const SectionTitle(
+                              SectionTitle(
                                 icon: Icons.question_mark,
-                                title: "Optional Information",
+                                title: l10n.optionalInformation,
                               ),
                               const SizedBox(
                                 height: 10,
@@ -352,10 +340,10 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> {
                           ),
                         ),
                         ExpansionTile(
-                          title: const Align(
+                          title: Align(
                             alignment: Alignment.centerLeft,
                             child: BodyText(
-                              value: 'Victim Information',
+                              value: l10n.victimInformation,
                             ),
                           ),
                           tilePadding: EdgeInsets.symmetric(horizontal: 20),
@@ -371,7 +359,7 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> {
                                     _controllers.add(VictimControllers());
                                   });
                                 },
-                                value: "Add",
+                                value: l10n.add,
                               ),
                             ),
                             const SizedBox(height: 10),
@@ -387,7 +375,7 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> {
                                     ),
                                     const SizedBox(height: 10),
                                     CustomTextField(
-                                      title: "VICTIM NAME",
+                                      title: l10n.victimName.toUpperCase(),
                                       controller: _controllers[index].victimNameController,
                                       onChanged: (value) {
                                         ref.read(reportProvider.notifier).updateVictimName(index, value);
@@ -395,7 +383,7 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> {
                                     ),
                                     const SizedBox(height: 10),
                                     CustomTextField(
-                                      title: "DESCRIPTION",
+                                      title: l10n.description.toUpperCase(),
                                       keyboardType: TextInputType.multiline,
                                       maxLines: 5,
                                       vertical: 30,
@@ -420,7 +408,7 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> {
 
                                         ref.read(reportProvider.notifier).removeVictim(index);
                                       },
-                                      value: "Remove",
+                                      value: l10n.remove,
                                     ),
                                     const SizedBox(height: 10),
                                   ],
@@ -430,10 +418,10 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> {
                           ],
                         ),
                         ExpansionTile(
-                          title: const Align(
+                          title: Align(
                             alignment: Alignment.centerLeft,
                             child: BodyText(
-                              value: 'Attachments',
+                              value: l10n.attachments,
                             ),
                           ),
                           tilePadding: EdgeInsets.symmetric(horizontal: 20),
@@ -445,7 +433,7 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> {
                                 onPressed: () async {
                                   ref.read(reportProvider.notifier).addAttachment(ImageSource.gallery);
                                 },
-                                value: "Add attachment",
+                                value: l10n.addAttachment,
                               ),
                             ),
                             SizedBox(height: 10),
@@ -493,8 +481,8 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> {
                                       onPressed: () {
                                         ref.read(reportProvider.notifier).removeAttachment(index);
                                       },
-                                      child: const Text(
-                                        "Remove attachment",
+                                      child: Text(
+                                        l10n.removeAttachment,
                                       ),
                                     ),
                                     const SizedBox(
@@ -507,10 +495,10 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> {
                           ],
                         ),
                         ExpansionTile(
-                          title: const Align(
+                          title: Align(
                             alignment: Alignment.centerLeft,
                             child: BodyText(
-                              value: "Additional Information",
+                              value: l10n.additionalInformation,
                               isBold: false,
                             ),
                           ),
@@ -518,7 +506,7 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> {
                           childrenPadding: EdgeInsets.symmetric(horizontal: 20),
                           children: [
                             CustomTextField(
-                              title: "DESCRIPTION",
+                              title: l10n.description.toUpperCase(),
                               controller: additionalInformationController,
                               keyboardType: TextInputType.multiline,
                               maxLines: 5,
@@ -544,12 +532,9 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> {
 
                                 final confirmed = await showConfirmationDialog(
                                   context,
-                                  title: "Do you wish to submit this report?",
+                                  title: l10n.submitReportPrompt,
                                   content:
-                                      "By submitting, you confirm that this report is accurate. "
-                                      "Angeles City's declared emergency response time is 10–15 minutes; "
-                                      "please note that actual response time may vary depending on "
-                                      "responder availability, traffic, and the nature of each case.",
+                                      "${l10n.submitConfirmNote} ${l10n.responseTimeNotice}",
                                 );
 
                                 if (confirmed != true) {
@@ -557,7 +542,7 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> {
                                 }
 
                                 if (!location.hasValue) {
-                                  CustomSnackbar(text: "Unable to get your current location.");
+                                  CustomSnackbar(text: l10n.unableToGetLocation);
                                   return;
                                 }
 
@@ -594,7 +579,7 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> {
                                   final isNonEmergencyPolice =
                                       submittedIncidentType == ServiceTypeEnum.police && !_isPoliceEmergency;
 
-                                  CustomSnackbarHelper.show(context, text: "Report sent successfully!");
+                                  CustomSnackbarHelper.show(context, text: l10n.reportSentSuccess);
                                   Navigator.pop(context); // dismiss loading overlay
 
                                   if (!isNonEmergencyPolice && context.mounted) {
@@ -617,11 +602,11 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> {
 
                                   CustomSnackbarHelper.show(
                                     context,
-                                    text: "An error has occurred while trying to send your report!",
+                                    text: l10n.reportSendError,
                                   );
                                 }
                               },
-                              value: "Submit Report",
+                              value: l10n.submitReport,
                             ),
                           ),
                         ),

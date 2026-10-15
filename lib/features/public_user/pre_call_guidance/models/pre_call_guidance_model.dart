@@ -20,6 +20,7 @@ class PreCallGuidanceModel {
   }
 
   Map<String, dynamic> toMap() => {
+    'id': id,
     'question': question,
     'answer': answer,
   };

@@ -1,3 +1,4 @@
+import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/widgets/text/title_text.dart';
@@ -34,6 +35,8 @@ class EmergencyServiceCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Card(
       elevation: 0,
       margin: const EdgeInsets.only(bottom: 10),
@@ -114,7 +117,7 @@ class EmergencyServiceCard extends StatelessWidget {
                             child: CustomElevatedButton(
                               onPressed: onTap,
                               icon: const Icon(Icons.near_me, color: Colors.white, size: 25),
-                              value: "Show on map",
+                              value: l10n.showOnMap,
                             ),
                           ),
                           const SizedBox(width: 10),
@@ -123,7 +126,7 @@ class EmergencyServiceCard extends StatelessWidget {
                             child: CustomElevatedButton(
                               onPressed: onCallTap,
                               icon: const Icon(Icons.call, color: Colors.white, size: 25),
-                              value: "Call",
+                              value: l10n.call,
                             ),
                           ),
                         ],
@@ -134,7 +137,7 @@ class EmergencyServiceCard extends StatelessWidget {
                         child: CustomElevatedButton(
                           onPressed: onDirectionsTap,
                           icon: const Icon(Icons.directions, color: Colors.white, size: 25),
-                          value: "Get directions",
+                          value: l10n.getDirections,
                         ),
                       ),
                     ],

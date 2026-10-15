@@ -1,3 +1,4 @@
+import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/enums/service_type_enum.dart';
 import 'package:capstone/core/shared/providers/verification_provider.dart';
 import 'package:capstone/core/shared/widgets/custom_header_widget.dart';
@@ -28,16 +29,18 @@ class _PreCallGuidanceScreenState extends ConsumerState<PreCallGuidanceScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            const SizedBox(
+            SizedBox(
               width: double.infinity,
               child: CustomHeaderWidget(
-                title: "Pre-Call Guidance",
-                body: "Let us route you to the right service",
+                title: l10n.preCallGuidance,
+                body: l10n.guidanceSubtitle,
               ),
             ),
             Padding(
@@ -50,9 +53,9 @@ class _PreCallGuidanceScreenState extends ConsumerState<PreCallGuidanceScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const SectionTitle(
+                  SectionTitle(
                     icon: Icons.question_answer,
-                    title: "What is your current situation?",
+                    title: l10n.currentSituation,
                     mainAxisAlignment: MainAxisAlignment.center,
                   ),
                   const SizedBox(height: 10),
@@ -76,7 +79,7 @@ class _PreCallGuidanceScreenState extends ConsumerState<PreCallGuidanceScreen> {
                             ),
                           );
                         },
-                        value: "Are you hurt?",
+                        value: l10n.areYouHurt,
                         icon: Icons.medical_services,
                         color: Colors.green,
                         backgroundColor: AppColors.lighterGreen,
@@ -101,7 +104,7 @@ class _PreCallGuidanceScreenState extends ConsumerState<PreCallGuidanceScreen> {
                             ),
                           );
                         },
-                        value: "Is there a violation of the law?",
+                        value: l10n.lawViolation,
                         icon: Icons.local_police,
                         color: Colors.blue,
                         backgroundColor: AppColors.lighterBlue,
@@ -126,7 +129,7 @@ class _PreCallGuidanceScreenState extends ConsumerState<PreCallGuidanceScreen> {
                             ),
                           );
                         },
-                        value: "Is there an ongoing fire?",
+                        value: l10n.ongoingFire,
                         icon: Icons.fire_truck,
                         color: Colors.red,
                         backgroundColor: AppColors.lighterRed,

@@ -1,3 +1,4 @@
+import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/enums/map_mode_enum.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/utilities/case_marker_icons.dart';
@@ -19,6 +20,8 @@ class LocationCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
+
     final incident = LatLng(location.latitude, location.longitude);
     final responder = responderLocation;
     // null while the bitmaps render; buildCaseMarkers falls back to default pins.
@@ -60,8 +63,8 @@ class LocationCard extends ConsumerWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const BodyText(
-                        value: 'REPORTED LOCATION',
+                      BodyText(
+                        value: l10n.reportedLocation.toUpperCase(),
                       ),
                       const SizedBox(height: 10),
                       BodyText(

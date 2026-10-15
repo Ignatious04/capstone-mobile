@@ -1,3 +1,4 @@
+import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/exceptions/auth_exception.dart';
 import 'package:capstone/core/shared/providers/change_password_provider.dart';
 import 'package:capstone/core/shared/widgets/custom_app_bar.dart';
@@ -30,18 +31,22 @@ class _ChangePasswordScreenState extends ConsumerState<ChangePasswordScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     ref.listen<AsyncValue<void>>(changePasswordProvider, (previous, next) {
       next.whenOrNull(
         error: (error, _) {
           CustomSnackbarHelper.show(
             context,
-            text: error is AuthException ? error.message : "Something went wrong. Please try again.",
+            text: error is AuthException
+                ? error.localized(AppLocalizations.of(context)!)
+                : AppLocalizations.of(context)!.somethingWentWrong,
           );
         },
       );
 
       if (previous?.isLoading == true && next.hasValue) {
-        CustomSnackbarHelper.show(context, text: "Password updated.");
+        CustomSnackbarHelper.show(context, text: l10n.passwordUpdated);
         Navigator.pop(context);
       }
     });
@@ -49,7 +54,7 @@ class _ChangePasswordScreenState extends ConsumerState<ChangePasswordScreen> {
     final isLoading = ref.watch(changePasswordProvider).isLoading;
 
     return Scaffold(
-      appBar: CustomAppBar(value: "Change Password"),
+      appBar: CustomAppBar(value: l10n.changePassword),
       body: SafeArea(
         child: Form(
           key: formKey,
@@ -58,42 +63,42 @@ class _ChangePasswordScreenState extends ConsumerState<ChangePasswordScreen> {
             child: Column(
               children: [
                 CustomTextField(
-                  title: "CURRENT PASSWORD",
+                  title: l10n.currentPassword.toUpperCase(),
                   controller: currentController,
                   obscureText: true,
                   hideErrorText: false,
                   isRequired: true,
-                  validator: (value) => (value == null || value.isEmpty) ? "Current password is required" : null,
+                  validator: (value) => (value == null || value.isEmpty) ? l10n.fieldRequired(l10n.currentPassword) : null,
                 ),
                 const SizedBox(height: 10),
                 CustomTextField(
-                  title: "NEW PASSWORD",
+                  title: l10n.newPassword.toUpperCase(),
                   controller: newController,
                   obscureText: true,
                   hideErrorText: false,
                   isRequired: true,
                   validator: (value) {
-                    if (value == null || value.isEmpty) return "New password is required";
-                    if (value.length < 6) return "Password must be at least 6 characters";
-                    if (value == currentController.text) return "New password must be different";
+                    if (value == null || value.isEmpty) return l10n.fieldRequired(l10n.newPassword);
+                    if (value.length < 6) return l10n.passwordMin6;
+                    if (value == currentController.text) return l10n.newPasswordMustDiffer;
                     return null;
                   },
                 ),
                 const SizedBox(height: 10),
                 CustomTextField(
-                  title: "CONFIRM NEW PASSWORD",
+                  title: l10n.confirmNewPassword.toUpperCase(),
                   controller: confirmController,
                   obscureText: true,
                   hideErrorText: false,
                   isRequired: true,
                   autovalidateMode: AutovalidateMode.onUserInteractionIfError,
-                  validator: (value) => value != newController.text ? "Passwords do not match" : null,
+                  validator: (value) => value != newController.text ? l10n.passwordsDoNotMatch : null,
                 ),
                 const SizedBox(height: 20),
                 SizedBox(
                   width: double.infinity,
                   child: CustomElevatedButton(
-                    value: isLoading ? "Updating..." : "Update Password",
+                    value: isLoading ? l10n.updating : l10n.updatePassword,
                     onPressed: isLoading
                         ? null
                         : () async {

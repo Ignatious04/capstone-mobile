@@ -1,3 +1,4 @@
+import 'package:capstone/core/l10n/app_localizations.dart';
 import 'dart:async';
 
 import 'package:capstone/core/enums/report_status_enum.dart';
@@ -55,10 +56,12 @@ class _ActiveCaseActionBarState extends State<ActiveCaseActionBar> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     final action = switch (widget.status) {
-      ReportStatusEnum.accepted => (label: 'En Route', icon: Icons.directions_car),
-      ReportStatusEnum.dispatched => (label: 'Arrived on Scene', icon: Icons.place),
-      ReportStatusEnum.onScene => (label: 'Resolve Case', icon: Icons.check_circle),
+      ReportStatusEnum.accepted => (label: l10n.enRoute, icon: Icons.directions_car),
+      ReportStatusEnum.dispatched => (label: l10n.arrivedOnScene, icon: Icons.place),
+      ReportStatusEnum.onScene => (label: l10n.resolveCase, icon: Icons.check_circle),
       _ => null,
     };
 

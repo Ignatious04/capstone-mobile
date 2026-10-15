@@ -1,3 +1,4 @@
+import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/shared/models/user_model.dart';
 import 'package:capstone/core/shared/providers/user_provider.dart';
 import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
@@ -84,6 +85,8 @@ class _SetupScreenPageView extends ConsumerState<SetupScreenPageView> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     final formKeys = [
       userContactNumPageKey,
       userInfoPageKey,
@@ -105,8 +108,8 @@ class _SetupScreenPageView extends ConsumerState<SetupScreenPageView> {
             child: Column(
               children: [
                 CustomHeaderWidget(
-                  title: widget.resubmitFrom == null ? "Create Account" : "Update Your Information",
-                  body: widget.resubmitFrom == null ? "Set up your safety profile" : "Fix the details we flagged",
+                  title: widget.resubmitFrom == null ? l10n.createAccount : l10n.updateYourInformation,
+                  body: widget.resubmitFrom == null ? l10n.setupSafetyProfile : l10n.fixFlaggedDetails,
                   progressIndicator: LinearProgressIndicator(
                     value: (currentPage + 1) / numberOfPages,
                     color: Colors.white,
@@ -159,7 +162,7 @@ class _SetupScreenPageView extends ConsumerState<SetupScreenPageView> {
                             onPressed: () {
                               navigateFromPage();
                             },
-                            value: "Previous",
+                            value: l10n.previous,
                           ),
                         ),
                         const SizedBox(
@@ -194,13 +197,13 @@ class _SetupScreenPageView extends ConsumerState<SetupScreenPageView> {
                                   await showDialog(
                                     context: context,
                                     builder: (_) => AlertDialog(
-                                      title: const TitleText(value: "Resubmitted"),
-                                      content: const BodyText(
+                                      title: TitleText(value: l10n.resubmitted),
+                                      content: BodyText(
                                         value:
-                                            "Your information is back in the review queue. We'll notify you of the result.",
+                                            l10n.resubmittedBody,
                                       ),
                                       actions: [
-                                        TextButton(onPressed: () => Navigator.pop(context), child: const Text("OK")),
+                                        TextButton(onPressed: () => Navigator.pop(context), child: Text(l10n.ok)),
                                       ],
                                     ),
                                   );
@@ -216,7 +219,7 @@ class _SetupScreenPageView extends ConsumerState<SetupScreenPageView> {
                                 if (!context.mounted) return;
 
                                 Navigator.pop(context); // dismiss the loading overlay
-                                CustomSnackbarHelper.show(context, text: "Something went wrong. Please try again.");
+                                CustomSnackbarHelper.show(context, text: l10n.somethingWentWrong);
                               }
                             } else {
                               navigateToPage();
@@ -224,8 +227,8 @@ class _SetupScreenPageView extends ConsumerState<SetupScreenPageView> {
                           },
 
                           value: currentPage == numberOfPages - 1
-                              ? (widget.resubmitFrom == null ? "Create" : "Resubmit")
-                              : "Next",
+                              ? (widget.resubmitFrom == null ? l10n.create : l10n.resubmit)
+                              : l10n.next,
                         ),
                       ),
                     ],

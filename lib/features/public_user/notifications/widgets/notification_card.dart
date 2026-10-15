@@ -1,3 +1,4 @@
+import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/enums/notification_type_enum.dart';
 import 'package:capstone/core/shared/models/notification_model.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
@@ -30,6 +31,8 @@ class NotificationCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Card(
       color: notification.isRead ? Colors.white : Colors.deepOrange.shade50,
       child: InkWell(
@@ -51,7 +54,7 @@ class NotificationCard extends StatelessWidget {
                     BodyText(value: notification.message),
                     const SizedBox(height: 4),
                     BodyText(
-                      value: DateFormat("MMM dd, yyyy • h:mm a").format(notification.createdAt),
+                      value: DateFormat("MMM dd, yyyy • h:mm a", Localizations.localeOf(context).toString()).format(notification.createdAt),
                       color: Colors.grey,
                     ),
                   ],
@@ -67,7 +70,7 @@ class NotificationCard extends StatelessWidget {
               if (onDelete != null)
                 IconButton(
                   icon: const Icon(Icons.delete_outline, color: Colors.grey),
-                  tooltip: "Delete notification",
+                  tooltip: l10n.deleteNotification,
                   padding: EdgeInsets.zero,
                   constraints: const BoxConstraints(minWidth: 32, minHeight: 32),
                   onPressed: onDelete,

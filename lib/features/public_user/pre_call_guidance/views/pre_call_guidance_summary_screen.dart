@@ -1,3 +1,5 @@
+import 'package:capstone/core/l10n/enum_labels.dart';
+import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/shared/providers/connectivity_stream_provider.dart';
 import 'package:capstone/core/shared/providers/location_provider.dart';
 import 'package:capstone/core/shared/providers/report_provider.dart';
@@ -40,6 +42,8 @@ class _PreCallGuidanceSummaryScreenState extends ConsumerState<PreCallGuidanceSu
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     final state = ref.watch(guidanceProvider);
     final location = ref.watch(currentLocationProvider);
     final isOnline = ref.watch(connectivityStreamProvider).value?.contains(ConnectivityResult.none) == false;
@@ -65,12 +69,12 @@ class _PreCallGuidanceSummaryScreenState extends ConsumerState<PreCallGuidanceSu
                   ),
                   const SizedBox(height: 10),
                   TitleText(
-                    value: "Guidance Complete",
+                    value: l10n.guidanceCompleteTitle,
                     isBold: true,
                   ),
                   BodyText(
                     value:
-                        "Your pre-call guidance has been completed. You may now submit your report to the appropriate agency.",
+                        l10n.guidanceCompleteBody,
                     alignment: TextAlign.center,
                     isOverflow: false,
                   ),
@@ -92,14 +96,14 @@ class _PreCallGuidanceSummaryScreenState extends ConsumerState<PreCallGuidanceSu
                 final item = state.questions[index];
                 return ListTile(
                   title: BodyText(
-                    value: item.question,
+                    value: item.localizedQuestion(l10n),
                   ),
                   subtitle: LabelText(
                     value: item.answer == null
-                        ? "Not answered"
+                        ? l10n.notAnswered
                         : item.answer!
-                        ? "Yes"
-                        : "No",
+                        ? l10n.yes
+                        : l10n.no,
                     isBold: false,
                   ),
                   leading: Icon(
@@ -112,15 +116,15 @@ class _PreCallGuidanceSummaryScreenState extends ConsumerState<PreCallGuidanceSu
           ),
           const SizedBox(height: 10),
           if (location.isLoading)
-            const Padding(
+            Padding(
               padding: EdgeInsets.symmetric(vertical: 10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   SizedBox(
-                    height: 15,
-                    width: 15,
-                    child: CustomCircularProgressIndicator(color: Colors.white),
+                    height: 25,
+                    width: 25,
+                    child: CustomCircularProgressIndicator(color: Colors.deepOrange),
                   ),
                   SizedBox(width: 10),
                   BodyText(value: "Getting your location..."),
@@ -165,11 +169,9 @@ class _PreCallGuidanceSummaryScreenState extends ConsumerState<PreCallGuidanceSu
                 : () async {
                     final confirmed = await showConfirmationDialog(
                       context,
-                      title: "Do you wish to submit this report?",
+                      title: l10n.submitReportPrompt,
                       content:
-                          "Angeles City's declared emergency response time is 10–15 minutes; "
-                          "please note that actual response time may vary depending on "
-                          "responder availability, traffic, and the nature of each case.",
+                          l10n.responseTimeNotice,
                     );
 
                     if (confirmed != true) {
@@ -185,7 +187,7 @@ class _PreCallGuidanceSummaryScreenState extends ConsumerState<PreCallGuidanceSu
                     if (currentLocation == null) {
                       CustomSnackbarHelper.show(
                         context,
-                        text: "Location unavailable!",
+                        text: l10n.locationUnavailableBang,
                       );
                       return;
                     }
@@ -204,7 +206,7 @@ class _PreCallGuidanceSummaryScreenState extends ConsumerState<PreCallGuidanceSu
                       final confirmed = await showConfirmationDialog(
                         context,
                         title:
-                            "Due to the loss of internet connection, this report will send through the SMS, proceed?",
+                            l10n.offlineSmsPrompt,
                       );
 
                       if (confirmed != true) {
@@ -251,7 +253,7 @@ class _PreCallGuidanceSummaryScreenState extends ConsumerState<PreCallGuidanceSu
                         if (!isSMS) {
                           CustomSnackbarHelper.show(
                             context,
-                            text: "Guidance report submitted successfully!",
+                            text: l10n.guidanceSubmitted,
                           );
                         }
                       }
@@ -265,17 +267,17 @@ class _PreCallGuidanceSummaryScreenState extends ConsumerState<PreCallGuidanceSu
 
                       CustomSnackbarHelper.show(
                         context,
-                        text: "An error has occurred while trying to send your report!",
+                        text: l10n.reportSendError,
                       );
                     }
                   },
-            value: "Submit Report",
+            value: l10n.submitReport,
             color: Colors.white,
             backgroundColor: Colors.deepOrange,
           ),
           CustomElevatedButton(
             onPressed: widget.onCancel,
-            value: "Cancel",
+            value: l10n.cancel,
             color: Colors.white,
             backgroundColor: Colors.black54,
           ),

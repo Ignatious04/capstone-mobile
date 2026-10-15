@@ -1,3 +1,4 @@
+import 'package:capstone/core/l10n/app_localizations.dart';
 import 'dart:async';
 import 'dart:io';
 import 'package:camera/camera.dart';
@@ -48,7 +49,7 @@ class _SetupScreenUserCardPage extends ConsumerState<SetupScreenUserCardPage> {
   }
 
   Future<String?> getIDFromCard(File file) async {
-    final error = await ref.read(userProvider.notifier).captureId(file);
+    final error = await ref.read(userProvider.notifier).captureId(file, AppLocalizations.of(context)!);
     return error;
   }
 
@@ -62,43 +63,45 @@ class _SetupScreenUserCardPage extends ConsumerState<SetupScreenUserCardPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     final user = ref.watch(userProvider);
     return SingleChildScrollView(
       child: Column(
         children: [
-          const Align(
+          Align(
             alignment: Alignment.centerLeft,
             child: SectionTitle(
               icon: Icons.credit_card,
-              title: "USER VALIDATION",
+              title: l10n.userValidation.toUpperCase(),
             ),
           ),
           const SizedBox(
             height: 10,
           ),
           CustomDropdownButton(
-            title: "DOCUMENT ID TYPE",
+            title: l10n.documentIdType.toUpperCase(),
             value: user.idType.isEmpty ? null : user.idType,
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return "ID type is required";
+                return l10n.fieldRequired(l10n.idType);
               }
 
               return null;
             },
             hideErrorText: false,
             items: [
-              const DropdownMenuItem(
+              DropdownMenuItem(
                 value: "National ID (PhilSys)",
-                child: Text("National ID (PhilSys)"),
+                child: Text(l10n.idTypePhilsys),
               ),
-              const DropdownMenuItem(
+              DropdownMenuItem(
                 value: "Driver's License",
-                child: Text("Driver's License"),
+                child: Text(l10n.idTypeDriversLicense),
               ),
-              const DropdownMenuItem(
+              DropdownMenuItem(
                 value: "Passport",
-                child: Text("Passport"),
+                child: Text(l10n.idTypePassport),
               ),
             ],
             onChanged: (value) {
@@ -115,7 +118,7 @@ class _SetupScreenUserCardPage extends ConsumerState<SetupScreenUserCardPage> {
             initialValue: user.idImage,
             validator: (value) {
               if (value == null) {
-                return "ID photo is required";
+                return l10n.fieldRequired(l10n.idPhoto);
               }
               return null;
             },
@@ -152,7 +155,7 @@ class _SetupScreenUserCardPage extends ConsumerState<SetupScreenUserCardPage> {
                                 child: Container(),
                               ),
                             ),
-                            const Positioned(
+                            Positioned(
                               top: 75,
                               left: 20,
                               right: 20,
@@ -161,7 +164,7 @@ class _SetupScreenUserCardPage extends ConsumerState<SetupScreenUserCardPage> {
                                   SizedBox(height: 8),
                                   Center(
                                     child: LabelText(
-                                      value: "Align your ID inside the frame",
+                                      value: l10n.alignId,
                                       color: Colors.black54,
                                     ),
                                   ),
@@ -208,20 +211,20 @@ class _SetupScreenUserCardPage extends ConsumerState<SetupScreenUserCardPage> {
                                 if (mounted) {
                                   setState(
                                     () => idCheckError =
-                                        "Couldn't reach the server. Check your connection and try again.",
+                                        AppLocalizations.of(context)!.serverUnreachable,
                                   );
                                 }
                               } catch (e) {
                                 debugPrint('ID capture failed: $e');
                                 if (mounted) {
-                                  setState(() => idCheckError = "Something went wrong. Please try again.");
+                                  setState(() => idCheckError = AppLocalizations.of(context)!.somethingWentWrong);
                                 }
                               } finally {
                                 if (mounted) setState(() => isProcessing = false);
                               }
                             },
 
-                      value: isProcessing ? "Checking..." : (field.value != null ? "Retake photo" : "Capture ID"),
+                      value: isProcessing ? l10n.checking : (field.value != null ? l10n.retakePhoto : l10n.captureId),
                     ),
                   ),
                   if (idCheckError != null) ...[
@@ -240,7 +243,7 @@ class _SetupScreenUserCardPage extends ConsumerState<SetupScreenUserCardPage> {
                   if (field.value != null && user.idNumber.isNotEmpty) ...[
                     const SizedBox(height: 10),
                     LabelText(
-                      value: "ID Number: ${user.idNumber}",
+                      value: l10n.idNumberLabel(user.idNumber),
                     ),
                   ],
                 ],

@@ -1,3 +1,4 @@
+import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/shared/models/attachment_model.dart';
 import 'package:capstone/features/public_user/reporting/widgets/attachments_card_item.dart';
 import 'package:capstone/features/public_user/reporting/widgets/empty_card.dart';
@@ -10,10 +11,12 @@ class AttachmentsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     if (attachments.isEmpty) {
       return EmptyCard(
         icon: Icons.image_not_supported_outlined,
-        message: 'No attachments provided.',
+        message: l10n.noAttachments,
       );
     }
 

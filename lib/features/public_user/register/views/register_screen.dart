@@ -1,3 +1,4 @@
+import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/exceptions/auth_exception.dart';
 import 'package:capstone/core/shared/widgets/custom_app_bar.dart';
 import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
@@ -45,10 +46,12 @@ class _RegisterScreenPage extends ConsumerState<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     ref.listen<AsyncValue<void>>(registerProvider, (previous, next) {
       next.whenOrNull(
         error: (error, stack) {
-          final message = error is AuthException ? error.message : "Something went wrong. Please try again.";
+          final message = error is AuthException ? error.localized(l10n) : l10n.somethingWentWrong;
           CustomSnackbarHelper.show(context, text: message);
         },
       );
@@ -61,7 +64,7 @@ class _RegisterScreenPage extends ConsumerState<RegisterScreen> {
     final isRegistering = ref.watch(registerProvider).isLoading;
 
     return Scaffold(
-      appBar: CustomAppBar(value: "Registration"),
+      appBar: CustomAppBar(value: l10n.registration),
       body: SafeArea(
         child: Form(
           key: registerScreenKey,
@@ -74,18 +77,18 @@ class _RegisterScreenPage extends ConsumerState<RegisterScreen> {
                     children: [
                       Align(
                         alignment: Alignment.centerLeft,
-                        child: const SectionTitle(
+                        child: SectionTitle(
                           icon: Icons.app_registration,
-                          title: "USER CREDENTIALS",
+                          title: l10n.userCredentials.toUpperCase(),
                         ),
                       ),
                       const SizedBox(height: 10),
                       CustomTextField(
-                        title: "EMAIL ADDRESS",
+                        title: l10n.emailAddress.toUpperCase(),
                         controller: emailController,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Email is required";
+                            return l10n.fieldRequired(l10n.emailAddress);
                           }
 
                           return null;
@@ -98,11 +101,11 @@ class _RegisterScreenPage extends ConsumerState<RegisterScreen> {
                       ),
                       const SizedBox(height: 10),
                       CustomTextField(
-                        title: "PASSWORD",
+                        title: l10n.password.toUpperCase(),
                         controller: passwordController,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Password is required";
+                            return l10n.fieldRequired(l10n.password);
                           }
 
                           return null;
@@ -113,11 +116,11 @@ class _RegisterScreenPage extends ConsumerState<RegisterScreen> {
                       ),
                       const SizedBox(height: 10),
                       CustomTextField(
-                        title: "CONFIRM PASSWORD",
+                        title: l10n.confirmPassword.toUpperCase(),
                         controller: confirmPasswordController,
                         validator: (value) {
                           if (value != passwordController.text) {
-                            return "Passwords do not match";
+                            return l10n.passwordsDoNotMatch;
                           }
 
                           return null;
@@ -153,8 +156,8 @@ class _RegisterScreenPage extends ConsumerState<RegisterScreen> {
                               },
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                                child: const LabelText(
-                                  value: "I have read and agree to the Terms and Conditions",
+                                child: LabelText(
+                                  value: l10n.agreeToTerms,
                                   color: Colors.deepOrange,
                                 ),
                               ),
@@ -187,8 +190,8 @@ class _RegisterScreenPage extends ConsumerState<RegisterScreen> {
                               },
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                                child: const LabelText(
-                                  value: "I have read and acknowledge the app's Privacy Policy.",
+                                child: LabelText(
+                                  value: l10n.acknowledgePrivacy,
                                   color: Colors.deepOrange,
                                 ),
                               ),
@@ -214,23 +217,23 @@ class _RegisterScreenPage extends ConsumerState<RegisterScreen> {
                                         password: passwordController.text,
                                       );
                                 },
-                          value: "Sign Up",
+                          value: l10n.signUp,
                         ),
                       ),
                       const SizedBox(height: 10),
                       Row(
                         children: [
                           Expanded(child: Divider(color: Colors.black.withValues(alpha: 0.2))),
-                          const Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 10),
-                            child: BodyText(value: "OR", color: Colors.black54),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: BodyText(value: l10n.or.toUpperCase(), color: Colors.black54),
                           ),
                           Expanded(child: Divider(color: Colors.black.withValues(alpha: 0.2))),
                         ],
                       ),
                       const SizedBox(height: 10),
                       GoogleSignInButton(
-                        label: "Sign up with Google",
+                        label: l10n.signUpWithGoogle,
                         hasReadTermsAndConditions: hasReadTermsAndConditions,
                         hasReadPrivacyPolicy: hasReadPrivacyPolicy,
                         onSuccess: () => Navigator.pop(context),

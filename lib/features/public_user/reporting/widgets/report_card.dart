@@ -1,13 +1,16 @@
+import 'package:capstone/core/l10n/enum_labels.dart';
+import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/enums/report_status_enum.dart';
 import 'package:capstone/core/enums/report_type_enum.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/widgets/text/label_text.dart';
 import 'package:capstone/core/shared/widgets/text/title_text.dart';
 import 'package:capstone/core/themes/app_colors.dart';
-import 'package:capstone/core/utilities/formatter.dart';
 import 'package:capstone/core/shared/models/report_model.dart';
 import 'package:capstone/features/public_user/reporting/views/pre_call_guidance_report_view_screen.dart';
 import 'package:capstone/features/public_user/reporting/views/normal_reports_view_screen.dart';
+import 'package:capstone/features/public_user/reporting/views/quick_report_view_screen.dart';
+import 'package:capstone/features/public_user/reporting/views/sms_report_view_screen.dart';
 import 'package:flutter/material.dart';
 
 class ReportCard extends StatelessWidget {
@@ -32,6 +35,8 @@ class ReportCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Card(
       margin: const EdgeInsets.only(bottom: 10),
       color: Colors.white,
@@ -61,7 +66,7 @@ class ReportCard extends StatelessWidget {
                         value: referenceNumber.toString(),
                       ),
                       BodyText(
-                        value: "Emergency Type: ${Formatter.formatEnumName(emergencyType)}",
+                        value: "${l10n.emergencyType}: ${serviceTypeLabelFromName(l10n, emergencyType)}",
                       ),
                       BodyText(
                         value: createdAt,
@@ -69,7 +74,7 @@ class ReportCard extends StatelessWidget {
                       Row(
                         children: [
                           BodyText(
-                            value: "Status: ",
+                            value: l10n.statusLabel,
                           ),
                           Container(
                             padding: const EdgeInsets.symmetric(
@@ -81,7 +86,7 @@ class ReportCard extends StatelessWidget {
                               borderRadius: BorderRadius.circular(12),
                             ),
                             child: LabelText(
-                              value: Formatter.formatEnumName(status.name),
+                              value: status.label(l10n),
                               color: statusColor,
                             ),
                           ),
@@ -112,11 +117,31 @@ class ReportCard extends StatelessWidget {
                             builder: (context) => PreCallGuidanceReportViewScreen(report: report),
                           ),
                         );
+                      } else if (report.reportType == ReportTypeEnum.normal) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => NormalReportsViewScreen(
+                              report: report,
+                            ),
+                          ),
+                        );
+                      } else if (report.reportType == ReportTypeEnum.sms) {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SmsReportViewScreen(
+                              report: report,
+                            ),
+                          ),
+                        );
                       } else {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => NormalReportsViewScreen(report: report, ),
+                            builder: (context) => QuickReportViewScreen(
+                              report: report,
+                            ),
                           ),
                         );
                       }

@@ -1,3 +1,4 @@
+import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -12,11 +13,11 @@ class EtaEstimate {
   String get distanceLabel =>
       distanceMeters >= 1000 ? '${(distanceMeters / 1000).toStringAsFixed(1)} km' : '${distanceMeters.round()} m';
 
-  String get durationLabel {
-    if (isArriving) return 'Arriving now';
+  String durationLabel(AppLocalizations l10n) {
+    if (isArriving) return l10n.etaArrivingNow;
     final minutes = duration.inSeconds / 60;
-    if (minutes < 1) return 'Less than 1 min';
-    if (minutes < 60) return '~${minutes.round()} min';
+    if (minutes < 1) return l10n.etaLessThanMin;
+    if (minutes < 60) return l10n.etaMinutes(minutes.round());
     final h = duration.inHours;
     final m = duration.inMinutes % 60;
     return '~${h}h ${m}m';

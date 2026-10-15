@@ -1,3 +1,4 @@
+import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/constants/dropdown_lists.dart';
 import 'package:capstone/core/shared/models/user_model.dart';
 import 'package:capstone/core/shared/providers/user_repository_provider.dart';
@@ -67,9 +68,11 @@ class _UpdatePersonalInformationScreenState extends ConsumerState<UpdatePersonal
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     debugPrint("User ID: ${widget.user.userID}");
     return Scaffold(
-      appBar: CustomAppBar(value: "Update Information"),
+      appBar: CustomAppBar(value: l10n.updateInformation),
       body: SafeArea(
         child: Column(
           children: [
@@ -81,21 +84,21 @@ class _UpdatePersonalInformationScreenState extends ConsumerState<UpdatePersonal
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       CustomTextField(
-                        title: "DATE OF BIRTH",
+                        title: l10n.birthDate.toUpperCase(),
                         controller: birthDateController,
                         isReadOnly: true,
                         color: Colors.black54,
                       ),
                       const SizedBox(height: 10),
                       CustomTextField(
-                        title: "SEX",
+                        title: l10n.sex.toUpperCase(),
                         controller: sexController,
                         isReadOnly: true,
                         color: Colors.black54,
                       ),
                       const SizedBox(height: 10),
                       CustomTextField(
-                        title: "CONTACT NO.",
+                        title: l10n.contactNumber.toUpperCase(),
                         prefixText: "+63 ",
                         controller: contactNumController,
                         keyboardType: const TextInputType.numberWithOptions(decimal: false), // added
@@ -106,11 +109,11 @@ class _UpdatePersonalInformationScreenState extends ConsumerState<UpdatePersonal
                         ],
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Contact no. is required";
+                            return l10n.fieldRequired(l10n.contactNumber);
                           }
                           if (value.length != 10) {
                             // added
-                            return "Enter a valid 10-digit number";
+                            return l10n.invalidPhone10;
                           }
 
                           return null;
@@ -120,11 +123,11 @@ class _UpdatePersonalInformationScreenState extends ConsumerState<UpdatePersonal
                       ),
                       const SizedBox(height: 10),
                       CustomTextField(
-                        title: "HOME ADDRESS",
+                        title: l10n.homeAddress.toUpperCase(),
                         controller: addressController,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Home address is required";
+                            return l10n.fieldRequired(l10n.homeAddress);
                           }
 
                           return null;
@@ -133,16 +136,16 @@ class _UpdatePersonalInformationScreenState extends ConsumerState<UpdatePersonal
                       ),
                       const SizedBox(height: 10),
                       CustomDropdownButton(
-                        title: "NATIONALITY",
+                        title: l10n.nationality.toUpperCase(),
                         value: nationality,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Nationality is required";
+                            return l10n.fieldRequired(l10n.nationality);
                           }
 
                           return null;
                         },
-                        items: DropdownLists.nationalityItems,
+                        items: DropdownLists.nationalityItems(l10n),
                         onChanged: (value) {
                           setState(() {
                             nationality = value!;
@@ -152,16 +155,16 @@ class _UpdatePersonalInformationScreenState extends ConsumerState<UpdatePersonal
                       ),
                       const SizedBox(height: 10),
                       CustomDropdownButton(
-                        title: "CIVIL STATUS",
+                        title: l10n.civilStatus.toUpperCase(),
                         value: civilStatus,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Civil status is required";
+                            return l10n.fieldRequired(l10n.civilStatus);
                           }
 
                           return null;
                         },
-                        items: DropdownLists.sexItems,
+                        items: DropdownLists.sexItems(l10n),
                         onChanged: (value) {
                           setState(() {
                             civilStatus = value!;
@@ -171,16 +174,16 @@ class _UpdatePersonalInformationScreenState extends ConsumerState<UpdatePersonal
                       ),
                       const SizedBox(height: 10),
                       CustomDropdownButton(
-                        title: "RELIGION",
+                        title: l10n.religion.toUpperCase(),
                         value: religion,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Religion is required";
+                            return l10n.fieldRequired(l10n.religion);
                           }
 
                           return null;
                         },
-                        items: DropdownLists.religions,
+                        items: DropdownLists.religions(l10n),
                         onChanged: (value) {
                           setState(() {
                             religion = value!;
@@ -195,8 +198,8 @@ class _UpdatePersonalInformationScreenState extends ConsumerState<UpdatePersonal
                           onPressed: () async {
                             final confirmed = await showConfirmationDialog(
                               context,
-                              title: "Confirmation",
-                              content: "Do you wish to update your personal information?",
+                              title: l10n.confirmation,
+                              content: l10n.updateInfoPrompt,
                             );
 
                             if (confirmed != true) {
@@ -215,8 +218,8 @@ class _UpdatePersonalInformationScreenState extends ConsumerState<UpdatePersonal
 
                               final confirmNumberChange = await showConfirmationDialog(
                                 context,
-                                title: "Note:",
-                                content: "You will have to re-verify your number, confirm?",
+                                title: l10n.noteLabel,
+                                content: l10n.reverifyNote,
                               );
 
                               if (confirmNumberChange != true) {
@@ -243,7 +246,7 @@ class _UpdatePersonalInformationScreenState extends ConsumerState<UpdatePersonal
 
                             Navigator.pop(context);
                           },
-                          value: "Confirm",
+                          value: l10n.confirm,
                         ),
                       ),
                     ],

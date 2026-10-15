@@ -1,3 +1,4 @@
+import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/exceptions/auth_exception.dart';
 import 'package:capstone/core/shared/providers/firebase_auth_provider.dart';
 import 'package:capstone/core/shared/widgets/custom_app_bar.dart';
@@ -33,12 +34,12 @@ class _DeactivateAccountScreenState extends ConsumerState<DeactivateAccountScree
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const BodyText(value: "Deactivate your account?"),
+        title: BodyText(value: AppLocalizations.of(context)!.deactivateTitle),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         backgroundColor: Colors.white,
         actions: [
-          CustomElevatedButton(onPressed: () => Navigator.pop(context, false), value: "Cancel"),
-          CustomElevatedButton(onPressed: () => Navigator.pop(context, true), value: "Deactivate"),
+          CustomElevatedButton(onPressed: () => Navigator.pop(context, false), value: AppLocalizations.of(context)!.cancel),
+          CustomElevatedButton(onPressed: () => Navigator.pop(context, true), value: AppLocalizations.of(context)!.deactivate),
         ],
       ),
     );
@@ -54,10 +55,12 @@ class _DeactivateAccountScreenState extends ConsumerState<DeactivateAccountScree
       final error = state.error;
       CustomSnackbarHelper.show(
         context,
-        text: error is AuthException ? error.message : "Something went wrong. Please try again.",
+        text: error is AuthException
+            ? error.localized(AppLocalizations.of(context)!)
+            : AppLocalizations.of(context)!.somethingWentWrong,
       );
     } else if (deactivated) {
-      CustomSnackbarHelper.show(context, text: "Your account has been deactivated.");
+      CustomSnackbarHelper.show(context, text: AppLocalizations.of(context)!.accountDeactivated);
       // AuthWrapper already switched to LoginScreen underneath; clear the
       // routes pushed on top (Safety Profile, this screen) so it shows.
       Navigator.of(context).popUntil((route) => route.isFirst);
@@ -66,13 +69,15 @@ class _DeactivateAccountScreenState extends ConsumerState<DeactivateAccountScree
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     final usesPassword = ref.read(firebaseAuthRepositoryProvider).hasPasswordProvider;
     final isLoading = ref.watch(deactivateAccountProvider).isLoading;
 
     return PopScope(
       canPop: !isLoading,
       child: Scaffold(
-        appBar: CustomAppBar(value: "Deactivate Account"),
+        appBar: CustomAppBar(value: l10n.deactivateAccount),
         body: SafeArea(
           child: Form(
             key: formKey,
@@ -83,35 +88,33 @@ class _DeactivateAccountScreenState extends ConsumerState<DeactivateAccountScree
                 children: [
                   const Icon(Icons.pause_circle_outline, size: 50, color: Colors.deepOrange),
                   const SizedBox(height: 10),
-                  const TitleText(value: "Deactivate your account", alignment: TextAlign.center),
+                  TitleText(value: l10n.deactivateHeading, alignment: TextAlign.center),
                   const SizedBox(height: 10),
-                  const BodyText(
+                  BodyText(
                     value:
-                        "You won't be able to use the app or send reports until you reactivate. "
-                        "Your profile and past reports are kept, and you can reactivate any time "
-                        "by logging in again. You can still call emergency hotlines from your phone.",
+                        l10n.deactivateBody,
                     color: Colors.black54,
                     alignment: TextAlign.center,
                   ),
                   const SizedBox(height: 20),
                   if (usesPassword)
                     CustomTextField(
-                      title: "CONFIRM YOUR PASSWORD",
+                      title: l10n.confirmYourPassword.toUpperCase(),
                       controller: passwordController,
                       obscureText: true,
                       hideErrorText: false,
                       isRequired: true,
-                      validator: (value) => (value == null || value.isEmpty) ? "Password is required" : null,
+                      validator: (value) => (value == null || value.isEmpty) ? l10n.fieldRequired(l10n.password) : null,
                     )
                   else
-                    const BodyText(
-                      value: "You'll be asked to confirm with your Google account.",
+                    BodyText(
+                      value: l10n.googleConfirmNote,
                       color: Colors.black54,
                       alignment: TextAlign.center,
                     ),
                   const SizedBox(height: 20),
                   CustomElevatedButton(
-                    value: isLoading ? "Deactivating..." : "Deactivate My Account",
+                    value: isLoading ? l10n.deactivating : l10n.deactivateMyAccount,
                     onPressed: isLoading ? null : () => _onDeactivate(usesPassword),
                   ),
                 ],

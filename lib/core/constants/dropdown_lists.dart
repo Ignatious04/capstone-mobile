@@ -1,41 +1,43 @@
+import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:flutter/material.dart';
 
+/// `value` is what gets stored (English); the child is what the user sees.
 class DropdownLists {
-  static const sexItems = [
+  static List<DropdownMenuItem<String>> sexItems(AppLocalizations l10n) => [
     DropdownMenuItem(
       value: "Male",
-      child: BodyText(value: "Male"),
+      child: BodyText(value: l10n.sexMale),
     ),
     DropdownMenuItem(
       value: "Female",
-      child: BodyText(value: "Female"),
+      child: BodyText(value: l10n.sexFemale),
     ),
   ];
 
-  static const nationalityItems = [
+  static List<DropdownMenuItem<String>> nationalityItems(AppLocalizations l10n) => [
     DropdownMenuItem(
       value: "Filipino",
-      child: BodyText(value: "Filipino"),
+      child: BodyText(value: l10n.nationalityFilipino),
     ),
     DropdownMenuItem(
       value: "American",
-      child: BodyText(value: "American"),
+      child: BodyText(value: l10n.nationalityAmerican),
     ),
   ];
 
-  static const civilStatusItems = [
+  static List<DropdownMenuItem<String>> civilStatusItems(AppLocalizations l10n) => [
     DropdownMenuItem(
       value: "Single",
-      child: BodyText(value: "Single"),
+      child: BodyText(value: l10n.civilSingle),
     ),
     DropdownMenuItem(
       value: "Married",
-      child: BodyText(value: "Married"),
+      child: BodyText(value: l10n.civilMarried),
     ),
     DropdownMenuItem(
       value: "Widowed",
-      child: BodyText(value: "Widowed"),
+      child: BodyText(value: l10n.civilWidowed),
     ),
   ];
 
@@ -74,25 +76,25 @@ class DropdownLists {
     'Virgen Delos Remedios',
   ];
 
-  static const religions = [
+  static List<DropdownMenuItem<String>> religions(AppLocalizations l10n) => [
     DropdownMenuItem(
       value: "Iglesia ni Cristo",
-      child: BodyText(value: "Iglesia ni Cristo"),
+      child: BodyText(value: l10n.religionIglesia),
     ),
     DropdownMenuItem(
       value: "Islam",
-      child: BodyText(value: "Islam"),
+      child: BodyText(value: l10n.religionIslam),
     ),
     DropdownMenuItem(
       value: "Roman Catholic",
-      child: BodyText(value: "Roman Catholic"),
+      child: BodyText(value: l10n.religionCatholic),
     ),
   ];
 
-  static const vaccineItems = [
+  static List<DropdownMenuItem<String>> vaccineItems(AppLocalizations l10n) => [
     DropdownMenuItem(
       value: "Anti-Rabies",
-      child: Text("Anti-Rabies"),
+      child: Text(l10n.vaccineAntiRabies),
     ),
   ];
 }

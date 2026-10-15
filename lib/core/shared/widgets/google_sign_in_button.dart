@@ -1,3 +1,4 @@
+import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/exceptions/auth_exception.dart';
 import 'package:capstone/core/shared/providers/google_sign_in_provider.dart';
 import 'package:capstone/core/shared/widgets/custom_circular_progress_indicator.dart';
@@ -9,14 +10,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class GoogleSignInButton extends ConsumerWidget {
   const GoogleSignInButton({
     super.key,
-    this.label = "Continue with Google",
+    this.label,
     this.hasReadTermsAndConditions,
     this.hasReadPrivacyPolicy,
     this.isSignIn = true,
     this.onSuccess,
   });
 
-  final String label;
+  final String? label;
   final bool? hasReadTermsAndConditions;
   final bool? hasReadPrivacyPolicy;
   final bool isSignIn;
@@ -25,6 +26,7 @@ class GoogleSignInButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isLoading = ref.watch(googleSignInProvider).isLoading;
+    final l10n = AppLocalizations.of(context)!;
 
     return SizedBox(
       width: double.infinity,
@@ -40,7 +42,7 @@ class GoogleSignInButton extends ConsumerWidget {
                   final error = state.error;
                   CustomSnackbarHelper.show(
                     context,
-                    text: error is AuthException ? error.message : "Something went wrong. Please try again.",
+                    text: error is AuthException ? error.localized(l10n) : l10n.somethingWentWrong,
                   );
                 } else if (signedIn) {
                   onSuccess?.call();
@@ -55,7 +57,7 @@ class GoogleSignInButton extends ConsumerWidget {
                 errorBuilder: (_, _, _) => const Icon(Icons.g_mobiledata, size: 28),
               ),
         label: BodyText(
-          value: label,
+          value: label ?? l10n.continueWithGoogle,
           isBold: true,
         ),
         style: ElevatedButton.styleFrom(

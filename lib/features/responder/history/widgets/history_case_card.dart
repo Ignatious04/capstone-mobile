@@ -1,3 +1,5 @@
+import 'package:capstone/core/l10n/app_localizations.dart';
+import 'package:capstone/core/l10n/enum_labels.dart';
 import 'package:capstone/core/enums/service_type_enum.dart';
 import 'package:capstone/core/shared/models/report_model.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
@@ -21,6 +23,8 @@ class HistoryCaseCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     // resolvedAt can be briefly null right after resolving (pending server timestamp)
     final closedAt = report.resolvedAt ?? report.createdAt;
 
@@ -57,10 +61,10 @@ class HistoryCaseCard extends StatelessWidget {
                   children: [
                     TitleText(value: report.referenceNumber),
                     BodyText(
-                      value: Formatter.formatEnumName(report.incidentType?.name ?? '—'),
+                      value: report.incidentType?.label(l10n) ?? '—',
                     ),
                     BodyText(
-                      value: closedAt == null ? '—' : 'Resolved ${Formatter.formatDateTime(closedAt)}',
+                      value: closedAt == null ? '—' : l10n.resolvedAt(Formatter.formatDateTime(closedAt)),
                       color: Colors.black54,
                     ),
                   ],

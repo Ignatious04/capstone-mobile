@@ -1,5 +1,6 @@
+import 'package:capstone/core/l10n/app_localizations.dart';
+import 'package:capstone/core/l10n/enum_labels.dart';
 import 'package:capstone/core/shared/widgets/text/label_text.dart';
-import 'package:capstone/core/utilities/formatter.dart';
 import 'package:flutter/material.dart';
 
 class ReportStatusWidget extends StatelessWidget {
@@ -9,6 +10,8 @@ class ReportStatusWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Container(
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
@@ -28,7 +31,7 @@ class ReportStatusWidget extends StatelessWidget {
           ),
           const SizedBox(width: 10),
           LabelText(
-            value: Formatter.formatEnumName(status),
+            value: reportStatusLabelFromName(l10n, status),
             color: Colors.white,
             isBold: true,
           ),

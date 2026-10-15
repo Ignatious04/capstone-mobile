@@ -1,3 +1,4 @@
+import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/enums/location_status_enum.dart';
 import 'package:capstone/core/shared/providers/location_provider.dart';
 import 'package:capstone/core/shared/widgets/custom_circular_progress_indicator.dart';
@@ -99,14 +100,16 @@ class _LocationGateState extends ConsumerState<LocationGate> with WidgetsBinding
   }
 
   void _showError(LocationStatusEnum status) {
+    final l10n = AppLocalizations.of(context)!;
+
     setState(() {
       _loading = false;
       _status = status;
       _message = switch (status) {
-        LocationStatusEnum.permissionDenied => "Location permission is required to continue.",
+        LocationStatusEnum.permissionDenied => l10n.locationPermissionRequired,
         LocationStatusEnum.permissionDeniedForever =>
-          "Location permission has been permanently denied. Please enable it in Settings.",
-        LocationStatusEnum.serviceDisabled => "Please enable Location Services to continue.",
+          l10n.locationPermanentlyDenied,
+        LocationStatusEnum.serviceDisabled => l10n.locationServicesOff,
         LocationStatusEnum.ready => null,
       };
     });
@@ -129,6 +132,8 @@ class _LocationGateState extends ConsumerState<LocationGate> with WidgetsBinding
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     if (_loading) {
       return const Scaffold(
         body: Center(
@@ -167,7 +172,7 @@ class _LocationGateState extends ConsumerState<LocationGate> with WidgetsBinding
                 width: double.infinity,
                 child: CustomElevatedButton(
                   onPressed: _handleRetry,
-                  value: "Open Settings",
+                  value: l10n.openSettings,
                 ),
               ),
             ],

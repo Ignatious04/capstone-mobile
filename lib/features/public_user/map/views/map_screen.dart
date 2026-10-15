@@ -1,3 +1,4 @@
+import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/enums/map_mode_enum.dart';
 import 'package:capstone/core/shared/providers/location_provider.dart';
 import 'package:capstone/core/shared/widgets/custom_circular_progress_indicator.dart';
@@ -32,8 +33,8 @@ class _MapScreenState extends ConsumerState<MapScreen> {
               color: Colors.grey.shade600,
             ),
             const SizedBox(height: 12),
-            const Text(
-              'Unable to determine your location.',
+            Text(
+              AppLocalizations.of(context)!.locationUnavailableMsg,
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 10),
@@ -53,6 +54,7 @@ class _MapScreenState extends ConsumerState<MapScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final locationAsync = ref.watch(locationStreamProvider);
     final latLng = locationAsync.value;
 
@@ -88,13 +90,13 @@ class _MapScreenState extends ConsumerState<MapScreen> {
                     },
                   ),
                 ),
-                const Positioned(
+                Positioned(
                   top: 0,
                   left: 0,
                   right: 0,
                   child: CustomHeaderWidget(
-                    title: 'Service Map',
-                    body: 'Find nearby emergency services',
+                    title: l10n.serviceMap,
+                    body: l10n.findNearbyServices,
                   ),
                 ),
                 Positioned(

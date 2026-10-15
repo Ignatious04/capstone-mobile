@@ -1,3 +1,4 @@
+import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/widgets/text/label_text.dart';
 import 'package:capstone/core/utilities/eta_calculator.dart';
@@ -18,10 +19,12 @@ class EtaCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     final eta = EtaCalculator.estimate(responder, incident);
 
-    final headline = isOnScene ? 'Responder is on scene' : eta.durationLabel;
-    final detail = isOnScene ? null : '${eta.distanceLabel} away (estimate)';
+    final headline = isOnScene ? l10n.responderOnScene : eta.durationLabel(l10n);
+    final detail = isOnScene ? null : l10n.distanceAway(eta.distanceLabel);
 
     return Card(
       color: Colors.white,
@@ -37,7 +40,7 @@ class EtaCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const LabelText(value: 'ESTIMATED ARRIVAL'),
+                  LabelText(value: l10n.estimatedArrival.toUpperCase()),
                   BodyText(value: headline, isBold: true),
                   if (detail != null) BodyText(value: detail),
                 ],

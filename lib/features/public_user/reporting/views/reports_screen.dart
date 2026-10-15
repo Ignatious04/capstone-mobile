@@ -1,3 +1,4 @@
+import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/enums/report_status_enum.dart';
 import 'package:capstone/core/shared/providers/verification_provider.dart';
 import 'package:capstone/core/shared/widgets/custom_circular_progress_indicator.dart';
@@ -65,6 +66,8 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     final reports = ref.watch(reportsStreamProvider);
 
     return Scaffold(
@@ -73,16 +76,16 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
           children: [
             SizedBox(
               width: double.infinity,
-              child: const CustomHeaderWidget(title: "Reports", body: "Tell us what you need"),
+              child: CustomHeaderWidget(title: l10n.reports, body: l10n.reportsSubtitle),
             ),
             const VerificationBanner(),
             Expanded(
               child: reports.when(
                 data: (reports) {
                   if (reports.isEmpty) {
-                    return const Center(
+                    return Center(
                       child: BodyText(
-                        value: "No reports yet.",
+                        value: l10n.noReports,
                       ),
                     );
                   }
@@ -95,7 +98,7 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
                       return ReportCard(
                         referenceNumber: report.referenceNumber,
                         emergencyType: report.incidentType!.name,
-                        createdAt: DateFormat("MMM dd, yyyy • h:mm a").format(report.createdAt!),
+                        createdAt: DateFormat("MMM dd, yyyy • h:mm a", Localizations.localeOf(context).toString()).format(report.createdAt!),
                         status: report.status!,
                         statusColor: _getStatusColor(report),
                         statusBackground: _getStatusBackgroundColor(report),

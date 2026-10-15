@@ -1,4 +1,5 @@
 // lib/features/register/views/email_verification_screen.dart
+import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/exceptions/auth_exception.dart';
 import 'package:capstone/core/shared/providers/firebase_auth_provider.dart';
 import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
@@ -22,6 +23,7 @@ class _EmailVerificationScreenState extends ConsumerState<EmailVerificationScree
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final email = ref.watch(firebaseAuthProvider).currentUser?.email ?? "";
     final canResend = lastResentAt == null || DateTime.now().difference(lastResentAt!) > const Duration(seconds: 30);
 
@@ -35,21 +37,19 @@ class _EmailVerificationScreenState extends ConsumerState<EmailVerificationScree
             children: [
               const Icon(Icons.mark_email_unread_outlined, size: 50, color: Colors.deepOrange),
               const SizedBox(height: 10),
-              const TitleText(
-                value: "Verify your email",
+              TitleText(
+                value: l10n.verifyEmailTitle,
                 alignment: TextAlign.center,
               ),
               const SizedBox(height: 10),
               BodyText(
-                value:
-                    "We sent a verification link to $email. "
-                    "Tap the link, then come back and press Continue.",
+                value: l10n.verifyEmailBody(email),
                 color: Colors.black54,
                 alignment: TextAlign.center,
               ),
               const SizedBox(height: 10),
               CustomElevatedButton(
-                value: isChecking ? "Checking..." : "I've verified, continue",
+                value: isChecking ? l10n.checking : l10n.verifiedContinue,
                 onPressed: isChecking
                     ? null
                     : () async {
@@ -63,12 +63,12 @@ class _EmailVerificationScreenState extends ConsumerState<EmailVerificationScree
                           } else if (context.mounted) {
                             CustomSnackbarHelper.show(
                               context,
-                              text: "Still not verified yet — check your inbox.",
+                              text: l10n.stillNotVerified,
                             );
                           }
                         } on AuthException catch (e) {
                           if (context.mounted) {
-                            CustomSnackbarHelper.show(context, text: e.message);
+                            CustomSnackbarHelper.show(context, text: e.localized(l10n));
                           }
                         } finally {
                           if (mounted) setState(() => isChecking = false);
@@ -85,24 +85,24 @@ class _EmailVerificationScreenState extends ConsumerState<EmailVerificationScree
                           await ref.read(firebaseAuthRepositoryProvider).sendEmailVerification();
                           setState(() => lastResentAt = DateTime.now());
                           if (context.mounted) {
-                            CustomSnackbarHelper.show(context, text: "Verification email resent.");
+                            CustomSnackbarHelper.show(context, text: l10n.verificationEmailResent);
                           }
                         } on AuthException catch (e) {
                           if (context.mounted) {
-                            CustomSnackbarHelper.show(context, text: e.message);
+                            CustomSnackbarHelper.show(context, text: e.localized(l10n));
                           }
                         } finally {
                           if (mounted) setState(() => isResending = false);
                         }
                       },
-                child: Text(canResend ? "Resend email" : "Resend available shortly"),
+                child: Text(canResend ? l10n.resendEmail : l10n.resendAvailableShortly),
               ),
               const SizedBox(height: 10),
               TextButton(
                 onPressed: () async {
                   await ref.read(firebaseAuthRepositoryProvider).signOut();
                 },
-                child: const Text("Sign out"),
+                child: Text(l10n.signOut),
               ),
             ],
           ),

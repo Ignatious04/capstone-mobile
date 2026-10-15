@@ -1,3 +1,5 @@
+import 'package:capstone/core/l10n/enum_labels.dart';
+import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
 import 'package:capstone/core/shared/widgets/text/headline_text.dart';
 import 'package:capstone/features/public_user/pre_call_guidance/models/pre_call_guidance_model.dart';
@@ -19,11 +21,13 @@ class PreCallGuidancePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         HeadlineText(
-          value: question.question,
+          value: question.localizedQuestion(l10n),
           alignment: TextAlign.center,
         ),
         const SizedBox(
@@ -37,7 +41,7 @@ class PreCallGuidancePage extends ConsumerWidget {
                 ref.read(guidanceProvider.notifier).answerQuestion(index, false);
                 onNext();
               },
-              value: "NO",
+              value: l10n.no.toUpperCase(),
               color: Colors.white,
               backgroundColor: Colors.deepOrange,
               hasPadding: true,
@@ -50,7 +54,7 @@ class PreCallGuidancePage extends ConsumerWidget {
                 ref.read(guidanceProvider.notifier).answerQuestion(index, true);
                 onNext();
               },
-              value: "YES",
+              value: l10n.yes.toUpperCase(),
               color: Colors.white,
               backgroundColor: Colors.deepOrange,
               hasPadding: true,

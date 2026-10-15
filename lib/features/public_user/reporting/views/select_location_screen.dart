@@ -1,3 +1,4 @@
+import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/constants/map_bounds.dart';
 import 'package:capstone/core/enums/map_mode_enum.dart';
 import 'package:capstone/core/shared/widgets/custom_app_bar.dart';
@@ -30,8 +31,10 @@ class _SelectLocationScreenState extends State<SelectLocationScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
-      appBar: CustomAppBar(value: "Select location"),
+      appBar: CustomAppBar(value: l10n.selectLocation),
       body: MapTileWidget(
         initialLocation: _selectedLocation,
         mode: MapModeEnum.selectLocation,
@@ -47,7 +50,7 @@ class _SelectLocationScreenState extends State<SelectLocationScreen> {
         },
         backgroundColor: Colors.deepOrange,
         foregroundColor: Colors.white,
-        label: const Text("Confirm"),
+        label: Text(l10n.confirm),
         icon: const Icon(Icons.check),
       ),
     );

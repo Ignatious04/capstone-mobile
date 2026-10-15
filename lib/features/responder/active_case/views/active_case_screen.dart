@@ -1,4 +1,6 @@
 // lib/features/responder/active_case/views/active_case_screen.dart
+import 'package:capstone/core/l10n/enum_labels.dart';
+import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/enums/map_mode_enum.dart';
 import 'package:capstone/core/enums/report_status_enum.dart';
 import 'package:capstone/core/shared/widgets/custom_circular_progress_indicator.dart';
@@ -6,7 +8,6 @@ import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/widgets/text/label_text.dart';
 import 'package:capstone/core/shared/widgets/text/title_text.dart';
 import 'package:capstone/core/utilities/directions_launcher.dart';
-import 'package:capstone/core/utilities/formatter.dart';
 import 'package:capstone/features/public_user/map/widgets/map_tile_widget.dart';
 import 'package:capstone/core/shared/models/report_model.dart';
 import 'package:capstone/core/shared/providers/report_repository_provider.dart';
@@ -68,7 +69,9 @@ class _NoActiveCase extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
+    final l10n = AppLocalizations.of(context)!;
+
+    return Center(
       child: Padding(
         padding: EdgeInsets.all(20.0),
         child: Column(
@@ -76,10 +79,10 @@ class _NoActiveCase extends StatelessWidget {
           children: [
             Icon(Icons.local_hospital, size: 64, color: Colors.black54),
             SizedBox(height: 16),
-            TitleText(value: "No active case"),
+            TitleText(value: l10n.noActiveCase),
             SizedBox(height: 8),
             BodyText(
-              value: "You'll be notified here when a case is assigned to you.",
+              value: l10n.noActiveCaseHint,
               color: Colors.black54,
             ),
           ],
@@ -100,6 +103,8 @@ class _ActiveCaseBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     final location = report.location;
     final screenHeight = MediaQuery.of(context).size.height;
 
@@ -112,7 +117,7 @@ class _ActiveCaseBody extends StatelessWidget {
           child: location == null
               ? Container(
                   color: Colors.grey.shade300,
-                  child: const Center(child: Text('No location on this report')),
+                  child: Center(child: Text(l10n.noLocationOnReport)),
                 )
               : Stack(
                   children: [
@@ -183,9 +188,9 @@ class _ActiveCaseBody extends StatelessWidget {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const LabelText(value: 'EMERGENCY TYPE'),
+                                  LabelText(value: l10n.emergencyType.toUpperCase()),
                                   BodyText(
-                                    value: Formatter.formatEnumName(report.incidentType?.name ?? '—'),
+                                    value: report.incidentType?.label(l10n) ?? '—',
                                     isBold: true,
                                   ),
                                 ],
@@ -196,42 +201,42 @@ class _ActiveCaseBody extends StatelessWidget {
                         const SizedBox(height: 10),
                         ReportStatusWidget(status: report.status!.name),
                         const SizedBox(height: 10),
-                        const LabelText(value: 'REFERENCE NUMBER'),
+                        LabelText(value: l10n.referenceNumber.toUpperCase()),
                         BodyText(
                           value: report.referenceNumber,
                           isBold: true,
                         ),
                         const SizedBox(height: 10),
-                        const LabelText(value: 'DESCRIPTION'),
+                        LabelText(value: l10n.description.toUpperCase()),
                         BodyText(
-                          value: report.description.isEmpty ? 'No description provided.' : report.description,
+                          value: report.description.isEmpty ? l10n.noDescriptionProvided : report.description,
                         ),
                       ],
                     ),
                   ),
                 ),
                 const SizedBox(height: 10),
-                SectionTitle(icon: Icons.people_outline, title: 'Victims'),
+                SectionTitle(icon: Icons.people_outline, title: l10n.victims),
                 const SizedBox(height: 10),
                 VictimsCard(victims: report.victims),
                 const SizedBox(height: 10),
-                SectionTitle(icon: Icons.attach_file, title: 'Reporter Attachments'),
+                SectionTitle(icon: Icons.attach_file, title: l10n.reporterAttachments),
                  const SizedBox(height: 10),
                  AttachmentsCard(attachments: report.attachments),
                 const SizedBox(height: 10),
                 ResponderAttachmentsSection(report: report),
                  const SizedBox(height: 10),
-                 SectionTitle(icon: Icons.notes, title: 'Additional Information'),
+                 SectionTitle(icon: Icons.notes, title: l10n.additionalInformation),
                 const SizedBox(height: 10),
                 AttachmentsCard(attachments: report.attachments),
                 const SizedBox(height: 10),
-                SectionTitle(icon: Icons.notes, title: 'Additional Information'),
+                SectionTitle(icon: Icons.notes, title: l10n.additionalInformation),
                 const SizedBox(height: 10),
                 AdditionalInformationCard(additionalInfo: report.additionalInformation.trim()),
                 const SizedBox(height: 20),
-                const Center(
+                Center(
                   child: LabelText(
-                    value: "Hold for 2 seconds to update",
+                    value: l10n.holdToUpdate,
                     color: Colors.black54,
                   ),
                 ),

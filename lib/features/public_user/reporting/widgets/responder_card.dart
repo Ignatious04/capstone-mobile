@@ -1,9 +1,10 @@
 // lib/features/public_user/reporting/widgets/responder_card.dart
+import 'package:capstone/core/l10n/enum_labels.dart';
+import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/enums/service_type_enum.dart';
 import 'package:capstone/core/shared/models/responder_model.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/widgets/text/label_text.dart';
-import 'package:capstone/core/utilities/formatter.dart';
 import 'package:flutter/material.dart';
 
 class ResponderCard extends StatelessWidget {
@@ -19,6 +20,8 @@ class ResponderCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Card(
       color: Colors.white,
       elevation: 1,
@@ -42,14 +45,14 @@ class ResponderCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const LabelText(value: 'RESPONDER'),
+                  LabelText(value: l10n.responder.toUpperCase()),
                   BodyText(
-                    value: responder.fullName.isEmpty ? 'Unnamed responder' : responder.fullName,
+                    value: responder.fullName.isEmpty ? l10n.unnamedResponder : responder.fullName,
                     isBold: true,
                   ),
                   const SizedBox(height: 6),
                   BodyText(
-                    value: Formatter.formatEnumName(responder.department.name),
+                    value: responder.department.label(l10n),
                   ),
                   if (responder.contactNumber.isNotEmpty) ...[
                     const SizedBox(height: 6),

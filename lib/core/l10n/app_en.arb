@@ -63,5 +63,532 @@
   "history": "History",
   "responderHome": "Responder Home",
   "verificationStatus": "Verification Status",
-  "language" : "Language"
+  "language": "Language",
+  "yes": "Yes",
+  "no": "No",
+  "or": "or",
+  "confirm": "Confirm",
+  "ok": "OK",
+  "somethingWentWrong": "Something went wrong. Please try again.",
+  "fieldRequired": "{field} is required",
+  "@fieldRequired": {
+    "placeholders": {
+      "field": {
+        "type": "String"
+      }
+    }
+  },
+  "invalidPhone10": "Enter a valid 10-digit number",
+  "passwordsDoNotMatch": "Passwords do not match",
+  "passwordMin6": "Password must be at least 6 characters",
+  "newPasswordMustDiffer": "New password must be different",
+  "resendCode": "Resend code",
+  "sendVerificationCode": "Send verification code",
+  "verifyCode": "Verify code",
+  "enterCode": "Enter code",
+  "sending": "Sending...",
+  "verifying": "Verifying...",
+  "checking": "Checking...",
+  "updating": "Updating...",
+  "deactivating": "Deactivating...",
+  "uploading": "Uploading...",
+  "noDescriptionProvided": "No description provided.",
+  "notAnswered": "Not answered",
+  "signOut": "Sign out",
+  "logoutConfirm": "Do you wish to log out?",
+  "openSettings": "Open Settings",
+  "unnamedResponder": "Unnamed responder",
+  "unnamedVictim": "Unnamed victim",
+  "noAttachments": "No attachments provided.",
+  "noAdditionalInfo": "No additional information provided.",
+  "noVictimInfo": "No victim information provided.",
+  "emailAddress": "Email Address",
+  "contactNumber": "Contact Number",
+  "homeAddress": "Home Address",
+  "sex": "Sex",
+  "nationality": "Nationality",
+  "civilStatus": "Civil Status",
+  "religion": "Religion",
+  "houseNumber": "House No.",
+  "street": "Street",
+  "barangay": "Barangay",
+  "idType": "ID Type",
+  "description": "Description",
+  "attachments": "Attachments",
+  "incidentLocation": "Incident Location",
+  "referenceNumber": "Reference Number",
+  "submitted": "Submitted",
+  "reported": "Reported",
+  "resolved": "Resolved",
+  "offline": "Offline",
+  "backOnline": "Back online",
+  "offlineMessage": "No internet connection. Some features may be limited.",
+  "backOnlineMessage": "Back online.",
+  "guidance": "Guidance",
+  "activeCase": "Active Case",
+  "appTagline": "Mobile Emergency Access System",
+  "loginWelcome": "Welcome!",
+  "loginSubtitle": "Log in to your account",
+  "loginSuccess": "Logged in successfully!",
+  "noAccountPrompt": "Don't have an account?",
+  "createOne": "Create one",
+  "resetEmailSent": "Password reset successful! Please check your email.",
+  "reset": "Reset",
+  "continueWithGoogle": "Continue with Google",
+  "signUpWithGoogle": "Sign up with Google",
+  "registration": "Registration",
+  "userCredentials": "User Credentials",
+  "agreeToTerms": "I have read and agree to the Terms and Conditions",
+  "acknowledgePrivacy": "I have read and acknowledge the app's Privacy Policy.",
+  "signUp": "Sign Up",
+  "termsAndConditions": "Terms and Conditions",
+  "privacyPolicy": "Privacy Policy",
+  "legalLoadError": "Unable to load this document.",
+  "verifyEmailTitle": "Verify your email",
+  "verifyEmailBody": "We sent a verification link to {email}. Tap the link, then come back and press Continue.",
+  "@verifyEmailBody": {
+    "placeholders": {
+      "email": {
+        "type": "String"
+      }
+    }
+  },
+  "verifiedContinue": "I've verified, continue",
+  "stillNotVerified": "Still not verified yet — check your inbox.",
+  "verificationEmailResent": "Verification email resent.",
+  "resendEmail": "Resend email",
+  "resendAvailableShortly": "Resend available shortly",
+  "deactivatedTitle": "Your account is deactivated",
+  "deactivatedBody": "Your profile and reports are safe. Reactivate to use the app and send reports again.",
+  "reactivateAccount": "Reactivate Account",
+  "signedOutTitle": "You've been signed out",
+  "signedOutBody": "Your account was signed in on another device, so this device was logged out. If this wasn't you, change your password after logging back in.",
+  "backToLogin": "Back to Login",
+  "rejectedCouldntVerifySome": "We couldn't verify some of your information.",
+  "rejectedCouldntVerifyAccount": "We couldn't verify your account",
+  "rejectedNeedsUpdate": "An administrator reviewed your information and needs you to update it.",
+  "rejectedUnableToApprove": "An administrator reviewed your information and was unable to approve your account.",
+  "reason": "Reason",
+  "updateMyInformation": "Update my information",
+  "contactAdmin": "Please contact your local administrator for assistance.",
+  "call911": "Call 911",
+  "dialerError": "Could not open the dialer.",
+  "dialerLaunchError": "Could not launch dialer for {number}",
+  "@dialerLaunchError": {
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "smsLaunchError": "Could not launch messaging app for {number}",
+  "@smsLaunchError": {
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "locationPermissionRequired": "Location permission is required to continue.",
+  "locationPermanentlyDenied": "Location permission has been permanently denied. Please enable it in Settings.",
+  "locationServicesOff": "Please enable Location Services to continue.",
+  "quickReporting": "Quick Reporting",
+  "quickCrime": "Crime",
+  "quickReportTitle": "Send a quick {label} report?",
+  "@quickReportTitle": {
+    "placeholders": {
+      "label": {
+        "type": "String"
+      }
+    }
+  },
+  "quickReportBody": "This immediately sends your current location as an emergency report. Only use this for real emergencies.",
+  "responseTimeNotice": "Angeles City's declared emergency response time is 10–15 minutes; please note that actual response time may vary depending on responder availability, traffic, and the nature of each case.",
+  "reportSent": "Report sent!",
+  "reportSentSuccess": "Report sent successfully!",
+  "reportSendError": "An error has occurred while trying to send your report!",
+  "call911Button": "CALL 911",
+  "nearbyServices": "Nearby Services",
+  "serviceMap": "Service Map",
+  "findNearbyServices": "Find nearby emergency services",
+  "locationUnavailableMsg": "Unable to determine your location.",
+  "nearbyEmergencyServices": "Nearby Emergency Services",
+  "locationCount": "{count, plural, =1{1 location} other{{count} locations}}",
+  "@locationCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "search": "Search",
+  "open": "Open",
+  "unavailable": "Unavailable",
+  "showOnMap": "Show on map",
+  "getDirections": "Get directions",
+  "directionsError": "Could not open directions to {location}",
+  "@directionsError": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
+  "notifications": "Notifications",
+  "markAllRead": "Mark all as read",
+  "noNotifications": "No notifications yet.",
+  "deleteNotificationTitle": "Delete notification?",
+  "deleteNotificationBody": "This will remove it from your notification history.",
+  "notificationDeleted": "Notification deleted",
+  "deleteNotification": "Delete notification",
+  "guidanceSubtitle": "Let us route you to the right service",
+  "currentSituation": "What is your current situation?",
+  "areYouHurt": "Are you hurt?",
+  "lawViolation": "Is there a violation of the law?",
+  "ongoingFire": "Is there an ongoing fire?",
+  "callNearestService": "Call nearest related service",
+  "noContactNumber": "No contact number available for this service.",
+  "noIncidentSelected": "No incident type selected.",
+  "noCachedContact": "No cached contact number available for offline reporting. Please connect to the internet at least once.",
+  "guidanceQConscious": "Is the person conscious?",
+  "guidanceQLifeThreatening": "Are there life-threatening injuries?",
+  "guidanceQIntentional": "Is their current condition intentional?",
+  "guidanceQSuspectPresent": "Is the suspect present?",
+  "guidanceQWeapons": "Are there weapons involved?",
+  "guidanceQSomeoneInjured": "Is someone injured?",
+  "guidanceQTrapped": "Are there people trapped inside?",
+  "guidanceQFireSpreading": "Is the fire spreading?",
+  "guidanceCompleteTitle": "Guidance Complete",
+  "guidanceCompleteBody": "Your pre-call guidance has been completed. You may now submit your report to the appropriate agency.",
+  "gettingLocation": "Getting your location...",
+  "weakGps": "Weak GPS signal (±{meters} m). Add a landmark or adjust your pin so responders can find you.",
+  "@weakGps": {
+    "placeholders": {
+      "meters": {
+        "type": "int"
+      }
+    }
+  },
+  "landmarkLabel": "Where exactly are you? (optional)",
+  "landmarkHint": "Landmark, building, floor…",
+  "adjustLocation": "Adjust location on map",
+  "locationAdjusted": "Location adjusted ✓",
+  "submitReportPrompt": "Do you wish to submit this report?",
+  "offlineSmsPrompt": "Due to the loss of internet connection, this report will send through the SMS, proceed?",
+  "locationUnavailableBang": "Location unavailable!",
+  "guidanceSubmitted": "Guidance report submitted successfully!",
+  "submitReport": "Submit Report",
+  "reportsSubtitle": "Tell us what you need",
+  "noReports": "No reports yet.",
+  "viewReport": "View Report",
+  "whileYouWait": "While you wait",
+  "emergencyType": "Emergency Type",
+  "incidentType": "Incident Type",
+  "responder": "Responder",
+  "incidentAndResponderLocation": "Incident & Responder Location",
+  "incidentInformation": "Incident Information",
+  "preCallReportNote": "This report was submitted through the pre-call guidance module.",
+  "questionsAndAnswers": "Questions and Answers",
+  "reportedLocation": "Reported Location",
+  "estimatedArrival": "Estimated Arrival",
+  "responderOnScene": "Responder is on scene",
+  "distanceAway": "{distance} away (estimate)",
+  "@distanceAway": {
+    "placeholders": {
+      "distance": {
+        "type": "String"
+      }
+    }
+  },
+  "etaArrivingNow": "Arriving now",
+  "etaLessThanMin": "Less than 1 min",
+  "etaMinutes": "~{minutes} min",
+  "@etaMinutes": {
+    "placeholders": {
+      "minutes": {
+        "type": "int"
+      }
+    }
+  },
+  "statusLabel": "Status: ",
+  "emergencyReport": "Emergency Report",
+  "requiredInformation": "Required Information",
+  "requiredNote": "Note: required fields are denoted by an asterisk (*)",
+  "isThisEmergency": "Is this an emergency?",
+  "emergency": "Emergency",
+  "nonEmergency": "Non-emergency",
+  "concernType": "Concern Type",
+  "concernNoiseComplaint": "Noise complaint",
+  "concernLostItem": "Lost/stolen item",
+  "concernMinorDispute": "Minor dispute",
+  "concernSuspiciousActivity": "Suspicious activity",
+  "concernVandalism": "Vandalism",
+  "concernRequestForReport": "Request for a police report",
+  "concernOther": "Other",
+  "location": "Location",
+  "changeLocation": "Change location",
+  "optionalInformation": "Optional Information",
+  "victimInformation": "Victim Information",
+  "add": "Add",
+  "remove": "Remove",
+  "addAttachment": "Add attachment",
+  "removeAttachment": "Remove attachment",
+  "unableToGetLocation": "Unable to get your current location.",
+  "submitConfirmNote": "By submitting, you confirm that this report is accurate.",
+  "safetyProfile": "Safety Profile",
+  "viewManageAccount": "View and manage your account",
+  "userNotFound": "User not found",
+  "updatePersonalInformation": "Update Personal Information",
+  "updateInformation": "Update Information",
+  "userIdLabel": "User ID: {id}",
+  "@userIdLabel": {
+    "placeholders": {
+      "id": {
+        "type": "String"
+      }
+    }
+  },
+  "confirmation": "Confirmation",
+  "updateInfoPrompt": "Do you wish to update your personal information?",
+  "noteLabel": "Note:",
+  "reverifyNote": "You will have to re-verify your number, confirm?",
+  "general": "General",
+  "security": "Security",
+  "selectLanguage": "Select Language",
+  "verifyPhoneNumber": "Verify Phone Number",
+  "verifyPhoneRequired": "Required before you can deactivate your account",
+  "changePassword": "Change Password",
+  "currentPassword": "Current Password",
+  "newPassword": "New Password",
+  "confirmNewPassword": "Confirm New Password",
+  "updatePassword": "Update Password",
+  "passwordUpdated": "Password updated.",
+  "deactivateAccount": "Deactivate Account",
+  "deactivateTitle": "Deactivate your account?",
+  "deactivate": "Deactivate",
+  "deactivateHeading": "Deactivate your account",
+  "deactivateBody": "You won't be able to use the app or send reports until you reactivate. Your profile and past reports are kept, and you can reactivate any time by logging in again. You can still call emergency hotlines from your phone.",
+  "confirmYourPassword": "Confirm your password",
+  "googleConfirmNote": "You'll be asked to confirm with your Google account.",
+  "deactivateMyAccount": "Deactivate My Account",
+  "accountDeactivated": "Your account has been deactivated.",
+  "deactivateVerifyPhoneFirst": "Please verify your phone number before deactivating your account.",
+  "deactivateOngoingReport": "You have an ongoing report. You can deactivate once it is resolved.",
+  "phoneVerifiedOk": "Phone number verified!",
+  "phoneVerifyIntro": "We'll send a code to {phone} to verify it's still yours. This lets you deactivate and later reactivate your account securely.",
+  "@phoneVerifyIntro": {
+    "placeholders": {
+      "phone": {
+        "type": "String"
+      }
+    }
+  },
+  "verifyItsYou": "Verify It's You",
+  "sendingCodeTo": "Sending a code to {phone}...",
+  "@sendingCodeTo": {
+    "placeholders": {
+      "phone": {
+        "type": "String"
+      }
+    }
+  },
+  "enterCodeSentTo": "Enter the code we sent to {phone}.",
+  "@enterCodeSentTo": {
+    "placeholders": {
+      "phone": {
+        "type": "String"
+      }
+    }
+  },
+  "verifyAndReactivate": "Verify & Reactivate",
+  "accountReactivated": "Your account has been reactivated.",
+  "invalidOrExpiredCode": "Invalid or expired code.",
+  "hello": "Hello!",
+  "welcomeSetup": "Let's start off by setting up your account.",
+  "proceed": "Proceed",
+  "createAccount": "Create Account",
+  "updateYourInformation": "Update Your Information",
+  "setupSafetyProfile": "Set up your safety profile",
+  "fixFlaggedDetails": "Fix the details we flagged",
+  "previous": "Previous",
+  "create": "Create",
+  "resubmit": "Resubmit",
+  "resubmitted": "Resubmitted",
+  "resubmittedBody": "Your information is back in the review queue. We'll notify you of the result.",
+  "registerPhoneNumber": "Register Phone Number",
+  "phoneVerified": "Phone number verified",
+  "pleaseVerifyPhone": "Please verify your phone number",
+  "profilePhoto": "Profile photo",
+  "idPhoto": "ID photo",
+  "tapToTakePhoto": "Tap to take photo",
+  "medicalInfoOptional": "Medical Info (Optional)",
+  "medicalInfoHelp": "This information helps emergency responders provide better care. All fields are optional.",
+  "heightCm": "Height (cm)",
+  "weightKg": "Weight (kg)",
+  "areYouVaccinated": "Are you vaccinated?",
+  "vaccineType": "Vaccine Type",
+  "vaccineDate": "Vaccine Date",
+  "personalProfileSummary": "Personal Profile Summary",
+  "systemTerms": "System Terms and Conditions",
+  "meaReminder": "REMINDER: MEAS is a guidance and reporting tool only. It does not replace direct emergency calls to 911 or local hotlines.",
+  "userValidation": "User Validation",
+  "documentIdType": "Document ID Type",
+  "alignId": "Align your ID inside the frame",
+  "captureId": "Capture ID",
+  "retakePhoto": "Retake photo",
+  "idNumberLabel": "ID Number: {number}",
+  "@idNumberLabel": {
+    "placeholders": {
+      "number": {
+        "type": "String"
+      }
+    }
+  },
+  "serverUnreachable": "Couldn't reach the server. Check your connection and try again.",
+  "idTypePhilsys": "National ID (PhilSys)",
+  "idTypeDriversLicense": "Driver's License",
+  "idTypePassport": "Passport",
+  "onboardingTitle": "Account and Safety Profile Saved",
+  "onboardingBody": "Your personal information has been successfully saved and secured. You're now ready to access emergency services through the application.",
+  "proceedToHome": "Proceed to Home",
+  "noActiveCase": "No active case",
+  "noActiveCaseHint": "You'll be notified here when a case is assigned to you.",
+  "noLocationOnReport": "No location on this report",
+  "reporterAttachments": "Reporter Attachments",
+  "responderAttachments": "Responder Attachments",
+  "holdToUpdate": "Hold for 2 seconds to update",
+  "enRoute": "En Route",
+  "arrivedOnScene": "Arrived on Scene",
+  "resolveCase": "Resolve Case",
+  "addImage": "Add image",
+  "uploadError": "Could not upload the image. Check your connection and try again.",
+  "historySubtitle": "Your resolved cases",
+  "noResolvedCases": "No resolved cases yet",
+  "caseDetails": "Case Details",
+  "resolvedAt": "Resolved {date}",
+  "@resolvedAt": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "responderProfile": "Responder Profile",
+  "viewYourAccount": "View your account",
+  "responderCode": "Responder Code",
+  "role": "Role",
+  "department": "Department",
+  "reportStatusPending": "Pending",
+  "reportStatusAccepted": "Accepted",
+  "reportStatusDispatched": "Dispatched",
+  "reportStatusOnScene": "On Scene",
+  "reportStatusResolved": "Resolved",
+  "serviceMedical": "Medical",
+  "servicePolice": "Police",
+  "serviceFire": "Fire",
+  "rejectionIdUnreadable": "Your ID photo could not be read clearly.",
+  "rejectionSelfieMismatch": "Your selfie did not match your ID.",
+  "rejectionIncompleteInfo": "Some of your information is missing or incorrect.",
+  "faceNoFace": "No face detected. Please retake the photo.",
+  "faceMultiple": "Multiple faces detected. Please retake alone.",
+  "faceNotFacing": "Please face the camera directly.",
+  "faceEyesClosed": "Your eyes appear closed. Please retake.",
+  "idCaptureUnreadable": "Couldn't read the ID number. Retake with better lighting.",
+  "idCaptureDuplicate": "This ID is already registered to another account.",
+  "sexMale": "Male",
+  "sexFemale": "Female",
+  "nationalityFilipino": "Filipino",
+  "nationalityAmerican": "American",
+  "civilSingle": "Single",
+  "civilMarried": "Married",
+  "civilWidowed": "Widowed",
+  "religionIglesia": "Iglesia ni Cristo",
+  "religionIslam": "Islam",
+  "religionCatholic": "Roman Catholic",
+  "vaccineAntiRabies": "Anti-Rabies",
+  "tipMedical1": "Keep the person calm and as still as possible.",
+  "tipMedical2": "Apply steady pressure to any bleeding wound with a clean cloth.",
+  "tipMedical3": "Do not give food or water if they are unconscious or having trouble breathing.",
+  "tipMedical4": "Loosen tight clothing and keep them warm.",
+  "tipMedical5": "If they stop breathing and you know CPR, begin chest compressions.",
+  "tipFire1": "Get everyone out of the building and stay out.",
+  "tipFire2": "Do not use elevators; take the stairs if evacuating.",
+  "tipFire3": "Stay low to the ground to avoid smoke inhalation.",
+  "tipFire4": "Close doors behind you as you leave to slow the fire's spread.",
+  "tipFire5": "If clothing catches fire: stop, drop, and roll.",
+  "tipPolice1": "Move to a safe location away from the threat if you can.",
+  "tipPolice2": "Do not confront a suspect directly.",
+  "tipPolice3": "Note identifying details — appearance, vehicle, direction they went.",
+  "tipPolice4": "Keep bystanders away from the area.",
+  "tipPolice5": "Stay reachable in case a responder needs more information.",
+  "whileYouWaitTitle": "While You Wait — {incident}",
+  "@whileYouWaitTitle": {
+    "placeholders": {
+      "incident": {
+        "type": "String"
+      }
+    }
+  },
+  "guidanceSheetIntro": "Responders are on the way. These general steps may help in the meantime.",
+  "guidanceSheetDisclaimer": "This is general guidance only and does not replace instructions from responders.",
+  "verificationMustVerify": "Your account must be verified before you can send reports.",
+  "verificationNotVerified": "Account not verified",
+  "verificationPendingTitle": "Verification pending",
+  "verificationRejectedBody": "Your account couldn't be verified, so reporting is unavailable. You can still call emergency services.",
+  "verificationPendingBody": "Reporting unlocks once an administrator verifies your account. You can still call emergency services in the meantime.",
+  "verificationBannerBody": "Realtime reporting unlocks once your account is verified. You can still call emergency services.",
+  "verificationSubmittedAgo": "Submitted {timeAgo}.",
+  "@verificationSubmittedAgo": {
+    "placeholders": {
+      "timeAgo": {
+        "type": "String"
+      }
+    }
+  },
+  "timeJustNow": "just now",
+  "timeMinutesAgo": "{count} min ago",
+  "@timeMinutesAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "timeHoursAgo": "{count} hr ago",
+  "@timeHoursAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "timeDaysAgo": "{count, plural, =1{1 day ago} other{{count} days ago}}",
+  "@timeDaysAgo": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "authGoogleFailed": "Google sign-in failed. Please try again.",
+  "authNoUser": "No user is currently signed in.",
+  "authGoogleNoPassword": "This account signs in with Google and has no password.",
+  "authEnterPassword": "Please enter your password.",
+  "authInvalidEmail": "Please check the format of your email address",
+  "authWrongCredentials": "Incorrect email or password.",
+  "authTooManyAttempts": "Too many attempts. Try again later.",
+  "authNoInternet": "No internet connection.",
+  "authInvalidCode": "Invalid code. Please try again.",
+  "authInvalidPhone": "Please enter a valid phone number.",
+  "authPhoneInUse": "This phone number is already linked to another account.",
+  "authSmsQuota": "SMS quota exceeded. Please try again later.",
+  "authPhoneAlreadyVerified": "This account already has a verified phone number.",
+  "authEmailExists": "An account already exists with this email. Log in with your email and password instead.",
+  "authWeakPassword": "Password must be at least 6 characters.",
+  "authRequiresRecentLogin": "Please log in again to continue.",
+  "authWrongGoogleAccount": "Please choose the same Google account you signed up with.",
+  "notifChannelName": "Emergency updates",
+  "notifChannelDescription": "Report status and case assignment alerts",
+  "locationShareTitle": "Sharing your live location",
+  "locationShareBody": "Dispatch and the reporter can see where you are while this case is active."
 }

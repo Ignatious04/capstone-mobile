@@ -1,3 +1,4 @@
+import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/widgets/text/title_text.dart';
 import 'package:flutter/material.dart';
@@ -6,8 +7,8 @@ Future<bool?> showConfirmationDialog(
   BuildContext context, {
   required String title,
   String? content,
-  String cancelText = 'No',
-  String confirmText = 'Yes',
+  String? cancelText,
+  String? confirmText,
 }) {
   return showDialog<bool>(
     context: context,
@@ -27,17 +28,19 @@ class ConfirmationDialog extends StatelessWidget {
     super.key,
     required this.title,
     this.content,
-    this.cancelText = 'No',
-    this.confirmText = 'Yes',
+    this.cancelText,
+    this.confirmText,
   });
 
   final String title;
   final String? content;
-  final String cancelText;
-  final String confirmText;
+  final String? cancelText;
+  final String? confirmText;
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return AlertDialog(
       title: TitleText(
         value: title,
@@ -62,7 +65,7 @@ class ConfirmationDialog extends StatelessWidget {
               borderRadius: BorderRadius.circular(12),
             ),
           ),
-          child: Text(cancelText),
+          child: Text(cancelText ?? l10n.no),
         ),
         ElevatedButton(
           onPressed: () {
@@ -75,7 +78,7 @@ class ConfirmationDialog extends StatelessWidget {
               borderRadius: BorderRadius.circular(12),
             ),
           ),
-          child: Text(confirmText),
+          child: Text(confirmText ?? l10n.yes),
         ),
       ],
     );

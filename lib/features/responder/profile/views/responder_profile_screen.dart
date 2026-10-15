@@ -1,4 +1,6 @@
 // lib/features/responder/views/responder_profile_screen.dart
+import 'package:capstone/core/l10n/enum_labels.dart';
+import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/enums/service_type_enum.dart';
 import 'package:capstone/core/services/push_notification_service.dart';
 import 'package:capstone/core/shared/models/responder_model.dart';
@@ -10,7 +12,6 @@ import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
 import 'package:capstone/core/shared/widgets/custom_header_widget.dart';
 import 'package:capstone/core/shared/widgets/info_column.dart';
 import 'package:capstone/core/shared/widgets/text/headline_text.dart';
-import 'package:capstone/core/utilities/formatter.dart';
 import 'package:capstone/features/responder/active_case/providers/responder_location_sharing_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -78,12 +79,14 @@ class _ResponderProfileBody extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
+
     return SingleChildScrollView(
       child: Column(
         children: [
-          const SizedBox(
+          SizedBox(
             width: double.infinity,
-            child: CustomHeaderWidget(title: "Responder Profile", body: "View your account"),
+            child: CustomHeaderWidget(title: l10n.responderProfile, body: l10n.viewYourAccount),
           ),
           Padding(
             padding: const EdgeInsets.all(20),
@@ -107,15 +110,15 @@ class _ResponderProfileBody extends ConsumerWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      InfoColumn(title: "RESPONDER CODE", value: responder.responderCode),
+                      InfoColumn(title: l10n.responderCode.toUpperCase(), value: responder.responderCode),
                       const SizedBox(height: 10),
-                      InfoColumn(title: "ROLE", value: responder.role.toUpperCase()),
+                      InfoColumn(title: l10n.role.toUpperCase(), value: responder.role.toUpperCase()),
                       const SizedBox(height: 10),
-                      InfoColumn(title: "DEPARTMENT", value: Formatter.formatEnumName(responder.department.name)),
+                      InfoColumn(title: l10n.department.toUpperCase(), value: responder.department.label(l10n)),
                       const SizedBox(height: 10),
-                      InfoColumn(title: "EMAIL", value: responder.email),
+                      InfoColumn(title: l10n.email.toUpperCase(), value: responder.email),
                       const SizedBox(height: 10),
-                      InfoColumn(title: "CONTACT NUMBER", value: responder.contactNumber),
+                      InfoColumn(title: l10n.contactNumber.toUpperCase(), value: responder.contactNumber),
                       const SizedBox(height: 10),
                       Divider(),
                     ],
@@ -128,7 +131,7 @@ class _ResponderProfileBody extends ConsumerWidget {
                     onPressed: () async {
                       final confirmed = await showConfirmationDialog(
                         context,
-                        title: "Do you wish to log out?",
+                        title: l10n.logoutConfirm,
                       );
                       if (confirmed != true) return;
                       await ref.read(responderLocationSharingProvider).stopSharing();
@@ -141,7 +144,7 @@ class _ResponderProfileBody extends ConsumerWidget {
                     icon: const Icon(Icons.logout, size: 25),
                     color: Colors.red,
                     backgroundColor: Colors.white,
-                    value: "Log Out",
+                    value: l10n.logout,
                   ),
                 ),
               ],

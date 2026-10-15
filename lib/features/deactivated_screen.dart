@@ -1,3 +1,4 @@
+import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/exceptions/auth_exception.dart';
 import 'package:capstone/core/shared/models/user_model.dart';
 import 'package:capstone/core/shared/providers/firebase_auth_provider.dart';
@@ -17,12 +18,14 @@ class DeactivatedScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
+
     ref.listen<AsyncValue<void>>(deactivateAccountProvider, (previous, next) {
       next.whenOrNull(
         error: (error, _) {
           CustomSnackbarHelper.show(
             context,
-            text: error is AuthException ? error.message : "Something went wrong. Please try again.",
+            text: error is AuthException ? error.localized(l10n) : l10n.somethingWentWrong,
           );
         },
       );
@@ -40,16 +43,16 @@ class DeactivatedScreen extends ConsumerWidget {
             children: [
               const Icon(Icons.pause_circle_outline, size: 50, color: Colors.deepOrange),
               const SizedBox(height: 10),
-              const TitleText(value: "Your account is deactivated", alignment: TextAlign.center),
+              TitleText(value: l10n.deactivatedTitle, alignment: TextAlign.center),
               const SizedBox(height: 10),
-              const BodyText(
-                value: "Your profile and reports are safe. Reactivate to use the app and send reports again.",
+              BodyText(
+                value: l10n.deactivatedBody,
                 color: Colors.black54,
                 alignment: TextAlign.center,
               ),
               const SizedBox(height: 20),
               CustomElevatedButton(
-    value: "Reactivate Account",
+    value: l10n.reactivateAccount,
     onPressed: () => Navigator.push(
       context,
       MaterialPageRoute(builder: (_) => ReactivationVerificationScreen(contactNumber: user.contactNumber)),
@@ -58,7 +61,7 @@ class DeactivatedScreen extends ConsumerWidget {
               const SizedBox(height: 10),
               TextButton(
                 onPressed: isLoading ? null : () => ref.read(firebaseAuthRepositoryProvider).signOut(),
-                child: const Text("Log out"),
+                child: Text(l10n.logout),
               ),
             ],
           ),

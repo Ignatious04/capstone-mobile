@@ -1,3 +1,4 @@
+import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/exceptions/auth_exception.dart';
 import 'package:capstone/core/shared/widgets/custom_app_bar.dart';
 import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
@@ -28,17 +29,19 @@ class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     ref.listen(resetPasswordProvider, (previous, next) {
       next.whenOrNull(
         error: (error, _) {
           setState(() {
-            errorMessage = error is AuthException ? error.message : "Something went wrong";
+            errorMessage = error is AuthException ? error.localized(l10n) : l10n.somethingWentWrong;
           });
         },
         data: (_) {
           if (previous is AsyncLoading) {
             if (!context.mounted) return;
-            CustomSnackbarHelper.show(context, text: "Password reset successful! Please check your email.");
+            CustomSnackbarHelper.show(context, text: l10n.resetEmailSent);
             Navigator.pop(context);
           }
         },
@@ -46,7 +49,7 @@ class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
     });
 
     return Scaffold(
-      appBar: CustomAppBar(value: "Reset Password"),
+      appBar: CustomAppBar(value: l10n.resetPassword),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
@@ -58,11 +61,11 @@ class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
                   child: Column(
                     children: [
                       CustomTextField(
-                        title: "EMAIL ADDRESS",
+                        title: l10n.emailAddress.toUpperCase(),
                         controller: emailController,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Email is required";
+                            return l10n.fieldRequired(l10n.emailAddress);
                           }
 
                           return null;
@@ -87,7 +90,7 @@ class _ResetPasswordScreenState extends ConsumerState<ResetPasswordScreen> {
 
                             await ref.read(resetPasswordProvider.notifier).resetPassword(email: emailController.text);
                           },
-                          value: "Reset",
+                          value: l10n.reset,
                         ),
                       ),
                     ],

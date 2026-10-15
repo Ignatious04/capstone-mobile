@@ -1,3 +1,4 @@
+import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/constants/dropdown_lists.dart';
 import 'package:capstone/core/shared/widgets/custom_date_picker_widget.dart';
 import 'package:capstone/core/shared/widgets/custom_dropdown_button.dart';
@@ -34,30 +35,32 @@ class _SetupScreenMedicalInfoPage extends ConsumerState<SetupScreenMedicalInfoPa
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     final user = ref.watch(userProvider);
 
     return SingleChildScrollView(
       child: Column(
         children: [
-          const Align(
+          Align(
             alignment: Alignment.centerLeft,
             child: SectionTitle(
               icon: Icons.medical_information,
-              title: "MEDICAL INFO (OPTIONAL)",
+              title: l10n.medicalInfoOptional.toUpperCase(),
             ),
           ),
           const SizedBox(
             height: 10,
           ),
-          const BodyText(
-            value: "This information helps emergency responders provide better care. All fields are optional.",
+          BodyText(
+            value: l10n.medicalInfoHelp,
             isBold: false,
           ),
           const SizedBox(
             height: 10,
           ),
           CustomDropdownButton(
-            title: "BLOOD TYPE",
+            title: l10n.bloodType.toUpperCase(),
             value: user.bloodType.isEmpty ? null : user.bloodType,
             items: [
               const DropdownMenuItem(
@@ -76,7 +79,7 @@ class _SetupScreenMedicalInfoPage extends ConsumerState<SetupScreenMedicalInfoPa
             children: [
               Expanded(
                 child: CustomTextField(
-                  title: "HEIGHT (CM)",
+                  title: l10n.heightCm.toUpperCase(),
                   controller: heightController,
                   keyboardType: TextInputType.numberWithOptions(decimal: true),
                   onChanged: (value) {
@@ -92,7 +95,7 @@ class _SetupScreenMedicalInfoPage extends ConsumerState<SetupScreenMedicalInfoPa
               ),
               Expanded(
                 child: CustomTextField(
-                  title: "WEIGHT (KG)",
+                  title: l10n.weightKg.toUpperCase(),
                   controller: weightController,
                   keyboardType: TextInputType.numberWithOptions(decimal: true),
                   onChanged: (value) {
@@ -109,16 +112,16 @@ class _SetupScreenMedicalInfoPage extends ConsumerState<SetupScreenMedicalInfoPa
             height: 10,
           ),
           CustomDropdownButton(
-            title: "ARE YOU VACINNATED?",
+            title: l10n.areYouVaccinated.toUpperCase(),
             value: user.isVaccinated == true ? "Yes" : "No",
             items: [
-              const DropdownMenuItem(
+              DropdownMenuItem(
                 value: "Yes",
-                child: Text("Yes"),
+                child: Text(l10n.yes),
               ),
-              const DropdownMenuItem(
+              DropdownMenuItem(
                 value: "No",
-                child: Text("No"),
+                child: Text(l10n.no),
               ),
             ],
             onChanged: (value) {
@@ -136,9 +139,9 @@ class _SetupScreenMedicalInfoPage extends ConsumerState<SetupScreenMedicalInfoPa
             children: [
               Expanded(
                 child: CustomDropdownButton(
-                  title: "VACCINE TYPE",
+                  title: l10n.vaccineType.toUpperCase(),
                   value: user.vaccineType.isEmpty ? null : user.vaccineType,
-                  items: DropdownLists.vaccineItems,
+                  items: DropdownLists.vaccineItems(l10n),
                   onChanged: (value) {
                     ref.read(userProvider.notifier).setVaccineType(value!);
                   },
@@ -149,7 +152,7 @@ class _SetupScreenMedicalInfoPage extends ConsumerState<SetupScreenMedicalInfoPa
               ),
               Expanded(
                 child: CustomDatePickerWidget(
-                  title: "VACCINE DATE",
+                  title: l10n.vaccineDate.toUpperCase(),
                   controller: vaccineDateController,
                   onTap: () async {
                     final date = await showDatePicker(

@@ -1,3 +1,4 @@
+import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/enums/audit_action_enum.dart';
 import 'package:capstone/core/shared/providers/audit_log_repository_provider.dart';
 import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
@@ -31,6 +32,8 @@ class NearbyServicesCard extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Card(
       elevation: 0,
       margin: const EdgeInsets.only(bottom: 10),
@@ -120,7 +123,7 @@ class NearbyServicesCard extends ConsumerWidget {
                             size: 25,
                             color: Colors.white,
                           ),
-                          value: "Call",
+                          value: l10n.call,
                         ),
                       ),
                     ],

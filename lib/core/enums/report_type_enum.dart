@@ -1,1 +1,1 @@
-enum ReportTypeEnum { normal, preCallGuidance, quick, }
+enum ReportTypeEnum { normal, preCallGuidance, quick, sms}

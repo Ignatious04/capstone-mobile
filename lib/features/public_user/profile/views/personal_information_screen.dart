@@ -1,3 +1,4 @@
+import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:capstone/core/shared/widgets/custom_app_bar.dart';
 import 'package:capstone/core/shared/widgets/custom_circular_progress_indicator.dart';
@@ -17,18 +18,20 @@ class PersonalInformationScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
+
     final userAsync = ref.watch(currentAuthenticatedUserProvider);
     return userAsync.when(
       data: (user) {
         if (user == null) {
-          return const Scaffold(
+          return Scaffold(
             body: Center(
-              child: Text("User not found"),
+              child: Text(l10n.userNotFound),
             ),
           );
         }
         return Scaffold(
-          appBar: CustomAppBar(value: "Safety Profile"),
+          appBar: CustomAppBar(value: l10n.safetyProfile),
           body: SafeArea(
             child: Column(
               children: [
@@ -76,12 +79,12 @@ class PersonalInformationScreen extends ConsumerWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const LabelText(
-                                  value: "DATE OF BIRTH",
+                                LabelText(
+                                  value: l10n.birthDate.toUpperCase(),
                                   color: Colors.black54,
                                 ),
                                 BodyText(
-                                  value: DateFormat("MMMM dd, yyyy").format(
+                                  value: DateFormat("MMMM dd, yyyy", Localizations.localeOf(context).toString()).format(
                                     DateTime.fromMillisecondsSinceEpoch(
                                       user.birthDate,
                                     ),
@@ -91,8 +94,8 @@ class PersonalInformationScreen extends ConsumerWidget {
                                 const SizedBox(
                                   height: 10,
                                 ),
-                                const LabelText(
-                                  value: "SEX",
+                                LabelText(
+                                  value: l10n.sex.toUpperCase(),
                                   color: Colors.black54,
                                 ),
                                 BodyText(
@@ -102,8 +105,8 @@ class PersonalInformationScreen extends ConsumerWidget {
                                 const SizedBox(
                                   height: 10,
                                 ),
-                                const LabelText(
-                                  value: "HOME ADDRESS",
+                                LabelText(
+                                  value: l10n.homeAddress.toUpperCase(),
                                   color: Colors.black54,
                                 ),
                                 BodyText(
@@ -113,8 +116,8 @@ class PersonalInformationScreen extends ConsumerWidget {
                                 const SizedBox(
                                   height: 10,
                                 ),
-                                const LabelText(
-                                  value: "NATIONALITY",
+                                LabelText(
+                                  value: l10n.nationality.toUpperCase(),
                                   color: Colors.black54,
                                 ),
                                 BodyText(
@@ -124,8 +127,8 @@ class PersonalInformationScreen extends ConsumerWidget {
                                 const SizedBox(
                                   height: 10,
                                 ),
-                                const LabelText(
-                                  value: "CIVIL STATUS",
+                                LabelText(
+                                  value: l10n.civilStatus.toUpperCase(),
                                   color: Colors.black54,
                                 ),
                                 BodyText(
@@ -135,8 +138,8 @@ class PersonalInformationScreen extends ConsumerWidget {
                                 const SizedBox(
                                   height: 10,
                                 ),
-                                const LabelText(
-                                  value: "RELIGION",
+                                LabelText(
+                                  value: l10n.religion.toUpperCase(),
                                   color: Colors.black54,
                                 ),
                                 BodyText(
@@ -171,7 +174,7 @@ class PersonalInformationScreen extends ConsumerWidget {
                                   ),
                                 );
                               },
-                              value: "Update Personal Information",
+                              value: l10n.updatePersonalInformation,
                             ),
                           ),
                         ],

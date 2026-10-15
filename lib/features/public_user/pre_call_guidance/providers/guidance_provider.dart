@@ -4,6 +4,7 @@ import 'package:capstone/core/enums/report_type_enum.dart';
 import 'package:capstone/core/enums/service_type_enum.dart';
 import 'package:capstone/core/shared/providers/audit_log_repository_provider.dart';
 import 'package:capstone/core/shared/providers/firebase_auth_provider.dart';
+import 'package:capstone/core/shared/providers/user_provider.dart';
 import 'package:capstone/core/shared/providers/verification_provider.dart';
 import 'package:capstone/core/utilities/priority_calculator.dart';
 import 'package:capstone/core/utilities/reference_number_generator.dart';
@@ -116,6 +117,11 @@ class GuidanceNotifier extends Notifier<QuestionState> {
     String? locationNote,
   }) async {
     final number = await ref.read(contactNumberRepositoryProvider).getNumber(incidentType);
+    final user = ref.read(currentAuthenticatedUserProvider).value;
+
+    if (user == null) {
+      throw Exception('No authenticated user found.');
+    }
 
     if (number == null) {
       throw Exception(
@@ -124,7 +130,8 @@ class GuidanceNotifier extends Notifier<QuestionState> {
     }
 
     final buffer = StringBuffer()
-      ..writeln('EMERGENCY REPORT (Ref: $referenceNumber)')
+      ..writeln('ID: ${user.userID}')
+      ..writeln('Reporter: ${user.firstName} ${user.lastName}')
       ..writeln('Type: ${incidentType.name.toUpperCase()}');
 
     for (final q in state.questions) {
@@ -132,10 +139,12 @@ class GuidanceNotifier extends Notifier<QuestionState> {
       buffer.writeln('${q.question} $answer');
     }
 
+    // Plain decimal degrees ("lat, lng") so the dispatcher can paste both numbers
+    // straight into the Latitude box of the Log SMS Report form.
     if (locationNote != null && locationNote.isNotEmpty) {
       buffer.writeln('Landmark: $locationNote');
     }
-    buffer.writeln('Location: https://maps.google.com/?q=${location.latitude},${location.longitude}');
+    buffer.writeln('Location: ${location.latitude.toStringAsFixed(7)}, ${location.longitude.toStringAsFixed(7)}');
 
     ref
         .read(auditLogRepositoryProvider)

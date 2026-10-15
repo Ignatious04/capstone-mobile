@@ -1,3 +1,4 @@
+import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/shared/widgets/info_column.dart';
 import 'package:capstone/core/shared/providers/user_provider.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
@@ -12,13 +13,15 @@ class SetupScreenSummaryPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
+
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SectionTitle(
+          SectionTitle(
             icon: Icons.note,
-            title: "PERSONAL PROFILE SUMMARY",
+            title: l10n.personalProfileSummary.toUpperCase(),
           ),
           const SizedBox(
             height: 10,
@@ -36,29 +39,29 @@ class SetupScreenSummaryPage extends ConsumerWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         InfoColumn(
-                          title: "FIRST NAME",
+                          title: l10n.firstName.toUpperCase(),
                           value: ref.read(userProvider).firstName,
                         ),
                         const SizedBox(
                           height: 10,
                         ),
                         InfoColumn(
-                          title: "MIDDLE NAME",
+                          title: l10n.middleName.toUpperCase(),
                           value: ref.read(userProvider).middleName,
                         ),
                         const SizedBox(
                           height: 10,
                         ),
                         InfoColumn(
-                          title: "LAST NAME",
+                          title: l10n.lastName.toUpperCase(),
                           value: ref.read(userProvider).lastName,
                         ),
                         const SizedBox(
                           height: 10,
                         ),
                         InfoColumn(
-                          title: "DATE OF BIRTH",
-                          value: DateFormat("MMMM dd, yyyy").format(
+                          title: l10n.birthDate.toUpperCase(),
+                          value: DateFormat("MMMM dd, yyyy", Localizations.localeOf(context).toString()).format(
                             DateTime.fromMillisecondsSinceEpoch(
                               ref.read(userProvider).birthDate,
                             ),
@@ -68,21 +71,21 @@ class SetupScreenSummaryPage extends ConsumerWidget {
                           height: 10,
                         ),
                         InfoColumn(
-                          title: "SEX",
+                          title: l10n.sex.toUpperCase(),
                           value: ref.read(userProvider).sex,
                         ),
                         const SizedBox(
                           height: 10,
                         ),
                         InfoColumn(
-                          title: "CONTACT NUMBER",
+                          title: l10n.contactNumber.toUpperCase(),
                           value: ref.read(userProvider).contactNumber,
                         ),
                         const SizedBox(
                           height: 10,
                         ),
                         InfoColumn(
-                          title: "HOME ADDRESS",
+                          title: l10n.homeAddress.toUpperCase(),
                           value:
                               "${ref.read(userProvider).houseNum}, ${ref.read(userProvider).street}, ${ref.read(userProvider).barangay}",
                         ),
@@ -90,28 +93,28 @@ class SetupScreenSummaryPage extends ConsumerWidget {
                           height: 10,
                         ),
                         InfoColumn(
-                          title: "NATIONALITY",
+                          title: l10n.nationality.toUpperCase(),
                           value: ref.read(userProvider).nationality,
                         ),
                         const SizedBox(
                           height: 10,
                         ),
                         InfoColumn(
-                          title: "CIVIL STATUS",
+                          title: l10n.civilStatus.toUpperCase(),
                           value: ref.read(userProvider).civilStatus,
                         ),
                         const SizedBox(
                           height: 10,
                         ),
                         InfoColumn(
-                          title: "RELIGION",
+                          title: l10n.religion.toUpperCase(),
                           value: ref.read(userProvider).religion,
                         ),
                         const SizedBox(
                           height: 10,
                         ),
                         InfoColumn(
-                          title: "ID TYPE",
+                          title: l10n.idType.toUpperCase(),
                           value: ref.read(userProvider).idType,
                         ),
                       ],
@@ -122,9 +125,9 @@ class SetupScreenSummaryPage extends ConsumerWidget {
             ),
           ),
           const SizedBox(height: 10),
-          const SectionTitle(
+          SectionTitle(
             icon: Icons.rule,
-            title: "SYSTEM TERMS AND CONDITIONS",
+            title: l10n.systemTerms.toUpperCase(),
           ),
           const SizedBox(height: 10),
           Container(
@@ -146,10 +149,10 @@ class SetupScreenSummaryPage extends ConsumerWidget {
                     const SizedBox(
                       width: 20,
                     ),
-                    const Expanded(
+                    Expanded(
                       child: BodyText(
                         value:
-                            "REMINDER: MEAS is a guidance and reporting tool only. It does not replace direct emergency calls to 911 or local hotlines.",
+                            l10n.meaReminder,
                         color: Colors.red,
                       ),
                     ),

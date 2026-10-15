@@ -1,3 +1,4 @@
+import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/shared/providers/report_provider.dart';
 import 'package:capstone/core/shared/widgets/custom_app_bar.dart';
 import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
@@ -47,7 +48,7 @@ class _PreCallGuidancePageViewState extends ConsumerState<PreCallGuidancePageVie
     if (!mounted) return;
 
     if (number == null || number.isEmpty) {
-      CustomSnackbarHelper.show(context, text: "No contact number available for this service.");
+      CustomSnackbarHelper.show(context, text: AppLocalizations.of(context)!.noContactNumber);
       return;
     }
 
@@ -55,7 +56,7 @@ class _PreCallGuidancePageViewState extends ConsumerState<PreCallGuidancePageVie
       await launchPhoneCall(number);
     } catch (e) {
       if (!mounted) return;
-      CustomSnackbarHelper.show(context, text: "Unable to open the dialer.");
+      CustomSnackbarHelper.show(context, text: AppLocalizations.of(context)!.dialerError);
     }
   }
 
@@ -85,6 +86,8 @@ class _PreCallGuidancePageViewState extends ConsumerState<PreCallGuidancePageVie
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     final state = ref.watch(guidanceProvider);
     final incidentType = ref.watch(reportProvider).incidentType;
     final nearestServiceName = incidentType == null
@@ -93,10 +96,10 @@ class _PreCallGuidancePageViewState extends ConsumerState<PreCallGuidancePageVie
 
     final callLabel = (nearestServiceName != null && nearestServiceName.isNotEmpty)
         ? nearestServiceName
-        : "Call nearest related service";
+        : l10n.callNearestService;
 
     return Scaffold(
-      appBar: CustomAppBar(value: "Pre-Call Guidance"),
+      appBar: CustomAppBar(value: l10n.preCallGuidance),
       body: SafeArea(
         child: Column(
           children: [
@@ -148,7 +151,7 @@ class _PreCallGuidancePageViewState extends ConsumerState<PreCallGuidancePageVie
                   onPressed: () {
                     _callNearestService();
                   },
-                  value: "CALL",
+                  value: l10n.call.toUpperCase(),
                   icon: const Icon(Icons.call),
                   color: Colors.white,
                   backgroundColor: Colors.deepOrange,

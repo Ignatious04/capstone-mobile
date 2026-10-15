@@ -22,7 +22,7 @@ class SettingsScreen extends ConsumerWidget {
     final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
-      appBar: CustomAppBar(value: "Settings"),
+      appBar: CustomAppBar(value: l10n.settings),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -31,7 +31,7 @@ class SettingsScreen extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 TitleText(
-                  value: "General",
+                  value: l10n.general,
                   isBold: false,
                 ),
                 const SizedBox(height: 10),
@@ -63,8 +63,8 @@ class SettingsScreen extends ConsumerWidget {
                         builder: (context) {
                           return SimpleDialog(
                             backgroundColor: Colors.white,
-                            title: const TitleText(
-                              value: 'Select Language',
+                            title: TitleText(
+                              value: l10n.selectLanguage,
                               isBold: false,
                             ),
                             children: [
@@ -93,7 +93,7 @@ class SettingsScreen extends ConsumerWidget {
                 ),
                 const SizedBox(height: 10),
                 TitleText(
-                  value: "Security",
+                  value: l10n.security,
                   isBold: false,
                 ),
                 if (user != null && !user.isContactNumberVerified) ...[
@@ -109,8 +109,8 @@ class SettingsScreen extends ConsumerWidget {
                     ),
                     child: ListTile(
                       leading: const Icon(Icons.phone_android),
-                      title: const TitleText(value: 'Verify Phone Number'),
-                      subtitle: const BodyText(value: 'Required before you can deactivate your account'),
+                      title: TitleText(value: l10n.verifyPhoneNumber),
+                      subtitle: BodyText(value: l10n.verifyPhoneRequired),
                       trailing: const Icon(Icons.chevron_right),
                       onTap: () => Navigator.push(
                         context,
@@ -125,7 +125,7 @@ class SettingsScreen extends ConsumerWidget {
                   const SizedBox(height: 10),
                   ListTile(
                     leading: const Icon(Icons.lock_outline),
-                    title: const Text('Change Password'),
+                    title: Text(l10n.changePassword),
                     trailing: const Icon(Icons.chevron_right),
                     onTap: () => Navigator.push(
                       context,
@@ -145,7 +145,7 @@ class SettingsScreen extends ConsumerWidget {
                     },
                     color: Colors.red,
                     backgroundColor: Colors.white,
-                    value: "Deactivate Account",
+                    value: l10n.deactivateAccount,
                   ),
                 ),
               ],

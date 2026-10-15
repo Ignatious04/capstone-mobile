@@ -47,6 +47,8 @@ class _MyAppState extends ConsumerState<MyApp> {
   @override
   Widget build(BuildContext context) {
     final locale = ref.watch(localeProvider);
+    // MaterialApp isn't built yet here, so look the strings up by locale instead of context.
+    final l10n = lookupAppLocalizations(locale);
 
     ref.listen<AsyncValue<List<ConnectivityResult>>>(connectivityStreamProvider, (previous, next) {
       next.whenData((result) {
@@ -55,7 +57,7 @@ class _MyAppState extends ConsumerState<MyApp> {
         final wasOffline = previous?.value?.every((r) => r == ConnectivityResult.none) ?? false;
 
         if (isOffline && !wasOffline) {
-          const message = 'No internet connection. Some features may be limited.';
+          final message = l10n.offlineMessage;
           ref.read(appNotificationProvider.notifier).show(message);
           ref
               .read(notificationHistoryProvider.notifier)
@@ -63,13 +65,13 @@ class _MyAppState extends ConsumerState<MyApp> {
                 NotificationModel(
                   id: DateTime.now().millisecondsSinceEpoch.toString(),
                   type: NotificationTypeEnum.connectivity,
-                  title: 'Offline',
+                  title: l10n.offline,
                   message: message,
                   createdAt: DateTime.now(),
                 ),
               );
         } else if (!isOffline && wasOffline) {
-          const message = 'Back online.';
+          final message = l10n.backOnlineMessage;
           ref.read(appNotificationProvider.notifier).show(message);
           ref
               .read(notificationHistoryProvider.notifier)
@@ -77,7 +79,7 @@ class _MyAppState extends ConsumerState<MyApp> {
                 NotificationModel(
                   id: DateTime.now().millisecondsSinceEpoch.toString(),
                   type: NotificationTypeEnum.connectivity,
-                  title: 'Back online',
+                  title: l10n.backOnline,
                   message: message,
                   createdAt: DateTime.now(),
                 ),

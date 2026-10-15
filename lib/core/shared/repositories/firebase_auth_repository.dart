@@ -32,7 +32,7 @@ class FirebaseAuthRepository {
       final googleUser = await GoogleSignIn.instance.authenticate();
       final idToken = googleUser.authentication.idToken;
       if (idToken == null) {
-        throw AuthException('Google sign-in failed. Please try again.');
+        throw AuthException(AuthErrorCode.googleFailed);
       }
       final credential = GoogleAuthProvider.credential(idToken: idToken);
       final result = await firebaseAuth.signInWithCredential(credential);
@@ -47,7 +47,7 @@ class FirebaseAuthRepository {
     } on GoogleSignInException catch (e) {
       if (e.code == GoogleSignInExceptionCode.canceled) return null;
       debugPrint('Google sign-in error: ${e.code} ${e.description}');
-      throw AuthException('Google sign-in failed. Please try again.');
+      throw AuthException(AuthErrorCode.googleFailed);
     } on FirebaseAuthException catch (e) {
       throw _mapAuthError(e);
     }
@@ -90,9 +90,9 @@ class FirebaseAuthRepository {
   }) async {
     try {
       final user = currentUser;
-      if (user == null) throw AuthException('No user is currently signed in.');
+      if (user == null) throw AuthException(AuthErrorCode.noUser);
       if (!hasPasswordProvider || user.email == null) {
-        throw AuthException('This account signs in with Google and has no password.');
+        throw AuthException(AuthErrorCode.googleNoPassword);
       }
 
       await user.reauthenticateWithCredential(
@@ -112,11 +112,11 @@ class FirebaseAuthRepository {
   Future<bool> reauthenticate({String? password}) async {
     try {
       final user = currentUser;
-      if (user == null) throw AuthException('No user is currently signed in.');
+      if (user == null) throw AuthException(AuthErrorCode.noUser);
 
       if (hasPasswordProvider) {
         if (password == null || password.isEmpty) {
-          throw AuthException('Please enter your password.');
+          throw AuthException(AuthErrorCode.enterPassword);
         }
         await user.reauthenticateWithCredential(
           EmailAuthProvider.credential(email: user.email!, password: password),
@@ -127,13 +127,13 @@ class FirebaseAuthRepository {
       await _ensureGoogleInitialized();
       final googleUser = await GoogleSignIn.instance.authenticate();
       final idToken = googleUser.authentication.idToken;
-      if (idToken == null) throw AuthException('Google sign-in failed. Please try again.');
+      if (idToken == null) throw AuthException(AuthErrorCode.googleFailed);
 
       await user.reauthenticateWithCredential(GoogleAuthProvider.credential(idToken: idToken));
       return true;
     } on GoogleSignInException catch (e) {
       if (e.code == GoogleSignInExceptionCode.canceled) return false;
-      throw AuthException('Google sign-in failed. Please try again.');
+      throw AuthException(AuthErrorCode.googleFailed);
     } on FirebaseAuthException catch (e) {
       throw _mapAuthError(e);
     }
@@ -145,7 +145,7 @@ class FirebaseAuthRepository {
   }) async {
     try {
       final user = currentUser;
-      if (user == null) throw AuthException('No user is currently signed in.');
+      if (user == null) throw AuthException(AuthErrorCode.noUser);
 
       final credential = PhoneAuthProvider.credential(
         verificationId: verificationId,
@@ -163,34 +163,34 @@ class FirebaseAuthRepository {
     switch (e.code) {
       case 'user-not-found':
       case 'invalid-email':
-        return AuthException("Please check the format of your email address");
+        return AuthException(AuthErrorCode.invalidEmail);
       case 'invalid-credential':
       case 'wrong-password':
-        return AuthException('Incorrect email or password.');
+        return AuthException(AuthErrorCode.wrongCredentials);
       case 'too-many-requests':
-        return AuthException('Too many attempts. Try again later.');
+        return AuthException(AuthErrorCode.tooManyAttempts);
       case 'network-request-failed':
-        return AuthException('No internet connection.');
+        return AuthException(AuthErrorCode.noInternet);
       case 'invalid-verification-code':
-        return AuthException('Invalid code. Please try again.');
+        return AuthException(AuthErrorCode.invalidCode);
       case 'invalid-phone-number':
-        return AuthException('Please enter a valid phone number.');
+        return AuthException(AuthErrorCode.invalidPhone);
       case 'credential-already-in-use':
-        return AuthException('This phone number is already linked to another account.');
+        return AuthException(AuthErrorCode.phoneInUse);
       case 'quota-exceeded':
-        return AuthException('SMS quota exceeded. Please try again later.');
+        return AuthException(AuthErrorCode.smsQuota);
       case 'provider-already-linked':
-        return AuthException('This account already has a verified phone number.');
+        return AuthException(AuthErrorCode.phoneAlreadyVerified);
       case 'account-exists-with-different-credential':
-        return AuthException('An account already exists with this email. Log in with your email and password instead.');
+        return AuthException(AuthErrorCode.emailExists);
       case 'weak-password':
-        return AuthException('Password must be at least 6 characters.');
+        return AuthException(AuthErrorCode.weakPassword);
       case 'requires-recent-login':
-        return AuthException('Please log in again to continue.');
+        return AuthException(AuthErrorCode.requiresRecentLogin);
       case 'user-mismatch':
-        return AuthException('Please choose the same Google account you signed up with.');
+        return AuthException(AuthErrorCode.wrongGoogleAccount);
       default:
-        return AuthException('Something went wrong. Please try again.');
+        return AuthException(AuthErrorCode.generic);
     }
   }
 
@@ -228,7 +228,7 @@ class FirebaseAuthRepository {
     try {
       final user = currentUser;
       if (user == null) {
-        throw AuthException('No user is currently signed in.');
+        throw AuthException(AuthErrorCode.noUser);
       }
 
       final credential = EmailAuthProvider.credential(
@@ -252,7 +252,7 @@ class FirebaseAuthRepository {
     try {
       final user = currentUser;
       if (user == null) {
-        throw AuthException('No user is currently signed in.');
+        throw AuthException(AuthErrorCode.noUser);
       }
 
       final credential = EmailAuthProvider.credential(
@@ -302,7 +302,7 @@ class FirebaseAuthRepository {
     try {
       final user = currentUser;
       if (user == null) {
-        throw AuthException('No user is currently signed in.');
+        throw AuthException(AuthErrorCode.noUser);
       }
       await user.linkWithCredential(credential);
       _audit.log(AuditAction.phoneLinked);

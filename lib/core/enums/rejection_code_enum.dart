@@ -1,3 +1,5 @@
+import 'package:capstone/core/l10n/app_localizations.dart';
+
 enum RejectionCodeEnum {
   idUnreadable,
   selfieMismatch,
@@ -12,14 +14,14 @@ enum RejectionCodeEnum {
 
 extension RejectionCodeMessage on RejectionCodeEnum {
   /// Null means "show only the admin's note, no headline".
-  String? get message {
+  String? message(AppLocalizations l10n) {
     switch (this) {
       case RejectionCodeEnum.idUnreadable:
-        return "Your ID photo could not be read clearly.";
+        return l10n.rejectionIdUnreadable;
       case RejectionCodeEnum.selfieMismatch:
-        return "Your selfie did not match your ID.";
+        return l10n.rejectionSelfieMismatch;
       case RejectionCodeEnum.incompleteInfo:
-        return "Some of your information is missing or incorrect.";
+        return l10n.rejectionIncompleteInfo;
       case RejectionCodeEnum.duplicateAccount:
       case RejectionCodeEnum.other:
         return null; // intentionally generic, see below
