@@ -21,6 +21,7 @@ class HistoryCaseDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final locale = Localizations.localeOf(context).toString();
 
     final location = report.location;
     final createdAt = report.createdAt;
@@ -56,12 +57,12 @@ class HistoryCaseDetailScreen extends StatelessWidget {
                       if (createdAt != null) ...[
                         const SizedBox(height: 10),
                         LabelText(value: l10n.reported.toUpperCase()),
-                        BodyText(value: Formatter.formatDateTime(createdAt)),
+                        BodyText(value: Formatter.formatDateTime(createdAt, locale)),
                       ],
                       if (resolvedAt != null) ...[
                         const SizedBox(height: 10),
                         LabelText(value: l10n.resolved.toUpperCase()),
-                        BodyText(value: Formatter.formatDateTime(resolvedAt)),
+                        BodyText(value: Formatter.formatDateTime(resolvedAt, locale)),
                       ],
                       const SizedBox(height: 10),
                       LabelText(value: l10n.description.toUpperCase()),

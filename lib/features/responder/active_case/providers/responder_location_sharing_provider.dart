@@ -1,3 +1,5 @@
+import 'package:capstone/core/shared/providers/locale_provider.dart';
+import 'package:capstone/core/l10n/app_localizations.dart';
 import 'dart:async';
 
 import 'package:capstone/core/enums/location_status_enum.dart';
@@ -17,6 +19,7 @@ final responderLocationSharingProvider = Provider<ResponderLocationSharer>((ref)
   final sharer = ResponderLocationSharer(
     database: ref.read(realtimeDatabaseRepositoryProvider),
     locationService: ref.read(locationServiceProvider),
+    l10n: () => lookupAppLocalizations(ref.read(localeProvider)),
   );
   ref.onDispose(sharer.dispose);
 
@@ -33,12 +36,15 @@ final responderLocationSharingProvider = Provider<ResponderLocationSharer>((ref)
 });
 
 class ResponderLocationSharer {
-  ResponderLocationSharer({required this.database, required this.locationService});
+  ResponderLocationSharer({required this.database, required this.locationService, required this.l10n});
 
   Future<void> stopSharing() => _stop();
 
   final RealtimeDatabaseRepository database;
   final LocationService locationService;
+
+  /// Looked up when sharing starts, so the foreground notification uses the current language.
+  final AppLocalizations Function() l10n;
 
   StreamSubscription<LatLng>? _subscription;
   String? _sharingReportID;
@@ -79,7 +85,7 @@ class ResponderLocationSharer {
     }
     if (_sharingReportID != reportID) return;
 
-    _subscription = locationService.getResponderLocationStream().listen(
+    _subscription = locationService.getResponderLocationStream(l10n: l10n()).listen(
       (latLng) => _publish(report, latLng),
       onError: (e) => debugPrint('Responder location stream error: $e'),
     );

@@ -590,5 +590,9 @@
   "notifChannelName": "Emergency updates",
   "notifChannelDescription": "Report status and case assignment alerts",
   "locationShareTitle": "Sharing your live location",
-  "locationShareBody": "Dispatch and the reporter can see where you are while this case is active."
+  "locationShareBody": "Dispatch and the reporter can see where you are while this case is active.",
+  "quickReportLabel": "Quick Report",
+  "quickReportNote": "This report was submitted through the quick-reporting module.",
+  "smsReportLabel": "SMS",
+  "smsReportNote": "This report was submitted through the SMS module."
 }

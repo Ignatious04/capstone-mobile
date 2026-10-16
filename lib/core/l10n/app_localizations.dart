@@ -2755,6 +2755,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Dispatch and the reporter can see where you are while this case is active.'**
   String get locationShareBody;
+
+  /// No description provided for @quickReportLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Quick Report'**
+  String get quickReportLabel;
+
+  /// No description provided for @quickReportNote.
+  ///
+  /// In en, this message translates to:
+  /// **'This report was submitted through the quick-reporting module.'**
+  String get quickReportNote;
+
+  /// No description provided for @smsReportLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'SMS'**
+  String get smsReportLabel;
+
+  /// No description provided for @smsReportNote.
+  ///
+  /// In en, this message translates to:
+  /// **'This report was submitted through the SMS module.'**
+  String get smsReportNote;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

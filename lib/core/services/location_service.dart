@@ -1,3 +1,4 @@
+import 'package:capstone/core/l10n/app_localizations.dart';
 import 'dart:async';
 import 'package:capstone/core/enums/location_status_enum.dart';
 import 'package:flutter/foundation.dart';
@@ -93,15 +94,15 @@ class LocationService {
     ).map((p) => currentLatLng = LatLng(p.latitude, p.longitude));
   }
 
-  Stream<LatLng> getResponderLocationStream() {
+  Stream<LatLng> getResponderLocationStream({required AppLocalizations l10n}) {
     final LocationSettings settings = defaultTargetPlatform == TargetPlatform.android
         ? AndroidSettings(
             accuracy: LocationAccuracy.high,
             distanceFilter: 10,
             intervalDuration: const Duration(seconds: 5),
-            foregroundNotificationConfig: const ForegroundNotificationConfig(
-              notificationTitle: 'Sharing your live location',
-              notificationText: 'Dispatch and the reporter can see where you are while this case is active.',
+            foregroundNotificationConfig: ForegroundNotificationConfig(
+              notificationTitle: l10n.locationShareTitle,
+              notificationText: l10n.locationShareBody,
               enableWakeLock: true,
               setOngoing: true,
             ),

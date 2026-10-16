@@ -7,7 +7,7 @@ const admin = require("firebase-admin");
 const {logger} = require("firebase-functions");
 
 // Never logged at all (noise).
-const IGNORED = new Set(["fcmToken", "updatedAt", "deactivatedAt", "createdAt"]);
+const IGNORED = new Set(["fcmToken", "languageCode", "updatedAt", "deactivatedAt", "createdAt"]);
 
 // Only these get before/after values in the log. Every other changed field
 // (ID number, address, medical info, URLs...) is logged as {changed: true}.

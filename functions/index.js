@@ -4,13 +4,48 @@ admin.initializeApp();
 
 Object.assign(exports, require("./audit"));
 
+// Push text per language. Anything other than "fil" falls back to English
+// (covers users who never saved a language).
 const STATUS_COPY = {
-  accepted: {title: "Report accepted", body: "A responder has accepted your report."},
-  dispatched: {title: "Help is on the way", body: "A responder has been dispatched to your location."},
-  onScene: {title: "Responder on scene", body: "A responder has arrived at your location."},
-  resolved: {title: "Report resolved", body: "Your report has been marked as resolved."},
-  pending: {title: "Report reopened", body: "Your report is back in the queue for review."},
+  accepted: {
+    en: {title: "Report accepted", body: "A responder has accepted your report."},
+    fil: {title: "Tinanggap ang report", body: "Tinanggap ng isang responder ang iyong report."},
+  },
+  dispatched: {
+    en: {title: "Help is on the way", body: "A responder has been dispatched to your location."},
+    fil: {title: "Papunta na ang tulong", body: "May responder nang ipinadala sa iyong lokasyon."},
+  },
+  onScene: {
+    en: {title: "Responder on scene", body: "A responder has arrived at your location."},
+    fil: {title: "Nasa lugar na ang responder", body: "Dumating na ang responder sa iyong lokasyon."},
+  },
+  resolved: {
+    en: {title: "Report resolved", body: "Your report has been marked as resolved."},
+    fil: {title: "Nalutas na ang report", body: "Nalutas na ang iyong report."},
+  },
+  pending: {
+    en: {title: "Report reopened", body: "Your report is back in the queue for review."},
+    fil: {title: "Muling binuksan ang report", body: "Bumalik sa pila ang iyong report para sa pagsusuri."},
+  },
 };
+
+const ASSIGNED_COPY = {
+  en: {title: "New case assigned", body: "You have been assigned a new report. Open the app to view it."},
+  fil: {title: "May bagong case na itinalaga", body: "May bagong report na itinalaga sa iyo. Buksan ang app para makita ito."},
+};
+
+const VERIFICATION_COPY = {
+  approved: {
+    en: {title: "Account verified", body: "Your account has been approved."},
+    fil: {title: "Na-verify na ang account", body: "Naaprubahan na ang iyong account."},
+  },
+  rejected: {
+    en: {title: "Verification needs attention", body: "Open the app to see why and what to do next."},
+    fil: {title: "Kailangan ng aksyon sa verification", body: "Buksan ang app para makita ang dahilan at kung ano ang susunod na gagawin."},
+  },
+};
+
+const pickLang = (doc) => (doc?.languageCode === "fil" ? "fil" : "en");
 
 const {logger} = require("firebase-functions");
 
@@ -39,10 +74,7 @@ exports.onReportAssigned = onDocumentUpdated("reports/{reportID}", async (event)
   try {
     await admin.messaging().send({
       token,
-      notification: {
-        title: "New case assigned",
-        body: "You have been assigned a new report. Open the app to view it.",
-      },
+      notification: ASSIGNED_COPY[pickLang(responder)],
       data: {type: "reportAssigned", reportID: event.params.reportID},
       android: {
         priority: "high",
@@ -88,11 +120,12 @@ exports.onReportStatusChange = onDocumentUpdated("reports/{reportID}", async (ev
   if (userData?.isDeactivated) return;
   const token = userData?.fcmToken;
   if (!token) return;
+  const text = copy[pickLang(userData)];
 
   try {
     await admin.messaging().send({
       token,
-      notification: {title: copy.title, body: copy.body},
+      notification: {title: text.title, body: text.body},
       data: {type: "reportStatus", reportID: event.params.reportID, status: after.status},
       android: {
         priority: "high",
@@ -114,11 +147,9 @@ exports.onVerificationChange = onDocumentUpdated("users/{uid}", async (event) =>
   const after = event.data.after.data();
   if (before.verificationStatus === after.verificationStatus) return;
 
-  const copy = {
-    approved: {title: "Account verified", body: "Your account has been approved."},
-    rejected: {title: "Verification needs attention", body: "Open the app to see why and what to do next."},
-  }[after.verificationStatus];
-  if (!copy || !after.fcmToken) return;
+  const entry = VERIFICATION_COPY[after.verificationStatus];
+  if (!entry || !after.fcmToken) return;
+  const copy = entry[pickLang(after)];
 
   await admin.messaging().send({
     token: after.fcmToken,

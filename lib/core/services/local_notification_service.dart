@@ -1,4 +1,6 @@
+import 'package:capstone/core/l10n/app_localizations.dart';
 import 'dart:convert';
+import 'dart:ui';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
@@ -11,17 +13,24 @@ class LocalNotificationService {
   /// Set by PushNotificationService; receives the data of a tapped notification.
   void Function(Map<String, dynamic> data)? onTap;
 
-  // Must match the id in AndroidManifest.xml and the FCM payload.
-  static const _channel = AndroidNotificationChannel(
-    'high_importance_channel',
-    'Emergency updates',
-    description: 'Report status and case assignment alerts',
-    importance: Importance.max,
-    playSound: true,
-    enableVibration: true,
-  );
+  // The id must match AndroidManifest.xml and the FCM payload. Only the name/description are translated.
+  static AndroidNotificationChannel _buildChannel(Locale locale) {
+    final l10n = lookupAppLocalizations(locale);
+    return AndroidNotificationChannel(
+      'high_importance_channel',
+      l10n.notifChannelName,
+      description: l10n.notifChannelDescription,
+      importance: Importance.max,
+      playSound: true,
+      enableVibration: true,
+    );
+  }
 
-  Future<void> init() async {
+  // English until init() runs (the background isolate never calls init()).
+  AndroidNotificationChannel _channel = _buildChannel(const Locale('en'));
+
+  Future<void> init({Locale locale = const Locale('en')}) async {
+    _channel = _buildChannel(locale);
     await _plugin.initialize(
       settings: const InitializationSettings(
         android: AndroidInitializationSettings('@mipmap/ic_launcher'),
@@ -35,6 +44,14 @@ class LocalNotificationService {
       onDidReceiveNotificationResponse: (response) => _dispatch(response.payload),
     );
 
+    await _plugin
+        .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
+        ?.createNotificationChannel(_channel);
+  }
+
+  /// Re-registering a channel with the same id updates its visible name and description.
+  Future<void> updateChannelLocale(Locale locale) async {
+    _channel = _buildChannel(locale);
     await _plugin
         .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
         ?.createNotificationChannel(_channel);

@@ -25,7 +25,8 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   FirebaseMessaging.onBackgroundMessage(firebaseMessagingBackgroundHandler); // register before runApp
-  await LocalNotificationService.instance.init();
+  initialLocale = await loadSavedLocale();
+  await LocalNotificationService.instance.init(locale: initialLocale);
   runApp(ProviderScope(child: const MyApp()));
 }
 
@@ -49,6 +50,12 @@ class _MyAppState extends ConsumerState<MyApp> {
     final locale = ref.watch(localeProvider);
     // MaterialApp isn't built yet here, so look the strings up by locale instead of context.
     final l10n = lookupAppLocalizations(locale);
+
+    // Remember the choice and keep the Android notification channel's name in the same language.
+    ref.listen<Locale>(localeProvider, (previous, next) {
+      saveLocale(next);
+      LocalNotificationService.instance.updateChannelLocale(next);
+    });
 
     ref.listen<AsyncValue<List<ConnectivityResult>>>(connectivityStreamProvider, (previous, next) {
       next.whenData((result) {
@@ -93,9 +100,16 @@ class _MyAppState extends ConsumerState<MyApp> {
         final push = ref.read(pushNotificationServiceProvider);
         if (authUser != null && authUser.emailVerified) {
           push.init();
-          push.registerToken(authUser.uid); 
+          push.registerToken(authUser.uid, languageCode: ref.read(localeProvider).languageCode);
         }
       });
+    });
+
+    // Keep the language on the user's document in sync so server push text matches the app.
+    ref.listen<Locale>(localeProvider, (previous, next) {
+      final uid = FirebaseAuth.instance.currentUser?.uid;
+      if (uid == null || previous?.languageCode == next.languageCode) return;
+      ref.read(pushNotificationServiceProvider).syncLanguage(uid, next.languageCode);
     });
 
     return MaterialApp(

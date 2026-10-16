@@ -52,6 +52,16 @@ class UserRepository {
     }
   }
 
+  /// Saved so Cloud Functions can send push text in the user's language.
+  Future<void> updateLanguage(String uid, String languageCode) async {
+    try {
+      await firestore.collection('users').doc(uid).update({'languageCode': languageCode});
+    } on FirebaseException catch (e) {
+      // User doc not created yet; it is saved on the next login or language change.
+      if (e.code != 'not-found') rethrow;
+    }
+  }
+
   Future<void> clearFcmToken(String uid) async {
     await firestore.collection('users').doc(uid).update({
       'fcmToken': FieldValue.delete(),

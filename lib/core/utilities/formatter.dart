@@ -17,5 +17,5 @@ abstract final class Formatter {
         .join(' ');
   }
 
-  static String formatDateTime(DateTime value) => DateFormat('MMM dd, yyyy • h:mm a').format(value);
+  static String formatDateTime(DateTime value, String locale) => DateFormat('MMM dd, yyyy • h:mm a', locale).format(value);
 }

@@ -91,7 +91,7 @@ class PushNotificationService {
   }
 
   /// Call once after login (user is authenticated, email-verified, setup).
-  Future<void> registerToken(String userID) async {
+  Future<void> registerToken(String userID, {String? languageCode}) async {
     final responderRepo = ref.read(responderRepositoryProvider);
     final isResponder = await responderRepo.exists(userID);
 
@@ -103,9 +103,34 @@ class PushNotificationService {
     if (token != null) {
       await save(token);
     }
+    if (languageCode != null) {
+      await _saveLanguage(userID, languageCode, isResponder: isResponder);
+    }
 
     await _tokenRefreshSub?.cancel();
     _tokenRefreshSub = _messaging.onTokenRefresh.listen(save);
+  }
+
+  /// Call when the app language changes so server push text follows it.
+  Future<void> syncLanguage(String userID, String languageCode) async {
+    try {
+      final isResponder = await ref.read(responderRepositoryProvider).exists(userID);
+      await _saveLanguage(userID, languageCode, isResponder: isResponder);
+    } catch (e) {
+      debugPrint('syncLanguage failed: $e');
+    }
+  }
+
+  Future<void> _saveLanguage(String userID, String languageCode, {required bool isResponder}) async {
+    try {
+      if (isResponder) {
+        await ref.read(responderRepositoryProvider).updateLanguage(userID, languageCode);
+      } else {
+        await ref.read(userRepositoryProvider).updateLanguage(userID, languageCode);
+      }
+    } catch (e) {
+      debugPrint('saveLanguage failed: $e');
+    }
   }
 
   /// Call on sign-out so a stale token doesn't keep receiving another

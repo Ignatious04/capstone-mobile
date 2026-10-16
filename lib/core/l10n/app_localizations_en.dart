@@ -1410,4 +1410,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get locationShareBody => 'Dispatch and the reporter can see where you are while this case is active.';
+
+  @override
+  String get quickReportLabel => 'Quick Report';
+
+  @override
+  String get quickReportNote => 'This report was submitted through the quick-reporting module.';
+
+  @override
+  String get smsReportLabel => 'SMS';
+
+  @override
+  String get smsReportNote => 'This report was submitted through the SMS module.';
 }

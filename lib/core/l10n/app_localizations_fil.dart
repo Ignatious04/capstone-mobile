@@ -1415,4 +1415,16 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String get locationShareBody => 'Makikita ng dispatch at ng nag-ulat kung nasaan ka habang aktibo ang kasong ito.';
+
+  @override
+  String get quickReportLabel => 'Mabilis na Report';
+
+  @override
+  String get quickReportNote => 'Ang report na ito ay ipinadala sa pamamagitan ng quick-reporting module.';
+
+  @override
+  String get smsReportLabel => 'SMS';
+
+  @override
+  String get smsReportNote => 'Ang report na ito ay ipinadala sa pamamagitan ng SMS module.';
 }

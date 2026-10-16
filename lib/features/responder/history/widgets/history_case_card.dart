@@ -24,6 +24,7 @@ class HistoryCaseCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final locale = Localizations.localeOf(context).toString();
 
     // resolvedAt can be briefly null right after resolving (pending server timestamp)
     final closedAt = report.resolvedAt ?? report.createdAt;
@@ -64,7 +65,7 @@ class HistoryCaseCard extends StatelessWidget {
                       value: report.incidentType?.label(l10n) ?? '—',
                     ),
                     BodyText(
-                      value: closedAt == null ? '—' : l10n.resolvedAt(Formatter.formatDateTime(closedAt)),
+                      value: closedAt == null ? '—' : l10n.resolvedAt(Formatter.formatDateTime(closedAt, locale)),
                       color: Colors.black54,
                     ),
                   ],

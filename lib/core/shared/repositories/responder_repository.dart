@@ -15,6 +15,10 @@ class ResponderRepository {
     await firestore.collection('responders').doc(uid).update({'fcmToken': token});
   }
 
+  Future<void> updateLanguage(String uid, String languageCode) async {
+    await firestore.collection('responders').doc(uid).update({'languageCode': languageCode});
+  }
+
   Future<void> clearFcmToken(String uid) async {
     await firestore.collection('responders').doc(uid).update({'fcmToken': FieldValue.delete()});
   }

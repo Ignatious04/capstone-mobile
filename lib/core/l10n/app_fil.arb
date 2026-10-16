@@ -443,5 +443,9 @@
   "notifChannelName": "Mga update sa emergency",
   "notifChannelDescription": "Mga abiso sa katayuan ng report at pagtatalaga ng kaso",
   "locationShareTitle": "Ibinabahagi ang iyong live na lokasyon",
-  "locationShareBody": "Makikita ng dispatch at ng nag-ulat kung nasaan ka habang aktibo ang kasong ito."
+  "locationShareBody": "Makikita ng dispatch at ng nag-ulat kung nasaan ka habang aktibo ang kasong ito.",
+  "quickReportLabel": "Mabilis na Report",
+  "quickReportNote": "Ang report na ito ay ipinadala sa pamamagitan ng quick-reporting module.",
+  "smsReportLabel": "SMS",
+  "smsReportNote": "Ang report na ito ay ipinadala sa pamamagitan ng SMS module."
 }
