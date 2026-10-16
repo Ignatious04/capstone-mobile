@@ -131,7 +131,7 @@ exports.onReportStatusChange = onDocumentUpdated("reports/{reportID}", async (ev
         priority: "high",
         notification: {channelId: "high_importance_channel", sound: "default"},
       },
-      apns: {payload: {aps: {sound: "default"}}},
+      apns: {payload: {aps: {"sound": "default", "content-available": 1}}},
     });
   } catch (err) {
     if (err.code === "messaging/registration-token-not-registered") {

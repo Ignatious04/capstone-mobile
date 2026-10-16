@@ -74,9 +74,9 @@ flutter_launcher_icons:
 flutter_native_splash:
   color: "#FFFFFF"
   image: "assets/images/app_icon.png" # Path to your logo/icon asset
-android_12:
-  color: "#FFFFFF"
-  image: "assets/images/app_icon.png"
+  android_12:
+    color: "#FFFFFF"
+    image: "assets/images/app_icon.png"
 
 dev_dependencies:
   flutter_test:
