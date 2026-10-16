@@ -69,10 +69,11 @@ flutter_launcher_icons:
   image_path: "assets/images/app_icon.png"
   android: true
   ios: true
+  remove_alpha_ios: true
 
 flutter_native_splash:
-color: "#FFFFFF"
-image: "assets/images/app_icon.png" # Path to your logo/icon asset
+  color: "#FFFFFF"
+  image: "assets/images/app_icon.png" # Path to your logo/icon asset
 android_12:
   color: "#FFFFFF"
   image: "assets/images/app_icon.png"
