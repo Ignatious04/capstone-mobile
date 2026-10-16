@@ -127,29 +127,27 @@ class _PreCallGuidanceSummaryScreenState extends ConsumerState<PreCallGuidanceSu
                     child: CustomCircularProgressIndicator(color: Colors.deepOrange),
                   ),
                   SizedBox(width: 10),
-                  BodyText(value: "Getting your location..."),
+                  BodyText(value: l10n.gettingLocation),
                 ],
               ),
             ),
           if (location.hasValue) ...[
             if (location.value!.accuracy > 50)
               BodyText(
-                value:
-                    "Weak GPS signal (±${location.value!.accuracy.round()} m). "
-                    "Add a landmark or adjust your pin so responders can find you.",
+                value: l10n.weakGps(location.value!.accuracy.round()),
               ),
             TextField(
               controller: _noteController,
               maxLength: 80,
-              decoration: const InputDecoration(
-                labelText: "Where exactly are you? (optional)",
-                hintText: "Landmark, building, floor…",
+              decoration: InputDecoration(
+                labelText: l10n.landmarkLabel,
+                hintText: l10n.landmarkHint,
               ),
             ),
             if (isOnline)
               TextButton.icon(
                 icon: const Icon(Icons.edit_location_alt),
-                label: Text(_adjustedLocation == null ? "Adjust location on map" : "Location adjusted ✓"),
+                label: Text(_adjustedLocation == null ? l10n.adjustLocation : l10n.locationAdjusted),
                 onPressed: () async {
                   final picked = await Navigator.push<LatLng>(
                     context,

@@ -188,15 +188,16 @@ class PreCallGuidanceReportViewScreen extends ConsumerWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       InfoColumn(
-                        title: "REFERENCE NUMBER",
+                        title: l10n.referenceNumber.toUpperCase(),
                         value: currentReport.referenceNumber,
                       ),
                       const SizedBox(height: 10),
                       InfoColumn(
-                        title: "SUBMITTED",
+                        title: l10n.submitted.toUpperCase(),
                         value: currentReport.createdAt != null
                             ? DateFormat(
                                 "MMMM dd, yyyy • hh:mm a",
+                                Localizations.localeOf(context).toString(),
                               ).format(currentReport.createdAt!)
                             : "-",
                       ),
