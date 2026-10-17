@@ -73,8 +73,7 @@ class _PreCallGuidanceSummaryScreenState extends ConsumerState<PreCallGuidanceSu
                     isBold: true,
                   ),
                   BodyText(
-                    value:
-                        l10n.guidanceCompleteBody,
+                    value: l10n.guidanceCompleteBody,
                     alignment: TextAlign.center,
                     isOverflow: false,
                   ),
@@ -98,13 +97,13 @@ class _PreCallGuidanceSummaryScreenState extends ConsumerState<PreCallGuidanceSu
                   title: BodyText(
                     value: item.localizedQuestion(l10n),
                   ),
-                  subtitle: LabelText(
+                  subtitle: BodyText(
                     value: item.answer == null
                         ? l10n.notAnswered
                         : item.answer!
                         ? l10n.yes
                         : l10n.no,
-                    isBold: false,
+                    isBold: true,
                   ),
                   leading: Icon(
                     item.answer == true ? Icons.check_circle : Icons.cancel,
@@ -135,19 +134,48 @@ class _PreCallGuidanceSummaryScreenState extends ConsumerState<PreCallGuidanceSu
             if (location.value!.accuracy > 50)
               BodyText(
                 value: l10n.weakGps(location.value!.accuracy.round()),
+                alignment: TextAlign.center,
               ),
             TextField(
               controller: _noteController,
               maxLength: 80,
+              style:
+                  Theme.of(
+                    context,
+                  ).textTheme.bodyMedium?.copyWith(
+                    color: Colors.black,
+                  ),
               decoration: InputDecoration(
                 labelText: l10n.landmarkLabel,
+                labelStyle:
+                    Theme.of(
+                      context,
+                    ).textTheme.bodyMedium?.copyWith(
+                      color: Colors.black54,
+                    ),
                 hintText: l10n.landmarkHint,
+                hintStyle:
+                    Theme.of(
+                      context,
+                    ).textTheme.bodyMedium?.copyWith(
+                      color: Colors.black54,
+                    ),
               ),
+              onTapOutside: (_) {
+                FocusManager.instance.primaryFocus?.unfocus();
+              },
             ),
             if (isOnline)
               TextButton.icon(
-                icon: const Icon(Icons.edit_location_alt),
-                label: Text(_adjustedLocation == null ? l10n.adjustLocation : l10n.locationAdjusted),
+                icon: const Icon(
+                  Icons.edit_location_alt,
+                  size: 25,
+                  color: Colors.black54,
+                ),
+                label: BodyText(
+                  value: _adjustedLocation == null ? l10n.adjustLocation : l10n.locationAdjusted,
+                  color: Colors.black54,
+                ),
                 onPressed: () async {
                   final picked = await Navigator.push<LatLng>(
                     context,
@@ -168,8 +196,7 @@ class _PreCallGuidanceSummaryScreenState extends ConsumerState<PreCallGuidanceSu
                     final confirmed = await showConfirmationDialog(
                       context,
                       title: l10n.submitReportPrompt,
-                      content:
-                          l10n.responseTimeNotice,
+                      content: l10n.responseTimeNotice,
                     );
 
                     if (confirmed != true) {
@@ -203,8 +230,7 @@ class _PreCallGuidanceSummaryScreenState extends ConsumerState<PreCallGuidanceSu
 
                       final confirmed = await showConfirmationDialog(
                         context,
-                        title:
-                            l10n.offlineSmsPrompt,
+                        title: l10n.offlineSmsPrompt,
                       );
 
                       if (confirmed != true) {

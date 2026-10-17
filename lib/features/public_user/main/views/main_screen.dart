@@ -16,7 +16,6 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  String address = "Brgy. Balibago, Angeles City";
   int currentPageIndex = 2;
 
   List<CustomNavigationBarItem> _navItems(AppLocalizations l10n) => [

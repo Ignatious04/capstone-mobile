@@ -41,7 +41,7 @@ class NotificationHistoryScreen extends ConsumerWidget {
                       children: [
                         const Icon(
                           Icons.notifications_none,
-                          size: 75,
+                          size: 100,
                           color: Colors.black54,
                         ),
                         const SizedBox(height: 10),

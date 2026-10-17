@@ -113,11 +113,11 @@ class EmergencyServiceCard extends StatelessWidget {
                       Row(
                         children: [
                           Expanded(
-                            flex: 3,
+                            flex: 2,
                             child: CustomElevatedButton(
                               onPressed: onTap,
                               icon: const Icon(Icons.near_me, color: Colors.white, size: 25),
-                              value: l10n.showOnMap,
+                              value: l10n.show,
                             ),
                           ),
                           const SizedBox(width: 10),

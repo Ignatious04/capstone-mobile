@@ -555,9 +555,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get locationUnavailableMsg => 'Unable to determine your location.';
 
   @override
-  String get nearbyEmergencyServices => 'Nearby Emergency Services';
-
-  @override
   String locationCount(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
@@ -578,7 +575,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get unavailable => 'Unavailable';
 
   @override
-  String get showOnMap => 'Show on map';
+  String get show => 'Show';
 
   @override
   String get getDirections => 'Get directions';

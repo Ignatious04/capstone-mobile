@@ -93,13 +93,13 @@ class AppLocalizationsFil extends AppLocalizations {
   String get done => 'Tapos Na';
 
   @override
-  String get home => 'Tahanan';
+  String get home => 'Home';
 
   @override
   String get map => 'Mapa';
 
   @override
-  String get reports => 'Mga Report';
+  String get reports => 'Reports';
 
   @override
   String get profile => 'Profile';
@@ -207,7 +207,7 @@ class AppLocalizationsFil extends AppLocalizations {
   String get no => 'Hindi';
 
   @override
-  String get or => 'o';
+  String get or => 'or';
 
   @override
   String get confirm => 'Kumpirmahin';
@@ -556,9 +556,6 @@ class AppLocalizationsFil extends AppLocalizations {
   String get locationUnavailableMsg => 'Hindi matukoy ang iyong lokasyon.';
 
   @override
-  String get nearbyEmergencyServices => 'Mga Kalapit na Serbisyong Pang-emergency';
-
-  @override
   String locationCount(int count) {
     String _temp0 = intl.Intl.pluralLogic(
       count,
@@ -579,7 +576,7 @@ class AppLocalizationsFil extends AppLocalizations {
   String get unavailable => 'Hindi available';
 
   @override
-  String get showOnMap => 'Ipakita sa mapa';
+  String get show => 'Ipakita';
 
   @override
   String get getDirections => 'Kumuha ng direksyon';
@@ -848,7 +845,7 @@ class AppLocalizationsFil extends AppLocalizations {
   String get userNotFound => 'Hindi nahanap ang user';
 
   @override
-  String get updatePersonalInformation => 'I-update ang Pansariling Impormasyon';
+  String get updatePersonalInformation => 'I-update ang impormasyon';
 
   @override
   String get updateInformation => 'I-update ang Impormasyon';

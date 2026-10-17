@@ -187,7 +187,7 @@ class _EmergencyServicesPanelState extends ConsumerState<EmergencyServicesPanel>
                                     children: [
                                       Expanded(
                                         child: TitleText(
-                                          value: l10n.nearbyEmergencyServices,
+                                          value: l10n.emergencyServices,
                                           isBold: true,
                                         ),
                                       ),

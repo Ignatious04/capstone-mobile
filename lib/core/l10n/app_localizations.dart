@@ -1154,12 +1154,6 @@ abstract class AppLocalizations {
   /// **'Unable to determine your location.'**
   String get locationUnavailableMsg;
 
-  /// No description provided for @nearbyEmergencyServices.
-  ///
-  /// In en, this message translates to:
-  /// **'Nearby Emergency Services'**
-  String get nearbyEmergencyServices;
-
   /// No description provided for @locationCount.
   ///
   /// In en, this message translates to:
@@ -1184,11 +1178,11 @@ abstract class AppLocalizations {
   /// **'Unavailable'**
   String get unavailable;
 
-  /// No description provided for @showOnMap.
+  /// No description provided for @show.
   ///
   /// In en, this message translates to:
-  /// **'Show on map'**
-  String get showOnMap;
+  /// **'Show'**
+  String get show;
 
   /// No description provided for @getDirections.
   ///

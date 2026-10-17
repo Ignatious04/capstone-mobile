@@ -212,7 +212,6 @@
   "serviceMap": "Service Map",
   "findNearbyServices": "Find nearby emergency services",
   "locationUnavailableMsg": "Unable to determine your location.",
-  "nearbyEmergencyServices": "Nearby Emergency Services",
   "locationCount": "{count, plural, =1{1 location} other{{count} locations}}",
   "@locationCount": {
     "placeholders": {
@@ -224,7 +223,7 @@
   "search": "Search",
   "open": "Open",
   "unavailable": "Unavailable",
-  "showOnMap": "Show on map",
+  "show": "Show",
   "getDirections": "Get directions",
   "directionsError": "Could not open directions to {location}",
   "@directionsError": {

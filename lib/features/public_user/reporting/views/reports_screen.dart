@@ -104,8 +104,24 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
                         physics: const AlwaysScrollableScrollPhysics(),
                         children: [
                           SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.5,
-                            child: Center(child: BodyText(value: l10n.noReports)),
+                            height: MediaQuery.of(context).size.height * 0.7,
+                            child: Center(
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(
+                                    Icons.no_cell_outlined,
+                                    size: 100,
+                                    color: Colors.black54,
+                                  ),
+                                  const SizedBox(height: 10),
+                                  BodyText(
+                                    value: l10n.noReports,
+                                    isBold: true,
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
                         ],
                       );

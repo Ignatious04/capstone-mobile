@@ -164,7 +164,7 @@ class _UpdatePersonalInformationScreenState extends ConsumerState<UpdatePersonal
 
                           return null;
                         },
-                        items: DropdownLists.sexItems(l10n),
+                        items: DropdownLists.civilStatusItems(l10n),
                         onChanged: (value) {
                           setState(() {
                             civilStatus = value!;
