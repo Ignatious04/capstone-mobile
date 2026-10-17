@@ -15,12 +15,7 @@ class EtaEstimate {
 
   String durationLabel(AppLocalizations l10n) {
     if (isArriving) return l10n.etaArrivingNow;
-    final minutes = duration.inSeconds / 60;
-    if (minutes < 1) return l10n.etaLessThanMin;
-    if (minutes < 60) return l10n.etaMinutes(minutes.round());
-    final h = duration.inHours;
-    final m = duration.inMinutes % 60;
-    return '~${h}h ${m}m';
+    return EtaCalculator.formatDuration(l10n, duration);
   }
 }
 
@@ -33,6 +28,15 @@ class EtaCalculator {
 
   /// Closer than this counts as arrived.
   static const double arrivedMeters = 50;
+
+  static String formatDuration(AppLocalizations l10n, Duration duration) {
+    final minutes = duration.inSeconds / 60;
+    if (minutes < 1) return l10n.etaLessThanMin;
+    if (minutes < 60) return l10n.etaMinutes(minutes.round());
+    final h = duration.inHours;
+    final m = duration.inMinutes % 60;
+    return '~${h}h ${m}m';
+  }
 
   static EtaEstimate estimate(LatLng responder, LatLng incident) {
     final straight = Geolocator.distanceBetween(

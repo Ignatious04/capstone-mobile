@@ -29,9 +29,14 @@ class ReportModel {
   final double? locationAccuracy;
   final String? locationDescription;
   final GeoPoint? originalGpsLocation;
+  final DateTime? acceptedAt;
   final DateTime? dispatchedAt;
   final DateTime? arrivedAt;
   final DateTime? resolvedAt;
+
+  /// ETA recorded when the responder went en route (frozen snapshot, not live).
+  final int? etaSeconds;
+  final double? etaDistanceMeters;
 
   const ReportModel({
     this.reportID = '',
@@ -54,9 +59,12 @@ class ReportModel {
     this.locationAccuracy,
     this.locationDescription,
     this.originalGpsLocation,
+    this.acceptedAt,
     this.dispatchedAt,
     this.arrivedAt,
     this.resolvedAt,
+    this.etaSeconds,
+    this.etaDistanceMeters,
   });
 
   ReportModel copyWith({
@@ -80,9 +88,12 @@ class ReportModel {
     double? locationAccuracy,
     String? locationDescription,
     GeoPoint? originalGpsLocation,
+    DateTime? acceptedAt,
     DateTime? dispatchedAt,
     DateTime? arrivedAt,
     DateTime? resolvedAt,
+    int? etaSeconds,
+    double? etaDistanceMeters,
   }) {
     return ReportModel(
       reportID: reportID ?? this.reportID,
@@ -105,9 +116,12 @@ class ReportModel {
       locationAccuracy: locationAccuracy ?? this.locationAccuracy,
       locationDescription: locationDescription ?? this.locationDescription,
       originalGpsLocation: originalGpsLocation ?? this.originalGpsLocation,
+      acceptedAt: acceptedAt ?? this.acceptedAt,
       dispatchedAt: dispatchedAt ?? this.dispatchedAt,
       arrivedAt: arrivedAt ?? this.arrivedAt,
       resolvedAt: resolvedAt ?? this.resolvedAt,
+      etaSeconds: etaSeconds ?? this.etaSeconds,
+      etaDistanceMeters: etaDistanceMeters ?? this.etaDistanceMeters,
     );
   }
 
@@ -133,9 +147,12 @@ class ReportModel {
       'locationAccuracy': locationAccuracy,
       'locationDescription': locationDescription,
       'originalGpsLocation': originalGpsLocation,
+      'acceptedAt': acceptedAt,
       'dispatchedAt': dispatchedAt,
       "arrivedAt": arrivedAt,
       'resolvedAt': resolvedAt,
+      'etaSeconds': etaSeconds,
+      'etaDistanceMeters': etaDistanceMeters,
     };
   }
 
@@ -175,9 +192,12 @@ class ReportModel {
       locationAccuracy: (map['locationAccuracy'] as num?)?.toDouble(),
       locationDescription: map['locationDescription'],
       originalGpsLocation: map['originalGpsLocation'],
+      acceptedAt: (map['acceptedAt'] as Timestamp?)?.toDate(),
       dispatchedAt: (map["dispatchedAt"] as Timestamp?)?.toDate(),
       arrivedAt: (map["arrivedAt"] as Timestamp?)?.toDate(),
       resolvedAt: (map['resolvedAt'] as Timestamp?)?.toDate(),
+      etaSeconds: (map['etaSeconds'] as num?)?.toInt(),
+      etaDistanceMeters: (map['etaDistanceMeters'] as num?)?.toDouble(),
     );
   }
 }

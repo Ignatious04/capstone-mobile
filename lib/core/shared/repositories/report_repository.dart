@@ -2,6 +2,7 @@ import 'package:capstone/core/enums/report_status_enum.dart';
 import 'package:capstone/core/shared/models/attachment_model.dart';
 import 'package:capstone/core/shared/models/report_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 
 class ReportRepository {
   final FirebaseFirestore firestore;
@@ -31,8 +32,20 @@ class ReportRepository {
         .orderBy("createdAt", descending: true)
         .snapshots()
         .map((snapshot) {
+          debugPrint('reports: ${snapshot.docs.length} docs, fromCache=${snapshot.metadata.isFromCache}');
           return snapshot.docs.map((doc) => ReportModel.fromMap(doc.data())).toList();
         });
+  }
+
+  Future<void> refreshReports(String userID) async {
+    await firestore.disableNetwork();
+    await firestore.enableNetwork();
+    await firestore
+        .collection('reports')
+        .where('userID', isEqualTo: userID)
+        .limit(1)
+        .get(const GetOptions(source: Source.server))
+        .timeout(const Duration(seconds: 10));
   }
 
   /// Watches the responder's single active case: the most recent report
@@ -63,19 +76,25 @@ class ReportRepository {
         .map((snapshot) => snapshot.docs.map((doc) => ReportModel.fromMap(doc.data())).toList());
   }
 
-  Future<void> updateReportStatus(String reportID, ReportStatusEnum status, {String? responderID}) async {
+  Future<void> updateReportStatus(
+    String reportID,
+    ReportStatusEnum status, {
+    String? responderID,
+    int? etaSeconds,
+    double? etaDistanceMeters,
+  }) async {
     final batch = firestore.batch();
 
     batch.update(firestore.collection('reports').doc(reportID), {
       'status': status.name,
-      if (status == ReportStatusEnum.dispatched) 'dispatchedAt': FieldValue.serverTimestamp(),
+      if (status == ReportStatusEnum.dispatched) ...{
+        'dispatchedAt': FieldValue.serverTimestamp(),
+        'etaSeconds': ?etaSeconds,
+        'etaDistanceMeters': ?etaDistanceMeters,
+      },
       if (status == ReportStatusEnum.onScene) 'arrivedAt': FieldValue.serverTimestamp(),
       if (status == ReportStatusEnum.resolved) 'resolvedAt': FieldValue.serverTimestamp(),
     });
-
-    if (status == ReportStatusEnum.resolved && responderID != null && responderID.isNotEmpty) {
-      batch.update(firestore.collection("responders").doc(responderID), {"isAvailable": true});
-    }
 
     await batch.commit();
   }

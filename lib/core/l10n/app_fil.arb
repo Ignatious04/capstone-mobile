@@ -447,5 +447,9 @@
   "quickReportLabel": "Mabilis na Report",
   "quickReportNote": "Ang report na ito ay ipinadala sa pamamagitan ng quick-reporting module.",
   "smsReportLabel": "SMS",
-  "smsReportNote": "Ang report na ito ay ipinadala sa pamamagitan ng SMS module."
+  "smsReportNote": "Ang report na ito ay ipinadala sa pamamagitan ng SMS module.",
+  "refreshFailed": "Hindi maabot ang server. Ipinapakita ang naka-save na data.",
+  "statusTimeline": "Timeline ng Status",
+  "etaRecorded": "ETA noong ipinadala: {eta} ({distance})",
+  "actualTravelTime": "Aktwal na oras ng biyahe: {duration}"
 }

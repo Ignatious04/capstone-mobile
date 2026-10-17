@@ -1,8 +1,10 @@
 import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/enums/report_status_enum.dart';
+import 'package:capstone/core/shared/providers/firebase_auth_provider.dart';
 import 'package:capstone/core/shared/providers/verification_provider.dart';
 import 'package:capstone/core/shared/widgets/custom_circular_progress_indicator.dart';
 import 'package:capstone/core/shared/widgets/custom_header_widget.dart';
+import 'package:capstone/core/shared/widgets/custom_snackbar_helper.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/widgets/verification_banner.dart';
 import 'package:capstone/core/themes/app_colors.dart';
@@ -58,6 +60,19 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
     }
   }
 
+  Future<void> _refresh() async {
+    final l10n = AppLocalizations.of(context)!;
+    final userID = ref.read(firebaseAuthProvider).currentUser?.uid;
+    if (userID == null) return;
+
+    try {
+      await ref.read(reportRepositoryProvider).refreshReports(userID);
+    } catch (_) {
+      if (!mounted) return;
+      CustomSnackbarHelper.show(context, text: l10n.refreshFailed);
+    }
+  }
+
   @override
   void dispose() {
     _scrollController.dispose();
@@ -80,38 +95,49 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
             ),
             const VerificationBanner(),
             Expanded(
-              child: reports.when(
-                data: (reports) {
-                  if (reports.isEmpty) {
-                    return Center(
-                      child: BodyText(
-                        value: l10n.noReports,
-                      ),
-                    );
-                  }
-                  return ListView.builder(
-                    controller: _scrollController,
-                    padding: const EdgeInsets.all(20),
-                    itemCount: reports.length,
-                    itemBuilder: (context, index) {
-                      final report = reports[index];
-                      return ReportCard(
-                        referenceNumber: report.referenceNumber,
-                        emergencyType: report.incidentType!.name,
-                        createdAt: DateFormat("MMM dd, yyyy • h:mm a", Localizations.localeOf(context).toString()).format(report.createdAt!),
-                        status: report.status!,
-                        statusColor: _getStatusColor(report),
-                        statusBackground: _getStatusBackgroundColor(report),
-                        report: report,
+              child: RefreshIndicator(
+                onRefresh: _refresh,
+                child: reports.when(
+                  data: (reports) {
+                    if (reports.isEmpty) {
+                      return ListView(
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        children: [
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.5,
+                            child: Center(child: BodyText(value: l10n.noReports)),
+                          ),
+                        ],
                       );
-                    },
-                  );
-                },
-                loading: () => const Center(
-                  child: CustomCircularProgressIndicator(),
-                ),
-                error: (e, _) => Center(
-                  child: Text(e.toString()),
+                    }
+                    return ListView.builder(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      controller: _scrollController,
+                      padding: const EdgeInsets.all(20),
+                      itemCount: reports.length,
+                      itemBuilder: (context, index) {
+                        final report = reports[index];
+                        return ReportCard(
+                          referenceNumber: report.referenceNumber,
+                          emergencyType: report.incidentType!.name,
+                          createdAt: DateFormat(
+                            "MMM dd, yyyy • h:mm a",
+                            Localizations.localeOf(context).toString(),
+                          ).format(report.createdAt!),
+                          status: report.status!,
+                          statusColor: _getStatusColor(report),
+                          statusBackground: _getStatusBackgroundColor(report),
+                          report: report,
+                        );
+                      },
+                    );
+                  },
+                  loading: () => const Center(
+                    child: CustomCircularProgressIndicator(),
+                  ),
+                  error: (e, _) => Center(
+                    child: Text(e.toString()),
+                  ),
                 ),
               ),
             ),

@@ -74,7 +74,10 @@ class SettingsScreen extends ConsumerWidget {
 
                                   Navigator.pop(context);
                                 },
-                                child: const BodyText(value: 'English'),
+                                child: const BodyText(
+                                  value: 'English',
+                                  isBold: true,
+                                ),
                               ),
                               SimpleDialogOption(
                                 onPressed: () {
@@ -82,7 +85,10 @@ class SettingsScreen extends ConsumerWidget {
 
                                   Navigator.pop(context);
                                 },
-                                child: const BodyText(value: 'Filipino'),
+                                child: const BodyText(
+                                  value: 'Filipino',
+                                  isBold: true,
+                                ),
                               ),
                             ],
                           );

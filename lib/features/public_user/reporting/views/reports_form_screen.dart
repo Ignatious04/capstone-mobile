@@ -54,6 +54,35 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> {
       ),
   ];
 
+  Future<void> _pickAttachmentSource() async {
+    final l10n = AppLocalizations.of(context)!;
+
+    final source = await showModalBottomSheet<ImageSource>(
+      context: context,
+      builder: (sheetContext) => SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              leading: const Icon(Icons.photo_camera),
+              title: Text(l10n.takePhoto),
+              onTap: () => Navigator.pop(sheetContext, ImageSource.camera),
+            ),
+            ListTile(
+              leading: const Icon(Icons.photo_library),
+              title: Text(l10n.chooseFromGallery),
+              onTap: () => Navigator.pop(sheetContext, ImageSource.gallery),
+            ),
+          ],
+        ),
+      ),
+    );
+
+    if (source == null || !mounted) return;
+
+    await ref.read(reportProvider.notifier).addAttachment(source);
+  }
+
   @override
   void dispose() {
     for (final controller in _controllers) {
@@ -430,9 +459,7 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> {
                             Align(
                               alignment: Alignment.centerLeft,
                               child: CustomElevatedButton(
-                                onPressed: () async {
-                                  ref.read(reportProvider.notifier).addAttachment(ImageSource.gallery);
-                                },
+                                onPressed: _pickAttachmentSource,
                                 value: l10n.addAttachment,
                               ),
                             ),
@@ -533,8 +560,7 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> {
                                 final confirmed = await showConfirmationDialog(
                                   context,
                                   title: l10n.submitReportPrompt,
-                                  content:
-                                      "${l10n.submitConfirmNote} ${l10n.responseTimeNotice}",
+                                  content: "${l10n.submitConfirmNote} ${l10n.responseTimeNotice}",
                                 );
 
                                 if (confirmed != true) {
@@ -563,7 +589,10 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> {
                                         description: incidentDescriptionController.text,
                                         additionalInformation: additionalInformationController.text,
                                         selectedLocation: _selectedLocation!,
-                                        priority: PriorityCalculator.forManualReport(ref.read(reportProvider).incidentType!, isPoliceEmergency: _isPoliceEmergency),
+                                        priority: PriorityCalculator.forManualReport(
+                                          ref.read(reportProvider).incidentType!,
+                                          isPoliceEmergency: _isPoliceEmergency,
+                                        ),
                                         policeConcernType:
                                             ref.read(reportProvider).incidentType == ServiceTypeEnum.police &&
                                                 !_isPoliceEmergency

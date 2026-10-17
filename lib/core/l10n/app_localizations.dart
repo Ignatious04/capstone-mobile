@@ -2779,6 +2779,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'This report was submitted through the SMS module.'**
   String get smsReportNote;
+
+  /// No description provided for @refreshFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Can\'t reach the server. Showing saved data.'**
+  String get refreshFailed;
+
+  /// No description provided for @statusTimeline.
+  ///
+  /// In en, this message translates to:
+  /// **'Status Timeline'**
+  String get statusTimeline;
+
+  /// No description provided for @etaRecorded.
+  ///
+  /// In en, this message translates to:
+  /// **'ETA at dispatch: {eta} ({distance})'**
+  String etaRecorded(String eta, String distance);
+
+  /// No description provided for @actualTravelTime.
+  ///
+  /// In en, this message translates to:
+  /// **'Actual travel time: {duration}'**
+  String actualTravelTime(String duration);
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

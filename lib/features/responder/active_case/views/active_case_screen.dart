@@ -3,11 +3,13 @@ import 'package:capstone/core/l10n/enum_labels.dart';
 import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/enums/map_mode_enum.dart';
 import 'package:capstone/core/enums/report_status_enum.dart';
+import 'package:capstone/core/shared/providers/location_provider.dart';
 import 'package:capstone/core/shared/widgets/custom_circular_progress_indicator.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/widgets/text/label_text.dart';
 import 'package:capstone/core/shared/widgets/text/title_text.dart';
 import 'package:capstone/core/utilities/directions_launcher.dart';
+import 'package:capstone/core/utilities/eta_calculator.dart';
 import 'package:capstone/features/public_user/map/widgets/map_tile_widget.dart';
 import 'package:capstone/core/shared/models/report_model.dart';
 import 'package:capstone/core/shared/providers/report_repository_provider.dart';
@@ -36,7 +38,26 @@ class ActiveCaseScreen extends ConsumerWidget {
       _ => null, // pending/resolved: nothing for the responder to do here
     };
     if (next == null) return;
-    await repo.updateReportStatus(report.reportID, next, responderID: report.assignedTo);
+    EtaEstimate? eta;
+    final incident = report.location;
+    if (next == ReportStatusEnum.dispatched && incident != null) {
+      try {
+        final locationService = ref.read(locationServiceProvider);
+        await locationService.requestPermission();
+        final fix = await locationService.getCurrentLocation().timeout(const Duration(seconds: 5));
+        eta = EtaCalculator.estimate(fix.latLng, LatLng(incident.latitude, incident.longitude));
+      } catch (_) {
+        // No fix: still dispatch, just without a recorded ETA.
+      }
+    }
+
+    await repo.updateReportStatus(
+      report.reportID,
+      next,
+      responderID: report.assignedTo,
+      etaSeconds: eta?.duration.inSeconds,
+      etaDistanceMeters: eta?.distanceMeters,
+    );
   }
 
   @override
@@ -221,12 +242,12 @@ class _ActiveCaseBody extends StatelessWidget {
                 VictimsCard(victims: report.victims),
                 const SizedBox(height: 10),
                 SectionTitle(icon: Icons.attach_file, title: l10n.reporterAttachments),
-                 const SizedBox(height: 10),
-                 AttachmentsCard(attachments: report.attachments),
+                const SizedBox(height: 10),
+                AttachmentsCard(attachments: report.attachments),
                 const SizedBox(height: 10),
                 ResponderAttachmentsSection(report: report),
-                 const SizedBox(height: 10),
-                 SectionTitle(icon: Icons.notes, title: l10n.additionalInformation),
+                const SizedBox(height: 10),
+                SectionTitle(icon: Icons.notes, title: l10n.additionalInformation),
                 const SizedBox(height: 10),
                 AttachmentsCard(attachments: report.attachments),
                 const SizedBox(height: 10),

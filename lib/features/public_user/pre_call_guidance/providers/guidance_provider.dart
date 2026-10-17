@@ -23,6 +23,19 @@ final guidanceProvider = NotifierProvider<GuidanceNotifier, QuestionState>(
 );
 
 class GuidanceNotifier extends Notifier<QuestionState> {
+  // IDs of a submit attempt that hasn't been confirmed yet. Reused on retry so
+  // a timed-out (but still queued) write is overwritten instead of duplicated.
+  String? _pendingReportID;
+  String? _pendingReferenceNumber;
+  DateTime? _pendingCreatedAt;
+  static const _pendingTtl = Duration(minutes: 10);
+
+  void _clearPending() {
+    _pendingReportID = null;
+    _pendingReferenceNumber = null;
+    _pendingCreatedAt = null;
+  }
+
   @override
   QuestionState build() {
     return QuestionState(
@@ -57,7 +70,13 @@ class GuidanceNotifier extends Notifier<QuestionState> {
         }
 
         final now = DateTime.now();
-        final referenceNumber = ReferenceNumberGenerator.generate(now);
+        final hasPending = _pendingCreatedAt != null && now.difference(_pendingCreatedAt!) < _pendingTtl;
+        if (!hasPending) {
+          _pendingReportID = null;
+          _pendingReferenceNumber = ReferenceNumberGenerator.generate(now);
+          _pendingCreatedAt = now;
+        }
+        final referenceNumber = _pendingReferenceNumber!;
 
         if (!isOnline) {
           if (!ref.read(isVerifiedProvider)) throw NotVerifiedException();
@@ -67,13 +86,14 @@ class GuidanceNotifier extends Notifier<QuestionState> {
             location: location,
             locationNote: locationNote,
           );
+          _clearPending();
           return true;
         }
 
         final reportRepository = ref.read(reportRepositoryProvider);
         // final realtimeRepository = ref.read(realtimeDatabaseRepositoryProvider);
         final userID = ref.read(firebaseAuthProvider).currentUser!.uid;
-        final reportID = reportRepository.getReportID();
+        final reportID = _pendingReportID ??= reportRepository.getReportID();
 
         final report = ref
             .read(reportProvider)
@@ -89,10 +109,11 @@ class GuidanceNotifier extends Notifier<QuestionState> {
               locationAccuracy: accuracy,
               locationDescription: (locationNote == null || locationNote.isEmpty) ? null : locationNote,
               originalGpsLocation: originalGPS == null ? null : GeoPoint(originalGPS.latitude, originalGPS.longitude),
-              createdAt: now,
+              createdAt: _pendingCreatedAt,
             );
 
         await reportRepository.createReport(report);
+        _clearPending();
 
         // final realtimeReport = RealtimeReportModel(
         //   reportID: report.reportID,

@@ -10,6 +10,7 @@ import 'package:capstone/features/public_user/reporting/widgets/additional_infor
 import 'package:capstone/features/public_user/reporting/widgets/attachments_card.dart';
 import 'package:capstone/features/public_user/reporting/widgets/location_card.dart';
 import 'package:capstone/features/public_user/reporting/widgets/report_status_widget.dart';
+import 'package:capstone/features/public_user/reporting/widgets/reporting_timeline_card.dart';
 import 'package:capstone/features/public_user/reporting/widgets/victims_card.dart';
 import 'package:flutter/material.dart';
 
@@ -21,11 +22,7 @@ class HistoryCaseDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
-    final locale = Localizations.localeOf(context).toString();
-
     final location = report.location;
-    final createdAt = report.createdAt;
-    final resolvedAt = report.resolvedAt;
 
     return Scaffold(
       appBar: CustomAppBar(value: l10n.caseDetails),
@@ -54,16 +51,6 @@ class HistoryCaseDetailScreen extends StatelessWidget {
                       const SizedBox(height: 10),
                       LabelText(value: l10n.referenceNumber.toUpperCase()),
                       BodyText(value: report.referenceNumber, isBold: true),
-                      if (createdAt != null) ...[
-                        const SizedBox(height: 10),
-                        LabelText(value: l10n.reported.toUpperCase()),
-                        BodyText(value: Formatter.formatDateTime(createdAt, locale)),
-                      ],
-                      if (resolvedAt != null) ...[
-                        const SizedBox(height: 10),
-                        LabelText(value: l10n.resolved.toUpperCase()),
-                        BodyText(value: Formatter.formatDateTime(resolvedAt, locale)),
-                      ],
                       const SizedBox(height: 10),
                       LabelText(value: l10n.description.toUpperCase()),
                       BodyText(
@@ -73,6 +60,10 @@ class HistoryCaseDetailScreen extends StatelessWidget {
                   ),
                 ),
               ),
+                            const SizedBox(height: 10),
+              SectionTitle(icon: Icons.timeline, title: l10n.statusTimeline),
+              const SizedBox(height: 10),
+              ReportTimelineCard(report: report),
               if (location != null) ...[
                 const SizedBox(height: 10),
                 SectionTitle(icon: Icons.location_on_outlined, title: l10n.incidentLocation),

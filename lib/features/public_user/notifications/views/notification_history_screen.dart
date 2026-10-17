@@ -79,7 +79,12 @@ class NotificationHistoryScreen extends ConsumerWidget {
                               if (reportID == null) return;
 
                               final report = await ref.read(reportRepositoryProvider).getReportByID(reportID);
-                              if (report == null || !context.mounted) return;
+
+                              if (!context.mounted) return;
+                              if (report == null) {
+                                CustomSnackbarHelper.show(context, text: 'This report no longer exists.');
+                                return;
+                              }
 
                               Navigator.push(
                                 context,

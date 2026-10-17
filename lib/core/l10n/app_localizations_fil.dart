@@ -1427,4 +1427,20 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String get smsReportNote => 'Ang report na ito ay ipinadala sa pamamagitan ng SMS module.';
+
+  @override
+  String get refreshFailed => 'Hindi maabot ang server. Ipinapakita ang naka-save na data.';
+
+  @override
+  String get statusTimeline => 'Timeline ng Status';
+
+  @override
+  String etaRecorded(String eta, String distance) {
+    return 'ETA noong ipinadala: $eta ($distance)';
+  }
+
+  @override
+  String actualTravelTime(String duration) {
+    return 'Aktwal na oras ng biyahe: $duration';
+  }
 }

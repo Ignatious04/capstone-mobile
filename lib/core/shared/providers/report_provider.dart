@@ -15,6 +15,7 @@ import 'package:capstone/features/public_user/reporting/providers/pending_attach
 import 'package:capstone/core/shared/providers/report_repository_provider.dart';
 import 'package:capstone/core/shared/providers/storage_repository_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
@@ -45,10 +46,13 @@ class ReportNotifier extends Notifier<ReportModel> {
         // final realtimeRepository = ref.read(realtimeDatabaseRepositoryProvider);
         final userID = ref.read(firebaseAuthProvider).currentUser!.uid;
 
-        final reportID = reportRepository.getReportID();
         final now = DateTime.now();
-        final referenceNumber = ReferenceNumberGenerator.generate(now);
-
+        final reportID = state.reportID.isNotEmpty ? state.reportID : reportRepository.getReportID();
+        final referenceNumber = state.referenceNumber.isNotEmpty
+            ? state.referenceNumber
+            : ReferenceNumberGenerator.generate(now);
+        // Remember the IDs so a retry after a timeout reuses them.
+        state = state.copyWith(reportID: reportID, referenceNumber: referenceNumber);
         setLocation(selectedLocation);
 
         final attachments = await storageRepository.uploadAttachments(
@@ -69,7 +73,12 @@ class ReportNotifier extends Notifier<ReportModel> {
           createdAt: now,
         );
 
-        await reportRepository.createReport(report);
+        debugPrint('submitReport: writing ${report.reportID}');
+        await reportRepository.createReport(report).timeout(const Duration(seconds: 15));
+        debugPrint('submitReport: write acknowledged');
+
+        // Sent successfully: clear them so the next report gets fresh IDs.
+        state = state.copyWith(reportID: '', referenceNumber: '');
 
         // final realtimeReport = RealtimeReportModel(
         //   reportID: report.reportID,
@@ -99,9 +108,13 @@ class ReportNotifier extends Notifier<ReportModel> {
         // final realtimeRepository = ref.read(realtimeDatabaseRepositoryProvider);
         final userID = ref.read(firebaseAuthProvider).currentUser!.uid;
 
-        final reportID = reportRepository.getReportID();
         final now = DateTime.now();
-        final referenceNumber = ReferenceNumberGenerator.generate(now);
+        final reportID = state.reportID.isNotEmpty ? state.reportID : reportRepository.getReportID();
+        final referenceNumber = state.referenceNumber.isNotEmpty
+            ? state.referenceNumber
+            : ReferenceNumberGenerator.generate(now);
+        // Remember the IDs so a retry after a timeout reuses them.
+        state = state.copyWith(reportID: reportID, referenceNumber: referenceNumber);
 
         final report = ReportModel(
           reportID: reportID,
@@ -115,7 +128,12 @@ class ReportNotifier extends Notifier<ReportModel> {
           createdAt: now,
         );
 
-        await reportRepository.createReport(report);
+        debugPrint('submitReport: writing ${report.reportID}');
+        await reportRepository.createReport(report).timeout(const Duration(seconds: 15));
+        debugPrint('submitReport: write acknowledged');
+
+        // Sent successfully: clear them so the next report gets fresh IDs.
+        state = state.copyWith(reportID: '', referenceNumber: '');
 
         // final realtimeReport = RealtimeReportModel(
         //   reportID: report.reportID,
@@ -182,7 +200,11 @@ class ReportNotifier extends Notifier<ReportModel> {
   Future<void> addAttachment(ImageSource source) async {
     final picker = ImagePicker();
 
-    final image = await picker.pickImage(source: source);
+    final image = await picker.pickImage(
+      source: source,
+      imageQuality: 75,
+      maxWidth: 1920,
+    );
 
     if (image == null) return;
 

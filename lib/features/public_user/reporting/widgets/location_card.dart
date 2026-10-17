@@ -56,6 +56,7 @@ class LocationCard extends ConsumerWidget {
               children: [
                 const Icon(
                   Icons.place_outlined,
+                  color: Colors.black54,
                   size: 25,
                 ),
                 const SizedBox(width: 10),
@@ -65,6 +66,7 @@ class LocationCard extends ConsumerWidget {
                     children: [
                       BodyText(
                         value: l10n.reportedLocation.toUpperCase(),
+                        color: Colors.black54,
                       ),
                       const SizedBox(height: 10),
                       BodyText(

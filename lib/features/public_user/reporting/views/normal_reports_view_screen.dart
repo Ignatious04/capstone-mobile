@@ -16,6 +16,7 @@ import 'package:capstone/features/public_user/reporting/widgets/eta_card.dart';
 import 'package:capstone/features/public_user/reporting/widgets/location_card.dart';
 import 'package:capstone/features/public_user/reporting/widgets/report_status_widget.dart';
 import 'package:capstone/core/shared/widgets/section_title.dart';
+import 'package:capstone/features/public_user/reporting/widgets/reporting_timeline_card.dart';
 import 'package:capstone/features/public_user/reporting/widgets/responder_card.dart';
 import 'package:capstone/features/public_user/reporting/widgets/victims_card.dart';
 import 'package:flutter/material.dart';
@@ -40,9 +41,15 @@ class _NormalReportsViewScreenState extends ConsumerState<NormalReportsViewScree
     final l10n = AppLocalizations.of(context)!;
 
     // Live copy of the report; falls back to the one passed in while loading/on error.
-    final report = ref
-        .watch(reportByIdProvider(widget.report.reportID))
-        .maybeWhen(data: (r) => r ?? widget.report, orElse: () => widget.report);
+    final reportAsync = ref.watch(reportByIdProvider(widget.report.reportID));
+    final deleted = reportAsync.hasValue && reportAsync.value == null;
+    if (deleted) {
+      return Scaffold(
+        appBar: CustomAppBar(value: l10n.viewReport),
+        body: const Center(child: Text('This report is no longer available.')),
+      );
+    }
+    final report = reportAsync.value ?? widget.report;
 
     final status = report.status!.name;
     final location = report.location!;
@@ -150,6 +157,10 @@ class _NormalReportsViewScreenState extends ConsumerState<NormalReportsViewScree
                     error: (_, _) => const SizedBox.shrink(),
                   ),
                 ],
+                const SizedBox(height: 10),
+                SectionTitle(icon: Icons.timeline, title: l10n.statusTimeline),
+                const SizedBox(height: 10),
+                ReportTimelineCard(report: report),
                 const SizedBox(height: 10),
                 SectionTitle(
                   icon: Icons.location_on_outlined,

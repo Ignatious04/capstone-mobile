@@ -1422,4 +1422,20 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get smsReportNote => 'This report was submitted through the SMS module.';
+
+  @override
+  String get refreshFailed => 'Can\'t reach the server. Showing saved data.';
+
+  @override
+  String get statusTimeline => 'Status Timeline';
+
+  @override
+  String etaRecorded(String eta, String distance) {
+    return 'ETA at dispatch: $eta ($distance)';
+  }
+
+  @override
+  String actualTravelTime(String duration) {
+    return 'Actual travel time: $duration';
+  }
 }

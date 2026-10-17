@@ -14,6 +14,7 @@ import 'package:capstone/features/public_user/reporting/widgets/eta_card.dart';
 import 'package:capstone/features/public_user/reporting/widgets/location_card.dart';
 import 'package:capstone/features/public_user/reporting/widgets/report_status_widget.dart';
 import 'package:capstone/core/shared/widgets/section_title.dart';
+import 'package:capstone/features/public_user/reporting/widgets/reporting_timeline_card.dart';
 import 'package:capstone/features/public_user/reporting/widgets/responder_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -32,9 +33,15 @@ class PreCallGuidanceReportViewScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
 
-    final currentReport = ref
-        .watch(reportByIdProvider(report.reportID))
-        .maybeWhen(data: (r) => r ?? report, orElse: () => report);
+    final reportAsync = ref.watch(reportByIdProvider(report.reportID));
+    final deleted = reportAsync.hasValue && reportAsync.value == null;
+    if (deleted) {
+      return Scaffold(
+        appBar: CustomAppBar(value: l10n.viewReport),
+        body: const Center(child: Text('This report is no longer available.')),
+      );
+    }
+    final currentReport = reportAsync.value ?? report;
 
     final status = currentReport.status!.name;
     final location = currentReport.location;
@@ -157,6 +164,10 @@ class PreCallGuidanceReportViewScreen extends ConsumerWidget {
                 ),
               ],
               const SizedBox(height: 10),
+              SectionTitle(icon: Icons.timeline, title: l10n.statusTimeline),
+              const SizedBox(height: 10),
+              ReportTimelineCard(report: currentReport),
+              const SizedBox(height: 10),
               SectionTitle(
                 icon: Icons.location_on_outlined,
                 title: responderLatLng == null ? l10n.incidentLocation : l10n.incidentAndResponderLocation,
@@ -171,9 +182,9 @@ class PreCallGuidanceReportViewScreen extends ConsumerWidget {
                 const SizedBox(height: 10),
               ],
               LocationCard(
-                  location: location,
-                  responderLocation: responderLatLng,
-                ),
+                location: location,
+                responderLocation: responderLatLng,
+              ),
               const SizedBox(height: 10),
               SectionTitle(
                 icon: Icons.info,

@@ -594,5 +594,20 @@
   "quickReportLabel": "Quick Report",
   "quickReportNote": "This report was submitted through the quick-reporting module.",
   "smsReportLabel": "SMS",
-  "smsReportNote": "This report was submitted through the SMS module."
+  "smsReportNote": "This report was submitted through the SMS module.",
+  "refreshFailed": "Can't reach the server. Showing saved data.",
+  "statusTimeline": "Status Timeline",
+  "etaRecorded": "ETA at dispatch: {eta} ({distance})",
+  "@etaRecorded": {
+    "placeholders": {
+      "eta": {"type": "String"},
+      "distance": {"type": "String"}
+    }
+  },
+  "actualTravelTime": "Actual travel time: {duration}",
+  "@actualTravelTime": {
+    "placeholders": {
+      "duration": {"type": "String"}
+    }
+  }
 }
