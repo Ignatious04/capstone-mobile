@@ -602,6 +602,12 @@ abstract class AppLocalizations {
   /// **'Uploading...'**
   String get uploading;
 
+  /// No description provided for @loading.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading...'**
+  String get loading;
+
   /// No description provided for @noDescriptionProvided.
   ///
   /// In en, this message translates to:
@@ -2072,17 +2078,17 @@ abstract class AppLocalizations {
   /// **'Personal Profile Summary'**
   String get personalProfileSummary;
 
-  /// No description provided for @systemTerms.
+  /// No description provided for @attention.
   ///
   /// In en, this message translates to:
-  /// **'System Terms and Conditions'**
-  String get systemTerms;
+  /// **'Attention'**
+  String get attention;
 
-  /// No description provided for @meaReminder.
+  /// No description provided for @reminder.
   ///
   /// In en, this message translates to:
-  /// **'REMINDER: MEAS is a guidance and reporting tool only. It does not replace direct emergency calls to 911 or local hotlines.'**
-  String get meaReminder;
+  /// **'REMINDER: Saup Angeles is a guidance and reporting tool only. It does not replace direct emergency calls to 911 or local hotlines.'**
+  String get reminder;
 
   /// No description provided for @userValidation.
   ///
@@ -2797,6 +2803,96 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Actual travel time: {duration}'**
   String actualTravelTime(String duration);
+
+  /// No description provided for @guardianName.
+  ///
+  /// In en, this message translates to:
+  /// **'Guardian Name'**
+  String get guardianName;
+
+  /// No description provided for @guardianRelationship.
+  ///
+  /// In en, this message translates to:
+  /// **'Relationship to guardian'**
+  String get guardianRelationship;
+
+  /// No description provided for @guardianEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Guardian Email'**
+  String get guardianEmail;
+
+  /// No description provided for @relationshipMother.
+  ///
+  /// In en, this message translates to:
+  /// **'Mother'**
+  String get relationshipMother;
+
+  /// No description provided for @relationshipFather.
+  ///
+  /// In en, this message translates to:
+  /// **'Father'**
+  String get relationshipFather;
+
+  /// No description provided for @relationshipGrandparent.
+  ///
+  /// In en, this message translates to:
+  /// **'Grandparent'**
+  String get relationshipGrandparent;
+
+  /// No description provided for @relationshipLegalGuardian.
+  ///
+  /// In en, this message translates to:
+  /// **'Legal guardian'**
+  String get relationshipLegalGuardian;
+
+  /// No description provided for @relationshipOtherRelative.
+  ///
+  /// In en, this message translates to:
+  /// **'Other relative'**
+  String get relationshipOtherRelative;
+
+  /// No description provided for @consentBannerPending.
+  ///
+  /// In en, this message translates to:
+  /// **'Waiting for your guardian\'s approval. We sent a request to {email}.'**
+  String consentBannerPending(String email);
+
+  /// No description provided for @consentBannerRevoked.
+  ///
+  /// In en, this message translates to:
+  /// **'Your guardian withdrew consent. Some features that store personal data are limited.'**
+  String get consentBannerRevoked;
+
+  /// No description provided for @consentResend.
+  ///
+  /// In en, this message translates to:
+  /// **'Resend request'**
+  String get consentResend;
+
+  /// No description provided for @consentResendSent.
+  ///
+  /// In en, this message translates to:
+  /// **'Request sent to your guardian.'**
+  String get consentResendSent;
+
+  /// No description provided for @consentResendWait.
+  ///
+  /// In en, this message translates to:
+  /// **'You can resend in {minutes} min.'**
+  String consentResendWait(int minutes);
+
+  /// No description provided for @consentResendTooSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Please wait a bit before resending.'**
+  String get consentResendTooSoon;
+
+  /// No description provided for @consentResendLimit.
+  ///
+  /// In en, this message translates to:
+  /// **'Resend limit reached. Please contact support.'**
+  String get consentResendLimit;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

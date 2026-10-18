@@ -1,3 +1,4 @@
+import 'package:capstone/core/enums/guardian_relationship_enum.dart';
 import 'package:capstone/core/l10n/app_localizations.dart';
 import 'dart:io';
 
@@ -30,6 +31,8 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
   TextEditingController middleNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
   TextEditingController birthDateController = TextEditingController();
+  TextEditingController guardianNameController = TextEditingController();
+  TextEditingController guardianContactController = TextEditingController();
   TextEditingController contactNumController = TextEditingController();
   TextEditingController houseNumController = TextEditingController();
   TextEditingController streetController = TextEditingController();
@@ -74,6 +77,7 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
           ),
           FormField<File>(
             initialValue: user.profileImage,
+            autovalidateMode: AutovalidateMode.onUserInteractionIfError,
             validator: (value) {
               if (value == null) {
                 return l10n.fieldRequired(l10n.profilePhoto);
@@ -151,6 +155,7 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
               Expanded(
                 flex: 3,
                 child: CustomTextField(
+                  key: ValueKey('firstName-field'),
                   title: l10n.firstName.toUpperCase(),
                   controller: firstNameController,
                   validator: (value) {
@@ -188,6 +193,7 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
             height: 10,
           ),
           CustomTextField(
+            key: ValueKey('lastName-field'),
             title: l10n.lastName.toUpperCase(),
             controller: lastNameController,
             validator: (value) {
@@ -210,8 +216,16 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
               Expanded(
                 flex: 3,
                 child: CustomDatePickerWidget(
+                  key: ValueKey('birthDate-field'),
                   title: l10n.birthDate.toUpperCase(),
                   controller: birthDateController,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return l10n.fieldRequired(l10n.birthDate);
+                    }
+
+                    return null;
+                  },
                   onTap: () async {
                     final date = await showDatePicker(
                       context: context,
@@ -228,6 +242,7 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
                       ref.read(userProvider.notifier).setBirthDate(date.millisecondsSinceEpoch);
                     }
                   },
+                  isRequired: true,
                 ),
               ),
               const SizedBox(
@@ -236,6 +251,7 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
               Expanded(
                 flex: 2,
                 child: CustomDropdownButton(
+                  key: ValueKey('sex-field'),
                   title: l10n.sex.toUpperCase(),
                   value: user.sex.isEmpty ? null : user.sex,
                   validator: (value) {
@@ -254,6 +270,50 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
               ),
             ],
           ),
+          if (user.isMinor) ...[
+            const SizedBox(height: 10),
+            CustomTextField(
+              key: ValueKey('guardianName-field'),
+              title: l10n.guardianName.toUpperCase(),
+              controller: guardianNameController,
+              onChanged: (v) => ref.read(userProvider.notifier).setGuardianName(v),
+              validator: (v) => (v == null || v.isEmpty) ? l10n.fieldRequired('Guardian name') : null,
+              hideErrorText: false,
+              isRequired: true,
+            ),
+            const SizedBox(height: 10),
+            CustomDropdownButton(
+              title: l10n.guardianRelationship.toUpperCase(),
+              value: user.guardianRelationship?.name,
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return l10n.fieldRequired(l10n.guardianRelationship);
+                }
+                return null;
+              },
+              hideErrorText: false,
+              items: GuardianRelationshipEnum.values
+                  .map((r) => DropdownMenuItem(value: r.name, child: BodyText(value: r.label(l10n))))
+                  .toList(),
+              onChanged: (value) {
+                final relationship = GuardianRelationshipEnum.tryParse(value);
+                if (relationship != null) {
+                  ref.read(userProvider.notifier).setGuardianRelationship(relationship);
+                }
+              },
+              isRequired: true,
+            ),
+            const SizedBox(height: 10),
+            CustomTextField(
+              key: ValueKey('guardianEmail-field'),
+              title: l10n.guardianEmail.toUpperCase(),
+              controller: guardianContactController,
+              onChanged: (v) => ref.read(userProvider.notifier).setGuardianContact(v),
+              validator: (v) => (v == null || !v.contains('@')) ? l10n.fieldRequired('Guardian email') : null,
+              hideErrorText: false,
+              isRequired: true,
+            ),
+          ],
           const SizedBox(
             height: 10,
           ),
@@ -266,20 +326,21 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
               FilteringTextInputFormatter.digitsOnly,
               LengthLimitingTextInputFormatter(10),
             ],
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return l10n.fieldRequired(l10n.contactNumber);
-              }
-              if (value.length != 10) {
-                return l10n.invalidPhone10;
-              }
+            // validator: (value) {
+            //   if (value == null || value.isEmpty) {
+            //     return l10n.fieldRequired(l10n.contactNumber);
+            //   }
+            //   if (value.length != 10) {
+            //     return l10n.invalidPhone10;
+            //   }
 
-              return null;
-            },
-            onChanged: (value) {
-              // ref.read(userProvider.notifier).setContactNumber(value);
-            },
+            //   return null;
+            // },
+            // onChanged: (value) {
+            //   // ref.read(userProvider.notifier).setContactNumber(value);
+            // },
             isRequired: true,
+            isReadOnly: true,
           ),
           const SizedBox(
             height: 10,
@@ -289,6 +350,7 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
               Expanded(
                 flex: 2,
                 child: CustomTextField(
+                  key: ValueKey('houseNumber-field'),
                   title: l10n.houseNumber.toUpperCase(),
                   controller: houseNumController,
                   validator: (value) {
@@ -310,6 +372,7 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
               Expanded(
                 flex: 3,
                 child: CustomTextField(
+                  key: ValueKey('street-field'),
                   title: l10n.street.toUpperCase(),
                   controller: streetController,
                   validator: (value) {
@@ -331,6 +394,7 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
             height: 10,
           ),
           CustomDropdownButton(
+            key: ValueKey('barangay-field'),
             title: l10n.barangay.toUpperCase(),
             value: user.barangay.isEmpty ? null : user.barangay,
             items: DropdownLists.barangays.map((String barangay) {
@@ -358,6 +422,7 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
               Expanded(
                 flex: 3,
                 child: CustomDropdownButton(
+                  key: ValueKey('nationality-field'),
                   title: l10n.nationality.toUpperCase(),
                   value: user.nationality.isEmpty ? null : user.nationality,
                   validator: (value) {
@@ -380,6 +445,7 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
               Expanded(
                 flex: 2,
                 child: CustomDropdownButton(
+                  key: ValueKey('civilStatus-field'),
                   title: l10n.civilStatus.toUpperCase(),
                   value: user.civilStatus.isEmpty ? null : user.civilStatus,
                   validator: (value) {
@@ -402,6 +468,7 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
             height: 10,
           ),
           CustomDropdownButton(
+            key: ValueKey('religion-field'),
             title: l10n.religion.toUpperCase(),
             value: user.religion.isEmpty ? null : user.religion,
             validator: (value) {

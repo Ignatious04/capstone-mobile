@@ -92,6 +92,7 @@
   "updating": "Updating...",
   "deactivating": "Deactivating...",
   "uploading": "Uploading...",
+  "loading": "Loading...",
   "noDescriptionProvided": "No description provided.",
   "notAnswered": "Not answered",
   "signOut": "Sign out",
@@ -428,8 +429,8 @@
   "vaccineType": "Vaccine Type",
   "vaccineDate": "Vaccine Date",
   "personalProfileSummary": "Personal Profile Summary",
-  "systemTerms": "System Terms and Conditions",
-  "meaReminder": "REMINDER: MEAS is a guidance and reporting tool only. It does not replace direct emergency calls to 911 or local hotlines.",
+  "attention": "Attention",
+  "reminder": "REMINDER: Saup Angeles is a guidance and reporting tool only. It does not replace direct emergency calls to 911 or local hotlines.",
   "userValidation": "User Validation",
   "documentIdType": "Document ID Type",
   "alignId": "Align your ID inside the frame",
@@ -608,5 +609,24 @@
     "placeholders": {
       "duration": {"type": "String"}
     }
-  }
+  },
+  "guardianName": "Guardian Name",
+  "guardianRelationship": "Relationship to guardian",
+  "guardianEmail": "Guardian Email",
+  "relationshipMother": "Mother",
+  "relationshipFather": "Father",
+  "relationshipGrandparent": "Grandparent",
+  "relationshipLegalGuardian": "Legal guardian",
+  "relationshipOtherRelative": "Other relative",
+  "consentBannerPending": "Waiting for your guardian's approval. We sent a request to {email}.",
+  "@consentBannerPending": {
+  "placeholders": { "email": { "type": "String" } }
+  },
+  "consentBannerRevoked": "Your guardian withdrew consent. Some features that store personal data are limited.",
+  "consentResend": "Resend request",
+  "consentResendSent": "Request sent to your guardian.",
+  "consentResendWait": "You can resend in {minutes} min.",
+  "@consentResendWait": { "placeholders": { "minutes": { "type": "int" } } },
+  "consentResendTooSoon": "Please wait a bit before resending.",
+  "consentResendLimit": "Resend limit reached. Please contact support."
 }

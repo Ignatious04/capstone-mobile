@@ -1,0 +1,775 @@
+# PRIVACY POLICY
+
+**Saup Angeles (Mobile Emergency Access System with Pre-Call Guidance)**
+**Effective Date:** TBA
+**Version:** 1.0
+
+---
+
+## 1. Introduction
+
+The Saup Angeles ("MEAS," "the System," "the Application," "we," "us," or "our") respects your privacy and is committed to protecting your personal information.
+
+Saup Angeles is a localized capstone and pilot system designed to assist users in preparing and submitting structured emergency information to participating emergency institutions in Angeles City, Philippines.
+
+This Privacy Policy explains how Saup Angeles collects, uses, stores, protects, and may disclose personal information when you create an account, use the Application, submit an emergency report, use Pre-Call Guidance, use location-based features, or otherwise interact with the System.
+
+This Privacy Policy should be read together with the **Saup Angeles Terms and Conditions**.
+
+Saup Angeles is intended to follow the principles and requirements of **Republic Act No. 10173, otherwise known as the Data Privacy Act of 2012 (DPA)**, its Implementing Rules and Regulations, and applicable issuances of the National Privacy Commission (NPC).
+
+The DPA recognizes the rights of individuals over their personal information and requires processing to observe the principles of transparency, legitimate purpose, and proportionality.
+
+---
+
+# 2. Who Is Responsible for Your Personal Information?
+
+For the current capstone and pilot implementation, Saup Angeles is being developed and evaluated as an academic project.
+
+The organization or institution that will act as the **Personal Information Controller (PIC)** for the deployed version of Saup Angeles must be identified before production deployment.
+
+**Personal Information Controller:**
+STI College Angeles
+
+**Address:**
+Agson's Bldg, McArthur Highway, Balibago, Angeles City
+
+**Data Protection Officer / Privacy Contact:**
+Mel Adam Ignacio
+
+**Email:**
+saupangeles@gmail.com
+
+**Telephone / Contact Number:**
+09387846108
+
+For the capstone version, the project proponents and their academic institution may process information for purposes related to system development, testing, evaluation, administration, and documentation, subject to the applicable institutional privacy requirements.
+
+The final deployed version of this Privacy Policy should identify the appropriate Personal Information Controller and Data Protection Officer before actual public deployment.
+
+---
+
+# 3. What Personal Information Does Saup Angeles Collect?
+
+The information collected depends on the features that you use.
+
+Saup Angeles may collect the following categories of information.
+
+## 3.1 Account and Identification Information
+
+When creating and setting up an account, Saup Angeles may collect:
+
+* First name;
+* Middle name;
+* Last name;
+* Date of birth;
+* Sex;
+* Email address;
+* Contact number;
+* Address;
+* Nationality;
+* Civil status;
+* Religion;
+* Identification type;
+* Identification information;
+* Identification-document images, where required;
+* Profile photograph; and
+* Account identifiers such as the user's Saup Angeles account ID.
+
+Not every item is necessarily required for every use of the Application.
+
+---
+
+## 3.2 Health-Related and Emergency Information
+
+Depending on the account information provided and features used, Saup Angeles may process information such as:
+
+* Blood type;
+* Height;
+* Weight;
+* Vaccination-related information;
+* Medical or emergency information voluntarily provided by the user;
+* Information concerning victims included in an emergency report; and
+* Other information relevant to an emergency situation.
+
+Some information in this category may constitute **sensitive personal information** under applicable Philippine law.
+
+Users should provide only information that is necessary and relevant to the intended purpose.
+
+---
+
+## 3.3 Emergency Report Information
+
+When submitting an emergency report, Saup Angeles may collect:
+
+* Report reference number;
+* Report type;
+* Incident or emergency type;
+* Incident description;
+* Report status;
+* Guidance answers;
+* Victim information;
+* Additional information;
+* Date and time associated with the report;
+* Reported location;
+* Attachments and photographs; and
+* Information associated with the submitting user's account.
+
+Emergency reports may be stored as part of the System's reporting records.
+
+---
+
+## 3.4 Location Information
+
+Saup Angeles may collect location information when you use location-based features.
+
+This may include:
+
+* Your device's current geographic location;
+* GPS coordinates;
+* The location associated with an emergency report;
+* A manually selected or adjusted incident location;
+* Location information displayed on maps; and
+* Information used to identify nearby participating emergency services.
+
+Location information may be collected or processed only when the relevant feature is used and the necessary device permissions are provided.
+
+You may also be able to manually select or adjust an incident location.
+
+Because GPS and other location technologies are not always precise, the location stored by Saup Angeles may not exactly represent the actual location of the user or incident.
+
+---
+
+## 3.5 Photographs and Other Attachments
+
+Saup Angeles may allow users to attach photographs or other supported files to emergency reports.
+
+Attachments may contain personal information or information concerning other individuals.
+
+Users should therefore review attachments before submitting them and should avoid including unnecessary personal information.
+
+Where an attachment contains another person's personal information, users should have an appropriate lawful basis or authorization for providing that information, where required by law.
+
+---
+
+## 3.6 Verification Information
+
+Saup Angeles may use identification-document processing and facial-feature detection as part of account setup or verification where these features are implemented.
+
+These features may be used to determine whether submitted information satisfies the System's verification requirements.
+
+Such automated processing is intended to support the application's verification process.
+
+It does not, by itself, constitute government identity verification or establish a person's legal identity.
+
+Where automated processing or profiling is used in a manner that is subject to applicable privacy requirements, the relevant privacy notice and safeguards shall be provided to the user.
+
+---
+
+## 3.7 Technical and System Information
+
+Saup Angeles and its supporting services may process technical information necessary to operate the Application.
+
+Depending on the implementation and supporting services, this may include:
+
+* Account identifiers;
+* Authentication information;
+* Device-related information;
+* Application-related information;
+* Network-related information;
+* Error or diagnostic information;
+* Notification tokens;
+* Date and time information; and
+* Information necessary to maintain system security and functionality.
+
+Saup Angeles does not intentionally collect information unrelated to the operation of the Application merely for advertising or unrelated commercial profiling.
+
+---
+
+# 4. Why Does Saup Angeles Collect Personal Information?
+
+Saup Angeles collects and processes personal information for specific and legitimate purposes related to the operation and evaluation of the System.
+
+These purposes may include:
+
+### 4.1 Account Creation and Management
+
+Personal information may be processed to:
+
+* Create and maintain user accounts;
+* Authenticate users;
+* Verify account information;
+* Manage account settings;
+* Maintain user profiles; and
+* Provide account-related notifications.
+
+### 4.2 Emergency Reporting
+
+Information may be processed to:
+
+* Receive structured emergency reports;
+* Identify the type of reported incident;
+* Record the reported location;
+* Provide relevant emergency information to authorized personnel;
+* Assist participating institutions in reviewing reports; and
+* Support the emergency-report workflow.
+
+### 4.3 Pre-Call Guidance
+
+Information provided through Pre-Call Guidance may be processed to:
+
+* Organize information provided by the user;
+* Help users prepare relevant emergency information;
+* Include structured answers in an emergency report; and
+* Provide authorized personnel with information submitted through the feature.
+
+Pre-Call Guidance does not replace professional emergency, medical, firefighting, or law-enforcement advice.
+
+### 4.4 Location-Based Services
+
+Location information may be processed to:
+
+* Identify the user's approximate location;
+* Associate an emergency report with a location;
+* Display the location on a map;
+* Allow the user to adjust an incident location;
+* Identify nearby participating emergency services; and
+* Provide location information to authorized personnel where necessary for the emergency-reporting process.
+
+### 4.5 Notifications
+
+Information may be processed to provide:
+
+* Account notifications;
+* Emergency-report updates;
+* Report status changes;
+* System notifications; and
+* Other notifications related to the Application.
+
+### 4.6 System Security and Administration
+
+Information may be processed to:
+
+* Maintain the security of Saup Angeles;
+* Prevent unauthorized access;
+* Investigate suspected misuse;
+* Maintain system functionality;
+* Diagnose technical problems; and
+* Administer user and responder accounts.
+
+### 4.7 Capstone Research and Evaluation
+
+Because the current version of Saup Angeles is a capstone and pilot system, information may be processed for:
+
+* System testing;
+* Usability evaluation;
+* Controlled simulations;
+* Technical evaluation;
+* Academic documentation; and
+* Research-related analysis associated with the approved project.
+
+Where research or evaluation activities involve personal information beyond what is necessary to operate the System, the project proponents should follow the applicable institutional research and privacy requirements.
+
+---
+
+# 5. Legal Basis for Processing
+
+Personal information must be processed on an applicable lawful basis under the Data Privacy Act.
+
+Depending on the specific processing activity, the lawful basis may include **consent or another lawful criterion recognized under the DPA**, such as processing necessary for a contract, compliance with a legal obligation, protection of vital interests, or other applicable lawful bases.
+
+The appropriate lawful basis depends on the particular processing activity and the role of the organization responsible for the processing.
+
+Where Saup Angeles relies on consent:
+
+* Consent should be freely given;
+* Consent should be specific and informed;
+* The purpose of the processing should be communicated clearly;
+* Consent should be obtained through an appropriate mechanism; and
+* Users should be informed of the relevant processing before it takes place.
+
+The NPC's guidance distinguishes a privacy notice from consent: providing a privacy notice does not by itself replace the requirement for obtaining valid consent where consent is the lawful basis for processing.
+
+For the final production deployment, the designated Personal Information Controller should document the lawful basis for each significant processing activity.
+
+---
+
+# 6. How Saup Angeles Uses Your Information
+
+Saup Angeles uses personal information only for purposes that are relevant to the operation, security, administration, emergency-reporting functions, and approved evaluation of the System.
+
+Saup Angeles does not authorize the use of personal information for unrelated purposes merely because the information has already been collected.
+
+Personal information should be processed in accordance with the principles of:
+
+* **Transparency** — users should understand how their information is processed;
+* **Legitimate purpose** — processing should have a lawful and declared purpose; and
+* **Proportionality** — only information that is adequate, relevant, suitable, and necessary for the declared purpose should be processed.
+
+---
+
+# 7. Who May Receive Your Information?
+
+Your information may be accessible to or disclosed to the following categories of recipients when necessary and legally permitted:
+
+## 7.1 Authorized Emergency Personnel
+
+Emergency-report information may be made available to authorized personnel of participating emergency institutions for purposes related to receiving, reviewing, coordinating, and updating emergency reports.
+
+The exact recipients depend on the configuration and participating institutions of the deployed system.
+
+---
+
+## 7.2 Authorized System Administrators
+
+Authorized administrators may access information when necessary to:
+
+* Maintain the System;
+* Manage accounts;
+* Investigate security incidents;
+* Correct technical problems;
+* Manage system configuration; or
+* Perform other authorized administrative functions.
+
+---
+
+## 7.3 Service Providers
+
+Saup Angeles may rely on third-party service providers to operate certain technical functions.
+
+These may include services for:
+
+* User authentication;
+* Cloud databases;
+* Cloud storage;
+* Map services;
+* Location services;
+* Push notifications;
+* Telecommunications-related functions; and
+* Other infrastructure required by the Application.
+
+For the current implementation, Saup Angeles uses technologies and services such as Firebase and mapping/location services.
+
+Where third-party providers process personal information on behalf of the responsible organization, the appropriate contractual, organizational, and technical safeguards should be implemented as required by applicable law.
+
+---
+
+## 7.4 Academic or Research Personnel
+
+Where necessary for the approved capstone project, authorized project members, advisers, evaluators, or research personnel may access information for legitimate academic, technical, or evaluation purposes.
+
+Access should be limited to information reasonably necessary for the applicable purpose.
+
+Where possible, research results should use anonymized or aggregated information rather than directly identifying individual users.
+
+---
+
+## 7.5 Government Authorities and Other Authorized Parties
+
+Personal information may be disclosed when required or permitted by applicable law, regulation, lawful order, or other valid legal process.
+
+---
+
+# 8. Emergency Reports Involving Other People
+
+Saup Angeles may allow a user to submit information about another person, such as a victim of an emergency.
+
+Users should provide only information that is relevant and reasonably necessary for the emergency report.
+
+Users should not intentionally submit unnecessary personal information about victims, witnesses, bystanders, or other individuals.
+
+Where legally required, the appropriate lawful basis for processing another person's information should be established.
+
+Because emergency situations may involve circumstances where obtaining prior consent is not practical, the appropriate lawful basis for processing should be determined according to the DPA and the circumstances of the particular incident.
+
+---
+
+# 9. Location Privacy
+
+Location information can be sensitive because it may reveal where a person is or where an incident occurred.
+
+Saup Angeles therefore treats location information as information that should only be processed for legitimate purposes associated with the Application.
+
+Location information may be used to:
+
+* Support emergency reporting;
+* Identify or display relevant emergency services;
+* Associate a report with an incident location;
+* Support authorized responder workflows; and
+* Provide location-related functionality requested by the user.
+
+Saup Angeles does not guarantee that GPS information is perfectly accurate.
+
+Users should review the displayed location and manually correct it when the Application provides that option and circumstances permit.
+
+---
+
+# 10. Emergency Notifications and Report Status
+
+Saup Angeles may send notifications concerning submitted reports and changes to report status.
+
+These notifications may contain limited information necessary to communicate the status or progress of a report.
+
+Users should understand that notifications may be visible on a device depending on the device's notification settings.
+
+Users are responsible for configuring their device's notification and lock-screen settings according to their privacy preferences.
+
+Notification delivery may be delayed or unsuccessful because of:
+
+* Internet connectivity;
+* Mobile-network conditions;
+* Device settings;
+* Operating-system restrictions;
+* Notification-service failures; or
+* Other technical circumstances.
+
+---
+
+# 11. SMS Fallback
+
+Saup Angeles may provide an SMS fallback when internet-based functionality is unavailable or unreliable.
+
+The SMS feature may prepare a message containing information relevant to the emergency report.
+
+The Application may open the device's native messaging application and allow the user to review and send the prepared message.
+
+Saup Angeles does not necessarily transmit the SMS directly from its servers.
+
+Once the user sends the SMS through their telecommunications provider, the information may also be processed by the relevant telecommunications provider and messaging infrastructure.
+
+Users should review the message before sending it and should avoid including unnecessary personal information.
+
+Applicable telecommunications charges may apply.
+
+---
+
+# 12. Data Storage
+
+Saup Angeles uses cloud-based infrastructure to store and process information required by the Application.
+
+The current implementation uses Firebase services for functions including authentication, databases, and file storage.
+
+Depending on the feature, information may therefore be stored in:
+
+* User account records;
+* Emergency-report records;
+* Realtime report information;
+* Cloud storage associated with uploaded attachments; and
+* Other databases or services required by the Application.
+
+Access to stored information should be restricted according to the user's role and the System's authorization rules.
+
+---
+
+# 13. Data Retention
+
+Saup Angeles will retain personal information only for as long as reasonably necessary for the purpose for which it was collected, or for as long as required or permitted by applicable law, institutional requirements, legitimate operational requirements, research requirements, or other lawful purposes.
+
+For the current capstone implementation, the **specific retention periods must be determined by the project institution and designated Personal Information Controller**.
+
+The final deployment should specify retention periods for at least the following categories:
+
+| Information                      | Proposed Retention Period                |
+| -------------------------------- | ---------------------------------------- |
+| User account information         | [6 months to 1 year]                     |
+| Emergency reports                | [6 months to 1 year]                     |
+| Report attachments               | [6 months to 1 year]                     |
+| Location information             | [6 months to 1 year]                     |
+| Authentication information       | [PROVIDER-CONTROLLED]                    |
+| Notification-related information | [6 months to 1 year]                     |
+| Verification information         | [6 months to 1 year]                     |
+| Research/evaluation data         | [6 months to 1 year]                     |
+
+Retention periods should not be described as final until the institution and responsible data controller have approved them.
+
+When personal information is no longer required, it should be securely deleted, destroyed, anonymized, or otherwise disposed of in accordance with applicable requirements.
+
+---
+
+# 14. Data Security
+
+Saup Angeles uses reasonable technical and organizational measures intended to protect personal information against unauthorized access, alteration, disclosure, loss, destruction, or other unlawful processing.
+
+Depending on the feature, measures may include:
+
+* User authentication;
+* Role-based access controls;
+* Restricted responder and administrator access;
+* Database security rules;
+* Cloud storage access controls;
+* Secure communication protocols provided by supporting services;
+* Authentication and verification mechanisms;
+* Access restrictions for administrative functions; and
+* Security monitoring and maintenance.
+
+However, no electronic system or internet transmission can be guaranteed to be completely secure.
+
+Users are also responsible for protecting:
+
+* Their passwords;
+* Their authentication credentials;
+* Their mobile devices;
+* Their registered email accounts;
+* Their verification information; and
+* Other information used to access Saup Angeles.
+
+Users should immediately report suspected unauthorized access or other security concerns through the designated Saup Angeles privacy or support contact.
+
+---
+
+# 15. Personal Data Breaches
+
+Saup Angeles will maintain procedures for responding to suspected personal data breaches.
+
+Where a breach meets the applicable requirements for mandatory notification under the Data Privacy Act and NPC rules, the responsible Personal Information Controller will notify the National Privacy Commission and affected data subjects within the applicable period.
+
+Under the DPA's breach-notification framework, mandatory notification generally applies when sensitive personal information or information that may enable identity fraud is reasonably believed to have been acquired by an unauthorized person and the circumstances create a real risk of serious harm. The NPC states that required notifications must generally be made within **72 hours** of knowledge of, or reasonable belief in, the qualifying breach.
+
+Affected users will be provided with information required by applicable law, which may include:
+
+* The nature of the breach;
+* The personal information potentially involved;
+* Measures taken to address the breach;
+* Measures recommended to reduce potential harm;
+* Contact information for obtaining additional information; and
+* Other information required by the NPC.
+
+---
+
+# 16. Your Rights as a Data Subject
+
+Subject to the conditions and limitations provided by applicable law, you have rights over your personal information.
+
+These may include the right to:
+
+### 16.1 Be Informed
+
+You have the right to know whether your personal information is being processed and to receive information about the purposes, scope, methods, recipients, retention, and other relevant aspects of the processing.
+
+### 16.2 Access
+
+You may request access to personal information concerning you that is being processed, subject to applicable legal limitations.
+
+### 16.3 Rectification
+
+You may request correction of inaccurate or outdated personal information.
+
+### 16.4 Object
+
+You may have the right to object to certain processing of your personal information, subject to applicable legal grounds and limitations.
+
+### 16.5 Erasure or Blocking
+
+You may have the right to request the deletion, destruction, or blocking of personal information in circumstances provided by law.
+
+This right is not absolute. Certain information may need to be retained when retention is required or permitted by law or for legitimate purposes.
+
+### 16.6 Data Portability
+
+Where applicable, you may have the right to obtain or request the portability of your personal information in accordance with the DPA and applicable regulations.
+
+### 16.7 File a Complaint
+
+You may raise a privacy concern or complaint with the responsible Personal Information Controller or Data Protection Officer.
+
+You may also have the right to file a complaint with the National Privacy Commission.
+
+### 16.8 Damages
+
+You may have the right to seek damages for unlawful processing or other violations recognized under applicable law.
+
+The NPC identifies the rights to be informed, access, object, rectify, erasure/blocking, data portability, complaint, and damages among the rights of data subjects.
+
+---
+
+# 17. How to Exercise Your Privacy Rights
+
+To exercise a privacy right or submit a privacy-related request, contact:
+
+**Saup Angeles Privacy Contact / Data Protection Officer:**
+[NAME / OFFICE]
+
+**Email:**
+[OFFICIAL PRIVACY EMAIL]
+
+**Address:**
+[OFFICIAL ADDRESS]
+
+Your request should contain enough information for the responsible organization to verify your identity and understand the request.
+
+For security purposes, Saup Angeles may require reasonable verification before processing a request concerning personal information.
+
+Requests will be handled in accordance with applicable law and institutional procedures.
+
+---
+
+# 18. Children's Privacy
+
+Saup Angeles is primarily intended for users who are legally permitted to create and use an account under the requirements of the deployed system.
+
+If Saup Angeles is made available to children or processes children's personal information, the responsible Personal Information Controller must implement appropriate safeguards and procedures consistent with applicable Philippine privacy requirements.
+
+Parents or lawful guardians may contact the designated privacy office regarding concerns involving a child's personal information.
+
+The final production deployment should specify the minimum age for independent account registration and the procedures for obtaining any required parental or guardian authorization.
+
+---
+
+# 19. Research, Simulation, and Capstone Evaluation
+
+The current version of Saup Angeles is a capstone and pilot system.
+
+During academic testing and evaluation, the System may be used in **controlled simulated emergency scenarios**.
+
+Participants must not use simulated emergency functions to create false real-world emergency incidents or unnecessarily contact actual emergency responders.
+
+Where research data are collected for academic evaluation, the project team should use anonymization or de-identification where reasonably possible.
+
+Research results presented in academic papers, presentations, demonstrations, or publications should avoid identifying individual users unless there is an appropriate lawful basis and authorization to do so.
+
+---
+
+# 20. Third-Party Services
+
+Saup Angeles depends on third-party services to provide some of its functionality.
+
+These services may include cloud infrastructure, authentication, databases, storage, mapping, location, and notification services.
+
+Third-party providers may have their own privacy policies, terms, security practices, and data-processing arrangements.
+
+The responsible Saup Angeles data controller should identify the third-party providers used in the production deployment and review the applicable data-processing and privacy requirements before deployment.
+
+Third-party services should not be treated as independent authorization for using personal information for purposes unrelated to Saup Angeles.
+
+---
+
+# 21. Data Sharing and Disclosure
+
+Saup Angeles does not intend to sell users' personal information.
+
+Personal information may be disclosed only where necessary for a declared and legitimate purpose, where authorized by the user, where required or permitted by applicable law, or where another lawful basis for disclosure exists.
+
+Emergency-report information may need to be shared with participating emergency institutions so that authorized personnel can review and coordinate reports.
+
+The scope of information shared should be limited to what is reasonably necessary for the relevant purpose.
+
+---
+
+# 22. International or Cross-Border Processing
+
+Some third-party cloud or technology providers used by Saup Angeles may process or store information through infrastructure located outside the Philippines.
+
+Where applicable, the responsible Personal Information Controller should determine the locations and processing arrangements of third-party providers and implement appropriate safeguards for any cross-border transfer or processing.
+
+The final production version of this Privacy Policy should identify relevant international service providers and applicable transfer safeguards where required.
+
+---
+
+# 23. Automated Processing
+
+Certain Saup Angeles features may use automated processing, including:
+
+* Location-based functions;
+* Identification-document processing;
+* Facial-feature detection for verification;
+* Emergency-report classification or categorization; and
+* System-generated guidance.
+
+Automated processing is intended to support the System's functions.
+
+Automated processing should not be interpreted as a substitute for professional judgment by emergency personnel.
+
+Where automated decision-making or profiling is implemented in a manner that materially affects a data subject, the responsible Personal Information Controller should provide the information and safeguards required by applicable privacy law.
+
+The NPC recognizes the right of data subjects to be informed about the existence of automated decision-making and profiling.
+
+---
+
+# 24. Privacy by Design and Data Minimization
+
+Saup Angeles is intended to follow a data-minimization approach.
+
+The System should collect only information that is reasonably necessary for its declared purposes.
+
+Users should not be required to provide additional personal information merely because it may be useful for unrelated purposes.
+
+Where a feature can operate effectively without identifying information, the project team should consider whether personal information can be omitted, anonymized, or otherwise minimized.
+
+---
+
+# 25. Changes to This Privacy Policy
+
+This Privacy Policy may be updated when:
+
+* Saup Angeles functionality changes;
+* New categories of personal information are collected;
+* New processing purposes are introduced;
+* Participating institutions change;
+* Third-party services change;
+* Legal or regulatory requirements change; or
+* The System transitions from a capstone project to a broader deployment.
+
+The effective date and version number will be updated when a new version is issued.
+
+Where required, users will be provided with appropriate notice of material changes before the changed processing takes place.
+
+---
+
+# 26. Contact Us
+
+For privacy questions, requests, concerns, or complaints regarding Saup Angeles, contact:
+
+**Saup Angeles Privacy Contact / Data Protection Officer**
+[NAME / OFFICE]
+
+**Email:**
+[OFFICIAL PRIVACY EMAIL]
+
+**Telephone:**
+[OFFICIAL CONTACT NUMBER]
+
+**Address:**
+[OFFICIAL ADDRESS]
+
+For concerns that cannot be resolved through the designated Saup Angeles privacy contact, individuals may seek assistance from the **National Privacy Commission of the Philippines**, subject to its applicable procedures.
+
+---
+
+# 27. Acknowledgment
+
+By using Saup Angeles, you acknowledge that you have been provided with this Privacy Policy and understand that the System may process personal information for the purposes described above.
+
+Where consent is the applicable lawful basis, your consent will be obtained through the appropriate mechanism before the relevant processing takes place.
+
+Your acknowledgment of this Privacy Policy should not be treated as consent to every possible processing activity. Consent, where required, should be obtained separately and appropriately for the specific processing purpose.
+
+---
+
+## Summary of Important Privacy Information
+
+For convenience, the following summarizes the primary processing activities of Saup Angeles:
+
+| Category                   | Examples                                            | Primary Purpose                    |
+| -------------------------- | --------------------------------------------------- | ---------------------------------- |
+| Account information        | Name, email, contact number                         | Account management                 |
+| Identification information | ID type, ID information, ID images                  | Account verification               |
+| Profile information        | Address, birth date, sex, nationality               | User profile and emergency support |
+| Health-related information | Blood type, height, weight, vaccination information | Emergency-related information      |
+| Emergency information      | Incident type, description, victims                 | Emergency reporting                |
+| Guidance information       | Pre-Call Guidance answers                           | Structured emergency reporting     |
+| Location                   | GPS coordinates, selected location                  | Emergency location and mapping     |
+| Attachments                | Incident photographs                                | Supporting emergency reports       |
+| Notifications              | Report status notifications                         | User communication                 |
+| Technical information      | Account/device/service information                  | Security and system operation      |
+| Verification information   | Document/face-related processing                    | Account verification               |
+
+Saup Angeles processes these categories only to the extent necessary for the applicable purposes and subject to the lawful basis, safeguards, and limitations applicable to the processing.
+
+---
+
+**End of Privacy Policy**
+
+**Document Owner:** [NAME / OFFICE]
+**Version:** 1.0
+**Effective Date:** September 19, 2026
+**Last Updated:** September 19, 2026

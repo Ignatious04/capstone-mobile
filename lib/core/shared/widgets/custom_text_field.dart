@@ -9,7 +9,7 @@ class CustomTextField extends StatelessWidget {
     this.controller,
     this.enabled = true,
     this.validator,
-    this.autovalidateMode = AutovalidateMode.disabled,
+    this.autovalidateMode = AutovalidateMode.onUserInteractionIfError,
     this.keyboardType,
     this.inputFormatters,
     this.isReadOnly = false,

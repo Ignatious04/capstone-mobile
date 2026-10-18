@@ -2,6 +2,7 @@ import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/enums/report_status_enum.dart';
 import 'package:capstone/core/shared/providers/firebase_auth_provider.dart';
 import 'package:capstone/core/shared/providers/verification_provider.dart';
+import 'package:capstone/core/shared/widgets/consent_banner.dart';
 import 'package:capstone/core/shared/widgets/custom_circular_progress_indicator.dart';
 import 'package:capstone/core/shared/widgets/custom_header_widget.dart';
 import 'package:capstone/core/shared/widgets/custom_snackbar_helper.dart';
@@ -93,6 +94,7 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
               width: double.infinity,
               child: CustomHeaderWidget(title: l10n.reports, body: l10n.reportsSubtitle),
             ),
+            const ConsentBanner(),
             const VerificationBanner(),
             Expanded(
               child: RefreshIndicator(

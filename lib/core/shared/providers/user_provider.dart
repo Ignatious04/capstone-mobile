@@ -1,3 +1,4 @@
+import 'package:capstone/core/enums/guardian_relationship_enum.dart';
 import 'package:capstone/core/l10n/app_localizations.dart';
 import 'dart:io';
 import 'package:capstone/core/enums/facecheck_result_enum.dart';
@@ -58,6 +59,21 @@ class UserNotifier extends Notifier<UserModel> {
     final authUser = ref.read(firebaseAuthProvider).currentUser!;
     final userID = authUser.uid;
     var user = state;
+
+    if (user.isMinor) {
+      state = state.copyWith(
+        clearIdImage: true,
+        idType: '',
+        idNumber: '',
+        bloodType: '',
+        height: 0,
+        weight: 0,
+        isVaccinated: false,
+        vaccineType: '',
+        vaccineDate: 0,
+      );
+      user = state;
+    }
 
     if (user.profileImage != null) {
       final fileName = path.basename(user.profileImage!.path);
@@ -301,5 +317,17 @@ class UserNotifier extends Notifier<UserModel> {
 
   void setUpdatedAt(int value) {
     state = state.copyWith(updatedAt: value);
+  }
+
+  void setGuardianName(String value) {
+    state = state.copyWith(guardianName: value);
+  }
+
+  void setGuardianRelationship(GuardianRelationshipEnum value) {
+    state = state.copyWith(guardianRelationship: value);
+  }
+
+  void setGuardianContact(String value) {
+    state = state.copyWith(guardianContact: value);
   }
 }

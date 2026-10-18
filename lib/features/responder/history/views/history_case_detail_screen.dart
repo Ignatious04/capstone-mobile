@@ -5,7 +5,6 @@ import 'package:capstone/core/shared/widgets/custom_app_bar.dart';
 import 'package:capstone/core/shared/widgets/section_title.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/widgets/text/label_text.dart';
-import 'package:capstone/core/utilities/formatter.dart';
 import 'package:capstone/features/public_user/reporting/widgets/additional_information_card.dart';
 import 'package:capstone/features/public_user/reporting/widgets/attachments_card.dart';
 import 'package:capstone/features/public_user/reporting/widgets/location_card.dart';

@@ -32,7 +32,6 @@ class _SetupScreenPageView extends ConsumerState<SetupScreenPageView> {
   final userCardPageKey = GlobalKey<FormState>();
   late final PageController pageController;
   int currentPage = 0;
-  final numberOfPages = 5;
 
   @override
   void initState() {
@@ -87,11 +86,16 @@ class _SetupScreenPageView extends ConsumerState<SetupScreenPageView> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
-    final formKeys = [
-      userContactNumPageKey,
-      userInfoPageKey,
-      userCardPageKey,
+    // Minors skip ID capture and medical info, so the page list is dynamic.
+    final isMinor = ref.watch(userProvider.select((u) => u.isMinor));
+    final pages = <({GlobalKey<FormState>? key, Widget child})>[
+      (key: userContactNumPageKey, child: PhoneVerificationScreen()),
+      (key: userInfoPageKey, child: SetupScreenPersonalInfoPage()),
+      if (!isMinor) (key: userCardPageKey, child: SetupScreenUserCardPage()),
+      if (!isMinor) (key: null, child: SetupScreenMedicalInfoPage()),
+      (key: null, child: SetupScreenSummaryPage()),
     ];
+    final numberOfPages = pages.length;
 
     return PopScope(
       canPop: false,
@@ -132,22 +136,7 @@ class _SetupScreenPageView extends ConsumerState<SetupScreenPageView> {
                         });
                       },
                       children: [
-                        Form(
-                          key: userContactNumPageKey,
-                          child: PhoneVerificationScreen(),
-                        ),
-                        Form(
-                          key: userInfoPageKey,
-                          child: SetupScreenPersonalInfoPage(),
-                        ),
-                        Form(
-                          key: userCardPageKey,
-                          child: SetupScreenUserCardPage(),
-                        ),
-                        Form(
-                          child: SetupScreenMedicalInfoPage(),
-                        ),
-                        SetupScreenSummaryPage(),
+                        for (final p in pages) p.key == null ? p.child : Form(key: p.key, child: p.child),
                       ],
                     ),
                   ),
@@ -172,10 +161,9 @@ class _SetupScreenPageView extends ConsumerState<SetupScreenPageView> {
                       Expanded(
                         child: CustomElevatedButton(
                           onPressed: () async {
-                            if (currentPage < 3) {
-                              if (!formKeys[currentPage].currentState!.validate()) {
-                                return;
-                              }
+                            final formKey = pages[currentPage].key;
+                            if (formKey != null && !formKey.currentState!.validate()) {
+                              return;
                             }
 
                             if (currentPage == numberOfPages - 1) {
@@ -199,8 +187,7 @@ class _SetupScreenPageView extends ConsumerState<SetupScreenPageView> {
                                     builder: (_) => AlertDialog(
                                       title: TitleText(value: l10n.resubmitted),
                                       content: BodyText(
-                                        value:
-                                            l10n.resubmittedBody,
+                                        value: l10n.resubmittedBody,
                                       ),
                                       actions: [
                                         TextButton(onPressed: () => Navigator.pop(context), child: Text(l10n.ok)),

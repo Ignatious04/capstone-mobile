@@ -80,9 +80,9 @@ class _PhoneVerificationScreenState extends ConsumerState<PhoneVerificationScree
           SectionTitle(icon: Icons.contact_phone, title: l10n.registerPhoneNumber.toUpperCase()),
           const SizedBox(height: 10),
           CustomTextField(
+            key: ValueKey('phone-field-$isVerified'),
             title: l10n.contactNumber.toUpperCase(),
             prefixText: "+63 ",
-            autovalidateMode: AutovalidateMode.onUserInteractionIfError,
             controller: contactNumController,
             keyboardType: const TextInputType.numberWithOptions(decimal: false),
             inputFormatters: [

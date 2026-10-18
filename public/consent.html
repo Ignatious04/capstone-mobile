@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Guardian consent - Saup Angeles</title>
+    <style>
+        body {
+            font-family: system-ui, sans-serif;
+            background: #f0f0f0;
+            margin: 0;
+            padding: 16px;
+        }
+
+        main {
+            max-width: 520px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #e64a19;
+            font-size: 1.3rem;
+            margin-top: 0;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0;
+        }
+
+        input[type=text] {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            font-size: 1rem;
+        }
+
+        button {
+            background: #e64a19;
+            color: #fff;
+            border: 0;
+            border-radius: 8px;
+            padding: 12px 18px;
+            font-size: 1rem;
+        }
+
+        button:disabled {
+            opacity: .5;
+        }
+
+        .msg {
+            padding: 12px;
+            border-radius: 8px;
+            background: #fbe9e7;
+        }
+
+        [hidden] {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <main>
+        <h1>Guardian consent</h1>
+        <p id="status">Loading...</p>
+
+        <form id="form" hidden>
+            <p><b id="child"></b> registered for Saup Angeles and listed you as their
+                <b id="relationship"></b>. Because they are under 18, we need your consent
+                before we store their personal data.
+            </p>
+
+            <p>Please read the <a href="/privacy.txt" target="_blank">privacy notice</a>, then choose what you agree to:
+            </p>
+
+            <label><input type="checkbox" name="purposes" value="accountData"> Store their account and profile
+                information</label>
+            <label><input type="checkbox" name="purposes" value="locationStorage"> Store their location when they send a
+                report</label>
+            <label><input type="checkbox" name="purposes" value="reportHistory"> Keep their report history</label>
+
+            <label>Your full name (as your signature)
+                <input type="text" id="guardianName" maxlength="100" autocomplete="name">
+            </label>
+
+            <button id="submit" type="submit">I consent</button>
+        </form>
+    </main>
+
+    <script>
+        const token = new URLSearchParams(location.search).get("t") || "";
+        const statusEl = document.getElementById("status");
+        const form = document.getElementById("form");
+
+        const relationshipText = {
+            mother: "mother", father: "father", grandparent: "grandparent",
+            "legal guardian": "legal guardian", relative: "relative"
+        };
+
+        function show(message) { statusEl.textContent = message; statusEl.hidden = false; }
+
+        (async () => {
+            try {
+                const res = await fetch("/api/getConsentRequest?t=" + encodeURIComponent(token));
+                if (!res.ok) throw new Error("invalid");
+                const data = await res.json();
+                document.getElementById("child").textContent = data.childName;
+                document.getElementById("relationship").textContent =
+                    relationshipText[data.relationship] || data.relationship;
+                statusEl.hidden = true;
+                form.hidden = false;
+            } catch (e) {
+                show("This link is invalid or has expired. Please ask the person who registered to resend the request from the app.");
+            }
+        })();
+
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const purposes = [...form.querySelectorAll("input[name=purposes]:checked")].map((c) => c.value);
+            const guardianName = document.getElementById("guardianName").value.trim();
+            if (!guardianName || purposes.length === 0) {
+                return show("Please tick at least one item and type your full name.");
+            }
+            document.getElementById("submit").disabled = true;
+            try {
+                const res = await fetch("/api/recordGuardianConsent", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ token, guardianName, purposes }),
+                });
+                if (!res.ok) throw new Error("failed");
+                form.hidden = true;
+                show("Thank you. Your consent has been recorded. You can close this page.");
+            } catch (e) {
+                document.getElementById("submit").disabled = false;
+                show("Something went wrong. The link may have expired.");
+            }
+        });
+    </script>
+</body>
+
+</html>

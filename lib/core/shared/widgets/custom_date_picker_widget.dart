@@ -1,4 +1,3 @@
-import 'package:capstone/core/shared/widgets/text/label_text.dart';
 import 'package:flutter/material.dart';
 
 class CustomDatePickerWidget extends StatelessWidget {
@@ -6,12 +5,14 @@ class CustomDatePickerWidget extends StatelessWidget {
     super.key,
     required this.title,
     required this.controller,
+    this.isRequired = false,
     this.validator,
     this.onTap,
   });
 
   final String title;
   final TextEditingController controller;
+  final bool isRequired;
   final String? Function(String?)? validator;
   final VoidCallback? onTap;
 
@@ -20,7 +21,23 @@ class CustomDatePickerWidget extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        LabelText(value: title),
+        Text.rich(
+          TextSpan(
+            style: Theme.of(context).textTheme.labelMedium?.copyWith(
+              color: Colors.black54,
+            ),
+            children: [
+              TextSpan(text: title),
+              if (isRequired)
+                const TextSpan(
+                  text: ' *',
+                  style: TextStyle(
+                    color: Colors.red,
+                  ),
+                ),
+            ],
+          ),
+        ),
         SizedBox(
           height: 10,
         ),

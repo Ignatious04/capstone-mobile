@@ -1,5 +1,6 @@
 import 'dart:io';
-
+import 'package:capstone/core/enums/consent_status_enum.dart';
+import 'package:capstone/core/enums/guardian_relationship_enum.dart';
 import 'package:capstone/core/enums/rejection_code_enum.dart';
 import 'package:capstone/core/enums/verification_status_enum.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -64,6 +65,13 @@ class UserModel {
 
   final int resubmissionCount;
 
+  final String guardianName;
+  final GuardianRelationshipEnum? guardianRelationship;
+  final String guardianContact;
+  final ConsentStatusEnum consentStatus;
+  final int? consentLastSentAt;
+  final int consentSendCount;
+
   const UserModel({
     this.userID = "",
     this.profileImage,
@@ -106,6 +114,12 @@ class UserModel {
     this.isDeactivated = false,
     this.deactivatedAt,
     this.resubmissionCount = 0,
+    this.guardianName = "",
+    this.guardianRelationship,
+    this.guardianContact = "",
+    this.consentStatus = ConsentStatusEnum.notRequired,
+    this.consentLastSentAt,
+    this.consentSendCount = 0,
   });
 
   factory UserModel.fromMap(Map<dynamic, dynamic> map) {
@@ -150,6 +164,12 @@ class UserModel {
       isDeactivated: map['isDeactivated'] ?? false,
       deactivatedAt: _toMillis(map['deactivatedAt']),
       resubmissionCount: map['resubmissionCount'] ?? 0,
+      guardianName: map['guardianName'] ?? '',
+      guardianRelationship: GuardianRelationshipEnum.tryParse(map['guardianRelationship']),
+      guardianContact: map['guardianContact'] ?? '',
+      consentStatus: ConsentStatusEnum.values.asNameMap()[map['consentStatus']] ?? ConsentStatusEnum.notRequired,
+      consentLastSentAt: _toMillis(map['consentLastSentAt']),
+      consentSendCount: map['consentSendCount'] ?? 0,
     );
   }
 
@@ -187,6 +207,9 @@ class UserModel {
       'verificationStatus': verificationStatus.name,
       'isDeactivated': isDeactivated,
       'deactivatedAt': deactivatedAt,
+      'guardianName': guardianName,
+      'guardianRelationship': guardianRelationship?.name,
+      'guardianContact': guardianContact,
     };
   }
 
@@ -228,6 +251,9 @@ class UserModel {
     final bool? isDeactivated,
     final int? deactivatedAt,
     final int? verificationSubmittedAt,
+    final String? guardianName,
+    GuardianRelationshipEnum? guardianRelationship,
+    final String? guardianContact,
   }) {
     return UserModel(
       userID: userID ?? this.userID,
@@ -271,6 +297,21 @@ class UserModel {
       deactivatedAt: deactivatedAt ?? this.deactivatedAt,
       verificationSubmittedAt: verificationSubmittedAt ?? this.verificationSubmittedAt,
       resubmissionCount: resubmissionCount,
+      guardianName: guardianName ?? this.guardianName,
+      guardianRelationship: guardianRelationship ?? this.guardianRelationship,
+      guardianContact: guardianContact ?? this.guardianContact,
+      consentStatus: consentStatus,
+      consentLastSentAt: consentLastSentAt,
+      consentSendCount: consentSendCount,
     );
+  }
+
+  bool get isMinor {
+    if (birthDate == 0) return false;
+    final dob = DateTime.fromMillisecondsSinceEpoch(birthDate);
+    final now = DateTime.now();
+    var age = now.year - dob.year;
+    if (now.month < dob.month || (now.month == dob.month && now.day < dob.day)) age--;
+    return age < 18;
   }
 }

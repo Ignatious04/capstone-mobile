@@ -29,8 +29,8 @@ class WelcomeScreen extends ConsumerWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Icon(
-                    Icons.emergency_outlined,
-                    size: 75,
+                    Icons.shield_outlined,
+                    size: 100,
                     color: Colors.black54,
                   ),
                   const SizedBox(

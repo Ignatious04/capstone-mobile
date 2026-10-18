@@ -266,6 +266,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get uploading => 'Uploading...';
 
   @override
+  String get loading => 'Loading...';
+
+  @override
   String get noDescriptionProvided => 'No description provided.';
 
   @override
@@ -1043,11 +1046,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get personalProfileSummary => 'Personal Profile Summary';
 
   @override
-  String get systemTerms => 'System Terms and Conditions';
+  String get attention => 'Attention';
 
   @override
-  String get meaReminder =>
-      'REMINDER: MEAS is a guidance and reporting tool only. It does not replace direct emergency calls to 911 or local hotlines.';
+  String get reminder =>
+      'REMINDER: Saup Angeles is a guidance and reporting tool only. It does not replace direct emergency calls to 911 or local hotlines.';
 
   @override
   String get userValidation => 'User Validation';
@@ -1435,4 +1438,54 @@ class AppLocalizationsEn extends AppLocalizations {
   String actualTravelTime(String duration) {
     return 'Actual travel time: $duration';
   }
+
+  @override
+  String get guardianName => 'Guardian Name';
+
+  @override
+  String get guardianRelationship => 'Relationship to guardian';
+
+  @override
+  String get guardianEmail => 'Guardian Email';
+
+  @override
+  String get relationshipMother => 'Mother';
+
+  @override
+  String get relationshipFather => 'Father';
+
+  @override
+  String get relationshipGrandparent => 'Grandparent';
+
+  @override
+  String get relationshipLegalGuardian => 'Legal guardian';
+
+  @override
+  String get relationshipOtherRelative => 'Other relative';
+
+  @override
+  String consentBannerPending(String email) {
+    return 'Waiting for your guardian\'s approval. We sent a request to $email.';
+  }
+
+  @override
+  String get consentBannerRevoked =>
+      'Your guardian withdrew consent. Some features that store personal data are limited.';
+
+  @override
+  String get consentResend => 'Resend request';
+
+  @override
+  String get consentResendSent => 'Request sent to your guardian.';
+
+  @override
+  String consentResendWait(int minutes) {
+    return 'You can resend in $minutes min.';
+  }
+
+  @override
+  String get consentResendTooSoon => 'Please wait a bit before resending.';
+
+  @override
+  String get consentResendLimit => 'Resend limit reached. Please contact support.';
 }

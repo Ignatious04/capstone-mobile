@@ -266,6 +266,9 @@ class AppLocalizationsFil extends AppLocalizations {
   String get uploading => 'Ina-upload...';
 
   @override
+  String get loading => 'Naglo-load...';
+
+  @override
   String get noDescriptionProvided => 'Walang ibinigay na paglalarawan.';
 
   @override
@@ -1047,10 +1050,10 @@ class AppLocalizationsFil extends AppLocalizations {
   String get personalProfileSummary => 'Buod ng Personal na Profile';
 
   @override
-  String get systemTerms => 'Mga Tuntunin at Kundisyon ng Sistema';
+  String get attention => 'Magbigay-Pansin';
 
   @override
-  String get meaReminder =>
+  String get reminder =>
       'PAALALA: Ang MEAS ay kasangkapan lamang sa gabay at pag-uulat. Hindi nito pinapalitan ang direktang pagtawag sa 911 o sa mga lokal na hotline.';
 
   @override
@@ -1440,4 +1443,54 @@ class AppLocalizationsFil extends AppLocalizations {
   String actualTravelTime(String duration) {
     return 'Aktwal na oras ng biyahe: $duration';
   }
+
+  @override
+  String get guardianName => 'Pangalan ng Tagapag-alaga';
+
+  @override
+  String get guardianRelationship => 'Kaugnayan sa Tagapag-alaga';
+
+  @override
+  String get guardianEmail => 'Email ng Tagapag-alaga';
+
+  @override
+  String get relationshipMother => 'Ina';
+
+  @override
+  String get relationshipFather => 'Ama';
+
+  @override
+  String get relationshipGrandparent => 'Lolo/Lola';
+
+  @override
+  String get relationshipLegalGuardian => 'Legal na tagapag-alaga';
+
+  @override
+  String get relationshipOtherRelative => 'Ibang kamag-anak';
+
+  @override
+  String consentBannerPending(String email) {
+    return 'Naghihintay ng pag-apruba ng iyong tagapag-alaga. Nagpadala kami ng kahilingan sa $email.';
+  }
+
+  @override
+  String get consentBannerRevoked =>
+      'Binawi ng iyong tagapag-alaga ang pahintulot. May mga limitasyon sa ilang feature na nag-iimbak ng personal na datos.';
+
+  @override
+  String get consentResend => 'Ipadala muli ang kahilingan';
+
+  @override
+  String get consentResendSent => 'Naipadala na ang kahilingan sa iyong tagapag-alaga.';
+
+  @override
+  String consentResendWait(int minutes) {
+    return 'Maaari kang magpadala muli sa loob ng $minutes min.';
+  }
+
+  @override
+  String get consentResendTooSoon => 'Mangyaring maghintay muna bago magpadala muli.';
+
+  @override
+  String get consentResendLimit => 'Naabot na ang limitasyon sa pagpapadala. Makipag-ugnayan sa support.';
 }

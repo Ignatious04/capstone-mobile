@@ -7,6 +7,7 @@ import 'package:capstone/core/shared/providers/audit_log_repository_provider.dar
 import 'package:capstone/core/shared/providers/location_provider.dart';
 import 'package:capstone/core/shared/providers/notification_history_provider.dart';
 import 'package:capstone/core/shared/providers/verification_provider.dart';
+import 'package:capstone/core/shared/widgets/consent_banner.dart';
 import 'package:capstone/core/shared/widgets/custom_alert_dialog.dart';
 import 'package:capstone/core/shared/widgets/custom_circular_progress_indicator.dart';
 import 'package:capstone/core/shared/widgets/custom_header_widget.dart';
@@ -243,6 +244,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         const SizedBox(
                           height: 10,
                         ),
+                        const ConsentBanner(),
                         const VerificationBanner(),
                         SectionTitle(
                           icon: Icons.select_all,

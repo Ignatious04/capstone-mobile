@@ -113,10 +113,13 @@ class SetupScreenSummaryPage extends ConsumerWidget {
                         const SizedBox(
                           height: 10,
                         ),
-                        InfoColumn(
-                          title: l10n.idType.toUpperCase(),
-                          value: ref.read(userProvider).idType,
-                        ),
+                        if (!ref.read(userProvider).isMinor) ...[
+                          const SizedBox(height: 10),
+                          InfoColumn(
+                            title: l10n.idType.toUpperCase(),
+                            value: ref.read(userProvider).idType,
+                          ),
+                        ],
                       ],
                     ),
                   ],
@@ -127,7 +130,7 @@ class SetupScreenSummaryPage extends ConsumerWidget {
           const SizedBox(height: 10),
           SectionTitle(
             icon: Icons.rule,
-            title: l10n.systemTerms.toUpperCase(),
+            title: l10n.attention.toUpperCase(),
           ),
           const SizedBox(height: 10),
           Container(
@@ -151,8 +154,7 @@ class SetupScreenSummaryPage extends ConsumerWidget {
                     ),
                     Expanded(
                       child: BodyText(
-                        value:
-                            l10n.meaReminder,
+                        value: l10n.reminder,
                         color: Colors.red,
                       ),
                     ),
