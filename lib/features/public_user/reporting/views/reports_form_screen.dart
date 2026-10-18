@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:capstone/core/l10n/enum_labels.dart';
 import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/controllers/victim_controllers.dart';
@@ -620,6 +622,10 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> {
                                   }
 
                                   Navigator.pop(context, true);
+                                } on TimeoutException {
+                                  if (!context.mounted) return;
+                                  Navigator.pop(context);
+                                  CustomSnackbarHelper.show(context, text: l10n.reportTimeoutError);
                                 } catch (e, stack) {
                                   debugPrint("ERROR: $e");
                                   debugPrintStack(stackTrace: stack);

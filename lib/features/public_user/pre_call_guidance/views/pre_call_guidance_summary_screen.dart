@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:capstone/core/l10n/enum_labels.dart';
 import 'package:capstone/core/l10n/app_localizations.dart';
+import 'package:capstone/core/services/location_service.dart';
 import 'package:capstone/core/shared/providers/connectivity_stream_provider.dart';
 import 'package:capstone/core/shared/providers/location_provider.dart';
 import 'package:capstone/core/shared/providers/report_provider.dart';
@@ -32,6 +35,60 @@ class PreCallGuidanceSummaryScreen extends ConsumerStatefulWidget {
 class _PreCallGuidanceSummaryScreenState extends ConsumerState<PreCallGuidanceSummaryScreen> {
   final _noteController = TextEditingController();
   LatLng? _adjustedLocation;
+
+  Future<void> _submitGuidance({required bool isOnline, required LocationFix fix}) async {
+    final l10n = AppLocalizations.of(context)!;
+
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => const LoadingOverlayWidget(),
+    );
+
+    try {
+      final isSMS = await ref
+          .read(guidanceProvider.notifier)
+          .submitGuidanceReport(
+            location: _adjustedLocation ?? fix.latLng,
+            originalGPS: _adjustedLocation != null ? fix.latLng : null,
+            accuracy: fix.accuracy,
+            locationNote: _noteController.text.trim(),
+            isOnline: isOnline,
+          );
+
+      if (!mounted) return;
+      Navigator.pop(context);
+
+      final incidentType = ref.read(reportProvider).incidentType!;
+      await EmergencyGuidanceSheet.show(context, incidentType);
+      if (!mounted) return;
+      Navigator.pop(context);
+
+      if (!isSMS) {
+        CustomSnackbarHelper.show(context, text: l10n.guidanceSubmitted);
+      }
+    } on TimeoutException {
+      if (!mounted) return;
+      Navigator.pop(context); // dismiss loading overlay
+
+      // The SMS path can't time out, so this only happens on the online path.
+      // connectivity_plus said "online" but Firestore never confirmed the write.
+      final useSms = await showConfirmationDialog(context, title: l10n.offlineSmsPrompt);
+      if (!context.mounted) return;
+
+      if (useSms == true) {
+        await _submitGuidance(isOnline: false, fix: fix);
+      } else {
+        if (!mounted) return;
+        CustomSnackbarHelper.show(context, text: l10n.reportTimeoutError);
+      }
+    } catch (e) {
+      debugPrint("ERROR: $e");
+      if (!context.mounted) return;
+      Navigator.pop(context);
+      CustomSnackbarHelper.show(context, text: l10n.reportSendError);
+    }
+  }
 
   @override
   void dispose() {
@@ -145,7 +202,7 @@ class _PreCallGuidanceSummaryScreenState extends ConsumerState<PreCallGuidanceSu
                     color: Colors.black,
                   ),
               decoration: InputDecoration(
-                labelText: l10n.landmarkLabel,
+                labelText: l10n.landmarkLabel.toUpperCase(),
                 labelStyle:
                     Theme.of(
                       context,
@@ -247,52 +304,7 @@ class _PreCallGuidanceSummaryScreenState extends ConsumerState<PreCallGuidanceSu
                       builder: (context) => const LoadingOverlayWidget(),
                     );
 
-                    try {
-                      final fix = location.value!;
-
-                      final isSMS = await ref
-                          .read(guidanceProvider.notifier)
-                          .submitGuidanceReport(
-                            location: _adjustedLocation ?? fix.latLng,
-                            originalGPS: _adjustedLocation != null ? fix.latLng : null,
-                            accuracy: fix.accuracy,
-                            locationNote: _noteController.text.trim(),
-                            isOnline: isOnlineNow,
-                          );
-
-                      if (context.mounted) {
-                        Navigator.pop(context);
-
-                        final incidentType = ref.read(reportProvider).incidentType!;
-
-                        await EmergencyGuidanceSheet.show(context, incidentType);
-
-                        if (!context.mounted) {
-                          return;
-                        }
-
-                        Navigator.pop(context);
-
-                        if (!isSMS) {
-                          CustomSnackbarHelper.show(
-                            context,
-                            text: l10n.guidanceSubmitted,
-                          );
-                        }
-                      }
-                    } catch (e) {
-                      debugPrint("ERROR: $e");
-                      if (!context.mounted) {
-                        return;
-                      }
-
-                      Navigator.pop(context);
-
-                      CustomSnackbarHelper.show(
-                        context,
-                        text: l10n.reportSendError,
-                      );
-                    }
+                    await _submitGuidance(isOnline: isOnlineNow, fix: location.value!);
                   },
             value: l10n.submitReport,
             color: Colors.white,

@@ -213,7 +213,7 @@
   "guidanceCompleteBody": "Tapos na ang iyong gabay bago tumawag. Maaari mo nang ipadala ang iyong report sa tamang ahensya.",
   "gettingLocation": "Kinukuha ang iyong lokasyon...",
   "weakGps": "Mahina ang GPS signal (±{meters} m). Magdagdag ng landmark o ayusin ang iyong pin para mahanap ka ng mga responder.",
-  "landmarkLabel": "Saan ka eksakto? (opsyonal)",
+  "landmarkLabel": "Palatandaan",
   "landmarkHint": "Landmark, gusali, palapag…",
   "adjustLocation": "Ayusin ang lokasyon sa mapa",
   "locationAdjusted": "Naayos na ang lokasyon ✓",
@@ -470,5 +470,6 @@
   "consentResendWait": "Maaari kang magpadala muli sa loob ng {minutes} min.",
   "@consentResendWait": { "placeholders": { "minutes": { "type": "int" } } },
   "consentResendTooSoon": "Mangyaring maghintay muna bago magpadala muli.",
-  "consentResendLimit": "Naabot na ang limitasyon sa pagpapadala. Makipag-ugnayan sa support."
+  "consentResendLimit": "Naabot na ang limitasyon sa pagpapadala. Makipag-ugnayan sa support.",
+  "reportTimeoutError": "Hindi namin makumpirma kung naipadala ang iyong report. Maaari pa rin itong maipadala kapag bumalik ang koneksyon, kaya tingnan ang iyong Reports o subukang muli."
 }

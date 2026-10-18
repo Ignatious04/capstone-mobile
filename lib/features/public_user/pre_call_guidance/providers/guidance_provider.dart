@@ -1,3 +1,4 @@
+import 'package:capstone/core/constants/timeouts.dart';
 import 'package:capstone/core/enums/audit_action_enum.dart';
 import 'package:capstone/core/enums/report_status_enum.dart';
 import 'package:capstone/core/enums/report_type_enum.dart';
@@ -112,7 +113,7 @@ class GuidanceNotifier extends Notifier<QuestionState> {
               createdAt: _pendingCreatedAt,
             );
 
-        await reportRepository.createReport(report);
+        await reportRepository.createReport(report).timeout(kReportWriteTimeout);
         _clearPending();
 
         // final realtimeReport = RealtimeReportModel(
@@ -151,7 +152,8 @@ class GuidanceNotifier extends Notifier<QuestionState> {
     }
 
     final buffer = StringBuffer()
-      ..writeln('ID: ${user.userID}')
+      ..writeln('Ref: $referenceNumber')
+      ..writeln('User ID: ${user.userID}')
       ..writeln('Reporter: ${user.firstName} ${user.lastName}')
       ..writeln('Type: ${incidentType.name.toUpperCase()}');
 

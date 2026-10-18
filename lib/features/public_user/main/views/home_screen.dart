@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:capstone/core/l10n/enum_labels.dart';
 import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/enums/audit_action_enum.dart';
@@ -116,6 +118,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       if (!mounted) return;
       Navigator.pop(context);
       CustomSnackbarHelper.show(context, text: l10n.reportSent);
+    } on TimeoutException {
+      if (!context.mounted) return;
+      Navigator.pop(context);
+      CustomSnackbarHelper.show(context, text: l10n.reportTimeoutError);
     } catch (e, stack) {
       debugPrint("ERROR: $e");
       debugPrintStack(stackTrace: stack);

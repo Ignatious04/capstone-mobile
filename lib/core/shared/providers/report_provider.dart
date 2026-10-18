@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:capstone/core/constants/timeouts.dart';
 import 'package:capstone/core/enums/police_concern_enum.dart';
 import 'package:capstone/core/enums/report_priority_enum.dart';
 import 'package:capstone/core/enums/report_status_enum.dart';
@@ -74,7 +75,7 @@ class ReportNotifier extends Notifier<ReportModel> {
         );
 
         debugPrint('submitReport: writing ${report.reportID}');
-        await reportRepository.createReport(report).timeout(const Duration(seconds: 15));
+        await reportRepository.createReport(report).timeout(kReportWriteTimeout);
         debugPrint('submitReport: write acknowledged');
 
         // Sent successfully: clear them so the next report gets fresh IDs.
@@ -129,7 +130,7 @@ class ReportNotifier extends Notifier<ReportModel> {
         );
 
         debugPrint('submitReport: writing ${report.reportID}');
-        await reportRepository.createReport(report).timeout(const Duration(seconds: 15));
+        await reportRepository.createReport(report).timeout(kReportWriteTimeout);
         debugPrint('submitReport: write acknowledged');
 
         // Sent successfully: clear them so the next report gets fresh IDs.

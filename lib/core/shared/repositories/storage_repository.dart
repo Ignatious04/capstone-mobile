@@ -1,4 +1,6 @@
+import 'dart:async';
 import 'dart:io';
+import 'package:capstone/core/constants/timeouts.dart';
 import 'package:capstone/core/enums/attachment_type_enum.dart';
 import 'package:capstone/core/shared/models/attachment_model.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -18,8 +20,15 @@ class StorageRepository {
     final storageFileName = '${DateTime.now().millisecondsSinceEpoch}$extension';
     final ref = _storage.ref().child('reports/$reportID/$storageFileName');
 
-    await ref.putFile(file);
-    final url = await ref.getDownloadURL();
+    final task = ref.putFile(file);
+    final String url;
+    try {
+      await task.timeout(kUploadTimeout);
+      url = await ref.getDownloadURL().timeout(kUploadTimeout);
+    } on TimeoutException {
+      await task.cancel(); // don't leave the upload running in the background
+      rethrow;
+    }
 
     return AttachmentModel(
       fileName: fileName,

@@ -1373,7 +1373,7 @@ abstract class AppLocalizations {
   /// No description provided for @landmarkLabel.
   ///
   /// In en, this message translates to:
-  /// **'Where exactly are you? (optional)'**
+  /// **'Landmark'**
   String get landmarkLabel;
 
   /// No description provided for @landmarkHint.
@@ -2893,6 +2893,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Resend limit reached. Please contact support.'**
   String get consentResendLimit;
+
+  /// No description provided for @reportTimeoutError.
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t confirm your report was sent. It may still go through once your connection recovers, so check your Reports list or try again.'**
+  String get reportTimeoutError;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

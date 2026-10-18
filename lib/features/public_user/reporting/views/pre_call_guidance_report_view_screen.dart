@@ -35,6 +35,7 @@ class PreCallGuidanceReportViewScreen extends ConsumerWidget {
 
     final reportAsync = ref.watch(reportByIdProvider(report.reportID));
     final deleted = reportAsync.hasValue && reportAsync.value == null;
+
     if (deleted) {
       return Scaffold(
         appBar: CustomAppBar(value: l10n.viewReport),
@@ -52,7 +53,6 @@ class PreCallGuidanceReportViewScreen extends ConsumerWidget {
         ? ref.watch(responderLocationProvider(currentReport.reportID)).value
         : null;
     final incidentLatLng = LatLng(location!.latitude, location.longitude);
-    // final information = report.additionalInformation.trim();
     return Scaffold(
       appBar: CustomAppBar(
         value: l10n.viewReport,
@@ -212,6 +212,13 @@ class PreCallGuidanceReportViewScreen extends ConsumerWidget {
                               ).format(currentReport.createdAt!)
                             : "-",
                       ),
+                      if (currentReport.locationDescription?.isNotEmpty ?? false) ...[
+                        const SizedBox(height: 10),
+                        InfoColumn(
+                          title: l10n.landmarkLabel.toUpperCase(),
+                          value: currentReport.locationDescription!,
+                        ),
+                      ],
                     ],
                   ),
                 ),

@@ -678,7 +678,7 @@ class AppLocalizationsFil extends AppLocalizations {
   }
 
   @override
-  String get landmarkLabel => 'Saan ka eksakto? (opsyonal)';
+  String get landmarkLabel => 'Palatandaan';
 
   @override
   String get landmarkHint => 'Landmark, gusali, palapag…';
@@ -1493,4 +1493,8 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String get consentResendLimit => 'Naabot na ang limitasyon sa pagpapadala. Makipag-ugnayan sa support.';
+
+  @override
+  String get reportTimeoutError =>
+      'Hindi namin makumpirma kung naipadala ang iyong report. Maaari pa rin itong maipadala kapag bumalik ang koneksyon, kaya tingnan ang iyong Reports o subukang muli.';
 }

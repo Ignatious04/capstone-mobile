@@ -677,7 +677,7 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String get landmarkLabel => 'Where exactly are you? (optional)';
+  String get landmarkLabel => 'Landmark';
 
   @override
   String get landmarkHint => 'Landmark, building, floor…';
@@ -1488,4 +1488,8 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get consentResendLimit => 'Resend limit reached. Please contact support.';
+
+  @override
+  String get reportTimeoutError =>
+      'We couldn\'t confirm your report was sent. It may still go through once your connection recovers, so check your Reports list or try again.';
 }
