@@ -14,6 +14,7 @@ import 'package:capstone/core/shared/widgets/custom_snackbar_helper.dart';
 import 'package:capstone/core/shared/widgets/emergency_guidance_sheet.dart';
 import 'package:capstone/core/shared/widgets/loading_overlay_widget.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
+import 'package:capstone/core/shared/widgets/text/label_text.dart';
 import 'package:capstone/core/shared/widgets/text/title_text.dart';
 import 'package:capstone/features/public_user/pre_call_guidance/providers/guidance_provider.dart';
 import 'package:capstone/features/public_user/reporting/views/select_location_screen.dart';
@@ -23,10 +24,18 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class PreCallGuidanceSummaryScreen extends ConsumerStatefulWidget {
-  const PreCallGuidanceSummaryScreen({super.key, required this.pageController, required this.onCancel});
+  const PreCallGuidanceSummaryScreen({
+    super.key,
+    required this.pageController,
+    required this.onCancel,
+    required this.onCall,
+    required this.callLabel,
+  });
 
   final PageController pageController;
   final VoidCallback onCancel;
+  final VoidCallback onCall; // add
+  final String callLabel; // add
 
   @override
   ConsumerState<PreCallGuidanceSummaryScreen> createState() => _PreCallGuidanceSummaryScreenState();
@@ -309,6 +318,14 @@ class _PreCallGuidanceSummaryScreenState extends ConsumerState<PreCallGuidanceSu
             value: l10n.submitReport,
             color: Colors.white,
             backgroundColor: Colors.deepOrange,
+          ),
+          LabelText(value: widget.callLabel),
+          CustomElevatedButton(
+            onPressed: widget.onCall,
+            value: l10n.call.toUpperCase(),
+            icon: const Icon(Icons.call),
+            color: Colors.white,
+            backgroundColor: Colors.green, // differs from Submit so the two aren't confused
           ),
           CustomElevatedButton(
             onPressed: widget.onCancel,

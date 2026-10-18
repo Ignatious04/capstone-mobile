@@ -2,11 +2,9 @@ import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/shared/providers/report_provider.dart';
 import 'package:capstone/core/shared/widgets/custom_app_bar.dart';
 import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
-import 'package:capstone/core/shared/widgets/custom_snackbar_helper.dart';
 import 'package:capstone/core/shared/widgets/text/label_text.dart';
-import 'package:capstone/core/utilities/call_launcher.dart';
+import 'package:capstone/core/utilities/call_nearest_service.dart';
 import 'package:capstone/features/public_user/main/providers/nearest_emergency_services_provider.dart';
-import 'package:capstone/features/public_user/map/providers/contact_number_repository_provider.dart';
 import 'package:capstone/features/public_user/pre_call_guidance/providers/guidance_provider.dart';
 import 'package:capstone/features/public_user/pre_call_guidance/views/pre_call_guidance_page.dart';
 import 'package:capstone/features/public_user/pre_call_guidance/views/pre_call_guidance_summary_screen.dart';
@@ -38,26 +36,7 @@ class _PreCallGuidancePageViewState extends ConsumerState<PreCallGuidancePageVie
   Future<void> _callNearestService() async {
     final type = ref.read(reportProvider).incidentType;
     if (type == null) return;
-
-    // Live nearest service first, cached number as the fallback
-    String? number = ref.read(nearestEmergencyServicesProvider).value?[type]?.contactNumber;
-    if (number == null || number.isEmpty) {
-      number = await ref.read(contactNumberRepositoryProvider).getNumber(type);
-    }
-
-    if (!mounted) return;
-
-    if (number == null || number.isEmpty) {
-      CustomSnackbarHelper.show(context, text: AppLocalizations.of(context)!.noContactNumber);
-      return;
-    }
-
-    try {
-      await launchPhoneCall(number);
-    } catch (e) {
-      if (!mounted) return;
-      CustomSnackbarHelper.show(context, text: AppLocalizations.of(context)!.dialerError);
-    }
+    await callNearestService(context, ref, type);
   }
 
   void navigateToPage() {
@@ -122,6 +101,8 @@ class _PreCallGuidancePageViewState extends ConsumerState<PreCallGuidancePageVie
                     if (index == state.questions.length) {
                       return PreCallGuidanceSummaryScreen(
                         pageController: pageController,
+                        onCall: _callNearestService, // add
+                        callLabel: callLabel, // add
                         onCancel: () {
                           Navigator.pop(context);
                           WidgetsBinding.instance.addPostFrameCallback((_) {

@@ -1,12 +1,16 @@
 import 'package:capstone/core/l10n/enum_labels.dart';
 import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/enums/service_type_enum.dart';
+import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
+import 'package:capstone/core/utilities/call_nearest_service.dart';
 import 'package:capstone/core/utilities/emergency_guidance_tips.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/widgets/text/title_text.dart';
+import 'package:capstone/features/public_user/main/providers/nearest_emergency_services_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class EmergencyGuidanceSheet extends StatelessWidget {
+class EmergencyGuidanceSheet extends ConsumerWidget {
   const EmergencyGuidanceSheet({super.key, required this.incidentType});
 
   final ServiceTypeEnum incidentType;
@@ -29,10 +33,10 @@ class EmergencyGuidanceSheet extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
-
     final tips = EmergencyGuidanceTips.forType(incidentType, l10n);
+    final nearestName = ref.watch(nearestEmergencyServicesProvider).value?[incidentType]?.name;
 
     return SafeArea(
       child: Padding(
@@ -89,6 +93,15 @@ class EmergencyGuidanceSheet extends StatelessWidget {
             BodyText(
               value: l10n.guidanceSheetDisclaimer,
               color: Colors.black54,
+            ),
+            const SizedBox(height: 15),
+            if (nearestName != null && nearestName.isNotEmpty) BodyText(value: nearestName, color: Colors.black54),
+            CustomElevatedButton(
+              onPressed: () => callNearestService(context, ref, incidentType),
+              value: l10n.call.toUpperCase(),
+              icon: const Icon(Icons.call),
+              color: Colors.white,
+              backgroundColor: Colors.green,
             ),
           ],
         ),
