@@ -471,5 +471,6 @@
   "@consentResendWait": { "placeholders": { "minutes": { "type": "int" } } },
   "consentResendTooSoon": "Mangyaring maghintay muna bago magpadala muli.",
   "consentResendLimit": "Naabot na ang limitasyon sa pagpapadala. Makipag-ugnayan sa support.",
-  "reportTimeoutError": "Hindi namin makumpirma kung naipadala ang iyong report. Maaari pa rin itong maipadala kapag bumalik ang koneksyon, kaya tingnan ang iyong Reports o subukang muli."
+  "reportTimeoutError": "Hindi namin makumpirma kung naipadala ang iyong report. Maaari pa rin itong maipadala kapag bumalik ang koneksyon, kaya tingnan ang iyong Reports o subukang muli.",
+  "medicalInfoNeedsConsent": "Kailangan munang aprubahan ng iyong tagapag-alaga ang impormasyong medikal."
 }

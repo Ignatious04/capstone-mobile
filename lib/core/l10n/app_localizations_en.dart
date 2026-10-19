@@ -1492,4 +1492,7 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get reportTimeoutError =>
       'We couldn\'t confirm your report was sent. It may still go through once your connection recovers, so check your Reports list or try again.';
+
+  @override
+  String get medicalInfoNeedsConsent => 'Your guardian needs to approve medical information first.';
 }

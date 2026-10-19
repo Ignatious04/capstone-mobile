@@ -71,6 +71,7 @@ class UserModel {
   final ConsentStatusEnum consentStatus;
   final int? consentLastSentAt;
   final int consentSendCount;
+  final List<String> consentPurposes;
 
   const UserModel({
     this.userID = "",
@@ -120,6 +121,7 @@ class UserModel {
     this.consentStatus = ConsentStatusEnum.notRequired,
     this.consentLastSentAt,
     this.consentSendCount = 0,
+    this.consentPurposes = const [],
   });
 
   factory UserModel.fromMap(Map<dynamic, dynamic> map) {
@@ -170,6 +172,7 @@ class UserModel {
       consentStatus: ConsentStatusEnum.values.asNameMap()[map['consentStatus']] ?? ConsentStatusEnum.notRequired,
       consentLastSentAt: _toMillis(map['consentLastSentAt']),
       consentSendCount: map['consentSendCount'] ?? 0,
+      consentPurposes: List<String>.from(map['consentPurposes'] ?? const []),
     );
   }
 
@@ -303,6 +306,7 @@ class UserModel {
       consentStatus: consentStatus,
       consentLastSentAt: consentLastSentAt,
       consentSendCount: consentSendCount,
+      consentPurposes: consentPurposes,
     );
   }
 
@@ -314,4 +318,7 @@ class UserModel {
     if (now.month < dob.month || (now.month == dob.month && now.day < dob.day)) age--;
     return age < 18;
   }
+
+  bool get canEditMedicalInfo =>
+      !isMinor || (consentStatus == ConsentStatusEnum.approved && consentPurposes.contains('medicalInfo'));
 }

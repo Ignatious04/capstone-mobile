@@ -7,9 +7,11 @@ import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
 import 'package:capstone/core/shared/providers/firebase_auth_provider.dart';
 import 'package:capstone/core/shared/providers/user_provider.dart';
 import 'package:capstone/core/shared/widgets/custom_header_widget.dart';
+import 'package:capstone/core/shared/widgets/custom_snackbar_helper.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/widgets/text/headline_text.dart';
 import 'package:capstone/core/themes/app_colors.dart';
+import 'package:capstone/features/public_user/profile/views/medical_information_screen.dart';
 import 'package:capstone/features/public_user/profile/views/personal_information_screen.dart';
 import 'package:capstone/features/public_user/profile/views/settings_screen.dart';
 import 'package:flutter/material.dart';
@@ -93,6 +95,25 @@ class ProfileScreen extends ConsumerWidget {
                         backgroundColor: Colors.white,
                         color: Colors.black,
                         value: l10n.personalInformation,
+                      ),
+                    ),
+                    SizedBox(
+                      width: double.infinity,
+                      child: CustomElevatedButton(
+                        onPressed: () {
+                          if (!user.canEditMedicalInfo) {
+                            CustomSnackbarHelper.show(context, text: l10n.medicalInfoNeedsConsent);
+                            return;
+                          }
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (_) => MedicalInformationScreen(user: user)),
+                          );
+                        },
+                        icon: const Icon(Icons.medical_information, size: 25),
+                        backgroundColor: Colors.white,
+                        color: Colors.black,
+                        value: l10n.medicalInformation,
                       ),
                     ),
                     SizedBox(

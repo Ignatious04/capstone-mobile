@@ -629,5 +629,6 @@
   "@consentResendWait": { "placeholders": { "minutes": { "type": "int" } } },
   "consentResendTooSoon": "Please wait a bit before resending.",
   "consentResendLimit": "Resend limit reached. Please contact support.",
-  "reportTimeoutError": "We couldn't confirm your report was sent. It may still go through once your connection recovers, so check your Reports list or try again."
+  "reportTimeoutError": "We couldn't confirm your report was sent. It may still go through once your connection recovers, so check your Reports list or try again.",
+  "medicalInfoNeedsConsent": "Your guardian needs to approve medical information first."
 }

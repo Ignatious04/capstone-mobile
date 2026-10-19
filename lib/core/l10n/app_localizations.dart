@@ -2899,6 +2899,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'We couldn\'t confirm your report was sent. It may still go through once your connection recovers, so check your Reports list or try again.'**
   String get reportTimeoutError;
+
+  /// No description provided for @medicalInfoNeedsConsent.
+  ///
+  /// In en, this message translates to:
+  /// **'Your guardian needs to approve medical information first.'**
+  String get medicalInfoNeedsConsent;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

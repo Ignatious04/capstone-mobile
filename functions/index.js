@@ -295,7 +295,7 @@ exports.resendGuardianConsent = onCall({secrets: [SMTP_USER, SMTP_PASS]}, async 
 });
 
 const TOKEN_RE = /^[a-f0-9]{48}$/; // crypto.randomBytes(24).toString("hex")
-const ALLOWED_PURPOSES = ["accountData", "locationStorage", "reportHistory"];
+const ALLOWED_PURPOSES = ["accountData", "locationStorage", "reportHistory", "medicalInfo"];
 
 // consent.html calls this first, to show who the consent is for.
 exports.getConsentRequest = onRequest({cors: true}, async (req, res) => {
@@ -333,7 +333,7 @@ exports.recordGuardianConsent = onRequest({cors: true}, async (req, res) => {
         noticeVersion: NOTICE_VERSION,
         grantedAt: Date.now(),
       });
-      tx.update(userRef, {consentStatus: "approved"});
+      tx.update(userRef, {consentStatus: "approved", consentPurposes: granted});
       tx.update(reqRef, {used: true});
     });
   } catch (e) {

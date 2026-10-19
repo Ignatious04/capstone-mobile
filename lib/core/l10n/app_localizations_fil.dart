@@ -1497,4 +1497,7 @@ class AppLocalizationsFil extends AppLocalizations {
   @override
   String get reportTimeoutError =>
       'Hindi namin makumpirma kung naipadala ang iyong report. Maaari pa rin itong maipadala kapag bumalik ang koneksyon, kaya tingnan ang iyong Reports o subukang muli.';
+
+  @override
+  String get medicalInfoNeedsConsent => 'Kailangan munang aprubahan ng iyong tagapag-alaga ang impormasyong medikal.';
 }
