@@ -22,9 +22,9 @@ import 'package:capstone/features/public_user/map/widgets/map_tile_widget.dart';
 import 'package:capstone/features/public_user/reporting/providers/pending_attachments_provider.dart';
 import 'package:capstone/core/shared/providers/location_provider.dart';
 import 'package:capstone/core/shared/providers/report_provider.dart';
-import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/public_user/reporting/views/select_location_screen.dart';
 import 'package:capstone/core/shared/widgets/section_title.dart';
+import 'package:capstone/features/public_user/reporting/widgets/pending_attachments_grid.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -466,61 +466,11 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> {
                               ),
                             ),
                             SizedBox(height: 10),
-                            ...List.generate(
-                              attachmentsList.length,
-                              (index) {
-                                final attachment = attachmentsList[index];
-                                return Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                      height: 1,
-                                      color: Colors.black,
-                                    ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    ClipRRect(
-                                      borderRadius: BorderRadius.circular(
-                                        12,
-                                      ),
-                                      child: Container(
-                                        color: AppColors.lighterBlack,
-                                        width: 300,
-                                        height: 300,
-                                        child: Image.file(
-                                          attachment,
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        backgroundColor: AppColors.lighterBlack,
-                                        foregroundColor: Colors.black,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(
-                                            12,
-                                          ),
-                                        ),
-                                      ),
-                                      onPressed: () {
-                                        ref.read(reportProvider.notifier).removeAttachment(index);
-                                      },
-                                      child: Text(
-                                        l10n.removeAttachment,
-                                      ),
-                                    ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                  ],
-                                );
-                              },
+                            PendingAttachmentsGrid(
+                              files: attachmentsList,
+                              onRemove: (index) => ref.read(reportProvider.notifier).removeAttachment(index),
                             ),
+                            const SizedBox(height: 10),
                           ],
                         ),
                         ExpansionTile(

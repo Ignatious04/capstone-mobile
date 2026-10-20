@@ -1495,4 +1495,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get medicalInfoNeedsConsent => 'Your guardian needs to approve medical information first.';
+
+  @override
+  String get responderNotes => 'Responder Notes';
+
+  @override
+  String get addNote => 'Add note';
+
+  @override
+  String get noNotes => 'No notes yet.';
+
+  @override
+  String get noteSaveError => 'Could not save the note. Check your connection and try again.';
 }

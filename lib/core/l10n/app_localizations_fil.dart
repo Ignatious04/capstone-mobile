@@ -1500,4 +1500,16 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String get medicalInfoNeedsConsent => 'Kailangan munang aprubahan ng iyong tagapag-alaga ang impormasyong medikal.';
+
+  @override
+  String get responderNotes => 'Mga Tala ng Responder';
+
+  @override
+  String get addNote => 'Magdagdag ng tala';
+
+  @override
+  String get noNotes => 'Wala pang tala.';
+
+  @override
+  String get noteSaveError => 'Hindi ma-save ang tala. Suriin ang iyong koneksyon at subukan muli.';
 }

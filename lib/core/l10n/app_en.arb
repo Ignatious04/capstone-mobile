@@ -630,5 +630,11 @@
   "consentResendTooSoon": "Please wait a bit before resending.",
   "consentResendLimit": "Resend limit reached. Please contact support.",
   "reportTimeoutError": "We couldn't confirm your report was sent. It may still go through once your connection recovers, so check your Reports list or try again.",
-  "medicalInfoNeedsConsent": "Your guardian needs to approve medical information first."
+  "medicalInfoNeedsConsent": "Your guardian needs to approve medical information first.",
+  "medicalInfoNeedsConsent": "Your guardian needs to approve medical information first.",
+  "responderNotes": "Responder Notes",
+  "addNote": "Add note",
+  "noNotes": "No notes yet.",
+  "noteSaveError": "Could not save the note. Check your connection and try again."
+
 }

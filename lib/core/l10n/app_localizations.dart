@@ -2905,6 +2905,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Your guardian needs to approve medical information first.'**
   String get medicalInfoNeedsConsent;
+
+  /// No description provided for @responderNotes.
+  ///
+  /// In en, this message translates to:
+  /// **'Responder Notes'**
+  String get responderNotes;
+
+  /// No description provided for @addNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Add note'**
+  String get addNote;
+
+  /// No description provided for @noNotes.
+  ///
+  /// In en, this message translates to:
+  /// **'No notes yet.'**
+  String get noNotes;
+
+  /// No description provided for @noteSaveError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not save the note. Check your connection and try again.'**
+  String get noteSaveError;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

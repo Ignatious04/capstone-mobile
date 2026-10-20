@@ -10,6 +10,7 @@ import 'package:capstone/core/shared/widgets/custom_header_widget.dart';
 import 'package:capstone/core/shared/widgets/custom_snackbar_helper.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/widgets/text/headline_text.dart';
+import 'package:capstone/core/shared/widgets/view_attachment_screen.dart';
 import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/public_user/profile/views/medical_information_screen.dart';
 import 'package:capstone/features/public_user/profile/views/personal_information_screen.dart';
@@ -51,18 +52,31 @@ class ProfileScreen extends ConsumerWidget {
                       child: SizedBox(
                         width: 150,
                         height: 150,
-                        child: ClipOval(
-                          child: user.profileURL != null
-                              ? CachedNetworkImage(
-                                  imageUrl: user.profileURL!,
-                                  width: 150,
-                                  height: 150,
-                                  fit: BoxFit.cover,
-                                )
-                              : Container(
-                                  color: AppColors.lighterBlack,
-                                  child: const Icon(Icons.person, size: 50),
+                        child: GestureDetector(
+                          onTap: user.profileURL == null
+                              ? null
+                              : () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => ViewAttachmentScreen(
+                                      fileName: l10n.profilePhoto,
+                                      url: user.profileURL!,
+                                    ),
+                                  ),
                                 ),
+                          child: ClipOval(
+                            child: user.profileURL != null
+                                ? CachedNetworkImage(
+                                    imageUrl: user.profileURL!,
+                                    width: 150,
+                                    height: 150,
+                                    fit: BoxFit.cover,
+                                  )
+                                : Container(
+                                    color: AppColors.lighterBlack,
+                                    child: const Icon(Icons.person, size: 50),
+                                  ),
+                          ),
                         ),
                       ),
                     ),

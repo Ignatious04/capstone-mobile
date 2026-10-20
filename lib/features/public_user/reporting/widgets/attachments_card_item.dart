@@ -1,8 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:capstone/core/shared/widgets/custom_circular_progress_indicator.dart';
+import 'package:capstone/core/shared/widgets/view_attachment_screen.dart';
 import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/core/shared/models/attachment_model.dart';
-import 'package:capstone/features/public_user/reporting/views/view_attachment_screen.dart';
 import 'package:flutter/material.dart';
 
 class AttachmentsCardItem extends StatelessWidget {

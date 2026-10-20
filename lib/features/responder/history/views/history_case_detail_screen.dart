@@ -11,6 +11,7 @@ import 'package:capstone/features/public_user/reporting/widgets/location_card.da
 import 'package:capstone/features/public_user/reporting/widgets/report_status_widget.dart';
 import 'package:capstone/features/public_user/reporting/widgets/reporting_timeline_card.dart';
 import 'package:capstone/features/public_user/reporting/widgets/victims_card.dart';
+import 'package:capstone/features/responder/active_case/widgets/responder_notes_card.dart';
 import 'package:flutter/material.dart';
 
 class HistoryCaseDetailScreen extends StatelessWidget {
@@ -87,6 +88,12 @@ class HistoryCaseDetailScreen extends StatelessWidget {
               SectionTitle(icon: Icons.notes, title: l10n.additionalInformation),
               const SizedBox(height: 10),
               AdditionalInformationCard(additionalInfo: report.additionalInformation.trim()),
+              if (report.responderNotes.isNotEmpty) ...[
+                const SizedBox(height: 10),
+                SectionTitle(icon: Icons.edit_note, title: l10n.responderNotes),
+                const SizedBox(height: 10),
+                ResponderNotesCard(notes: report.responderNotes),
+              ],
             ],
           ),
         ),

@@ -3,6 +3,7 @@ import 'package:capstone/core/enums/service_type_enum.dart';
 import 'package:capstone/core/enums/report_priority_enum.dart';
 import 'package:capstone/core/enums/report_status_enum.dart';
 import 'package:capstone/core/enums/report_type_enum.dart';
+import 'package:capstone/core/shared/models/responder_note_model.dart';
 import 'package:capstone/features/public_user/pre_call_guidance/models/pre_call_guidance_model.dart';
 import 'package:capstone/core/shared/models/attachment_model.dart';
 import 'package:capstone/features/public_user/reporting/models/victim_model.dart';
@@ -20,6 +21,7 @@ class ReportModel {
   final List<VictimModel> victims;
   final List<AttachmentModel> attachments;
   final List<AttachmentModel> responderAttachments;
+  final List<ResponderNoteModel> responderNotes;
   final List<PreCallGuidanceModel> guidanceAnswers;
   final String additionalInformation;
   final ReportStatusEnum? status;
@@ -50,6 +52,7 @@ class ReportModel {
     this.victims = const [],
     this.attachments = const [],
     this.responderAttachments = const [],
+    this.responderNotes = const [],
     this.guidanceAnswers = const [],
     this.additionalInformation = '',
     this.status = ReportStatusEnum.pending,
@@ -79,6 +82,7 @@ class ReportModel {
     List<VictimModel>? victims,
     List<AttachmentModel>? attachments,
     List<AttachmentModel>? responderAttachments,
+    List<ResponderNoteModel>? responderNotes,
     List<PreCallGuidanceModel>? guidanceAnswers,
     String? additionalInformation,
     ReportStatusEnum? status,
@@ -107,6 +111,7 @@ class ReportModel {
       victims: victims ?? this.victims,
       attachments: attachments ?? this.attachments,
       responderAttachments: responderAttachments ?? this.responderAttachments,
+      responderNotes: responderNotes ?? this.responderNotes,
       guidanceAnswers: guidanceAnswers ?? this.guidanceAnswers,
       additionalInformation: additionalInformation ?? this.additionalInformation,
       status: status ?? this.status,
@@ -138,6 +143,7 @@ class ReportModel {
       'victims': victims.map((v) => v.toMap()).toList(),
       'attachments': attachments.map((a) => a.toMap()).toList(),
       'responderAttachments': responderAttachments.map((a) => a.toMap()).toList(),
+      'responderNotes': responderNotes.map((n) => n.toMap()).toList(),
       'guidanceAnswers': guidanceAnswers.map((e) => e.toMap()).toList(),
       'additionalInformation': additionalInformation,
       'status': status?.name,
@@ -180,6 +186,9 @@ class ReportModel {
           .toList(),
       responderAttachments: (map['responderAttachments'] as List<dynamic>? ?? [])
           .map((a) => AttachmentModel.fromMap(Map<String, dynamic>.from(a)))
+          .toList(),
+      responderNotes: (map['responderNotes'] as List<dynamic>? ?? [])
+          .map((n) => ResponderNoteModel.fromMap(Map<String, dynamic>.from(n)))
           .toList(),
       guidanceAnswers: (map['guidanceAnswers'] as List<dynamic>? ?? [])
           .map((e) => PreCallGuidanceModel.fromMap(Map<String, dynamic>.from(e)))
