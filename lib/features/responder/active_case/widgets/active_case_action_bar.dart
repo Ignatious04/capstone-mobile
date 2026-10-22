@@ -1,8 +1,6 @@
 import 'package:capstone/core/l10n/app_localizations.dart';
-import 'dart:async';
-
 import 'package:capstone/core/enums/report_status_enum.dart';
-import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
+import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:flutter/material.dart';
 
 class ActiveCaseActionBar extends StatefulWidget {
@@ -21,36 +19,56 @@ class ActiveCaseActionBar extends StatefulWidget {
   State<ActiveCaseActionBar> createState() => _ActiveCaseActionBarState();
 }
 
-class _ActiveCaseActionBarState extends State<ActiveCaseActionBar> {
-  Timer? _holdTimer;
-  bool isHeld = false;
+class _ActiveCaseActionBarState extends State<ActiveCaseActionBar> with SingleTickerProviderStateMixin {
+  static const _baseColor = Colors.deepOrange;
+  static final _fillColor = Colors.deepOrange.shade900; // swap for Colors.black54 to keep the old held look
+  static const _maxDrift = 24.0; // px the finger may wander before the hold is cancelled
 
-  void _startHold() {
-    _holdTimer?.cancel();
-    _holdTimer = Timer(widget.holdDuration, widget.onAdvance);
-    setState(() {
-      isHeld = true;
-    });
+  late final AnimationController _controller;
+  Offset? _downPosition;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller =
+        AnimationController(
+          vsync: this,
+          duration: widget.holdDuration,
+          reverseDuration: const Duration(milliseconds: 250), // drains faster than it fills
+        )..addStatusListener((status) {
+          if (status == AnimationStatus.completed) widget.onAdvance();
+        });
+  }
+
+  void _startHold(PointerDownEvent event) {
+    _downPosition = event.position;
+    _controller.forward();
   }
 
   void _cancelHold() {
-    _holdTimer?.cancel();
-    _holdTimer = null;
-    setState(() {
-      isHeld = false;
-    });
+    _downPosition = null;
+    _controller.reverse();
+  }
+
+  void _onMove(PointerMoveEvent event) {
+    final start = _downPosition;
+    if (start != null && (event.position - start).distance > _maxDrift) _cancelHold();
   }
 
   @override
   void didUpdateWidget(covariant ActiveCaseActionBar oldWidget) {
     super.didUpdateWidget(oldWidget);
-    // Status changed (case advanced) -> make sure no stale timer is running.
-    if (oldWidget.status != widget.status) _cancelHold();
+    _controller.duration = widget.holdDuration;
+    // Status changed (case advanced) -> reset the fill for the next action.
+    if (oldWidget.status != widget.status) {
+      _downPosition = null;
+      _controller.value = 0;
+    }
   }
 
   @override
   void dispose() {
-    _holdTimer?.cancel();
+    _controller.dispose();
     super.dispose();
   }
 
@@ -72,15 +90,41 @@ class _ActiveCaseActionBarState extends State<ActiveCaseActionBar> {
 
     return SizedBox(
       width: double.infinity,
+      height: 48,
       child: Listener(
-        onPointerDown: (_) => _startHold(),
+        onPointerDown: _startHold,
+        onPointerMove: _onMove,
         onPointerUp: (_) => _cancelHold(),
         onPointerCancel: (_) => _cancelHold(),
-        child: CustomElevatedButton(
-          onPressed: () {}, // non-null so the button doesn't look disabled
-          value: action.label,
-          backgroundColor: isHeld ? Colors.black54 : Colors.deepOrange,
-          icon: Icon(action.icon),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(12),
+          child: Stack(
+            fit: StackFit.expand,
+            children: [
+              const ColoredBox(color: _baseColor),
+              AnimatedBuilder(
+                animation: _controller,
+                builder: (_, _) => Align(
+                  alignment: Alignment.centerLeft,
+                  child: FractionallySizedBox(
+                    widthFactor: _controller.value,
+                    heightFactor: 1,
+                    child: ColoredBox(color: _fillColor),
+                  ),
+                ),
+              ),
+              Center(
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(action.icon, color: Colors.white),
+                    const SizedBox(width: 8),
+                    BodyText(value: action.label, color: Colors.white, isBold: true),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

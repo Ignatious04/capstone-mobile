@@ -53,9 +53,7 @@ class ConsentBanner extends ConsumerWidget {
     final isPending = status == ConsentStatusEnum.pending;
     if (isPending) ref.watch(minuteTickProvider); // keeps the countdown fresh
 
-    final message = isPending
-        ? l10n.consentBannerPending(_mask(user.guardianContact))
-        : l10n.consentBannerRevoked;
+    final message = isPending ? l10n.consentBannerPending(_mask(user.guardianContact)) : l10n.consentBannerRevoked;
 
     final nextSendAt = (user.consentLastSentAt ?? 0) + _cooldown.inMilliseconds;
     final remaining = Duration(milliseconds: nextSendAt - DateTime.now().millisecondsSinceEpoch);
@@ -86,9 +84,16 @@ class ConsentBanner extends ConsumerWidget {
                   else if (remaining > Duration.zero)
                     LabelText(value: l10n.consentResendWait(remaining.inMinutes + 1))
                   else
-                    TextButton(
-                      onPressed: isSending ? null : () => ref.read(resendConsentProvider.notifier).resend(),
-                      child: Text(isSending ? l10n.loading : l10n.consentResend),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: TextButton(
+                        onPressed: isSending ? null : () => ref.read(resendConsentProvider.notifier).resend(),
+                        child: BodyText(
+                          value: isSending ? l10n.loading : l10n.consentResend,
+                          color: Colors.deepOrange,
+                          isBold: true,
+                        ),
+                      ),
                     ),
                 ],
               ],

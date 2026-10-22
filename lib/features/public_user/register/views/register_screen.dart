@@ -203,6 +203,7 @@ class _RegisterScreenPage extends ConsumerState<RegisterScreen> {
                       SizedBox(
                         width: double.infinity,
                         child: CustomElevatedButton(
+                          isLoading: isRegistering,
                           onPressed: isRegistering || !hasReadTermsAndConditions || !hasReadPrivacyPolicy
                               ? null
                               : () async {

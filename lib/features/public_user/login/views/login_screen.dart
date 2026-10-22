@@ -1,6 +1,5 @@
 import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/exceptions/auth_exception.dart';
-import 'package:capstone/core/shared/widgets/custom_circular_progress_indicator.dart';
 import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
 import 'package:capstone/core/shared/widgets/custom_snackbar_helper.dart';
 import 'package:capstone/core/shared/widgets/custom_text_field.dart';
@@ -181,25 +180,22 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       ),
                       SizedBox(
                         width: double.infinity,
-                        child: isLoading
-                            ? Center(
-                                child: CustomCircularProgressIndicator(),
-                              )
-                            : CustomElevatedButton(
-                                onPressed: () async {
-                                  setState(() => errorMessage = null);
+                        child: CustomElevatedButton(
+                          isLoading: isLoading,
+                          onPressed: () async {
+                            setState(() => errorMessage = null);
 
-                                  if (!loginKey.currentState!.validate()) return;
+                            if (!loginKey.currentState!.validate()) return;
 
-                                  await ref
-                                      .read(loginProvider.notifier)
-                                      .signIn(
-                                        email: emailController.text,
-                                        password: passwordController.text,
-                                      );
-                                },
-                                value: l10n.login,
-                              ),
+                            await ref
+                                .read(loginProvider.notifier)
+                                .signIn(
+                                  email: emailController.text,
+                                  password: passwordController.text,
+                                );
+                          },
+                          value: l10n.login,
+                        ),
                       ),
                       const SizedBox(
                         height: 10,

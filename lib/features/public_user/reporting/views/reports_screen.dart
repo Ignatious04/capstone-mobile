@@ -27,6 +27,14 @@ class ReportsScreen extends ConsumerStatefulWidget {
 class _ReportsScreenState extends ConsumerState<ReportsScreen> {
   final ScrollController _scrollController = ScrollController();
 
+  // Scrolls with the list instead of sitting above it, so they never push it down.
+  static const _banners = Column(
+    children: [
+      ConsentBanner(),
+      VerificationBanner(),
+    ],
+  );
+
   Color _getStatusColor(ReportModel report) {
     switch (report.status) {
       case ReportStatusEnum.pending:
@@ -94,8 +102,6 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
               width: double.infinity,
               child: CustomHeaderWidget(title: l10n.reports, body: l10n.reportsSubtitle),
             ),
-            const ConsentBanner(),
-            const VerificationBanner(),
             Expanded(
               child: RefreshIndicator(
                 onRefresh: _refresh,
@@ -104,7 +110,9 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
                     if (reports.isEmpty) {
                       return ListView(
                         physics: const AlwaysScrollableScrollPhysics(),
+                        padding: const EdgeInsets.all(20),
                         children: [
+                          _banners,
                           SizedBox(
                             height: MediaQuery.of(context).size.height * 0.7,
                             child: Center(
@@ -132,9 +140,10 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
                       physics: const AlwaysScrollableScrollPhysics(),
                       controller: _scrollController,
                       padding: const EdgeInsets.all(20),
-                      itemCount: reports.length,
+                      itemCount: reports.length + 1, // +1 for the banners at the top
                       itemBuilder: (context, index) {
-                        final report = reports[index];
+                        if (index == 0) return _banners;
+                        final report = reports[index - 1];
                         return ReportCard(
                           referenceNumber: report.referenceNumber,
                           emergencyType: report.incidentType!.name,
