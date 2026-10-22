@@ -21,8 +21,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// Must be a top-level function — this is what the OS calls when a
 /// data message arrives while the app is backgrounded/terminated.
-NotificationTypeEnum _notificationTypeOf(RemoteMessage message) =>
-    message.data['type'] == 'reportAssigned' ? NotificationTypeEnum.reportAssigned : NotificationTypeEnum.reportStatus;
+NotificationTypeEnum _notificationTypeOf(RemoteMessage message) {
+  switch (message.data['type']) {
+    case 'reportAssigned':
+      return NotificationTypeEnum.reportAssigned;
+    case 'consent':
+      return NotificationTypeEnum.consent;
+    default:
+      return NotificationTypeEnum.reportStatus;
+  }
+}
 
 @pragma('vm:entry-point')
 Future<void> firebaseMessagingBackgroundHandler(RemoteMessage message) async {

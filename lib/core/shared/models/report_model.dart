@@ -35,6 +35,7 @@ class ReportModel {
   final DateTime? dispatchedAt;
   final DateTime? arrivedAt;
   final DateTime? resolvedAt;
+  final List<ServiceTypeEnum> secondaryServices;
 
   /// ETA recorded when the responder went en route (frozen snapshot, not live).
   final int? etaSeconds;
@@ -66,6 +67,7 @@ class ReportModel {
     this.dispatchedAt,
     this.arrivedAt,
     this.resolvedAt,
+    this.secondaryServices = const [],
     this.etaSeconds,
     this.etaDistanceMeters,
   });
@@ -96,6 +98,7 @@ class ReportModel {
     DateTime? dispatchedAt,
     DateTime? arrivedAt,
     DateTime? resolvedAt,
+    List<ServiceTypeEnum>? secondaryServices,
     int? etaSeconds,
     double? etaDistanceMeters,
   }) {
@@ -125,6 +128,7 @@ class ReportModel {
       dispatchedAt: dispatchedAt ?? this.dispatchedAt,
       arrivedAt: arrivedAt ?? this.arrivedAt,
       resolvedAt: resolvedAt ?? this.resolvedAt,
+      secondaryServices: secondaryServices ?? this.secondaryServices,
       etaSeconds: etaSeconds ?? this.etaSeconds,
       etaDistanceMeters: etaDistanceMeters ?? this.etaDistanceMeters,
     );
@@ -157,6 +161,7 @@ class ReportModel {
       'dispatchedAt': dispatchedAt,
       "arrivedAt": arrivedAt,
       'resolvedAt': resolvedAt,
+      'secondaryServices': secondaryServices.map((s) => s.name).toList(),
       'etaSeconds': etaSeconds,
       'etaDistanceMeters': etaDistanceMeters,
     };
@@ -205,6 +210,9 @@ class ReportModel {
       dispatchedAt: (map["dispatchedAt"] as Timestamp?)?.toDate(),
       arrivedAt: (map["arrivedAt"] as Timestamp?)?.toDate(),
       resolvedAt: (map['resolvedAt'] as Timestamp?)?.toDate(),
+      secondaryServices: (map['secondaryServices'] as List<dynamic>? ?? [])
+          .map((s) => ServiceTypeEnum.values.firstWhere((e) => e.name == s))
+          .toList(),
       etaSeconds: (map['etaSeconds'] as num?)?.toInt(),
       etaDistanceMeters: (map['etaDistanceMeters'] as num?)?.toDouble(),
     );

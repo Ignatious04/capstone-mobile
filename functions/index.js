@@ -45,6 +45,17 @@ const VERIFICATION_COPY = {
   },
 };
 
+const CONSENT_COPY = {
+  approved: {
+    en: {title: "Guardian consent received", body: "Your guardian approved your account. You can now use the features they allowed."},
+    fil: {title: "Natanggap ang pahintulot ng tagapag-alaga", body: "Inaprubahan ng iyong tagapag-alaga ang iyong account. Magagamit mo na ang mga feature na pinayagan nila."},
+  },
+  revoked: {
+    en: {title: "Guardian consent withdrawn", body: "Your guardian withdrew consent. Some features that store personal data are limited."},
+    fil: {title: "Binawi ang pahintulot ng tagapag-alaga", body: "Binawi ng iyong tagapag-alaga ang pahintulot. May mga limitasyon sa ilang feature na nag-iimbak ng personal na datos."},
+  },
+};
+
 const pickLang = (doc) => (doc?.languageCode === "fil" ? "fil" : "en");
 
 const {logger} = require("firebase-functions");
@@ -156,6 +167,35 @@ exports.onVerificationChange = onDocumentUpdated("users/{uid}", async (event) =>
     notification: copy,
     data: {type: "verification", status: after.verificationStatus},
   });
+});
+
+exports.onConsentChange = onDocumentUpdated("users/{uid}", async (event) => {
+  const before = event.data.before.data();
+  const after = event.data.after.data();
+  if (before.consentStatus === after.consentStatus) return;
+
+  const entry = CONSENT_COPY[after.consentStatus];
+  if (!entry || after.isDeactivated || !after.fcmToken) return;
+  const copy = entry[pickLang(after)];
+
+  try {
+    await admin.messaging().send({
+      token: after.fcmToken,
+      notification: {title: copy.title, body: copy.body},
+      data: {type: "consent", status: after.consentStatus},
+      android: {
+        priority: "high",
+        notification: {channelId: "high_importance_channel", sound: "default"},
+      },
+      apns: {payload: {aps: {"sound": "default", "content-available": 1}}},
+    });
+  } catch (err) {
+    if (err.code === "messaging/registration-token-not-registered") {
+      await event.data.after.ref.update({fcmToken: admin.firestore.FieldValue.delete()});
+    } else {
+      throw err;
+    }
+  }
 });
 
 const {onRequest, onCall, HttpsError} = require("firebase-functions/v2/https");

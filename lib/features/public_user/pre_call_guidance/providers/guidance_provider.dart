@@ -105,6 +105,7 @@ class GuidanceNotifier extends Notifier<QuestionState> {
               reportType: ReportTypeEnum.preCallGuidance,
               guidanceAnswers: state.questions,
               priority: PriorityCalculator.forGuidance(incidentType, state.questions),
+              secondaryServices: PriorityCalculator.secondaryServicesForGuidance(incidentType, state.questions),
               status: ReportStatusEnum.pending,
               location: GeoPoint(location.latitude, location.longitude),
               locationAccuracy: accuracy,

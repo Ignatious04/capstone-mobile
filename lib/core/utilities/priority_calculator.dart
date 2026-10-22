@@ -41,4 +41,25 @@ class PriorityCalculator {
     }
     return ReportPriorityEnum.high;
   }
+
+  static List<ServiceTypeEnum> secondaryServicesForGuidance(
+    ServiceTypeEnum primary,
+    List<PreCallGuidanceModel> answers,
+  ) {
+    bool yes(String id) => answers.any((a) => a.id == id && a.answer == true);
+    final result = <ServiceTypeEnum>{};
+
+    switch (primary) {
+      case ServiceTypeEnum.police:
+        if (yes('police_injured')) result.add(ServiceTypeEnum.medical);
+      case ServiceTypeEnum.fire:
+        if (yes('fire_trapped')) result.add(ServiceTypeEnum.medical);
+        if (yes('fire_spreading')) result.add(ServiceTypeEnum.police); // crowd/traffic control, to confirm
+      case ServiceTypeEnum.medical:
+        if (yes('medical_intentional')) result.add(ServiceTypeEnum.police); // possible self-harm or assault, to confirm
+    }
+
+    result.remove(primary);
+    return result.toList();
+  }
 }

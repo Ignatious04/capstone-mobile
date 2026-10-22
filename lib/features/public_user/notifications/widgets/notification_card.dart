@@ -26,6 +26,8 @@ class NotificationCard extends StatelessWidget {
         return Icons.assignment_turned_in;
       case NotificationTypeEnum.reportAssigned:
         return Icons.assignment_ind;
+      case NotificationTypeEnum.consent:
+        return Icons.family_restroom;
     }
   }
 
@@ -54,7 +56,10 @@ class NotificationCard extends StatelessWidget {
                     BodyText(value: notification.message),
                     const SizedBox(height: 4),
                     BodyText(
-                      value: DateFormat("MMM dd, yyyy • h:mm a", Localizations.localeOf(context).toString()).format(notification.createdAt),
+                      value: DateFormat(
+                        "MMM dd, yyyy • h:mm a",
+                        Localizations.localeOf(context).toString(),
+                      ).format(notification.createdAt),
                       color: Colors.grey,
                     ),
                   ],
