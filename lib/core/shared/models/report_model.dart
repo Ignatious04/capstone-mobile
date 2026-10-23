@@ -28,6 +28,10 @@ class ReportModel {
   final GeoPoint? location;
   final DateTime? createdAt;
   final String? assignedTo;
+
+  /// Station (emergencyServices doc ID) this report was routed to.
+  /// Set by the onReportCreated Cloud Function, never by the client.
+  final String? serviceID;
   final double? locationAccuracy;
   final String? locationDescription;
   final GeoPoint? originalGpsLocation;
@@ -60,6 +64,7 @@ class ReportModel {
     this.location,
     this.createdAt,
     this.assignedTo,
+    this.serviceID,
     this.locationAccuracy,
     this.locationDescription,
     this.originalGpsLocation,
@@ -91,6 +96,7 @@ class ReportModel {
     GeoPoint? location,
     DateTime? createdAt,
     String? assignedTo,
+    String? serviceID,
     double? locationAccuracy,
     String? locationDescription,
     GeoPoint? originalGpsLocation,
@@ -121,6 +127,7 @@ class ReportModel {
       location: location ?? this.location,
       createdAt: createdAt ?? this.createdAt,
       assignedTo: assignedTo ?? this.assignedTo,
+      serviceID: serviceID ?? this.serviceID,
       locationAccuracy: locationAccuracy ?? this.locationAccuracy,
       locationDescription: locationDescription ?? this.locationDescription,
       originalGpsLocation: originalGpsLocation ?? this.originalGpsLocation,
@@ -203,6 +210,7 @@ class ReportModel {
       location: map['location'],
       createdAt: (map['createdAt'] as Timestamp?)?.toDate(),
       assignedTo: map["assignedTo"] ?? "",
+      serviceID: map['serviceID'] as String?,
       locationAccuracy: (map['locationAccuracy'] as num?)?.toDouble(),
       locationDescription: map['locationDescription'],
       originalGpsLocation: map['originalGpsLocation'],

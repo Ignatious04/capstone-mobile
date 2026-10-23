@@ -400,7 +400,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                 name: service.name,
                                 contactNumber: service.contactNumber,
                                 address: service.address,
-                                distance: distanceMeters / 1000,
+                                distanceMeters: distanceMeters,
                               ),
                             ],
                           );

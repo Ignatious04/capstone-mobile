@@ -84,7 +84,10 @@ class LocationService {
 
   Stream<LatLng> getLocationStream() async* {
     final last = await Geolocator.getLastKnownPosition();
-    if (last != null) yield LatLng(last.latitude, last.longitude);
+    if (last != null &&
+        DateTime.now().difference(last.timestamp) < const Duration(minutes: 1)) {
+      yield LatLng(last.latitude, last.longitude);
+    }
 
     yield* Geolocator.getPositionStream(
       locationSettings: const LocationSettings(

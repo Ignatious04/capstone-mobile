@@ -19,7 +19,7 @@ class NearbyServicesCard extends ConsumerWidget {
     required this.name,
     required this.contactNumber,
     required this.address,
-    required this.distance,
+    required this.distanceMeters,
   });
 
   final IconData icon;
@@ -28,7 +28,7 @@ class NearbyServicesCard extends ConsumerWidget {
   final String name;
   final String contactNumber;
   final String address;
-  final double distance;
+  final double distanceMeters;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -100,7 +100,7 @@ class NearbyServicesCard extends ConsumerWidget {
                             color: Colors.black54,
                           ),
                           BodyText(
-                            value: DistanceHelper.formatDistance(distance),
+                            value: DistanceHelper.formatDistance(distanceMeters),
                             color: Colors.black54,
                           ),
                         ],

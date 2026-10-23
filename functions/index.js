@@ -3,6 +3,7 @@ const admin = require("firebase-admin");
 admin.initializeApp();
 
 Object.assign(exports, require("./audit"));
+Object.assign(exports, require("./routing"));
 
 // Push text per language. Anything other than "fil" falls back to English
 // (covers users who never saved a language).

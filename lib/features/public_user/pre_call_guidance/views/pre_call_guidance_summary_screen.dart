@@ -307,12 +307,6 @@ class _PreCallGuidanceSummaryScreenState extends ConsumerState<PreCallGuidanceSu
                       return;
                     }
 
-                    showDialog(
-                      context: context,
-                      barrierDismissible: false,
-                      builder: (context) => const LoadingOverlayWidget(),
-                    );
-
                     await _submitGuidance(isOnline: isOnlineNow, fix: location.value!);
                   },
             value: l10n.submitReport,

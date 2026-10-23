@@ -7,6 +7,7 @@ class ResponderModel {
   final String email;
   final String contactNumber;
   final ServiceTypeEnum department;
+  final String assignedAgencyID;
   final String role;
   final String responderCode;
   final bool isActive;
@@ -19,6 +20,7 @@ class ResponderModel {
     this.email = "",
     this.contactNumber = "",
     this.department = ServiceTypeEnum.medical,
+    this.assignedAgencyID = "",
     this.role = "",
     this.responderCode = "",
     this.isActive = true,
@@ -33,6 +35,7 @@ class ResponderModel {
       email: map['email'] ?? '',
       contactNumber: map['contactNumber'] ?? '',
       department: ServiceTypeEnum.values.byName(map['department'] ?? 'medical'),
+      assignedAgencyID: map['assignedAgencyID'] ?? '',
       role: map['role'] ?? '',
       responderCode: map['responderCode'] ?? '',
       isActive: map['isActive'] ?? true,
@@ -48,6 +51,7 @@ class ResponderModel {
       'email': email,
       'contactNumber': contactNumber,
       'department': department.name,
+      'assignedAgencyID': assignedAgencyID,
       'role': role,
       'responderCode': responderCode,
       'isActive': isActive,
