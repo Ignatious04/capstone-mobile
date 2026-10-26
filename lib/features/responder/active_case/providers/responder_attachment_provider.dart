@@ -1,7 +1,7 @@
 import 'package:capstone/core/l10n/app_localizations.dart';
 import 'dart:io';
 import 'package:capstone/core/shared/providers/firebase_auth_provider.dart';
-import 'package:capstone/core/shared/providers/report_repository_provider.dart';
+import 'package:capstone/core/shared/providers/response_repository_provider.dart';
 import 'package:capstone/core/shared/providers/storage_repository_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
@@ -18,6 +18,7 @@ class ResponderAttachmentNotifier extends Notifier<bool> {
   /// Returns null on success (or if the picker was cancelled), else an error message.
   Future<String?> addImage({
     required String reportID,
+    required String responseID,
     required ImageSource source,
     required AppLocalizations l10n,
   }) async {
@@ -40,7 +41,7 @@ class ResponderAttachmentNotifier extends Notifier<bool> {
             reportID: reportID,
             responderID: responderID,
           );
-      await ref.read(reportRepositoryProvider).addResponderAttachment(reportID, attachment);
+      await ref.read(responseRepositoryProvider).addAttachment(responseID, attachment);
       return null;
     } catch (_) {
       return l10n.uploadError;

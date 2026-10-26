@@ -1,9 +1,11 @@
-import 'package:capstone/core/shared/models/report_model.dart';
-import 'package:capstone/core/shared/providers/report_repository_provider.dart';
+import 'package:capstone/core/shared/models/response_model.dart';
 import 'package:capstone/core/shared/providers/responder_provider.dart';
+import 'package:capstone/core/shared/providers/response_repository_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-final responderHistoryProvider = StreamProvider<List<ReportModel>>((ref) {
+/// The responder's own resolved responses. Incident details are loaded per
+/// item from the report (see HistoryCaseCard).
+final responderHistoryProvider = StreamProvider<List<ResponseModel>>((ref) {
   // Watch only the id. Watching the whole responder would rebuild this stream
   // (and flash a spinner) every time the responder doc changes, e.g. when
   // isAvailable flips back to true on resolve.
@@ -11,6 +13,6 @@ final responderHistoryProvider = StreamProvider<List<ReportModel>>((ref) {
     currentAuthenticatedResponderProvider.select((r) => r.value?.id),
   );
 
-  if (responderID == null) return Stream.value(const <ReportModel>[]);
-  return ref.read(reportRepositoryProvider).watchResolvedReports(responderID);
+  if (responderID == null) return Stream.value(const <ResponseModel>[]);
+  return ref.read(responseRepositoryProvider).watchResolvedResponses(responderID);
 });

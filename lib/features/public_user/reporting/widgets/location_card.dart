@@ -12,18 +12,19 @@ class LocationCard extends ConsumerWidget {
   const LocationCard({
     super.key,
     required this.location,
-    this.responderLocation,
+    this.responderLocations = const [],
   });
 
   final GeoPoint location;
-  final LatLng? responderLocation;
+
+  /// Live positions of every responder currently sharing their location.
+  final List<LatLng> responderLocations;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
 
     final incident = LatLng(location.latitude, location.longitude);
-    final responder = responderLocation;
     // null while the bitmaps render; buildCaseMarkers falls back to default pins.
     final icons = ref.watch(caseMarkerIconsProvider).value;
 
@@ -39,13 +40,13 @@ class LocationCard extends ConsumerWidget {
             height: 250,
             child: MapTileWidget(
               initialLocation: incident,
-              fitToPoints: responder == null ? const [] : [incident, responder],
+              fitToPoints: responderLocations.isEmpty ? const [] : [incident, ...responderLocations],
               mode: MapModeEnum.view,
-              gesturesEnabled: responder != null,
+              gesturesEnabled: responderLocations.isNotEmpty,
               extraMarkers: buildCaseMarkers(
                 icons: icons,
                 incident: incident,
-                responder: responder,
+                responders: responderLocations,
               ),
             ),
           ),

@@ -36,7 +36,7 @@ class ResponderHistoryScreen extends ConsumerWidget {
                   return ListView.builder(
                     padding: const EdgeInsets.all(20),
                     itemCount: cases.length,
-                    itemBuilder: (context, index) => HistoryCaseCard(report: cases[index]),
+                    itemBuilder: (context, index) => HistoryCaseCard(response: cases[index]),
                   );
                 },
                 loading: () => const Center(child: CustomCircularProgressIndicator()),

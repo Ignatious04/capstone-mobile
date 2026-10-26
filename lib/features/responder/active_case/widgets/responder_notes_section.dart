@@ -1,5 +1,5 @@
 import 'package:capstone/core/l10n/app_localizations.dart';
-import 'package:capstone/core/shared/models/report_model.dart';
+import 'package:capstone/core/shared/models/response_model.dart';
 import 'package:capstone/features/responder/active_case/providers/responder_note_provider.dart';
 import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
 import 'package:capstone/core/shared/widgets/custom_text_field.dart';
@@ -11,9 +11,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ResponderNotesSection extends StatelessWidget {
-  const ResponderNotesSection({super.key, required this.report});
+  const ResponderNotesSection({super.key, required this.response});
 
-  final ReportModel report;
+  final ResponseModel response;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,7 @@ class ResponderNotesSection extends StatelessWidget {
       children: [
         SectionTitle(icon: Icons.edit_note, title: l10n.responderNotes),
         const SizedBox(height: 10),
-        ResponderNotesCard(notes: report.responderNotes),
+        ResponderNotesCard(notes: response.responderNotes),
         const SizedBox(height: 10),
         CustomElevatedButton(
           // The screen has a fixed-height map above the details, so typing
@@ -33,7 +33,7 @@ class ResponderNotesSection extends StatelessWidget {
             context: context,
             isScrollControlled: true,
             showDragHandle: true,
-            builder: (_) => _AddNoteSheet(reportID: report.reportID),
+            builder: (_) => _AddNoteSheet(responseID: response.responseID),
           ),
           value: l10n.addNote,
           icon: const Icon(Icons.add_comment_outlined),
@@ -44,9 +44,9 @@ class ResponderNotesSection extends StatelessWidget {
 }
 
 class _AddNoteSheet extends ConsumerStatefulWidget {
-  const _AddNoteSheet({required this.reportID});
+  const _AddNoteSheet({required this.responseID});
 
-  final String reportID;
+  final String responseID;
 
   @override
   ConsumerState<_AddNoteSheet> createState() => _AddNoteSheetState();
@@ -66,7 +66,7 @@ class _AddNoteSheetState extends ConsumerState<_AddNoteSheet> {
     final error = await ref
         .read(responderNoteProvider.notifier)
         .addNote(
-          reportID: widget.reportID,
+          responseID: widget.responseID,
           text: _controller.text,
           l10n: AppLocalizations.of(context)!,
         );

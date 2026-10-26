@@ -1,5 +1,5 @@
 import 'package:capstone/core/l10n/app_localizations.dart';
-import 'package:capstone/core/shared/models/report_model.dart';
+import 'package:capstone/core/shared/models/response_model.dart';
 import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
 import 'package:capstone/core/shared/widgets/custom_snackbar_helper.dart';
 import 'package:capstone/core/shared/widgets/section_title.dart';
@@ -10,9 +10,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ResponderAttachmentsSection extends ConsumerWidget {
-  const ResponderAttachmentsSection({super.key, required this.report});
+  const ResponderAttachmentsSection({super.key, required this.response});
 
-  final ReportModel report;
+  final ResponseModel response;
 
   Future<void> _pick(BuildContext context, WidgetRef ref) async {
     final source = await showModalBottomSheet<ImageSource>(
@@ -39,7 +39,12 @@ class ResponderAttachmentsSection extends ConsumerWidget {
 
     final error = await ref
         .read(responderAttachmentProvider.notifier)
-        .addImage(reportID: report.reportID, source: source, l10n: AppLocalizations.of(context)!);
+        .addImage(
+          reportID: response.reportID,
+          responseID: response.responseID,
+          source: source,
+          l10n: AppLocalizations.of(context)!,
+        );
 
     if (error != null && context.mounted) {
       CustomSnackbarHelper.show(context, text: error, color: Colors.red);
@@ -57,7 +62,7 @@ class ResponderAttachmentsSection extends ConsumerWidget {
       children: [
         SectionTitle(icon: Icons.add_a_photo_outlined, title: l10n.responderAttachments),
         const SizedBox(height: 10),
-        AttachmentsCard(attachments: report.responderAttachments),
+        AttachmentsCard(attachments: response.responderAttachments),
         const SizedBox(height: 10),
         CustomElevatedButton(
           onPressed: isUploading ? null : () => _pick(context, ref),

@@ -1,6 +1,8 @@
 import 'package:capstone/core/l10n/enum_labels.dart';
 import 'package:capstone/core/l10n/app_localizations.dart';
-import 'package:capstone/core/shared/models/report_model.dart';
+import 'package:capstone/core/shared/models/response_model.dart';
+import 'package:capstone/core/shared/providers/report_repository_provider.dart';
+import 'package:capstone/core/shared/widgets/custom_circular_progress_indicator.dart';
 import 'package:capstone/core/shared/widgets/custom_app_bar.dart';
 import 'package:capstone/core/shared/widgets/section_title.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
@@ -13,15 +15,23 @@ import 'package:capstone/features/public_user/reporting/widgets/reporting_timeli
 import 'package:capstone/features/public_user/reporting/widgets/victims_card.dart';
 import 'package:capstone/features/responder/active_case/widgets/responder_notes_card.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class HistoryCaseDetailScreen extends StatelessWidget {
-  const HistoryCaseDetailScreen({super.key, required this.report});
+class HistoryCaseDetailScreen extends ConsumerWidget {
+  const HistoryCaseDetailScreen({super.key, required this.response});
 
-  final ReportModel report;
+  final ResponseModel response;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
+    final report = ref.watch(reportByIdProvider(response.reportID)).value;
+    if (report == null) {
+      return Scaffold(
+        appBar: CustomAppBar(value: l10n.caseDetails),
+        body: const Center(child: CustomCircularProgressIndicator()),
+      );
+    }
     final location = report.location;
 
     return Scaffold(
@@ -47,7 +57,7 @@ class HistoryCaseDetailScreen extends StatelessWidget {
                         isBold: true,
                       ),
                       const SizedBox(height: 10),
-                      ReportStatusWidget(status: report.status?.name ?? 'resolved'),
+                      ReportStatusWidget(status: response.status.name),
                       const SizedBox(height: 10),
                       LabelText(value: l10n.referenceNumber.toUpperCase()),
                       BodyText(value: report.referenceNumber, isBold: true),
@@ -63,7 +73,7 @@ class HistoryCaseDetailScreen extends StatelessWidget {
                             const SizedBox(height: 10),
               SectionTitle(icon: Icons.timeline, title: l10n.statusTimeline),
               const SizedBox(height: 10),
-              ReportTimelineCard(report: report),
+              ReportTimelineCard(createdAt: report.createdAt, response: response),
               if (location != null) ...[
                 const SizedBox(height: 10),
                 SectionTitle(icon: Icons.location_on_outlined, title: l10n.incidentLocation),
@@ -78,21 +88,21 @@ class HistoryCaseDetailScreen extends StatelessWidget {
               SectionTitle(icon: Icons.attach_file, title: l10n.attachments),
               const SizedBox(height: 10),
               AttachmentsCard(attachments: report.attachments),
-              if (report.responderAttachments.isNotEmpty) ...[
+              if (response.responderAttachments.isNotEmpty) ...[
                 const SizedBox(height: 10),
                 SectionTitle(icon: Icons.add_a_photo_outlined, title: l10n.responderAttachments),
                 const SizedBox(height: 10),
-                AttachmentsCard(attachments: report.responderAttachments),
+                AttachmentsCard(attachments: response.responderAttachments),
               ],
               const SizedBox(height: 10),
               SectionTitle(icon: Icons.notes, title: l10n.additionalInformation),
               const SizedBox(height: 10),
               AdditionalInformationCard(additionalInfo: report.additionalInformation.trim()),
-              if (report.responderNotes.isNotEmpty) ...[
+              if (response.responderNotes.isNotEmpty) ...[
                 const SizedBox(height: 10),
                 SectionTitle(icon: Icons.edit_note, title: l10n.responderNotes),
                 const SizedBox(height: 10),
-                ResponderNotesCard(notes: report.responderNotes),
+                ResponderNotesCard(notes: response.responderNotes),
               ],
             ],
           ),

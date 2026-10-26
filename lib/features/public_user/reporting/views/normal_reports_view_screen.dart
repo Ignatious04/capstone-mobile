@@ -1,27 +1,20 @@
 import 'package:capstone/core/l10n/enum_labels.dart';
 import 'package:capstone/core/l10n/app_localizations.dart';
-import 'package:capstone/core/enums/report_status_enum.dart';
 import 'package:capstone/core/enums/service_type_enum.dart';
 import 'package:capstone/core/shared/providers/report_repository_provider.dart';
-import 'package:capstone/core/shared/providers/responder_provider.dart';
 import 'package:capstone/core/shared/widgets/emergency_guidance_sheet.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/widgets/text/label_text.dart';
 import 'package:capstone/core/shared/widgets/custom_app_bar.dart';
 import 'package:capstone/core/shared/models/report_model.dart';
-import 'package:capstone/features/public_user/reporting/providers/responder_location_provider.dart';
 import 'package:capstone/features/public_user/reporting/widgets/additional_information_card.dart';
 import 'package:capstone/features/public_user/reporting/widgets/attachments_card.dart';
-import 'package:capstone/features/public_user/reporting/widgets/eta_card.dart';
-import 'package:capstone/features/public_user/reporting/widgets/location_card.dart';
 import 'package:capstone/features/public_user/reporting/widgets/report_status_widget.dart';
 import 'package:capstone/core/shared/widgets/section_title.dart';
-import 'package:capstone/features/public_user/reporting/widgets/reporting_timeline_card.dart';
-import 'package:capstone/features/public_user/reporting/widgets/responder_card.dart';
+import 'package:capstone/features/public_user/reporting/widgets/report_responses_section.dart';
 import 'package:capstone/features/public_user/reporting/widgets/victims_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class NormalReportsViewScreen extends ConsumerStatefulWidget {
   const NormalReportsViewScreen({
@@ -52,14 +45,8 @@ class _NormalReportsViewScreenState extends ConsumerState<NormalReportsViewScree
     final report = reportAsync.value ?? widget.report;
 
     final status = report.status!.name;
-    final location = report.location!;
     final information = report.additionalInformation.trim();
     final showGuidanceEntry = !(report.incidentType == ServiceTypeEnum.police && report.policeConcernType != null);
-    final assignedResponderID = report.assignedTo ?? "";
-    final responderAsync = assignedResponderID.isEmpty ? null : ref.watch(responderByIdProvider(assignedResponderID));
-    final showResponderLocation = assignedResponderID.isNotEmpty && report.status != ReportStatusEnum.resolved;
-    final responderLatLng = showResponderLocation ? ref.watch(responderLocationProvider(report.reportID)).value : null;
-    final incidentLatLng = LatLng(location.latitude, location.longitude);
 
     return Scaffold(
       appBar: CustomAppBar(
@@ -141,44 +128,7 @@ class _NormalReportsViewScreenState extends ConsumerState<NormalReportsViewScree
                     ),
                   ),
                 ),
-                if (responderAsync != null) ...[
-                  const SizedBox(height: 10),
-                  responderAsync.when(
-                    data: (responder) => responder == null
-                        ? const SizedBox.shrink()
-                        : Column(
-                            children: [
-                              SectionTitle(icon: Icons.support_agent, title: l10n.responder),
-                              const SizedBox(height: 10),
-                              ResponderCard(responder: responder),
-                            ],
-                          ),
-                    loading: () => const SizedBox.shrink(),
-                    error: (_, _) => const SizedBox.shrink(),
-                  ),
-                ],
-                const SizedBox(height: 10),
-                SectionTitle(icon: Icons.timeline, title: l10n.statusTimeline),
-                const SizedBox(height: 10),
-                ReportTimelineCard(report: report),
-                const SizedBox(height: 10),
-                SectionTitle(
-                  icon: Icons.location_on_outlined,
-                  title: responderLatLng == null ? l10n.incidentLocation : l10n.incidentAndResponderLocation,
-                ),
-                const SizedBox(height: 10),
-                if (responderLatLng != null) ...[
-                  EtaCard(
-                    responder: responderLatLng,
-                    incident: incidentLatLng,
-                    isOnScene: report.status == ReportStatusEnum.onScene,
-                  ),
-                  const SizedBox(height: 10),
-                ],
-                LocationCard(
-                  location: location,
-                  responderLocation: responderLatLng,
-                ),
+                ReportResponsesSection(report: report),
                 const SizedBox(height: 10),
                 SectionTitle(
                   icon: Icons.people_outline,

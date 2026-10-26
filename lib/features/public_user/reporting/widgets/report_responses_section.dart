@@ -1,0 +1,107 @@
+import 'package:capstone/core/enums/report_status_enum.dart';
+import 'package:capstone/core/l10n/app_localizations.dart';
+import 'package:capstone/core/l10n/enum_labels.dart';
+import 'package:capstone/core/shared/models/report_model.dart';
+import 'package:capstone/core/shared/models/response_model.dart';
+import 'package:capstone/core/shared/providers/responder_provider.dart';
+import 'package:capstone/core/shared/providers/response_repository_provider.dart';
+import 'package:capstone/core/shared/widgets/section_title.dart';
+import 'package:capstone/features/public_user/reporting/providers/responder_location_provider.dart';
+import 'package:capstone/features/public_user/reporting/widgets/eta_card.dart';
+import 'package:capstone/features/public_user/reporting/widgets/location_card.dart';
+import 'package:capstone/features/public_user/reporting/widgets/reporting_timeline_card.dart';
+import 'package:capstone/features/public_user/reporting/widgets/responder_card.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+
+/// Everything about who is responding to a report: one block per service
+/// (responder + that service's own timeline), then a single map with the
+/// incident and every responder who is sharing their location.
+///
+/// Replaces the single responder card / timeline / ETA / map that the four
+/// report view screens each built from `report.assignedTo`.
+class ReportResponsesSection extends ConsumerWidget {
+  const ReportResponsesSection({super.key, required this.report});
+
+  final ReportModel report;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context)!;
+
+    final responses =
+        ref.watch(responsesForReportProvider((reportID: report.reportID, userID: report.userID))).value ??
+        const <ResponseModel>[];
+
+    // Live pins: only responders who are assigned, unresolved and sharing.
+    final live = <({ResponseModel response, LatLng position})>[];
+    for (final response in responses) {
+      final responderID = response.assignedTo;
+      if (responderID == null || response.status == ReportStatusEnum.resolved) continue;
+      final position = ref
+          .watch(responderLocationProvider((reportID: response.reportID, responderID: responderID)))
+          .value;
+      if (position != null) live.add((response: response, position: position));
+    }
+
+    final location = report.location;
+    final incident = location == null ? null : LatLng(location.latitude, location.longitude);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        // const SizedBox(height: 10),
+        SectionTitle(icon: Icons.timeline, title: l10n.statusTimeline),
+        const SizedBox(height: 10),
+        if (responses.isEmpty) ...[
+          ReportTimelineCard(createdAt: report.createdAt),
+        ],
+        for (final response in responses) ...[
+          // const SizedBox(height: 10),
+          // SectionTitle(icon: Icons.support_agent, title: response.serviceType.label(l10n)),
+          // const SizedBox(height: 10),
+          if (response.assignedTo != null) ...[
+            _AssignedResponder(responderID: response.assignedTo!),
+            const SizedBox(height: 10),
+          ],
+          ReportTimelineCard(createdAt: report.createdAt, response: response),
+        ],
+        if (location != null && incident != null) ...[
+          const SizedBox(height: 10),
+          SectionTitle(
+            icon: Icons.location_on_outlined,
+            title: live.isEmpty ? l10n.incidentLocation : l10n.incidentAndResponderLocation,
+          ),
+          const SizedBox(height: 10),
+          for (final item in live) ...[
+            EtaCard(
+              responder: item.position,
+              incident: incident,
+              isOnScene: item.response.status == ReportStatusEnum.onScene,
+              title: live.length > 1 ? '${item.response.serviceType.label(l10n)} - ${l10n.estimatedArrival}' : null,
+            ),
+            const SizedBox(height: 10),
+          ],
+          LocationCard(
+            location: location,
+            responderLocations: [for (final item in live) item.position],
+          ),
+        ],
+      ],
+    );
+  }
+}
+
+class _AssignedResponder extends ConsumerWidget {
+  const _AssignedResponder({required this.responderID});
+
+  final String responderID;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final responder = ref.watch(responderByIdProvider(responderID)).value;
+    if (responder == null) return const SizedBox.shrink();
+    return ResponderCard(responder: responder);
+  }
+}

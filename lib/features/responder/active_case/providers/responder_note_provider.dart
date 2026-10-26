@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:capstone/core/constants/timeouts.dart';
 import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/shared/models/responder_note_model.dart';
-import 'package:capstone/core/shared/providers/report_repository_provider.dart';
 import 'package:capstone/core/shared/providers/responder_provider.dart';
+import 'package:capstone/core/shared/providers/response_repository_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// state == true while a note is being saved.
@@ -20,7 +20,7 @@ class ResponderNoteNotifier extends Notifier<bool> {
 
   /// Returns null on success (or if there was nothing to save), else an error message.
   Future<String?> addNote({
-    required String reportID,
+    required String responseID,
     required String text,
     required AppLocalizations l10n,
   }) async {
@@ -33,9 +33,9 @@ class ResponderNoteNotifier extends Notifier<bool> {
     state = true;
     try {
       await ref
-          .read(reportRepositoryProvider)
-          .addResponderNote(
-            reportID,
+          .read(responseRepositoryProvider)
+          .addNote(
+            responseID,
             ResponderNoteModel(
               text: trimmed,
               authorID: responder.id,

@@ -3,7 +3,6 @@ import 'package:capstone/core/enums/service_type_enum.dart';
 import 'package:capstone/core/enums/report_priority_enum.dart';
 import 'package:capstone/core/enums/report_status_enum.dart';
 import 'package:capstone/core/enums/report_type_enum.dart';
-import 'package:capstone/core/shared/models/responder_note_model.dart';
 import 'package:capstone/features/public_user/pre_call_guidance/models/pre_call_guidance_model.dart';
 import 'package:capstone/core/shared/models/attachment_model.dart';
 import 'package:capstone/features/public_user/reporting/models/victim_model.dart';
@@ -20,30 +19,23 @@ class ReportModel {
   final String description;
   final List<VictimModel> victims;
   final List<AttachmentModel> attachments;
-  final List<AttachmentModel> responderAttachments;
-  final List<ResponderNoteModel> responderNotes;
   final List<PreCallGuidanceModel> guidanceAnswers;
   final String additionalInformation;
   final ReportStatusEnum? status;
   final GeoPoint? location;
   final DateTime? createdAt;
-  final String? assignedTo;
 
-  /// Station (emergencyServices doc ID) this report was routed to.
+  /// Station of the *primary* service. Each service's own station, responder,
+  /// status, notes and attachments live in its `responses/{id}` document.
   /// Set by the onReportCreated Cloud Function, never by the client.
   final String? serviceID;
   final double? locationAccuracy;
   final String? locationDescription;
   final GeoPoint? originalGpsLocation;
-  final DateTime? acceptedAt;
-  final DateTime? dispatchedAt;
-  final DateTime? arrivedAt;
+
+  /// Set by the derive-status Cloud Function once every response is resolved.
   final DateTime? resolvedAt;
   final List<ServiceTypeEnum> secondaryServices;
-
-  /// ETA recorded when the responder went en route (frozen snapshot, not live).
-  final int? etaSeconds;
-  final double? etaDistanceMeters;
 
   const ReportModel({
     this.reportID = '',
@@ -56,25 +48,17 @@ class ReportModel {
     this.description = '',
     this.victims = const [],
     this.attachments = const [],
-    this.responderAttachments = const [],
-    this.responderNotes = const [],
     this.guidanceAnswers = const [],
     this.additionalInformation = '',
     this.status = ReportStatusEnum.pending,
     this.location,
     this.createdAt,
-    this.assignedTo,
     this.serviceID,
     this.locationAccuracy,
     this.locationDescription,
     this.originalGpsLocation,
-    this.acceptedAt,
-    this.dispatchedAt,
-    this.arrivedAt,
     this.resolvedAt,
     this.secondaryServices = const [],
-    this.etaSeconds,
-    this.etaDistanceMeters,
   });
 
   ReportModel copyWith({
@@ -88,25 +72,17 @@ class ReportModel {
     String? description,
     List<VictimModel>? victims,
     List<AttachmentModel>? attachments,
-    List<AttachmentModel>? responderAttachments,
-    List<ResponderNoteModel>? responderNotes,
     List<PreCallGuidanceModel>? guidanceAnswers,
     String? additionalInformation,
     ReportStatusEnum? status,
     GeoPoint? location,
     DateTime? createdAt,
-    String? assignedTo,
     String? serviceID,
     double? locationAccuracy,
     String? locationDescription,
     GeoPoint? originalGpsLocation,
-    DateTime? acceptedAt,
-    DateTime? dispatchedAt,
-    DateTime? arrivedAt,
     DateTime? resolvedAt,
     List<ServiceTypeEnum>? secondaryServices,
-    int? etaSeconds,
-    double? etaDistanceMeters,
   }) {
     return ReportModel(
       reportID: reportID ?? this.reportID,
@@ -119,25 +95,17 @@ class ReportModel {
       description: description ?? this.description,
       victims: victims ?? this.victims,
       attachments: attachments ?? this.attachments,
-      responderAttachments: responderAttachments ?? this.responderAttachments,
-      responderNotes: responderNotes ?? this.responderNotes,
       guidanceAnswers: guidanceAnswers ?? this.guidanceAnswers,
       additionalInformation: additionalInformation ?? this.additionalInformation,
       status: status ?? this.status,
       location: location ?? this.location,
       createdAt: createdAt ?? this.createdAt,
-      assignedTo: assignedTo ?? this.assignedTo,
       serviceID: serviceID ?? this.serviceID,
       locationAccuracy: locationAccuracy ?? this.locationAccuracy,
       locationDescription: locationDescription ?? this.locationDescription,
       originalGpsLocation: originalGpsLocation ?? this.originalGpsLocation,
-      acceptedAt: acceptedAt ?? this.acceptedAt,
-      dispatchedAt: dispatchedAt ?? this.dispatchedAt,
-      arrivedAt: arrivedAt ?? this.arrivedAt,
       resolvedAt: resolvedAt ?? this.resolvedAt,
       secondaryServices: secondaryServices ?? this.secondaryServices,
-      etaSeconds: etaSeconds ?? this.etaSeconds,
-      etaDistanceMeters: etaDistanceMeters ?? this.etaDistanceMeters,
     );
   }
 
@@ -153,24 +121,16 @@ class ReportModel {
       'description': description,
       'victims': victims.map((v) => v.toMap()).toList(),
       'attachments': attachments.map((a) => a.toMap()).toList(),
-      'responderAttachments': responderAttachments.map((a) => a.toMap()).toList(),
-      'responderNotes': responderNotes.map((n) => n.toMap()).toList(),
       'guidanceAnswers': guidanceAnswers.map((e) => e.toMap()).toList(),
       'additionalInformation': additionalInformation,
       'status': status?.name,
       'location': location,
       'createdAt': createdAt,
-      "assignedTo": assignedTo,
       'locationAccuracy': locationAccuracy,
       'locationDescription': locationDescription,
       'originalGpsLocation': originalGpsLocation,
-      'acceptedAt': acceptedAt,
-      'dispatchedAt': dispatchedAt,
-      "arrivedAt": arrivedAt,
       'resolvedAt': resolvedAt,
       'secondaryServices': secondaryServices.map((s) => s.name).toList(),
-      'etaSeconds': etaSeconds,
-      'etaDistanceMeters': etaDistanceMeters,
     };
   }
 
@@ -196,12 +156,6 @@ class ReportModel {
       attachments: (map['attachments'] as List<dynamic>? ?? [])
           .map((a) => AttachmentModel.fromMap(Map<String, dynamic>.from(a)))
           .toList(),
-      responderAttachments: (map['responderAttachments'] as List<dynamic>? ?? [])
-          .map((a) => AttachmentModel.fromMap(Map<String, dynamic>.from(a)))
-          .toList(),
-      responderNotes: (map['responderNotes'] as List<dynamic>? ?? [])
-          .map((n) => ResponderNoteModel.fromMap(Map<String, dynamic>.from(n)))
-          .toList(),
       guidanceAnswers: (map['guidanceAnswers'] as List<dynamic>? ?? [])
           .map((e) => PreCallGuidanceModel.fromMap(Map<String, dynamic>.from(e)))
           .toList(),
@@ -209,20 +163,14 @@ class ReportModel {
       status: map['status'] != null ? ReportStatusEnum.values.firstWhere((e) => e.name == map['status']) : null,
       location: map['location'],
       createdAt: (map['createdAt'] as Timestamp?)?.toDate(),
-      assignedTo: map["assignedTo"] ?? "",
       serviceID: map['serviceID'] as String?,
       locationAccuracy: (map['locationAccuracy'] as num?)?.toDouble(),
       locationDescription: map['locationDescription'],
       originalGpsLocation: map['originalGpsLocation'],
-      acceptedAt: (map['acceptedAt'] as Timestamp?)?.toDate(),
-      dispatchedAt: (map["dispatchedAt"] as Timestamp?)?.toDate(),
-      arrivedAt: (map["arrivedAt"] as Timestamp?)?.toDate(),
       resolvedAt: (map['resolvedAt'] as Timestamp?)?.toDate(),
       secondaryServices: (map['secondaryServices'] as List<dynamic>? ?? [])
           .map((s) => ServiceTypeEnum.values.firstWhere((e) => e.name == s))
           .toList(),
-      etaSeconds: (map['etaSeconds'] as num?)?.toInt(),
-      etaDistanceMeters: (map['etaDistanceMeters'] as num?)?.toDouble(),
     );
   }
 }

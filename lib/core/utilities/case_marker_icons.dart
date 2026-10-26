@@ -32,7 +32,7 @@ final caseMarkerIconsProvider = FutureProvider<CaseMarkerIcons>((ref) async {
 Set<Marker> buildCaseMarkers({
   required CaseMarkerIcons? icons,
   required LatLng incident,
-  LatLng? responder,
+  List<LatLng> responders = const [],
 }) {
   return {
     Marker(
@@ -41,10 +41,10 @@ Set<Marker> buildCaseMarkers({
       icon: icons?.incident ?? BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
       anchor: icons != null ? kPinAnchor : const Offset(0.5, 1.0),
     ),
-    if (responder != null)
+    for (var i = 0; i < responders.length; i++)
       Marker(
-        markerId: const MarkerId('responder'),
-        position: responder,
+        markerId: MarkerId('responder_$i'),
+        position: responders[i],
         icon: icons?.responder ?? BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueAzure),
         anchor: icons != null ? kPinAnchor : const Offset(0.5, 1.0),
       ),

@@ -11,11 +11,15 @@ class EtaCard extends StatelessWidget {
     required this.responder,
     required this.incident,
     required this.isOnScene,
+    this.title,
   });
 
   final LatLng responder;
   final LatLng incident;
   final bool isOnScene;
+
+  /// Overrides the default label, e.g. to say which service this ETA is for.
+  final String? title;
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +44,7 @@ class EtaCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  LabelText(value: l10n.estimatedArrival.toUpperCase()),
+                  LabelText(value: (title ?? l10n.estimatedArrival).toUpperCase()),
                   BodyText(value: headline, isBold: true),
                   if (detail != null) BodyText(value: detail),
                 ],

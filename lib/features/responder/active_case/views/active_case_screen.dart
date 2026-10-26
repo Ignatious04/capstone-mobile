@@ -11,8 +11,7 @@ import 'package:capstone/core/shared/widgets/text/title_text.dart';
 import 'package:capstone/core/utilities/directions_launcher.dart';
 import 'package:capstone/core/utilities/eta_calculator.dart';
 import 'package:capstone/features/public_user/map/widgets/map_tile_widget.dart';
-import 'package:capstone/core/shared/models/report_model.dart';
-import 'package:capstone/core/shared/providers/report_repository_provider.dart';
+import 'package:capstone/core/shared/providers/response_repository_provider.dart';
 import 'package:capstone/features/public_user/reporting/widgets/additional_information_card.dart';
 import 'package:capstone/features/public_user/reporting/widgets/attachments_card.dart';
 import 'package:capstone/features/public_user/reporting/widgets/report_status_widget.dart';
@@ -30,9 +29,10 @@ import '../providers/active_case_provider.dart';
 class ActiveCaseScreen extends ConsumerWidget {
   const ActiveCaseScreen({super.key});
 
-  Future<void> _advanceStatus(WidgetRef ref, ReportModel report) async {
-    final repo = ref.read(reportRepositoryProvider);
-    final next = switch (report.status) {
+  Future<void> _advanceStatus(WidgetRef ref, ActiveCase activeCase) async {
+    final repo = ref.read(responseRepositoryProvider);
+    final response = activeCase.response;
+    final next = switch (response.status) {
       ReportStatusEnum.accepted => ReportStatusEnum.dispatched, // En Route
       ReportStatusEnum.dispatched => ReportStatusEnum.onScene, // Arrived
       ReportStatusEnum.onScene => ReportStatusEnum.resolved, // Resolve
@@ -40,7 +40,7 @@ class ActiveCaseScreen extends ConsumerWidget {
     };
     if (next == null) return;
     EtaEstimate? eta;
-    final incident = report.location;
+    final incident = activeCase.report.location;
     if (next == ReportStatusEnum.dispatched && incident != null) {
       try {
         final locationService = ref.read(locationServiceProvider);
@@ -52,10 +52,9 @@ class ActiveCaseScreen extends ConsumerWidget {
       }
     }
 
-    await repo.updateReportStatus(
-      report.reportID,
+    await repo.updateStatus(
+      response.responseID,
       next,
-      responderID: report.assignedTo,
       etaSeconds: eta?.duration.inSeconds,
       etaDistanceMeters: eta?.distanceMeters,
     );
@@ -69,13 +68,13 @@ class ActiveCaseScreen extends ConsumerWidget {
       backgroundColor: Colors.grey.shade100,
       body: SafeArea(
         child: caseAsync.when(
-          data: (report) {
-            if (report == null) {
+          data: (activeCase) {
+            if (activeCase == null) {
               return const _NoActiveCase();
             }
             return _ActiveCaseBody(
-              report: report,
-              onAdvance: () => _advanceStatus(ref, report),
+              activeCase: activeCase,
+              onAdvance: () => _advanceStatus(ref, activeCase),
             );
           },
           loading: () => const Center(child: CustomCircularProgressIndicator()),
@@ -116,17 +115,19 @@ class _NoActiveCase extends StatelessWidget {
 
 class _ActiveCaseBody extends StatelessWidget {
   const _ActiveCaseBody({
-    required this.report,
+    required this.activeCase,
     required this.onAdvance,
   });
 
-  final ReportModel report;
+  final ActiveCase activeCase;
   final VoidCallback onAdvance;
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
+    final report = activeCase.report;
+    final response = activeCase.response;
     final location = report.location;
     final screenHeight = MediaQuery.of(context).size.height;
 
@@ -221,7 +222,7 @@ class _ActiveCaseBody extends StatelessWidget {
                           ],
                         ),
                         const SizedBox(height: 10),
-                        ReportStatusWidget(status: report.status!.name),
+                        ReportStatusWidget(status: response.status.name),
                         const SizedBox(height: 10),
                         LabelText(value: l10n.referenceNumber.toUpperCase()),
                         BodyText(
@@ -246,12 +247,12 @@ class _ActiveCaseBody extends StatelessWidget {
                 const SizedBox(height: 10),
                 AttachmentsCard(attachments: report.attachments),
                 const SizedBox(height: 10),
-                ResponderAttachmentsSection(report: report),
+                ResponderAttachmentsSection(response: response),
                 const SizedBox(height: 10),
                 SectionTitle(icon: Icons.notes, title: l10n.additionalInformation),
                 AdditionalInformationCard(additionalInfo: report.additionalInformation.trim()),
                 const SizedBox(height: 10),
-                ResponderNotesSection(report: report),
+                ResponderNotesSection(response: response),
                 const SizedBox(height: 20),
                 Center(
                   child: LabelText(
@@ -261,7 +262,7 @@ class _ActiveCaseBody extends StatelessWidget {
                 ),
                 const SizedBox(height: 10),
                 ActiveCaseActionBar(
-                  status: report.status!,
+                  status: response.status,
                   onAdvance: onAdvance,
                 ),
               ],

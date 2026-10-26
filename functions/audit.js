@@ -120,6 +120,49 @@ exports.auditReportUpdated = onDocumentUpdatedWithAuthContext(
       });
     });
 
+// ---------- responses (one service's part of a report) ----------
+// Responder and operator actions (assign, dispatch, on scene, resolve) now
+// land here instead of on the report, so they are audited here.
+exports.auditResponseCreated = onDocumentCreatedWithAuthContext(
+    "responses/{responseID}", async (event) => {
+      const d = event.data.data();
+      await writeAudit(event, {
+        action: "response.created",
+        category: "report",
+        ...(await resolveActor(event)),
+        targetType: "response",
+        targetId: event.params.responseID,
+        metadata: {
+          reportID: d.reportID,
+          serviceType: d.serviceType,
+          isPrimary: !!d.isPrimary,
+          serviceID: d.serviceID || null,
+        },
+      });
+    });
+
+exports.auditResponseUpdated = onDocumentUpdatedWithAuthContext(
+    "responses/{responseID}", async (event) => {
+      const before = event.data.before.data();
+      const after = event.data.after.data();
+      const changes = diffFields(before, after);
+      if (Object.keys(changes).length === 0) return;
+
+      let action = "response.updated";
+      if (changes.status) action = "response.status_changed";
+      else if (changes.assignedTo) action = "response.assignment_changed";
+
+      await writeAudit(event, {
+        action,
+        category: "report",
+        ...(await resolveActor(event)),
+        targetType: "response",
+        targetId: event.params.responseID,
+        changes,
+        metadata: {reportID: after.reportID, serviceType: after.serviceType, reporterID: after.userID},
+      });
+    });
+
 exports.auditReportDeleted = onDocumentDeletedWithAuthContext(
     "reports/{reportID}", async (event) => {
       const d = event.data.data();

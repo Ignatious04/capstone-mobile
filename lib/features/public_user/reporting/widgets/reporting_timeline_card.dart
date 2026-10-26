@@ -1,29 +1,33 @@
 import 'package:capstone/core/l10n/app_localizations.dart';
-import 'package:capstone/core/shared/models/report_model.dart';
+import 'package:capstone/core/shared/models/response_model.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/widgets/text/label_text.dart';
 import 'package:capstone/core/utilities/eta_calculator.dart';
 import 'package:capstone/core/utilities/formatter.dart';
 import 'package:flutter/material.dart';
 
-/// Shows when each status was reached, plus the ETA recorded at dispatch
-/// and (once the responder arrives) how long the trip actually took.
+/// Shows when each status was reached for one service's response, plus the
+/// ETA recorded at dispatch and (once the responder arrives) how long the
+/// trip actually took. Without a response it only shows when it was reported.
 class ReportTimelineCard extends StatelessWidget {
-  const ReportTimelineCard({super.key, required this.report});
+  const ReportTimelineCard({super.key, required this.createdAt, this.response});
 
-  final ReportModel report;
+  final DateTime? createdAt;
+  final ResponseModel? response;
 
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
     final locale = Localizations.localeOf(context).toString();
 
+    final r = response;
+
     // ETA snapshot saved when the responder went en route.
     String? etaNote;
-    if (report.etaSeconds != null) {
+    if (r?.etaSeconds != null) {
       final recorded = EtaEstimate(
-        distanceMeters: report.etaDistanceMeters ?? 0,
-        duration: Duration(seconds: report.etaSeconds!),
+        distanceMeters: r!.etaDistanceMeters ?? 0,
+        duration: Duration(seconds: r.etaSeconds!),
       );
       etaNote = l10n.etaRecorded(
         EtaCalculator.formatDuration(l10n, recorded.duration),
@@ -33,17 +37,17 @@ class ReportTimelineCard extends StatelessWidget {
 
     // Actual travel time = dispatched -> on scene.
     String? travelNote;
-    if (report.dispatchedAt != null && report.arrivedAt != null) {
-      final actual = report.arrivedAt!.difference(report.dispatchedAt!);
+    if (r?.dispatchedAt != null && r?.arrivedAt != null) {
+      final actual = r!.arrivedAt!.difference(r.dispatchedAt!);
       travelNote = l10n.actualTravelTime(EtaCalculator.formatDuration(l10n, actual));
     }
 
     final steps = <_TimelineStep>[
-      _TimelineStep(l10n.reported, report.createdAt),
-      _TimelineStep(l10n.reportStatusAccepted, report.acceptedAt),
-      _TimelineStep(l10n.reportStatusDispatched, report.dispatchedAt, note: etaNote),
-      _TimelineStep(l10n.reportStatusOnScene, report.arrivedAt, note: travelNote),
-      _TimelineStep(l10n.reportStatusResolved, report.resolvedAt),
+      _TimelineStep(l10n.reported, createdAt),
+      _TimelineStep(l10n.reportStatusAccepted, r?.acceptedAt),
+      _TimelineStep(l10n.reportStatusDispatched, r?.dispatchedAt, note: etaNote),
+      _TimelineStep(l10n.reportStatusOnScene, r?.arrivedAt, note: travelNote),
+      _TimelineStep(l10n.reportStatusResolved, r?.resolvedAt),
     ];
 
     return Card(

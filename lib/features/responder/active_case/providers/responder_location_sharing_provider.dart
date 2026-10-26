@@ -6,7 +6,6 @@ import 'package:capstone/core/enums/location_status_enum.dart';
 import 'package:capstone/core/enums/report_status_enum.dart';
 import 'package:capstone/core/services/location_service.dart';
 import 'package:capstone/core/shared/models/realtime_responder_location_model.dart';
-import 'package:capstone/core/shared/models/report_model.dart';
 import 'package:capstone/core/shared/providers/location_provider.dart';
 import 'package:capstone/core/shared/providers/realtime_database_repository_provider.dart';
 import 'package:capstone/core/shared/repositories/realtime_database_repository.dart';
@@ -23,7 +22,7 @@ final responderLocationSharingProvider = Provider<ResponderLocationSharer>((ref)
   );
   ref.onDispose(sharer.dispose);
 
-  ref.listen<AsyncValue<ReportModel?>>(
+  ref.listen<AsyncValue<ActiveCase?>>(
     activeCaseProvider,
     (_, next) {
       final data = next.asData;
@@ -48,25 +47,31 @@ class ResponderLocationSharer {
 
   StreamSubscription<LatLng>? _subscription;
   String? _sharingReportID;
+  String? _sharingResponderID;
 
-  static bool _shouldShare(ReportModel? report) =>
-      report != null && (report.status == ReportStatusEnum.dispatched || report.status == ReportStatusEnum.onScene);
+  static bool _shouldShare(ActiveCase? activeCase) {
+    final response = activeCase?.response;
+    if (response == null || response.assignedTo == null) return false;
+    return response.status == ReportStatusEnum.dispatched || response.status == ReportStatusEnum.onScene;
+  }
 
-  String _path(String reportID) => 'responderLocations/$reportID';
+  /// One node per responder, so several services on one report don't overwrite each other.
+  String _path(String reportID, String responderID) => 'responderLocations/$reportID/$responderID';
 
-  Future<void> sync(ReportModel? report) async {
-    if (report == null || !_shouldShare(report)) {
+  Future<void> sync(ActiveCase? activeCase) async {
+    if (activeCase == null || !_shouldShare(activeCase)) {
       await _stop();
       return;
     }
-    if (_sharingReportID == report.reportID) return; // already sharing this case
+    if (_sharingReportID == activeCase.response.reportID) return; // already sharing this case
     await _stop();
-    await _start(report);
+    await _start(activeCase);
   }
 
-  Future<void> _start(ReportModel report) async {
-    final reportID = report.reportID;
+  Future<void> _start(ActiveCase activeCase) async {
+    final reportID = activeCase.response.reportID;
     _sharingReportID = reportID;
+    _sharingResponderID = activeCase.response.assignedTo;
 
     // Responders skip LocationGate, so nothing else asks them for permission.
     final permission = await locationService.requestPermission();
@@ -79,32 +84,33 @@ class ResponderLocationSharer {
     // The stream only fires after movement, so publish an initial fix first.
     try {
       final fix = await locationService.getCurrentLocation();
-      await _publish(report, fix.latLng);
+      await _publish(activeCase, fix.latLng);
     } catch (e) {
       debugPrint('Initial responder location failed: $e');
     }
     if (_sharingReportID != reportID) return;
 
     _subscription = locationService.getResponderLocationStream(l10n: l10n()).listen(
-      (latLng) => _publish(report, latLng),
+      (latLng) => _publish(activeCase, latLng),
       onError: (e) => debugPrint('Responder location stream error: $e'),
     );
   }
 
-  Future<void> _publish(ReportModel report, LatLng latLng) async {
-    if (_sharingReportID != report.reportID) return;
+  Future<void> _publish(ActiveCase activeCase, LatLng latLng) async {
+    final response = activeCase.response;
+    if (_sharingReportID != response.reportID) return;
 
     final model = RealtimeResponderLocationModel(
-      reportID: report.reportID,
-      responderID: report.assignedTo ?? '',
-      userID: report.userID,
+      reportID: response.reportID,
+      responderID: response.assignedTo ?? '',
+      userID: response.userID,
       latitude: latLng.latitude,
       longitude: latLng.longitude,
       updatedAt: DateTime.now(),
     );
 
     try {
-      await database.create(path: _path(report.reportID), data: model.toMap());
+      await database.create(path: _path(response.reportID, response.assignedTo ?? ''), data: model.toMap());
     } catch (e) {
       debugPrint('Publishing responder location failed: $e');
     }
@@ -115,11 +121,13 @@ class ResponderLocationSharer {
     _subscription = null;
 
     final reportID = _sharingReportID;
+    final responderID = _sharingResponderID;
     _sharingReportID = null;
-    if (reportID == null) return;
+    _sharingResponderID = null;
+    if (reportID == null || responderID == null) return;
 
     try {
-      await database.delete(path: _path(reportID));
+      await database.delete(path: _path(reportID, responderID));
     } catch (e) {
       debugPrint('Removing responder location failed: $e');
     }
@@ -129,5 +137,6 @@ class ResponderLocationSharer {
     _subscription?.cancel();
     _subscription = null;
     _sharingReportID = null;
+    _sharingResponderID = null;
   }
 }

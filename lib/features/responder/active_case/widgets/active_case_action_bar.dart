@@ -84,7 +84,7 @@ class _ActiveCaseActionBarState extends State<ActiveCaseActionBar> with SingleTi
     };
 
     // A responder's active case should never be `pending` or `resolved`
-    // by the time it reaches this screen (see watchAssignedReport), but
+    // by the time it reaches this screen (see watchActiveResponse), but
     // fail safe rather than showing a broken button if it ever is.
     if (action == null) return const SizedBox.shrink();
 
