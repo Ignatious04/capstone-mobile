@@ -201,20 +201,29 @@ class ReportNotifier extends Notifier<ReportModel> {
   Future<void> addAttachment(ImageSource source) async {
     final picker = ImagePicker();
 
-    final image = await picker.pickImage(
-      source: source,
-      imageQuality: 75,
-      maxWidth: 1920,
-    );
+    final List<XFile> images;
+    if (source == ImageSource.gallery) {
+      images = await picker.pickMultiImage(
+        imageQuality: 75,
+        maxWidth: 1920,
+      );
+    } else {
+      final image = await picker.pickImage(
+        source: source,
+        imageQuality: 75,
+        maxWidth: 1920,
+      );
+      images = image == null ? [] : [image];
+    }
 
-    if (image == null) return;
+    if (images.isEmpty) return;
 
-    final file = File(image.path);
+    final files = images.map((image) => File(image.path)).toList();
 
     ref
         .read(pendingAttachmentsProvider.notifier)
         .update(
-          (state) => [...state, file],
+          (state) => [...state, ...files],
         );
   }
 

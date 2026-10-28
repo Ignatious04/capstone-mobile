@@ -5,6 +5,7 @@ import 'package:capstone/core/shared/models/report_model.dart';
 import 'package:capstone/core/shared/models/response_model.dart';
 import 'package:capstone/core/shared/providers/responder_provider.dart';
 import 'package:capstone/core/shared/providers/response_repository_provider.dart';
+import 'package:capstone/core/shared/widgets/custom_circular_progress_indicator.dart';
 import 'package:capstone/core/shared/widgets/section_title.dart';
 import 'package:capstone/features/public_user/reporting/providers/responder_location_provider.dart';
 import 'package:capstone/features/public_user/reporting/widgets/eta_card.dart';
@@ -30,9 +31,11 @@ class ReportResponsesSection extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
 
-    final responses =
-        ref.watch(responsesForReportProvider((reportID: report.reportID, userID: report.userID))).value ??
-        const <ResponseModel>[];
+    final responsesAsync = ref.watch(
+      responsesForReportProvider((reportID: report.reportID, userID: report.userID)),
+    );
+    final responses = responsesAsync.value ?? const <ResponseModel>[];
+    final loadingResponses = responsesAsync.isLoading && !responsesAsync.hasValue;
 
     // Live pins: only responders who are assigned, unresolved and sharing.
     final live = <({ResponseModel response, LatLng position})>[];
@@ -54,7 +57,9 @@ class ReportResponsesSection extends ConsumerWidget {
         // const SizedBox(height: 10),
         SectionTitle(icon: Icons.timeline, title: l10n.statusTimeline),
         const SizedBox(height: 10),
-        if (responses.isEmpty) ...[
+        if (loadingResponses)
+          const _ResponderPlaceholder()
+        else if (responses.isEmpty) ...[
           ReportTimelineCard(createdAt: report.createdAt),
         ],
         for (final response in responses) ...[
@@ -100,8 +105,30 @@ class _AssignedResponder extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final responder = ref.watch(responderByIdProvider(responderID)).value;
-    if (responder == null) return const SizedBox.shrink();
+    final responderAsync = ref.watch(responderByIdProvider(responderID));
+    final responder = responderAsync.value;
+    if (responder == null) {
+      return responderAsync.isLoading ? const _ResponderPlaceholder() : const SizedBox.shrink();
+    }
     return ResponderCard(responder: responder);
+  }
+}
+
+class _ResponderPlaceholder extends StatelessWidget {
+  const _ResponderPlaceholder();
+
+  @override
+  Widget build(BuildContext context) {
+    return const Card(
+      color: Colors.white,
+      elevation: 1,
+      margin: EdgeInsets.zero,
+      child: SizedBox(
+        height: 120, // roughly the real ResponderCard height
+        child: Center(
+          child: CustomCircularProgressIndicator(),
+        ),
+      ),
+    );
   }
 }

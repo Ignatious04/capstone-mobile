@@ -8,7 +8,7 @@ final responseRepositoryProvider = Provider<ResponseRepository>(
 );
 
 /// All service responses for one report (the reporter's view).
-final responsesForReportProvider = StreamProvider.autoDispose
+final responsesForReportProvider = StreamProvider
     .family<List<ResponseModel>, ({String reportID, String userID})>((ref, key) {
       return ref.watch(responseRepositoryProvider).watchForReport(reportID: key.reportID, userID: key.userID);
     });

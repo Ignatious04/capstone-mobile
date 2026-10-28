@@ -128,6 +128,7 @@ class _NormalReportsViewScreenState extends ConsumerState<NormalReportsViewScree
                     ),
                   ),
                 ),
+                const SizedBox(height: 10),
                 ReportResponsesSection(report: report),
                 const SizedBox(height: 10),
                 SectionTitle(

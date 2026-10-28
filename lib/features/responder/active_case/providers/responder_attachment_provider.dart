@@ -24,24 +24,38 @@ class ResponderAttachmentNotifier extends Notifier<bool> {
   }) async {
     if (state) return null;
 
-    final picked = await ImagePicker().pickImage(
-      source: source,
-      imageQuality: 75,
-      maxWidth: 1920,
-    );
-    if (picked == null) return null;
+    final picker = ImagePicker();
+    final List<XFile> picked;
+    if (source == ImageSource.gallery) {
+      picked = await picker.pickMultiImage(
+        imageQuality: 75,
+        maxWidth: 1920,
+      );
+    } else {
+      final image = await picker.pickImage(
+        source: source,
+        imageQuality: 75,
+        maxWidth: 1920,
+      );
+      picked = image == null ? [] : [image];
+    }
+    if (picked.isEmpty) return null;
 
     state = true;
     try {
       final responderID = ref.read(firebaseAuthProvider).currentUser!.uid;
-      final attachment = await ref
-          .read(storageRepositoryProvider)
-          .uploadResponderAttachment(
-            file: File(picked.path),
-            reportID: reportID,
-            responderID: responderID,
-          );
-      await ref.read(responseRepositoryProvider).addAttachment(responseID, attachment);
+      // Sequential on purpose: file names are based on the millisecond timestamp,
+      // so parallel uploads could collide.
+      for (final image in picked) {
+        final attachment = await ref
+            .read(storageRepositoryProvider)
+            .uploadResponderAttachment(
+              file: File(image.path),
+              reportID: reportID,
+              responderID: responderID,
+            );
+        await ref.read(responseRepositoryProvider).addAttachment(responseID, attachment);
+      }
       return null;
     } catch (_) {
       return l10n.uploadError;
