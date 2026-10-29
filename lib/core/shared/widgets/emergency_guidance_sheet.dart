@@ -55,7 +55,7 @@ class EmergencyGuidanceSheet extends ConsumerWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 10),
             Row(
               children: [
                 const Icon(Icons.info_outline, color: Colors.deepOrange, size: 25),
@@ -67,12 +67,12 @@ class EmergencyGuidanceSheet extends ConsumerWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 5),
+            const SizedBox(height: 10),
             BodyText(
               value: l10n.guidanceSheetIntro,
               color: Colors.black54,
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 10),
             ...tips.map(
               (tip) => Padding(
                 padding: const EdgeInsets.only(bottom: 10),
@@ -89,19 +89,22 @@ class EmergencyGuidanceSheet extends ConsumerWidget {
                 ),
               ),
             ),
-            const SizedBox(height: 5),
+            const SizedBox(height: 10),
             BodyText(
               value: l10n.guidanceSheetDisclaimer,
               color: Colors.black54,
             ),
-            const SizedBox(height: 15),
-            if (nearestName != null && nearestName.isNotEmpty) BodyText(value: nearestName, color: Colors.black54),
-            CustomElevatedButton(
-              onPressed: () => callNearestService(context, ref, incidentType),
-              value: l10n.call.toUpperCase(),
-              icon: const Icon(Icons.call),
-              color: Colors.white,
-              backgroundColor: Colors.green,
+            const SizedBox(height: 10),
+            if (nearestName != null && nearestName.isNotEmpty) BodyText(value: nearestName),
+            SizedBox(
+              width: double.infinity,
+              child: CustomElevatedButton(
+                onPressed: () => callNearestService(context, ref, incidentType),
+                value: l10n.call.toUpperCase(),
+                icon: const Icon(Icons.call),
+                color: Colors.white,
+                backgroundColor: Colors.green,
+              ),
             ),
           ],
         ),

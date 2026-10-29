@@ -98,13 +98,14 @@ class _NoActiveCase extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.local_hospital, size: 64, color: Colors.black54),
-            SizedBox(height: 16),
+            const Icon(Icons.emergency_outlined, size: 100, color: Colors.black54),
+            const SizedBox(height: 10),
             TitleText(value: l10n.noActiveCase),
-            SizedBox(height: 8),
+            const SizedBox(height: 10),
             BodyText(
               value: l10n.noActiveCaseHint,
               color: Colors.black54,
+              alignment: TextAlign.center,
             ),
           ],
         ),

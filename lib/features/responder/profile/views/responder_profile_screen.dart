@@ -131,7 +131,8 @@ class _ResponderProfileBody extends ConsumerWidget {
                     onPressed: () async {
                       final confirmed = await showConfirmationDialog(
                         context,
-                        title: l10n.logoutConfirm,
+                        title: l10n.attention,
+                        content: l10n.logoutConfirm,
                       );
                       if (confirmed != true) return;
                       await ref.read(responderLocationSharingProvider).stopSharing();

@@ -41,16 +41,19 @@ class _ActiveCaseActionBarState extends State<ActiveCaseActionBar> with SingleTi
   }
 
   void _startHold(PointerDownEvent event) {
+    if (!mounted) return;
     _downPosition = event.position;
     _controller.forward();
   }
 
   void _cancelHold() {
+    if (!mounted) return;
     _downPosition = null;
     _controller.reverse();
   }
 
   void _onMove(PointerMoveEvent event) {
+    if (!mounted) return;
     final start = _downPosition;
     if (start != null && (event.position - start).distance > _maxDrift) _cancelHold();
   }
