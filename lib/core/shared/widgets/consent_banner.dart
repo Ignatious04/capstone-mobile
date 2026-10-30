@@ -15,7 +15,7 @@ class ConsentBanner extends ConsumerWidget {
   const ConsentBanner({super.key});
 
   // Display only; the server enforces the real limits.
-  static const _cooldown = Duration(hours: 1);
+  static const _cooldown = Duration(minutes: 1);
   static const _maxSends = 5;
 
   String _mask(String email) {

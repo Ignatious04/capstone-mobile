@@ -5,6 +5,7 @@ import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/shared/models/responder_note_model.dart';
 import 'package:capstone/core/shared/providers/responder_provider.dart';
 import 'package:capstone/core/shared/providers/response_repository_provider.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// state == true while a note is being saved.
@@ -49,7 +50,8 @@ class ResponderNoteNotifier extends Notifier<bool> {
       // Offline: Firestore keeps the write queued and the note already shows
       // locally, so treat it as saved. It syncs when the connection returns.
       return null;
-    } catch (_) {
+    } catch (e) {
+      debugPrint('Add note failed: $e');
       return l10n.noteSaveError;
     } finally {
       state = false;

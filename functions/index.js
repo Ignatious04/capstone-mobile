@@ -122,7 +122,7 @@ const escapeHtml = (s = "") =>
     {"&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;"}[c]
   ));
 
-const CONSENT_COOLDOWN_MS = 60 * 60 * 1000; // 1 hour between sends
+const CONSENT_COOLDOWN_MS = 1 * 60 * 1000; // 1 hour between sends
 const MAX_CONSENT_SENDS = 5;
 
 async function sendConsentRequest(uid, user) {

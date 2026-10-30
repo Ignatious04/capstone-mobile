@@ -23,6 +23,7 @@ class GoogleSignInNotifier extends Notifier<AsyncValue<void>> {
 
       signedIn = true;
       final authUser = credential.user!;
+      ref.read(userProvider.notifier).reset(); // drop any leftover state from a previous account
       final userRepository = ref.read(userRepositoryProvider);
       final existing = await userRepository.getUser(authUser.uid);
 

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:capstone/core/shared/providers/firebase_auth_provider.dart';
 import 'package:capstone/core/shared/providers/response_repository_provider.dart';
 import 'package:capstone/core/shared/providers/storage_repository_provider.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -57,7 +58,8 @@ class ResponderAttachmentNotifier extends Notifier<bool> {
         await ref.read(responseRepositoryProvider).addAttachment(responseID, attachment);
       }
       return null;
-    } catch (_) {
+    } catch (e, st) {
+      debugPrint('Responder attachment failed: $e\n$st');
       return l10n.uploadError;
     } finally {
       state = false;

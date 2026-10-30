@@ -28,6 +28,10 @@ class AuthWrapper extends ConsumerWidget {
       return const SessionReplacedScreen();
     }
 
+    ref.listen(authStateProvider, (_, next) {
+      if (next.value == null) ref.read(userProvider.notifier).reset();
+    });
+
     final authState = ref.watch(authStateProvider);
 
     return authState.when(

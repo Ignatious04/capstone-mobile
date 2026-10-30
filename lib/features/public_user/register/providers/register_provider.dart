@@ -17,6 +17,7 @@ class RegisterNotifier extends Notifier<AsyncValue<void>> {
       final credential = await firebaseAuthRepository.createAccount(email: email, password: password);
       final userID = credential.user!.uid;
       await firebaseAuthRepository.sendEmailVerification();
+      userNotifier.reset();
       userNotifier.setUserID(userID);
       userNotifier.setEmail(email);
       final now = DateTime.now().millisecondsSinceEpoch;

@@ -5,6 +5,23 @@ const {STATUS_COPY, ASSIGNED_COPY, SERVICE_LABEL, pickLang} = require("./copy");
 
 const RANK = {pending: 0, accepted: 1, dispatched: 2, onScene: 3, resolved: 4};
 
+// Flip a responder back to available, but only if they have no other open
+// response (safe even if multiple simultaneous cases are allowed later).
+const releaseResponderIfIdle = async (responderID) => {
+  if (!responderID) return;
+  const db = admin.firestore();
+  const snap = await db.collection("responses")
+      .where("assignedTo", "==", responderID)
+      .get();
+  const hasOpenCase = snap.docs.some((d) => d.get("status") !== "resolved");
+  if (hasOpenCase) return;
+
+  const ref = db.collection("responders").doc(responderID);
+  const doc = await ref.get();
+  if (!doc.exists || doc.get("isAvailable") === true) return;
+  await ref.update({isAvailable: true});
+};
+
 const PUSH_ANDROID = {
   priority: "high",
   notification: {channelId: "high_importance_channel", sound: "default"},
@@ -65,6 +82,7 @@ exports.onResponseStatusChange = onDocumentUpdated("responses/{responseID}", asy
 
   if (after.status === "resolved" && after.assignedTo) {
     await admin.database().ref(`responderLocations/${after.reportID}/${after.assignedTo}`).remove();
+    await releaseResponderIfIdle(after.assignedTo);
   }
 
   const copy = STATUS_COPY[after.status];
@@ -106,6 +124,7 @@ exports.onResponseAssigned = onDocumentUpdated("responses/{responseID}", async (
   const after = event.data.after.data();
   const responderID = after.assignedTo;
   if (before.assignedTo === responderID) return;
+  await releaseResponderIfIdle(after.assignedTo);
 
   // The previous responder is no longer on this case: stop showing their pin.
   if (before.assignedTo) {
