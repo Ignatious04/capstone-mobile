@@ -1539,4 +1539,20 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String get imageDeleteError => 'Hindi mabura ang larawan. Suriin ang iyong koneksyon at subukan muli.';
+
+  @override
+  String get awaitingResponder => 'Naghihintay ng responder';
+
+  @override
+  String get clearAllNotifications => 'Burahin lahat';
+
+  @override
+  String get clearAllNotificationsTitle => 'Burahin ang lahat ng abiso?';
+
+  @override
+  String get clearAllNotificationsBody =>
+      'Aalisin nito ang lahat ng abiso sa iyong kasaysayan. Hindi na ito maibabalik.';
+
+  @override
+  String get allNotificationsCleared => 'Nabura ang lahat ng abiso';
 }

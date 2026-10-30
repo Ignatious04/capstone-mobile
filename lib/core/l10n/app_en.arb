@@ -644,6 +644,11 @@
   "noteDeleteError": "Could not delete the note. Check your connection and try again.",
   "deleteImage": "Delete image",
   "deleteImageConfirm": "This image will be removed from the case for everyone who can see it.",
-  "imageDeleteError": "Could not delete the image. Check your connection and try again."
+  "imageDeleteError": "Could not delete the image. Check your connection and try again.",
+  "awaitingResponder": "Awaiting responder",
+  "clearAllNotifications": "Clear all",
+  "clearAllNotificationsTitle": "Clear all notifications?",
+  "clearAllNotificationsBody": "This will remove every notification from your history. This can't be undone.",
+  "allNotificationsCleared": "All notifications cleared"
 
 }

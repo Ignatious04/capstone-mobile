@@ -2983,6 +2983,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Could not delete the image. Check your connection and try again.'**
   String get imageDeleteError;
+
+  /// No description provided for @awaitingResponder.
+  ///
+  /// In en, this message translates to:
+  /// **'Awaiting responder'**
+  String get awaitingResponder;
+
+  /// No description provided for @clearAllNotifications.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear all'**
+  String get clearAllNotifications;
+
+  /// No description provided for @clearAllNotificationsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear all notifications?'**
+  String get clearAllNotificationsTitle;
+
+  /// No description provided for @clearAllNotificationsBody.
+  ///
+  /// In en, this message translates to:
+  /// **'This will remove every notification from your history. This can\'t be undone.'**
+  String get clearAllNotificationsBody;
+
+  /// No description provided for @allNotificationsCleared.
+  ///
+  /// In en, this message translates to:
+  /// **'All notifications cleared'**
+  String get allNotificationsCleared;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -1,4 +1,5 @@
 import 'package:capstone/core/enums/report_status_enum.dart';
+import 'package:capstone/core/enums/service_type_enum.dart';
 import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/l10n/enum_labels.dart';
 import 'package:capstone/core/shared/models/report_model.dart';
@@ -8,6 +9,8 @@ import 'package:capstone/core/shared/providers/response_repository_provider.dart
 import 'package:capstone/core/shared/widgets/custom_circular_progress_indicator.dart';
 import 'package:capstone/core/shared/widgets/section_title.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
+import 'package:capstone/core/shared/widgets/text/label_text.dart';
+import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/public_user/reporting/providers/responder_location_provider.dart';
 import 'package:capstone/features/public_user/reporting/widgets/eta_card.dart';
 import 'package:capstone/features/public_user/reporting/widgets/location_card.dart';
@@ -64,7 +67,7 @@ class ReportResponsesSection extends ConsumerWidget {
           ReportTimelineCard(createdAt: report.createdAt),
         ],
         for (final response in responses) ...[
-           _ResponseCard(createdAt: report.createdAt, response: response),
+          _ResponseCard(createdAt: report.createdAt, response: response),
           const SizedBox(height: 10),
         ],
         if (location != null && incident != null) ...[
@@ -113,10 +116,11 @@ class _ResponseCard extends StatelessWidget {
       clipBehavior: Clip.antiAlias, // keeps the tile's ripple inside the rounded corners
       child: Column(
         children: [
-          if (responderID != null) ...[
-            _AssignedResponder(responderID: responderID),
-            const Divider(height: 1),
-          ],
+          if (responderID != null)
+            _AssignedResponder(responderID: responderID)
+          else
+            _UnassignedHeader(response: response),
+          const Divider(height: 1),
           // ExpansionTile draws its own top/bottom borders; hide them.
           Theme(
             data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
@@ -128,6 +132,53 @@ class _ResponseCard extends StatelessWidget {
               title: BodyText(value: l10n.statusTimeline),
               children: [
                 ReportTimelineCard(createdAt: createdAt, response: response, embedded: true),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+/// Stands in for the ResponderCard until a responder is assigned, so each
+/// service's card is still identifiable (icon + service name + status).
+class _UnassignedHeader extends StatelessWidget {
+  const _UnassignedHeader({required this.response});
+
+  final ResponseModel response;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
+    final (icon, color, background) = switch (response.serviceType) {
+      ServiceTypeEnum.medical => (Icons.local_hospital, Colors.green, AppColors.lighterGreen),
+      ServiceTypeEnum.police => (Icons.local_police, Colors.blue, AppColors.lighterBlue),
+      ServiceTypeEnum.fire => (Icons.local_fire_department, Colors.red, AppColors.lighterRed),
+    };
+
+    return Padding(
+      padding: const EdgeInsets.all(20),
+      child: Row(
+        children: [
+          Container(
+            width: 50,
+            height: 50,
+            decoration: BoxDecoration(
+              color: background,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Icon(icon, size: 30, color: color),
+          ),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                LabelText(value: l10n.responder.toUpperCase()),
+                BodyText(value: response.serviceType.label(l10n), isBold: true),
+                BodyText(value: l10n.awaitingResponder, color: Colors.black54),
               ],
             ),
           ),

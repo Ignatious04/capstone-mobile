@@ -26,12 +26,33 @@ class NotificationHistoryScreen extends ConsumerWidget {
       body: SafeArea(
         child: Column(
           children: [
-            if (hasUnread)
-              Align(
-                alignment: Alignment.centerRight,
-                child: TextButton(
-                  onPressed: () => ref.read(notificationHistoryProvider.notifier).markAllAsRead(),
-                  child: Text(l10n.markAllRead),
+            if (notifications.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    if (hasUnread)
+                      TextButton(
+                        onPressed: () => ref.read(notificationHistoryProvider.notifier).markAllAsRead(),
+                        child: Text(l10n.markAllRead),
+                      ),
+                    TextButton(
+                      onPressed: () async {
+                        final confirmed = await showConfirmationDialog(
+                          context,
+                          title: l10n.clearAllNotificationsTitle,
+                          content: l10n.clearAllNotificationsBody,
+                        );
+                        if (confirmed != true) return;
+
+                        await ref.read(notificationHistoryProvider.notifier).clearAll();
+                        if (!context.mounted) return;
+                        CustomSnackbarHelper.show(context, text: l10n.allNotificationsCleared);
+                      },
+                      child: Text(l10n.clearAllNotifications),
+                    ),
+                  ],
                 ),
               ),
             Expanded(

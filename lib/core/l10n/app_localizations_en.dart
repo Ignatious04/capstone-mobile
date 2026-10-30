@@ -1534,4 +1534,20 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get imageDeleteError => 'Could not delete the image. Check your connection and try again.';
+
+  @override
+  String get awaitingResponder => 'Awaiting responder';
+
+  @override
+  String get clearAllNotifications => 'Clear all';
+
+  @override
+  String get clearAllNotificationsTitle => 'Clear all notifications?';
+
+  @override
+  String get clearAllNotificationsBody =>
+      'This will remove every notification from your history. This can\'t be undone.';
+
+  @override
+  String get allNotificationsCleared => 'All notifications cleared';
 }

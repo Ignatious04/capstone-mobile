@@ -486,5 +486,10 @@
   "noteDeleteError": "Hindi mabura ang tala. Suriin ang iyong koneksyon at subukan muli.",
   "deleteImage": "Burahin ang larawan",
   "deleteImageConfirm": "Aalisin ang larawang ito sa kaso para sa lahat ng makakakita nito.",
-  "imageDeleteError": "Hindi mabura ang larawan. Suriin ang iyong koneksyon at subukan muli."
+  "imageDeleteError": "Hindi mabura ang larawan. Suriin ang iyong koneksyon at subukan muli.",
+  "awaitingResponder": "Naghihintay ng responder",
+  "clearAllNotifications": "Burahin lahat",
+  "clearAllNotificationsTitle": "Burahin ang lahat ng abiso?",
+  "clearAllNotificationsBody": "Aalisin nito ang lahat ng abiso sa iyong kasaysayan. Hindi na ito maibabalik.",
+  "allNotificationsCleared": "Nabura ang lahat ng abiso"
 }
