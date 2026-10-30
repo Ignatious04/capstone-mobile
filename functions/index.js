@@ -147,7 +147,7 @@ async function sendConsentRequest(uid, user) {
   });
   await batch.commit();
 
-  const link = `https://capstone-project-ae71f.web.app/consent.html?t=${token}`;
+  const link = `https://saup-angeles-consent.web.app/consent.html?t=${token}`;
   await mailer().sendMail({
     from: `"Saup Angeles" <${SMTP_USER.value()}>`,
     to: user.guardianContact,

@@ -38,6 +38,7 @@
     }
   ],
   "hosting": {
+    "site": "saup-angeles-consent",
     "public": "public",
     "ignore": [
       "firebase.json",
