@@ -635,6 +635,15 @@
   "responderNotes": "Responder Notes",
   "addNote": "Add note",
   "noNotes": "No notes yet.",
-  "noteSaveError": "Could not save the note. Check your connection and try again."
+  "noteSaveError": "Could not save the note. Check your connection and try again.",
+  "delete": "Delete",
+  "edited": "Edited",
+  "editNote": "Edit note",
+  "deleteNote": "Delete note",
+  "deleteNoteConfirm": "This note will be permanently removed from the case record.",
+  "noteDeleteError": "Could not delete the note. Check your connection and try again.",
+  "deleteImage": "Delete image",
+  "deleteImageConfirm": "This image will be removed from the case for everyone who can see it.",
+  "imageDeleteError": "Could not delete the image. Check your connection and try again."
 
 }

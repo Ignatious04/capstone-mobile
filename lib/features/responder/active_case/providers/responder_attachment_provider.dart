@@ -1,4 +1,6 @@
+import 'package:capstone/core/constants/timeouts.dart';
 import 'package:capstone/core/l10n/app_localizations.dart';
+import 'package:capstone/core/shared/models/attachment_model.dart';
 import 'dart:io';
 import 'package:capstone/core/shared/providers/firebase_auth_provider.dart';
 import 'package:capstone/core/shared/providers/response_repository_provider.dart';
@@ -7,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 
-/// state == true while an upload is in progress.
+/// state == true while an upload or delete is in progress.
 final responderAttachmentProvider = NotifierProvider<ResponderAttachmentNotifier, bool>(
   ResponderAttachmentNotifier.new,
 );
@@ -64,5 +66,34 @@ class ResponderAttachmentNotifier extends Notifier<bool> {
     } finally {
       state = false;
     }
+  }
+
+    /// Returns null on success, else an error message.
+  Future<String?> removeImage({
+    required String responseID,
+    required AttachmentModel attachment,
+    required AppLocalizations l10n,
+  }) async {
+    if (state) return null;
+    state = true;
+    try {
+      await ref
+          .read(responseRepositoryProvider)
+          .removeAttachment(responseID, attachment.url)
+          .timeout(kReportWriteTimeout);
+    } catch (e, st) {
+      debugPrint('Responder attachment delete failed: $e\n$st');
+      state = false;
+      return l10n.imageDeleteError;
+    }
+    // The Firestore entry is gone, so the file is only cleanup. A failure
+    // here just leaves an orphaned file, which isn't worth showing the user.
+    try {
+      await ref.read(storageRepositoryProvider).deleteByUrl(attachment.url);
+    } catch (e) {
+      debugPrint('Storage cleanup failed: $e');
+    }
+    state = false;
+    return null;
   }
 }

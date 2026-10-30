@@ -477,5 +477,14 @@
   "responderNotes": "Mga Tala ng Responder",
   "addNote": "Magdagdag ng tala",
   "noNotes": "Wala pang tala.",
-  "noteSaveError": "Hindi ma-save ang tala. Suriin ang iyong koneksyon at subukan muli."
+  "noteSaveError": "Hindi ma-save ang tala. Suriin ang iyong koneksyon at subukan muli.",
+  "delete": "Burahin",
+  "edited": "Na-edit",
+  "editNote": "I-edit ang tala",
+  "deleteNote": "Burahin ang tala",
+  "deleteNoteConfirm": "Permanenteng aalisin ang tala na ito sa tala ng kaso.",
+  "noteDeleteError": "Hindi mabura ang tala. Suriin ang iyong koneksyon at subukan muli.",
+  "deleteImage": "Burahin ang larawan",
+  "deleteImageConfirm": "Aalisin ang larawang ito sa kaso para sa lahat ng makakakita nito.",
+  "imageDeleteError": "Hindi mabura ang larawan. Suriin ang iyong koneksyon at subukan muli."
 }

@@ -5,12 +5,14 @@ class ResponderNoteModel {
   final String authorID;
   final String authorName;
   final DateTime? createdAt;
+  final DateTime? editedAt;
 
   const ResponderNoteModel({
     this.text = '',
     this.authorID = '',
     this.authorName = '',
     this.createdAt,
+    this.editedAt,
   });
 
   Map<String, dynamic> toMap() {
@@ -21,6 +23,7 @@ class ResponderNoteModel {
       // FieldValue.serverTimestamp() isn't allowed inside arrayUnion, so this
       // is the device clock (same approach as AttachmentModel.uploadedAt).
       if (createdAt != null) 'createdAt': Timestamp.fromDate(createdAt!),
+      if (editedAt != null) 'editedAt': Timestamp.fromDate(editedAt!),
     };
   }
 
@@ -30,6 +33,7 @@ class ResponderNoteModel {
       authorID: map['authorID'] ?? '',
       authorName: map['authorName'] ?? '',
       createdAt: (map['createdAt'] as Timestamp?)?.toDate(),
+      editedAt: (map['editedAt'] as Timestamp?)?.toDate(),
     );
   }
 }

@@ -57,4 +57,50 @@ class ResponderNoteNotifier extends Notifier<bool> {
       state = false;
     }
   }
+
+    Future<String?> editNote({
+    required String responseID,
+    required ResponderNoteModel note,
+    required String text,
+    required AppLocalizations l10n,
+  }) async {
+    final trimmed = text.trim();
+    if (state || trimmed.isEmpty || trimmed == note.text) return null;
+
+    state = true;
+    try {
+      await ref
+          .read(responseRepositoryProvider)
+          .editNote(responseID, note, trimmed)
+          .timeout(kReportWriteTimeout);
+      return null;
+    } catch (e) {
+      debugPrint('Edit note failed: $e');
+      return l10n.noteSaveError;
+    } finally {
+      state = false;
+    }
+  }
+
+  Future<String?> deleteNote({
+    required String responseID,
+    required ResponderNoteModel note,
+    required AppLocalizations l10n,
+  }) async {
+    if (state) return null;
+
+    state = true;
+    try {
+      await ref
+          .read(responseRepositoryProvider)
+          .deleteNote(responseID, note)
+          .timeout(kReportWriteTimeout);
+      return null;
+    } catch (e) {
+      debugPrint('Delete note failed: $e');
+      return l10n.noteDeleteError;
+    } finally {
+      state = false;
+    }
+  }
 }

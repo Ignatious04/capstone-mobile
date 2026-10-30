@@ -9,9 +9,11 @@ class AttachmentsCardItem extends StatelessWidget {
   const AttachmentsCardItem({
     super.key,
     required this.attachment,
+    this.onDelete,
   });
 
   final AttachmentModel attachment;
+  final VoidCallback? onDelete;
 
   @override
   Widget build(BuildContext context) {
@@ -29,38 +31,62 @@ class AttachmentsCardItem extends StatelessWidget {
           ),
         );
       },
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(10),
-        child: Container(
-          color: AppColors.lighterBlack,
-          child: CachedNetworkImage(
-            imageUrl: attachment.url,
-            fit: BoxFit.cover,
-            placeholder:
-                (
-                  context,
-                  child,
-                ) {
-                  return const Center(
-                    child: CustomCircularProgressIndicator(),
-                  );
-                },
-            errorWidget:
-                (
-                  context,
-                  error,
-                  stackTrace,
-                ) {
-                  return const Center(
-                    child: Icon(
-                      Icons.broken_image_outlined,
-                      size: 36,
-                      color: Colors.white,
-                    ),
-                  );
-                },
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: Container(
+              color: AppColors.lighterBlack,
+              child: CachedNetworkImage(
+                imageUrl: attachment.url,
+                fit: BoxFit.cover,
+                placeholder:
+                    (
+                      context,
+                      child,
+                    ) {
+                      return const Center(
+                        child: CustomCircularProgressIndicator(),
+                      );
+                    },
+                errorWidget:
+                    (
+                      context,
+                      error,
+                      stackTrace,
+                    ) {
+                      return const Center(
+                        child: Icon(
+                          Icons.broken_image_outlined,
+                          size: 36,
+                          color: Colors.white,
+                        ),
+                      );
+                    },
+              ),
+            ),
           ),
-        ),
+          if (onDelete != null)
+            Positioned(
+              top: 2,
+              right: 2,
+              child: GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: onDelete,
+                child: const Padding(
+                  padding: EdgeInsets.all(6), // bigger tap target than the icon
+                  child: DecoratedBox(
+                    decoration: BoxDecoration(color: Colors.black54, shape: BoxShape.circle),
+                    child: Padding(
+                      padding: EdgeInsets.all(4),
+                      child: Icon(Icons.close, size: 16, color: Colors.white),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+        ],
       ),
     );
   }

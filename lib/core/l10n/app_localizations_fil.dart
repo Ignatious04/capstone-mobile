@@ -1512,4 +1512,31 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String get noteSaveError => 'Hindi ma-save ang tala. Suriin ang iyong koneksyon at subukan muli.';
+
+  @override
+  String get delete => 'Burahin';
+
+  @override
+  String get edited => 'Na-edit';
+
+  @override
+  String get editNote => 'I-edit ang tala';
+
+  @override
+  String get deleteNote => 'Burahin ang tala';
+
+  @override
+  String get deleteNoteConfirm => 'Permanenteng aalisin ang tala na ito sa tala ng kaso.';
+
+  @override
+  String get noteDeleteError => 'Hindi mabura ang tala. Suriin ang iyong koneksyon at subukan muli.';
+
+  @override
+  String get deleteImage => 'Burahin ang larawan';
+
+  @override
+  String get deleteImageConfirm => 'Aalisin ang larawang ito sa kaso para sa lahat ng makakakita nito.';
+
+  @override
+  String get imageDeleteError => 'Hindi mabura ang larawan. Suriin ang iyong koneksyon at subukan muli.';
 }

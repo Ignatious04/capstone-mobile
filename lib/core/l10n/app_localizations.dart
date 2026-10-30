@@ -2929,6 +2929,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Could not save the note. Check your connection and try again.'**
   String get noteSaveError;
+
+  /// No description provided for @delete.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get delete;
+
+  /// No description provided for @edited.
+  ///
+  /// In en, this message translates to:
+  /// **'Edited'**
+  String get edited;
+
+  /// No description provided for @editNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit note'**
+  String get editNote;
+
+  /// No description provided for @deleteNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete note'**
+  String get deleteNote;
+
+  /// No description provided for @deleteNoteConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'This note will be permanently removed from the case record.'**
+  String get deleteNoteConfirm;
+
+  /// No description provided for @noteDeleteError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not delete the note. Check your connection and try again.'**
+  String get noteDeleteError;
+
+  /// No description provided for @deleteImage.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete image'**
+  String get deleteImage;
+
+  /// No description provided for @deleteImageConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'This image will be removed from the case for everyone who can see it.'**
+  String get deleteImageConfirm;
+
+  /// No description provided for @imageDeleteError.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not delete the image. Check your connection and try again.'**
+  String get imageDeleteError;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

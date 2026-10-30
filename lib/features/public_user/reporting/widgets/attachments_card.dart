@@ -5,9 +5,18 @@ import 'package:capstone/features/public_user/reporting/widgets/empty_card.dart'
 import 'package:flutter/material.dart';
 
 class AttachmentsCard extends StatelessWidget {
-  const AttachmentsCard({super.key, required this.attachments});
+  const AttachmentsCard({
+    super.key,
+    required this.attachments,
+    this.onDelete,
+    this.canDelete,
+  });
 
   final List<AttachmentModel> attachments;
+  final ValueChanged<AttachmentModel>? onDelete;
+
+  /// Optional per-image filter, e.g. only the caller's own uploads.
+  final bool Function(AttachmentModel)? canDelete;
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +50,9 @@ class AttachmentsCard extends StatelessWidget {
           itemBuilder: (context, index) {
             return AttachmentsCardItem(
               attachment: attachments[index],
+              onDelete: onDelete != null && (canDelete?.call(attachments[index]) ?? true)
+                  ? () => onDelete!(attachments[index])
+                  : null,
             );
           },
         ),

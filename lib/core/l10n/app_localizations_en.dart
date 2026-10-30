@@ -1507,4 +1507,31 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get noteSaveError => 'Could not save the note. Check your connection and try again.';
+
+  @override
+  String get delete => 'Delete';
+
+  @override
+  String get edited => 'Edited';
+
+  @override
+  String get editNote => 'Edit note';
+
+  @override
+  String get deleteNote => 'Delete note';
+
+  @override
+  String get deleteNoteConfirm => 'This note will be permanently removed from the case record.';
+
+  @override
+  String get noteDeleteError => 'Could not delete the note. Check your connection and try again.';
+
+  @override
+  String get deleteImage => 'Delete image';
+
+  @override
+  String get deleteImageConfirm => 'This image will be removed from the case for everyone who can see it.';
+
+  @override
+  String get imageDeleteError => 'Could not delete the image. Check your connection and try again.';
 }

@@ -75,11 +75,52 @@ class ResponseRepository {
     });
   }
 
-  /// Append-only on purpose: notes are part of the incident record, so there
-  /// is no edit/delete path from the app.
+  /// Notes are appended here; edit/delete are below and only touch the
+  /// caller's own notes (enforced by the Firestore rules).
   Future<void> addNote(String responseID, ResponderNoteModel note) {
     return _responses.doc(responseID).update({
       'responderNotes': FieldValue.arrayUnion([note.toMap()]),
+    });
+  }
+
+    List<Map<String, dynamic>> _mapList(DocumentSnapshot<Map<String, dynamic>> snap, String field) =>
+      (snap.data()?[field] as List<dynamic>? ?? []).map((e) => Map<String, dynamic>.from(e as Map)).toList();
+
+  // Notes have no id, so match on author + creation time.
+  bool _isNote(Map<String, dynamic> m, ResponderNoteModel n) =>
+      m['authorID'] == n.authorID &&
+      (m['createdAt'] as Timestamp?)?.millisecondsSinceEpoch == n.createdAt?.millisecondsSinceEpoch;
+
+  Future<void> removeAttachment(String responseID, String url) {
+    final doc = _responses.doc(responseID);
+    return firestore.runTransaction((tx) async {
+      final list = _mapList(await tx.get(doc), 'responderAttachments');
+      final next = list.where((m) => m['url'] != url).toList();
+      if (next.length == list.length) return; // already gone
+      tx.update(doc, {'responderAttachments': next});
+    });
+  }
+
+  Future<void> editNote(String responseID, ResponderNoteModel note, String newText) {
+    final doc = _responses.doc(responseID);
+    return firestore.runTransaction((tx) async {
+      final notes = _mapList(await tx.get(doc), 'responderNotes');
+      final i = notes.indexWhere((m) => _isNote(m, note));
+      if (i == -1) return;
+      // serverTimestamp() isn't allowed inside arrays, so device clock again.
+      notes[i] = {...notes[i], 'text': newText, 'editedAt': Timestamp.now()};
+      tx.update(doc, {'responderNotes': notes});
+    });
+  }
+
+  Future<void> deleteNote(String responseID, ResponderNoteModel note) {
+    final doc = _responses.doc(responseID);
+    return firestore.runTransaction((tx) async {
+      final notes = _mapList(await tx.get(doc), 'responderNotes');
+      final i = notes.indexWhere((m) => _isNote(m, note));
+      if (i == -1) return;
+      notes.removeAt(i);
+      tx.update(doc, {'responderNotes': notes});
     });
   }
 }

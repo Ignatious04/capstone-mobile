@@ -105,4 +105,13 @@ class StorageRepository {
 
     return attachments;
   }
+
+    /// Deletes the file behind a download URL. A missing file counts as deleted.
+  Future<void> deleteByUrl(String url) async {
+    try {
+      await _storage.refFromURL(url).delete();
+    } on FirebaseException catch (e) {
+      if (e.code != 'object-not-found') rethrow;
+    }
+  }
 }
