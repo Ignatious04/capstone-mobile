@@ -10,10 +10,14 @@ import 'package:flutter/material.dart';
 /// ETA recorded at dispatch and (once the responder arrives) how long the
 /// trip actually took. Without a response it only shows when it was reported.
 class ReportTimelineCard extends StatelessWidget {
-  const ReportTimelineCard({super.key, required this.createdAt, this.response});
+  const ReportTimelineCard({super.key, required this.createdAt, this.response, this.embedded = false});
+
 
   final DateTime? createdAt;
   final ResponseModel? response;
+  /// When true, renders only the timeline rows (no Card, no padding) so it can
+  /// live inside a parent such as an ExpansionTile.
+  final bool embedded;
 
   @override
   Widget build(BuildContext context) {
@@ -50,22 +54,26 @@ class ReportTimelineCard extends StatelessWidget {
       _TimelineStep(l10n.reportStatusResolved, r?.resolvedAt),
     ];
 
+    final rows = Column(
+      children: [
+        for (var i = 0; i < steps.length; i++)
+          _TimelineRow(
+            step: steps[i],
+            locale: locale,
+            isLast: i == steps.length - 1,
+          ),
+      ],
+    );
+
+    if (embedded) return rows;
+
     return Card(
       color: Colors.white,
       elevation: 1,
       margin: EdgeInsets.zero,
       child: Padding(
         padding: const EdgeInsets.all(20),
-        child: Column(
-          children: [
-            for (var i = 0; i < steps.length; i++)
-              _TimelineRow(
-                step: steps[i],
-                locale: locale,
-                isLast: i == steps.length - 1,
-              ),
-          ],
-        ),
+        child: rows,
       ),
     );
   }

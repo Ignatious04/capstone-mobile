@@ -7,6 +7,7 @@ import 'package:capstone/core/shared/providers/responder_provider.dart';
 import 'package:capstone/core/shared/providers/response_repository_provider.dart';
 import 'package:capstone/core/shared/widgets/custom_circular_progress_indicator.dart';
 import 'package:capstone/core/shared/widgets/section_title.dart';
+import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/features/public_user/reporting/providers/responder_location_provider.dart';
 import 'package:capstone/features/public_user/reporting/widgets/eta_card.dart';
 import 'package:capstone/features/public_user/reporting/widgets/location_card.dart';
@@ -63,14 +64,8 @@ class ReportResponsesSection extends ConsumerWidget {
           ReportTimelineCard(createdAt: report.createdAt),
         ],
         for (final response in responses) ...[
-          // const SizedBox(height: 10),
-          // SectionTitle(icon: Icons.support_agent, title: response.serviceType.label(l10n)),
-          // const SizedBox(height: 10),
-          if (response.assignedTo != null) ...[
-            _AssignedResponder(responderID: response.assignedTo!),
-            const SizedBox(height: 10),
-          ],
-          ReportTimelineCard(createdAt: report.createdAt, response: response),
+           _ResponseCard(createdAt: report.createdAt, response: response),
+          const SizedBox(height: 10),
         ],
         if (location != null && incident != null) ...[
           const SizedBox(height: 10),
@@ -98,6 +93,50 @@ class ReportResponsesSection extends ConsumerWidget {
   }
 }
 
+/// One card per service: the responder on top, a divider, then that service's
+/// timeline tucked inside a collapsible tile.
+class _ResponseCard extends StatelessWidget {
+  const _ResponseCard({required this.createdAt, required this.response});
+
+  final DateTime? createdAt;
+  final ResponseModel response;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    final responderID = response.assignedTo;
+
+    return Card(
+      color: Colors.white,
+      elevation: 1,
+      margin: EdgeInsets.zero,
+      clipBehavior: Clip.antiAlias, // keeps the tile's ripple inside the rounded corners
+      child: Column(
+        children: [
+          if (responderID != null) ...[
+            _AssignedResponder(responderID: responderID),
+            const Divider(height: 1),
+          ],
+          // ExpansionTile draws its own top/bottom borders; hide them.
+          Theme(
+            data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+            child: ExpansionTile(
+              tilePadding: const EdgeInsets.symmetric(horizontal: 20),
+              childrenPadding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+              expandedCrossAxisAlignment: CrossAxisAlignment.stretch,
+              leading: const Icon(Icons.timeline, color: Colors.deepOrange),
+              title: BodyText(value: l10n.statusTimeline),
+              children: [
+                ReportTimelineCard(createdAt: createdAt, response: response, embedded: true),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class _AssignedResponder extends ConsumerWidget {
   const _AssignedResponder({required this.responderID});
 
@@ -108,9 +147,12 @@ class _AssignedResponder extends ConsumerWidget {
     final responderAsync = ref.watch(responderByIdProvider(responderID));
     final responder = responderAsync.value;
     if (responder == null) {
-      return responderAsync.isLoading ? const _ResponderPlaceholder() : const SizedBox.shrink();
+      // Bare spinner: the parent _ResponseCard already provides the Card.
+      return responderAsync.isLoading
+          ? const SizedBox(height: 120, child: Center(child: CustomCircularProgressIndicator()))
+          : const SizedBox.shrink();
     }
-    return ResponderCard(responder: responder);
+    return ResponderCard(responder: responder, embedded: true);
   }
 }
 
