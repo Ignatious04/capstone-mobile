@@ -11,6 +11,8 @@ import 'package:capstone/core/shared/widgets/custom_circular_progress_indicator.
 import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
 import 'package:capstone/core/shared/widgets/custom_header_widget.dart';
 import 'package:capstone/core/shared/widgets/info_column.dart';
+import 'package:capstone/core/shared/widgets/language_selector.dart';
+import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/widgets/text/headline_text.dart';
 import 'package:capstone/features/responder/active_case/providers/responder_location_sharing_provider.dart';
 import 'package:flutter/material.dart';
@@ -125,6 +127,16 @@ class _ResponderProfileBody extends ConsumerWidget {
                   ),
                 ),
                 const SizedBox(height: 10),
+                Row(
+                  children: [
+                    const Icon(Icons.language, size: 25),
+                    const SizedBox(width: 10),
+                    BodyText(value: l10n.language),
+                    const Spacer(),
+                    const LanguageSelector(),
+                  ],
+                ),
+                const SizedBox(height: 20),
                 SizedBox(
                   width: double.infinity,
                   child: CustomElevatedButton(

@@ -19,6 +19,7 @@ import 'package:capstone/features/public_user/reporting/widgets/responder_card.d
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 /// Everything about who is responding to a report: one block per service
 /// (responder + that service's own timeline), then a single map with the
@@ -98,15 +99,58 @@ class ReportResponsesSection extends ConsumerWidget {
 
 /// One card per service: the responder on top, a divider, then that service's
 /// timeline tucked inside a collapsible tile.
-class _ResponseCard extends StatelessWidget {
+///
+/// A red dot sits on the timeline icon whenever this service's status has
+/// changed since the user last opened its timeline. The last status the user
+/// saw is remembered per response in SharedPreferences.
+class _ResponseCard extends StatefulWidget {
   const _ResponseCard({required this.createdAt, required this.response});
 
   final DateTime? createdAt;
   final ResponseModel response;
 
+  State<_ResponseCard> createState() => _ResponseCardState();
+}
+
+class _ResponseCardState extends State<_ResponseCard> {
+  String? _seenStatus; // null until loaded from storage
+  bool _expanded = false;
+
+  String get _key => 'seen_status_${widget.response.responseID}';
+  bool get _hasUpdate => _seenStatus != null && _seenStatus != widget.response.status.name;
+
+  @override
+  void initState() {
+    super.initState();
+    _load();
+  }
+
+  @override
+  void didUpdateWidget(covariant _ResponseCard oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    // Status changed while the timeline is open: they're looking at it, so no dot.
+    if (_expanded && oldWidget.response.status != widget.response.status) _markSeen();
+  }
+
+  Future<void> _load() async {
+    final prefs = await SharedPreferences.getInstance();
+    if (!mounted) return;
+    // Never seen before -> compare against `pending`, so any progress shows a dot.
+    setState(() => _seenStatus = prefs.getString(_key) ?? ReportStatusEnum.pending.name);
+  }
+
+  Future<void> _markSeen() async {
+    final status = widget.response.status.name;
+    if (_seenStatus == status) return;
+    setState(() => _seenStatus = status);
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_key, status);
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final response = widget.response;
     final responderID = response.assignedTo;
 
     return Card(
@@ -128,10 +172,19 @@ class _ResponseCard extends StatelessWidget {
               tilePadding: const EdgeInsets.symmetric(horizontal: 20),
               childrenPadding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
               expandedCrossAxisAlignment: CrossAxisAlignment.stretch,
-              leading: const Icon(Icons.timeline, color: Colors.deepOrange),
+              onExpansionChanged: (open) {
+                _expanded = open;
+                if (open) _markSeen();
+              },
+              leading: Badge(
+                isLabelVisible: _hasUpdate,
+                smallSize: 10,
+                backgroundColor: Colors.red,
+                child: const Icon(Icons.timeline, color: Colors.deepOrange),
+              ),
               title: BodyText(value: l10n.statusTimeline),
               children: [
-                ReportTimelineCard(createdAt: createdAt, response: response, embedded: true),
+                ReportTimelineCard(createdAt: widget.createdAt, response: response, embedded: true),
               ],
             ),
           ),

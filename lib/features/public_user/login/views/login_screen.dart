@@ -4,6 +4,7 @@ import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
 import 'package:capstone/core/shared/widgets/custom_snackbar_helper.dart';
 import 'package:capstone/core/shared/widgets/custom_text_field.dart';
 import 'package:capstone/core/shared/widgets/google_sign_in_button.dart';
+import 'package:capstone/core/shared/widgets/language_selector.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/widgets/text/headline_text.dart';
 import 'package:capstone/core/shared/widgets/text/label_text.dart';
@@ -72,21 +73,32 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             color: Colors.deepOrange,
             borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
           ),
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const HeadlineText(
-                  value: "Saup Angeles",
-                  color: Colors.white,
-                  isBold: true,
+          child: Stack(
+            children: [
+              Center(
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const HeadlineText(
+                        value: "Saup Angeles",
+                        color: Colors.white,
+                        isBold: true,
+                      ),
+                      TitleText(
+                        value: l10n.appTagline,
+                        color: Colors.white,
+                      ),
+                    ],
+                  ),
                 ),
-                TitleText(
-                  value: l10n.appTagline,
-                  color: Colors.white,
-                ),
-              ],
-            ),
+              ),
+              Positioned(
+                top: MediaQuery.of(context).padding.top + 8,
+                right: 12,
+                child: const LanguageSelector(onDark: true),
+              ),
+            ],
           ),
         ),
       ),
