@@ -1,3 +1,5 @@
+import 'package:capstone/core/enums/audit_action_enum.dart';
+import 'package:capstone/core/shared/providers/audit_log_repository_provider.dart';
 import 'package:capstone/core/shared/providers/locale_provider.dart';
 import 'package:capstone/core/l10n/app_localizations.dart';
 import 'dart:async';
@@ -8,6 +10,7 @@ import 'package:capstone/core/services/location_service.dart';
 import 'package:capstone/core/shared/models/realtime_responder_location_model.dart';
 import 'package:capstone/core/shared/providers/location_provider.dart';
 import 'package:capstone/core/shared/providers/realtime_database_repository_provider.dart';
+import 'package:capstone/core/shared/repositories/audit_log_repository.dart';
 import 'package:capstone/core/shared/repositories/realtime_database_repository.dart';
 import 'package:capstone/features/responder/active_case/providers/active_case_provider.dart';
 import 'package:flutter/foundation.dart';
@@ -18,6 +21,7 @@ final responderLocationSharingProvider = Provider<ResponderLocationSharer>((ref)
   final sharer = ResponderLocationSharer(
     database: ref.read(realtimeDatabaseRepositoryProvider),
     locationService: ref.read(locationServiceProvider),
+    audit: ref.read(auditLogRepositoryProvider),
     l10n: () => lookupAppLocalizations(ref.read(localeProvider)),
   );
   ref.onDispose(sharer.dispose);
@@ -35,7 +39,14 @@ final responderLocationSharingProvider = Provider<ResponderLocationSharer>((ref)
 });
 
 class ResponderLocationSharer {
-  ResponderLocationSharer({required this.database, required this.locationService, required this.l10n});
+  ResponderLocationSharer({
+    required this.database,
+    required this.locationService,
+    required this.audit,
+    required this.l10n,
+  });
+
+  final AuditLogRepository audit;
 
   Future<void> stopSharing() => _stop();
 
@@ -94,6 +105,7 @@ class ResponderLocationSharer {
       (latLng) => _publish(activeCase, latLng),
       onError: (e) => debugPrint('Responder location stream error: $e'),
     );
+    audit.log(AuditAction.responderLocationSharingStarted, targetType: 'report', targetId: reportID);
   }
 
   Future<void> _publish(ActiveCase activeCase, LatLng latLng) async {
@@ -125,6 +137,8 @@ class ResponderLocationSharer {
     _sharingReportID = null;
     _sharingResponderID = null;
     if (reportID == null || responderID == null) return;
+
+    audit.log(AuditAction.responderLocationSharingStopped, targetType: 'report', targetId: reportID);
 
     try {
       await database.delete(path: _path(reportID, responderID));

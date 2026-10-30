@@ -11,6 +11,8 @@ enum AuditAction {
   smsFallbackLaunched('emergency.sms_fallback_launched'),
   reportSubmitFailed('report.submit_failed'),
   directionsRequested('emergency.directions_requested'),
+  responderLocationSharingStarted('responder.location_sharing_started'),
+  responderLocationSharingStopped('responder.location_sharing_stopped'),
   ;
 
   const AuditAction(this.code);

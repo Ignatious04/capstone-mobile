@@ -1,8 +1,10 @@
 // lib/features/responder/active_case/views/active_case_screen.dart
+import 'package:capstone/core/enums/audit_action_enum.dart';
 import 'package:capstone/core/l10n/enum_labels.dart';
 import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/enums/map_mode_enum.dart';
 import 'package:capstone/core/enums/report_status_enum.dart';
+import 'package:capstone/core/shared/providers/audit_log_repository_provider.dart';
 import 'package:capstone/core/shared/providers/location_provider.dart';
 import 'package:capstone/core/shared/widgets/custom_circular_progress_indicator.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
@@ -114,7 +116,7 @@ class _NoActiveCase extends StatelessWidget {
   }
 }
 
-class _ActiveCaseBody extends StatelessWidget {
+class _ActiveCaseBody extends ConsumerWidget {
   const _ActiveCaseBody({
     required this.activeCase,
     required this.onAdvance,
@@ -124,7 +126,7 @@ class _ActiveCaseBody extends StatelessWidget {
   final VoidCallback onAdvance;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
 
     final report = activeCase.report;
@@ -170,7 +172,15 @@ class _ActiveCaseBody extends StatelessWidget {
                           heroTag: 'directionsFAB',
                           backgroundColor: Colors.white,
                           foregroundColor: Colors.deepOrange,
-                          onPressed: () => launchDirections(location.latitude, location.longitude),
+                          onPressed: () {
+                            ref.read(auditLogRepositoryProvider).log(
+                              AuditAction.directionsRequested,
+                              targetType: 'report',
+                              targetId: response.reportID,
+                              metadata: {'source': 'responder_active_case'},
+                            );
+                            launchDirections(location.latitude, location.longitude);
+                          },
                           child: const Icon(Icons.directions, size: 40),
                         ),
                       ),

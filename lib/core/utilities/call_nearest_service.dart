@@ -1,5 +1,7 @@
+import 'package:capstone/core/enums/audit_action_enum.dart';
 import 'package:capstone/core/enums/service_type_enum.dart';
 import 'package:capstone/core/l10n/app_localizations.dart';
+import 'package:capstone/core/shared/providers/audit_log_repository_provider.dart';
 import 'package:capstone/core/shared/widgets/custom_snackbar_helper.dart';
 import 'package:capstone/core/utilities/call_launcher.dart';
 import 'package:capstone/features/public_user/main/providers/nearest_emergency_services_provider.dart';
@@ -10,8 +12,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 Future<void> callNearestService(
   BuildContext context,
   WidgetRef ref,
-  ServiceTypeEnum type,
-) async {
+  ServiceTypeEnum type, {
+  required String source,
+}) async {
   // Live nearest service first, cached number as the fallback
   String? number = ref.read(nearestEmergencyServicesProvider).value?[type]?.contactNumber;
   if (number == null || number.isEmpty) {
@@ -27,6 +30,11 @@ Future<void> callNearestService(
   }
 
   try {
+    ref.read(auditLogRepositoryProvider).log(
+      AuditAction.emergencyCallInitiated,
+      targetType: 'emergencyService',
+      metadata: {'source': source, 'serviceType': type.name, 'number': number},
+    );
     await launchPhoneCall(number);
   } catch (_) {
     if (!context.mounted) return;

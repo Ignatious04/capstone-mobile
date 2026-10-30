@@ -99,7 +99,7 @@ class EmergencyGuidanceSheet extends ConsumerWidget {
             SizedBox(
               width: double.infinity,
               child: CustomElevatedButton(
-                onPressed: () => callNearestService(context, ref, incidentType),
+                onPressed: () => callNearestService(context, ref, incidentType, source: 'while_you_wait'),
                 value: l10n.call.toUpperCase(),
                 icon: const Icon(Icons.call),
                 color: Colors.white,

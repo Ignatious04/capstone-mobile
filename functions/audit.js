@@ -5,16 +5,23 @@ const {
 } = require("firebase-functions/v2/firestore");
 const admin = require("firebase-admin");
 const {logger} = require("firebase-functions");
+const {onDocumentCreated} = require("firebase-functions/v2/firestore"); // add to the existing import
 
 // Never logged at all (noise).
-const IGNORED = new Set(["fcmToken", "languageCode", "updatedAt", "deactivatedAt", "createdAt"]);
+const IGNORED = new Set([
+  "fcmToken", "languageCode", "updatedAt", "deactivatedAt", "createdAt",
+  "consentLastSentAt", "verificationSubmittedAt",
+]);
 
 // Only these get before/after values in the log. Every other changed field
 // (ID number, address, medical info, URLs...) is logged as {changed: true}.
 const TRACKED_VALUES = new Set([
   "status", "assignedTo", "priority",
   "isDeactivated", "isContactNumberVerified", "isSetup", "verificationStatus",
-  "rejectionReason", "isActive", "isAvailable",
+  "rejectionReason", "rejectionCode", "reviewedBy", "resubmissionCount",
+  "consentStatus", "consentPurposes", "consentSendCount",
+  "routingStatus", "serviceID",
+  "isActive", "isAvailable",
 ]);
 
 const diffFields = (before, after) => {
@@ -28,6 +35,24 @@ const diffFields = (before, after) => {
       {changed: true};
   }
   return changes;
+};
+
+const MEDICAL_FIELDS = ["bloodType", "height", "weight", "isVaccinated", "vaccineType", "vaccineDate"];
+const PROFILE_FIELDS = ["sex", "address", "nationality", "civilStatus", "religion"];
+const touched = (changes, fields) => fields.some((f) => f in changes);
+
+// Notes have no id, so key them on author + creation time (same as the app).
+const noteKey = (n) => `${n.authorID}|${n.createdAt?.toMillis?.() ?? n.createdAt}`;
+
+// Counts only. Note text and image URLs are never copied into the log.
+const arrayDelta = (beforeArr, afterArr, keyFn, isEdited = () => false) => {
+  const b = new Map((beforeArr || []).map((x) => [keyFn(x), x]));
+  const a = new Map((afterArr || []).map((x) => [keyFn(x), x]));
+  return {
+    added: [...a.keys()].filter((k) => !b.has(k)).length,
+    removed: [...b.keys()].filter((k) => !a.has(k)).length,
+    edited: [...a.keys()].filter((k) => b.has(k) && isEdited(b.get(k), a.get(k))).length,
+  };
 };
 
 const resolveActor = async (event) => {
@@ -108,6 +133,7 @@ exports.auditReportUpdated = onDocumentUpdatedWithAuthContext(
       if (changes.status) action = "report.status_changed";
       else if (changes.assignedTo) action = "report.assignment_changed";
       else if (changes.priority) action = "report.priority_changed";
+      else if (changes.routingStatus || changes.routedAt) action = "report.routed";
 
       await writeAudit(event, {
         action,
@@ -146,11 +172,26 @@ exports.auditResponseUpdated = onDocumentUpdatedWithAuthContext(
       const before = event.data.before.data();
       const after = event.data.after.data();
       const changes = diffFields(before, after);
-      if (Object.keys(changes).length === 0) return;
+
+      const notes = arrayDelta(before.responderNotes, after.responderNotes, noteKey,
+          (x, y) => x.text !== y.text);
+      const files = arrayDelta(before.responderAttachments, after.responderAttachments, (x) => x.url);
+      delete changes.responderNotes; // replaced by the specific actions below
+      delete changes.responderAttachments;
+
+      const noteAction = notes.added ? "response.note_added" :
+      notes.removed ? "response.note_removed" :
+        notes.edited ? "response.note_edited" : null;
+      const fileAction = files.added ? "response.attachment_added" :
+      files.removed ? "response.attachment_removed" : null;
+
+      if (Object.keys(changes).length === 0 && !noteAction && !fileAction) return;
 
       let action = "response.updated";
       if (changes.status) action = "response.status_changed";
       else if (changes.assignedTo) action = "response.assignment_changed";
+      else if (noteAction) action = noteAction;
+      else if (fileAction) action = fileAction;
 
       await writeAudit(event, {
         action,
@@ -159,7 +200,13 @@ exports.auditResponseUpdated = onDocumentUpdatedWithAuthContext(
         targetType: "response",
         targetId: event.params.responseID,
         changes,
-        metadata: {reportID: after.reportID, serviceType: after.serviceType, reporterID: after.userID},
+        metadata: {
+          reportID: after.reportID,
+          serviceType: after.serviceType,
+          reporterID: after.userID,
+          ...(noteAction ? {notes} : {}),
+          ...(fileAction ? {attachments: files} : {}),
+        },
       });
     });
 
@@ -200,22 +247,36 @@ exports.auditUserUpdated = onDocumentUpdatedWithAuthContext(
       if (changes.isDeactivated) {
         action = after.isDeactivated ? "account.deactivated" : "account.reactivated";
       } else if (changes.verificationStatus) {
-        action = "account.verification_changed";
+        action = before.verificationStatus === "rejected" && after.verificationStatus === "pending" ?
+        "account.verification_resubmitted" : "account.verification_changed";
+      } else if (changes.consentStatus) {
+        action = {
+          pending: "consent.requested",
+          approved: "consent.approved",
+          revoked: "consent.revoked",
+        }[after.consentStatus] || "consent.changed";
+      } else if (changes.consentSendCount) {
+        action = "consent.request_resent";
       } else if (changes.isSetup && after.isSetup) {
         action = "account.setup_completed";
+      } else if (changes.contactNumber) {
+        action = "account.contact_number_changed"; // also resets phone verification
       } else if (changes.isContactNumberVerified) {
-        action = after.isContactNumberVerified ?
-        "account.phone_verified" : "account.phone_unverified";
+        action = after.isContactNumberVerified ? "account.phone_verified" : "account.phone_unverified";
+      } else if (touched(changes, MEDICAL_FIELDS)) {
+        action = "account.medical_info_updated";
+      } else if (touched(changes, PROFILE_FIELDS)) {
+        action = "account.profile_updated";
       }
 
       await writeAudit(event, {
         action,
-        category: "account",
+        category: action.startsWith("consent.") ? "consent" : "account",
         ...(await resolveActor(event)),
         targetType: "user",
         targetId: event.params.userID,
         changes,
-        metadata: {},
+        metadata: action === "consent.approved" ? {purposes: after.consentPurposes || []} : {},
       });
     });
 
@@ -259,3 +320,10 @@ exports.auditResponderDeleted = onDocumentDeletedWithAuthContext(
         metadata: {},
       });
     });
+
+exports.auditFixClientActor = onDocumentCreated("audit_logs/{id}", async (event) => {
+  const d = event.data.data();
+  if (d.source !== "client" || !d.actorId) return;
+  const snap = await admin.firestore().collection("responders").doc(d.actorId).get();
+  if (snap.exists) await event.data.ref.update({actorType: "responder"});
+});

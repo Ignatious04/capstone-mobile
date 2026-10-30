@@ -36,7 +36,7 @@ class _PreCallGuidancePageViewState extends ConsumerState<PreCallGuidancePageVie
   Future<void> _callNearestService() async {
     final type = ref.read(reportProvider).incidentType;
     if (type == null) return;
-    await callNearestService(context, ref, type);
+    await callNearestService(context, ref, type, source: 'guidance_page');
   }
 
   void navigateToPage() {
