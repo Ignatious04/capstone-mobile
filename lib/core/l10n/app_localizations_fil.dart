@@ -1555,4 +1555,9 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String get allNotificationsCleared => 'Nabura ang lahat ng abiso';
+
+  @override
+  String serviceStatusTimeline(String service) {
+    return 'Timeline ng Status ng $service';
+  }
 }

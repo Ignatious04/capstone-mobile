@@ -116,6 +116,7 @@ class _NormalReportsViewScreenState extends ConsumerState<NormalReportsViewScree
                         const SizedBox(height: 10),
                         ReportStatusWidget(
                           status: status,
+                          resolvedAt: report.resolvedAt,
                         ),
                         const SizedBox(height: 10),
                         LabelText(

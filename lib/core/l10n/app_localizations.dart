@@ -3013,6 +3013,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'All notifications cleared'**
   String get allNotificationsCleared;
+
+  /// No description provided for @serviceStatusTimeline.
+  ///
+  /// In en, this message translates to:
+  /// **'{service} Status Timeline'**
+  String serviceStatusTimeline(String service);
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

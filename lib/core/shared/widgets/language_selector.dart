@@ -1,4 +1,5 @@
 import 'package:capstone/core/shared/providers/locale_provider.dart';
+import 'package:capstone/core/shared/widgets/text/label_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -37,17 +38,14 @@ class LanguageSelector extends ConsumerWidget {
                 borderRadius: BorderRadius.circular(20),
                 onTap: () => ref.read(localeProvider.notifier).state = Locale(code),
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   decoration: BoxDecoration(
                     color: current == code ? selectedBg : Colors.transparent,
                     borderRadius: BorderRadius.circular(20),
                   ),
-                  child: Text(
-                    short,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: current == code ? selectedFg : idleFg,
-                    ),
+                  child: LabelText(
+                    value: short,
+                    color: current == code ? selectedFg : idleFg,
                   ),
                 ),
               ),

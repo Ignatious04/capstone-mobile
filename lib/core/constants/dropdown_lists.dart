@@ -97,4 +97,6 @@ class DropdownLists {
       child: Text(l10n.vaccineAntiRabies),
     ),
   ];
+
+  static const bloodTypes = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
 }

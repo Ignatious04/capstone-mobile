@@ -450,6 +450,7 @@
   "smsReportNote": "Ang report na ito ay ipinadala sa pamamagitan ng SMS module.",
   "refreshFailed": "Hindi maabot ang server. Ipinapakita ang naka-save na data.",
   "statusTimeline": "Timeline ng Status",
+  "serviceStatusTimeline": "Timeline ng Status ng {service}",
   "etaRecorded": "ETA noong ipinadala: {eta} ({distance})",
   "actualTravelTime": "Aktwal na oras ng biyahe: {duration}",
   "guardianName": "Pangalan ng Tagapag-alaga",

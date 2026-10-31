@@ -1550,4 +1550,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get allNotificationsCleared => 'All notifications cleared';
+
+  @override
+  String serviceStatusTimeline(String service) {
+    return '$service Status Timeline';
+  }
 }

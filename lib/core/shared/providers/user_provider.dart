@@ -75,6 +75,11 @@ class UserNotifier extends Notifier<UserModel> {
       user = state;
     }
 
+    if (!user.isVaccinated) {
+      state = state.copyWith(vaccineType: '', vaccineDate: 0);
+      user = state;
+    }
+
     if (user.profileImage != null) {
       final fileName = path.basename(user.profileImage!.path);
       final profileURL = await ref

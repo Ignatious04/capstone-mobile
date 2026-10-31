@@ -100,6 +100,7 @@ class PreCallGuidanceReportViewScreen extends ConsumerWidget {
                       const SizedBox(height: 10),
                       ReportStatusWidget(
                         status: status,
+                        resolvedAt: currentReport.resolvedAt
                       ),
                       const SizedBox(height: 10),
                       Divider(

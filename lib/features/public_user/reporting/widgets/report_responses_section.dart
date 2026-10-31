@@ -183,7 +183,9 @@ class _ResponseCardState extends State<_ResponseCard> {
                 backgroundColor: Colors.red,
                 child: const Icon(Icons.timeline, color: Colors.deepOrange),
               ),
-              title: BodyText(value: l10n.statusTimeline),
+              title: BodyText(
+                value: l10n.serviceStatusTimeline(response.serviceType.label(l10n)),
+              ),
               children: [
                 ReportTimelineCard(createdAt: widget.createdAt, response: response, embedded: true),
               ],

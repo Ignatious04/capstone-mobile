@@ -2,8 +2,8 @@
 // (covers users who never saved a language).
 const STATUS_COPY = {
   accepted: {
-    en: {title: "Report accepted", body: "A responder has accepted your report."},
-    fil: {title: "Tinanggap ang report", body: "Tinanggap ng isang responder ang iyong report."},
+    en: {title: "Report accepted", body: "A dispatcher has accepted your report."},
+    fil: {title: "Tinanggap ang report", body: "Tinanggap ng isang dispatcher ang iyong report."},
   },
   dispatched: {
     en: {title: "Help is on the way", body: "A responder has been dispatched to your location."},

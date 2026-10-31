@@ -62,12 +62,10 @@ class _SetupScreenMedicalInfoPage extends ConsumerState<SetupScreenMedicalInfoPa
           CustomDropdownButton(
             title: l10n.bloodType.toUpperCase(),
             value: user.bloodType.isEmpty ? null : user.bloodType,
-            items: [
-              const DropdownMenuItem(
-                value: "O",
-                child: Text("O"),
-              ),
-            ],
+            items: {
+              ...DropdownLists.bloodTypes,
+              if (user.bloodType.isNotEmpty) user.bloodType, // keeps an old "O" from breaking the dropdown
+            }.map((b) => DropdownMenuItem(value: b, child: Text(b))).toList(),
             onChanged: (value) {
               ref.read(userProvider.notifier).setBloodType(value!);
             },
@@ -83,10 +81,7 @@ class _SetupScreenMedicalInfoPage extends ConsumerState<SetupScreenMedicalInfoPa
                   controller: heightController,
                   keyboardType: TextInputType.numberWithOptions(decimal: true),
                   onChanged: (value) {
-                    final height = double.tryParse(value);
-                    if (height != null) {
-                      ref.read(userProvider.notifier).setHeight(height);
-                    }
+                    ref.read(userProvider.notifier).setHeight(double.tryParse(value) ?? 0);
                   },
                 ),
               ),
@@ -99,10 +94,7 @@ class _SetupScreenMedicalInfoPage extends ConsumerState<SetupScreenMedicalInfoPa
                   controller: weightController,
                   keyboardType: TextInputType.numberWithOptions(decimal: true),
                   onChanged: (value) {
-                    final weight = double.tryParse(value);
-                    if (weight != null) {
-                      ref.read(userProvider.notifier).setWeight(weight);
-                    }
+                    ref.read(userProvider.notifier).setWeight(double.tryParse(value) ?? 0);
                   },
                 ),
               ),

@@ -649,6 +649,13 @@
   "clearAllNotifications": "Clear all",
   "clearAllNotificationsTitle": "Clear all notifications?",
   "clearAllNotificationsBody": "This will remove every notification from your history. This can't be undone.",
-  "allNotificationsCleared": "All notifications cleared"
-
+  "allNotificationsCleared": "All notifications cleared",
+  "serviceStatusTimeline": "{service} Status Timeline",
+  "@serviceStatusTimeline": {
+    "placeholders": {
+      "service": {
+        "type": "String"
+      }
+    }
+  }
 }
