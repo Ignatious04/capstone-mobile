@@ -1,0 +1,11 @@
+[
+  { "id": "cpr", "type": "medical", "title": "CPR (Hands-Only)", "summary": "For an adult who is unresponsive and not breathing normally" },
+  { "id": "choking", "type": "medical", "title": "Choking", "summary": "What to do when someone cannot cough, speak, or breathe" },
+  { "id": "bleeding", "type": "medical", "title": "Severe Bleeding", "summary": "Stop heavy bleeding while waiting for help" },
+  { "id": "burns", "type": "medical", "title": "Burns", "summary": "Cool, cover, and know when to get urgent help" },
+  { "id": "fire-escape", "type": "fire", "title": "Escaping a Fire", "summary": "How to get out safely, or what to do if you are trapped" },
+  { "id": "small-fire", "type": "fire", "title": "Small Fires", "summary": "When to fight a fire, and when to just leave" },
+  { "id": "gas-leak", "type": "fire", "title": "Gas Leak (LPG)", "summary": "Steps to take if you smell gas" },
+  { "id": "break-in", "type": "police", "title": "Break-In or Robbery", "summary": "Stay safe if someone is breaking in or has entered your home" },
+  { "id": "witness", "type": "police", "title": "If You Witness a Crime", "summary": "What to note and what to avoid while you wait for police" }
+]

@@ -3019,6 +3019,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{service} Status Timeline'**
   String serviceStatusTimeline(String service);
+
+  /// No description provided for @emailOrResponderCode.
+  ///
+  /// In en, this message translates to:
+  /// **'Email or Responder Code'**
+  String get emailOrResponderCode;
+
+  /// No description provided for @guidesTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Safety Guides'**
+  String get guidesTitle;
+
+  /// No description provided for @guidesEntrySubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'First aid and safety steps. Works offline.'**
+  String get guidesEntrySubtitle;
+
+  /// No description provided for @guidesOfflineNote.
+  ///
+  /// In en, this message translates to:
+  /// **'These guides are saved on your phone and work without internet or an account check.'**
+  String get guidesOfflineNote;
+
+  /// No description provided for @guidesDisclaimer.
+  ///
+  /// In en, this message translates to:
+  /// **'General guidance only. It does not replace training or the instructions of emergency responders.'**
+  String get guidesDisclaimer;
+
+  /// No description provided for @guidesLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'Unable to load the guides.'**
+  String get guidesLoadError;
+
+  /// No description provided for @callServiceType.
+  ///
+  /// In en, this message translates to:
+  /// **'Call {service}'**
+  String callServiceType(String service);
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

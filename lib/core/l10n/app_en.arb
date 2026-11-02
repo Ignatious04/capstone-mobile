@@ -657,5 +657,19 @@
         "type": "String"
       }
     }
+  },
+  "emailOrResponderCode": "Email or Responder Code",
+  "guidesTitle": "Safety Guides",
+  "guidesEntrySubtitle": "First aid and safety steps. Works offline.",
+  "guidesOfflineNote": "These guides are saved on your phone and work without internet or an account check.",
+  "guidesDisclaimer": "General guidance only. It does not replace training or the instructions of emergency responders.",
+  "guidesLoadError": "Unable to load the guides.",
+  "callServiceType": "Call {service}",
+  "@callServiceType": {
+    "placeholders": {
+      "service": {
+        "type": "String"
+      }
+    }
   }
 }

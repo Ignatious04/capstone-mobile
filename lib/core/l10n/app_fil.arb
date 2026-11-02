@@ -492,5 +492,12 @@
   "clearAllNotifications": "Burahin lahat",
   "clearAllNotificationsTitle": "Burahin ang lahat ng abiso?",
   "clearAllNotificationsBody": "Aalisin nito ang lahat ng abiso sa iyong kasaysayan. Hindi na ito maibabalik.",
-  "allNotificationsCleared": "Nabura ang lahat ng abiso"
+  "allNotificationsCleared": "Nabura ang lahat ng abiso",
+  "emailOrResponderCode": "Email o Responder Code",
+  "guidesTitle": "Mga Gabay sa Kaligtasan",
+  "guidesEntrySubtitle": "Mga hakbang sa first aid at kaligtasan. Gumagana kahit offline.",
+  "guidesOfflineNote": "Nakaimbak sa telepono mo ang mga gabay na ito at gumagana kahit walang internet o pagsusuri ng account.",
+  "guidesDisclaimer": "Pangkalahatang gabay lamang ito at hindi nito pinapalitan ang pagsasanay o ang mga tagubilin ng mga responder.",
+  "guidesLoadError": "Hindi ma-load ang mga gabay.",
+  "callServiceType": "Tumawag sa {service}"
 }

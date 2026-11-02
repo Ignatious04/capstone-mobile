@@ -1,0 +1,11 @@
+[
+  { "id": "cpr", "type": "medical", "title": "CPR (Kamay Lamang)", "summary": "Para sa nasa hustong gulang na hindi tumutugon at hindi humihinga nang normal" },
+  { "id": "choking", "type": "medical", "title": "Nasasamid o Nabubulunan", "summary": "Ang gagawin kapag hindi makaubo, makapagsalita, o makahinga ang tao" },
+  { "id": "bleeding", "type": "medical", "title": "Matinding Pagdurugo", "summary": "Pigilan ang matinding pagdurugo habang naghihintay ng tulong" },
+  { "id": "burns", "type": "medical", "title": "Paso", "summary": "Palamigin, takpan, at alamin kung kailan hihingi ng agarang tulong" },
+  { "id": "fire-escape", "type": "fire", "title": "Pagtakas sa Sunog", "summary": "Paano makalabas nang ligtas, o ang gagawin kung nakulong ka" },
+  { "id": "small-fire", "type": "fire", "title": "Maliliit na Sunog", "summary": "Kailan lalabanan ang sunog, at kailan dapat lumikas na lang" },
+  { "id": "gas-leak", "type": "fire", "title": "Tagas ng Gas (LPG)", "summary": "Mga dapat gawin kung naamoy mo ang gas" },
+  { "id": "break-in", "type": "police", "title": "Pagpasok ng Magnanakaw o Holdap", "summary": "Manatiling ligtas kung may pumapasok o nakapasok sa bahay mo" },
+  { "id": "witness", "type": "police", "title": "Kung Nakasaksi Ka ng Krimen", "summary": "Ano ang itatala at ano ang iiwasan habang hinihintay ang pulis" }
+]

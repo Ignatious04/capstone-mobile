@@ -153,9 +153,7 @@ class GuidanceNotifier extends Notifier<QuestionState> {
     }
 
     final buffer = StringBuffer()
-      ..writeln('Ref: $referenceNumber')
       ..writeln('User ID: ${user.userID}')
-      ..writeln('Reporter: ${user.firstName} ${user.lastName}')
       ..writeln('Type: ${incidentType.name.toUpperCase()}');
 
     for (final q in state.questions) {

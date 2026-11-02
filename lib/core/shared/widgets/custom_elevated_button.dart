@@ -33,7 +33,7 @@ class CustomElevatedButton extends StatelessWidget {
           ? SizedBox(
               width: 20,
               height: 20,
-              child: CustomCircularProgressIndicator(color: Colors.deepOrange),
+              child: CustomCircularProgressIndicator(color: Colors.white),
             )
           : icon,
       style: ElevatedButton.styleFrom(

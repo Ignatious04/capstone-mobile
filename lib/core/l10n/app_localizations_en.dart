@@ -1555,4 +1555,28 @@ class AppLocalizationsEn extends AppLocalizations {
   String serviceStatusTimeline(String service) {
     return '$service Status Timeline';
   }
+
+  @override
+  String get emailOrResponderCode => 'Email or Responder Code';
+
+  @override
+  String get guidesTitle => 'Safety Guides';
+
+  @override
+  String get guidesEntrySubtitle => 'First aid and safety steps. Works offline.';
+
+  @override
+  String get guidesOfflineNote => 'These guides are saved on your phone and work without internet or an account check.';
+
+  @override
+  String get guidesDisclaimer =>
+      'General guidance only. It does not replace training or the instructions of emergency responders.';
+
+  @override
+  String get guidesLoadError => 'Unable to load the guides.';
+
+  @override
+  String callServiceType(String service) {
+    return 'Call $service';
+  }
 }

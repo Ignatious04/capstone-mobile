@@ -127,11 +127,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         height: 20.0,
                       ),
                       CustomTextField(
-                        title: l10n.emailAddress.toUpperCase(),
+                        title: l10n.emailOrResponderCode.toUpperCase(),
                         controller: emailController,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return l10n.fieldRequired(l10n.emailAddress);
+                            return l10n.fieldRequired(l10n.emailOrResponderCode);
                           }
 
                           return null;

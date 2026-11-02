@@ -1560,4 +1560,29 @@ class AppLocalizationsFil extends AppLocalizations {
   String serviceStatusTimeline(String service) {
     return 'Timeline ng Status ng $service';
   }
+
+  @override
+  String get emailOrResponderCode => 'Email o Responder Code';
+
+  @override
+  String get guidesTitle => 'Mga Gabay sa Kaligtasan';
+
+  @override
+  String get guidesEntrySubtitle => 'Mga hakbang sa first aid at kaligtasan. Gumagana kahit offline.';
+
+  @override
+  String get guidesOfflineNote =>
+      'Nakaimbak sa telepono mo ang mga gabay na ito at gumagana kahit walang internet o pagsusuri ng account.';
+
+  @override
+  String get guidesDisclaimer =>
+      'Pangkalahatang gabay lamang ito at hindi nito pinapalitan ang pagsasanay o ang mga tagubilin ng mga responder.';
+
+  @override
+  String get guidesLoadError => 'Hindi ma-load ang mga gabay.';
+
+  @override
+  String callServiceType(String service) {
+    return 'Tumawag sa $service';
+  }
 }
