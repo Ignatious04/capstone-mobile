@@ -261,4 +261,25 @@ exports.recordGuardianConsent = onRequest({cors: true}, async (req, res) => {
   res.send("ok");
 });
 
+// When a submission is rejected, delete the selfie and ID photo so they are not
+// kept for longer than needed. The app makes the user retake both on resubmission.
+exports.purgeRejectedVerificationImages = onDocumentUpdated("users/{uid}", async (event) => {
+  const before = event.data.before.data();
+  const after = event.data.after.data();
+  if (after.verificationStatus !== "rejected" || before.verificationStatus === "rejected") return;
+
+  const uid = event.params.uid;
+  const bucket = admin.storage().bucket();
+  // Delete by folder so older uploads that are no longer linked are removed too.
+  await Promise.all([
+    bucket.deleteFiles({prefix: `users/${uid}/profile/`, force: true}),
+    bucket.deleteFiles({prefix: `users/${uid}/id/`, force: true}),
+  ]);
+
+  await event.data.after.ref.update({
+    profileURL: admin.firestore.FieldValue.delete(),
+    idImageURL: admin.firestore.FieldValue.delete(),
+  });
+  logger.info("purged rejected verification images", {uid});
+});
 

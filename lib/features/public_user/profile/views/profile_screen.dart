@@ -71,6 +71,12 @@ class ProfileScreen extends ConsumerWidget {
                                     width: 150,
                                     height: 150,
                                     fit: BoxFit.cover,
+                                     errorWidget: (_, _, _) => Container(
+                                      width: 150,
+                                      height: 150,
+                                      color: AppColors.lighterBlack,
+                                      child: const Icon(Icons.person, size: 50),
+                                    ),
                                   )
                                 : Container(
                                     color: AppColors.lighterBlack,

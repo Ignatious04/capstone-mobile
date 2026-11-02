@@ -80,6 +80,11 @@ class UserNotifier extends Notifier<UserModel> {
       user = state;
     }
 
+    // Old selfie/ID URLs may point to deleted files, so a resubmission must carry fresh captures.
+    if (isResubmission && (user.profileImage == null || (!user.isMinor && user.idImage == null))) {
+      throw StateError('Resubmission requires a new selfie and ID photo.');
+    }
+
     if (user.profileImage != null) {
       final fileName = path.basename(user.profileImage!.path);
       final profileURL = await ref
