@@ -9,6 +9,7 @@ import 'package:capstone/core/shared/providers/user_repository_provider.dart';
 import 'package:capstone/core/shared/providers/storage_repository_provider.dart';
 import 'package:capstone/features/public_user/setup/providers/face_detection_service_provider.dart';
 import 'package:capstone/features/public_user/setup/providers/ocr_service_provider.dart';
+import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as path;
@@ -52,6 +53,54 @@ class UserNotifier extends Notifier<UserModel> {
     }
 
     state = state.copyWith(profileImage: File(image.path));
+    return null;
+  }
+
+  /// Replaces the signed-in user's profile photo. Camera only (no gallery).
+  /// Returns an error message to show, or null on success or if the user cancelled.
+  Future<String?> replaceProfilePicture(AppLocalizations l10n, {String? oldUrl}) async {
+    final authUser = ref.read(firebaseAuthProvider).currentUser;
+    if (authUser == null) {
+      return l10n.somethingWentWrong;
+    }
+
+    final image = await ImagePicker().pickImage(
+      source: ImageSource.camera,
+      preferredCameraDevice: CameraDevice.front,
+      imageQuality: 85,
+      maxWidth: 1080,
+    );
+
+    if (image == null) {
+      return null;
+    }
+
+    final faceCheck = await ref.read(faceDetectionServiceProvider).checkFace(image.path);
+
+    if (faceCheck != FaceCheckResult.ok) {
+      return faceCheck.message(l10n);
+    }
+
+    final newUrl = await ref
+        .read(storageRepositoryProvider)
+        .uploadProfilePicture(
+          file: File(image.path),
+          userID: authUser.uid,
+          fileName: path.basename(image.path),
+        );
+
+    await ref.read(userRepositoryProvider).updateUser(authUser.uid, {
+      'profileURL': newUrl,
+      'updatedAt': DateTime.now().millisecondsSinceEpoch,
+    });
+
+    // Best effort: the new photo is already saved, so a failed cleanup shouldn't surface as an error.
+    if (oldUrl != null && oldUrl.isNotEmpty && oldUrl != newUrl) {
+      try {
+        await ref.read(storageRepositoryProvider).deleteByUrl(oldUrl);
+      } catch (_) {}
+    }
+
     return null;
   }
 
@@ -152,8 +201,8 @@ class UserNotifier extends Notifier<UserModel> {
       return IdCaptureResult.unreadable.message(l10n);
     }
 
-    final userID = ref.read(firebaseAuthProvider).currentUser!.uid;
-    final isDuplicate = await ref.read(userRepositoryProvider).isIdNumberTaken(idNumber, excludeUserID: userID);
+    final result = await FirebaseFunctions.instance.httpsCallable('registerIdNumber').call({'idNumber': idNumber});
+    final isDuplicate = (result.data as Map)['duplicate'] == true;
 
     if (isDuplicate) {
       return IdCaptureResult.duplicate.message(l10n);

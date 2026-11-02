@@ -499,5 +499,6 @@
   "guidesOfflineNote": "Nakaimbak sa telepono mo ang mga gabay na ito at gumagana kahit walang internet o pagsusuri ng account.",
   "guidesDisclaimer": "Pangkalahatang gabay lamang ito at hindi nito pinapalitan ang pagsasanay o ang mga tagubilin ng mga responder.",
   "guidesLoadError": "Hindi ma-load ang mga gabay.",
-  "callServiceType": "Tumawag sa {service}"
+  "callServiceType": "Tumawag sa {service}",
+  "replacePhoto": "Palitan ang larawan"
 }

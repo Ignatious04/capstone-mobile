@@ -3061,6 +3061,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Call {service}'**
   String callServiceType(String service);
+
+  /// No description provided for @replacePhoto.
+  ///
+  /// In en, this message translates to:
+  /// **'Replace photo'**
+  String get replacePhoto;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

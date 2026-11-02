@@ -15,6 +15,7 @@ import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/public_user/profile/views/medical_information_screen.dart';
 import 'package:capstone/features/public_user/profile/views/personal_information_screen.dart';
 import 'package:capstone/features/public_user/profile/views/settings_screen.dart';
+import 'package:capstone/features/public_user/profile/widgets/replace_profile_photo_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -86,6 +87,7 @@ class ProfileScreen extends ConsumerWidget {
                         ),
                       ),
                     ),
+                    ReplaceProfilePhotoButton(currentUrl: user.profileURL),
                     const SizedBox(
                       height: 10,
                     ),

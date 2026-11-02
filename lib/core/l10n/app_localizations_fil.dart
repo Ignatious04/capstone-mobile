@@ -1585,4 +1585,7 @@ class AppLocalizationsFil extends AppLocalizations {
   String callServiceType(String service) {
     return 'Tumawag sa $service';
   }
+
+  @override
+  String get replacePhoto => 'Palitan ang larawan';
 }

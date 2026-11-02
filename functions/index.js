@@ -86,6 +86,7 @@ const nodemailer = require("nodemailer");
 
 const SMTP_USER = defineSecret("SMTP_USER");
 const SMTP_PASS = defineSecret("SMTP_PASS");
+const ID_HASH_KEY = defineSecret("ID_HASH_KEY");
 
 function mailer() {
   return nodemailer.createTransport({
@@ -261,12 +262,14 @@ exports.recordGuardianConsent = onRequest({cors: true}, async (req, res) => {
   res.send("ok");
 });
 
-// When a submission is rejected, delete the selfie and ID photo so they are not
-// kept for longer than needed. The app makes the user retake both on resubmission.
-exports.purgeRejectedVerificationImages = onDocumentUpdated("users/{uid}", async (event) => {
+// Once an admin decides (approve or reject), the selfie and ID photo have served
+// their purpose, so delete them. Rejected users retake both on resubmission.
+exports.purgeVerificationImages = onDocumentUpdated("users/{uid}", async (event) => {
   const before = event.data.before.data();
   const after = event.data.after.data();
-  if (after.verificationStatus !== "rejected" || before.verificationStatus === "rejected") return;
+  const status = after.verificationStatus;
+  if (!["approved", "rejected"].includes(status)) return;
+  if (before.verificationStatus === status) return;
 
   const uid = event.params.uid;
   const bucket = admin.storage().bucket();
@@ -280,6 +283,31 @@ exports.purgeRejectedVerificationImages = onDocumentUpdated("users/{uid}", async
     profileURL: admin.firestore.FieldValue.delete(),
     idImageURL: admin.firestore.FieldValue.delete(),
   });
-  logger.info("purged rejected verification images", {uid});
+  logger.info("purged verification images", {uid, status});
+});
+
+// Checks for a duplicate ID number and records only a keyed hash plus the last 4 digits.
+exports.registerIdNumber = onCall({secrets: [ID_HASH_KEY]}, async (request) => {
+  if (!request.auth) throw new HttpsError("unauthenticated", "Sign in first.");
+
+  const raw = String(request.data?.idNumber ?? "")
+      .toUpperCase()
+      .replace(/[\s\-–]/g, "");
+  if (!/^[A-Z0-9]{7,20}$/.test(raw)) {
+    throw new HttpsError("invalid-argument", "Invalid ID number.");
+  }
+
+  const uid = request.auth.uid;
+  const hash = crypto.createHmac("sha256", ID_HASH_KEY.value()).update(raw).digest("hex");
+  const db = admin.firestore();
+
+  const dupes = await db.collection("users").where("idNumberHash", "==", hash).limit(2).get();
+  if (dupes.docs.some((d) => d.id !== uid)) return {duplicate: true};
+
+  await db.collection("users").doc(uid).set(
+      {idNumberHash: hash, idNumberLast4: raw.slice(-4)},
+      {merge: true},
+  );
+  return {duplicate: false};
 });
 

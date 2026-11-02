@@ -671,5 +671,6 @@
         "type": "String"
       }
     }
-  }
+  },
+  "replacePhoto": "Replace photo"
 }

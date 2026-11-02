@@ -1579,4 +1579,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String callServiceType(String service) {
     return 'Call $service';
   }
+
+  @override
+  String get replacePhoto => 'Replace photo';
 }
