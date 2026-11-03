@@ -3068,6 +3068,12 @@ abstract class AppLocalizations {
   /// **'Replace photo'**
   String get replacePhoto;
 
+  /// No description provided for @replacePhotoNeedsVerification.
+  ///
+  /// In en, this message translates to:
+  /// **'You can change your profile photo once an administrator verifies your account.'**
+  String get replacePhotoNeedsVerification;
+
   /// No description provided for @reporterMedicalInfo.
   ///
   /// In en, this message translates to:

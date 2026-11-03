@@ -501,6 +501,7 @@
   "guidesLoadError": "Hindi ma-load ang mga gabay.",
   "callServiceType": "Tumawag sa {service}",
   "replacePhoto": "Palitan ang larawan",
+  "replacePhotoNeedsVerification": "Maaari mong palitan ang iyong larawan kapag na-verify ng administrator ang iyong account.",
   "reporterMedicalInfo": "Impormasyong Medikal ng Nag-ulat",
   "viewMedicalInfo": "Tingnan ang medical info",
   "medicalInfoAccessNote": "Ibinahagi ng nag-ulat para sa emergency na ito lamang. Naka-log ang bawat pagtingin.",

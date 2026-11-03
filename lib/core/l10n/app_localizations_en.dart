@@ -1584,6 +1584,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get replacePhoto => 'Replace photo';
 
   @override
+  String get replacePhotoNeedsVerification =>
+      'You can change your profile photo once an administrator verifies your account.';
+
+  @override
   String get reporterMedicalInfo => 'Reporter\'s Medical Information';
 
   @override

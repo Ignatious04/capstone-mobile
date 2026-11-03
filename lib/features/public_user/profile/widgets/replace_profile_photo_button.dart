@@ -1,5 +1,6 @@
 import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/shared/providers/user_provider.dart';
+import 'package:capstone/core/shared/providers/verification_provider.dart';
 import 'package:capstone/core/shared/widgets/custom_snackbar_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -18,13 +19,17 @@ class _ReplaceProfilePhotoButtonState extends ConsumerState<ReplaceProfilePhotoB
 
   Future<void> _replace() async {
     final l10n = AppLocalizations.of(context)!;
+
+    if (!ref.read(isVerifiedProvider)) {
+      CustomSnackbarHelper.show(context, text: l10n.replacePhotoNeedsVerification);
+      return;
+    }
+
     setState(() => _isLoading = true);
 
     String? error;
     try {
-      error = await ref
-          .read(userProvider.notifier)
-          .replaceProfilePicture(l10n, oldUrl: widget.currentUrl);
+      error = await ref.read(userProvider.notifier).replaceProfilePicture(l10n, oldUrl: widget.currentUrl);
     } catch (e) {
       debugPrint('Replace profile photo failed: $e');
       error = l10n.somethingWentWrong;
@@ -41,6 +46,7 @@ class _ReplaceProfilePhotoButtonState extends ConsumerState<ReplaceProfilePhotoB
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+    final isVerified = ref.watch(isVerifiedProvider);
 
     return TextButton.icon(
       onPressed: _isLoading ? null : _replace,
@@ -52,7 +58,10 @@ class _ReplaceProfilePhotoButtonState extends ConsumerState<ReplaceProfilePhotoB
             )
           : const Icon(Icons.photo_camera, size: 20),
       label: Text(l10n.replacePhoto),
-      style: TextButton.styleFrom(visualDensity: VisualDensity.compact),
+      style: TextButton.styleFrom(
+        visualDensity: VisualDensity.compact,
+        foregroundColor: isVerified ? null : Theme.of(context).disabledColor,
+      ),
     );
   }
 }

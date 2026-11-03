@@ -7,6 +7,7 @@ import 'package:capstone/core/shared/models/user_model.dart';
 import 'package:capstone/core/shared/providers/firebase_auth_provider.dart';
 import 'package:capstone/core/shared/providers/user_repository_provider.dart';
 import 'package:capstone/core/shared/providers/storage_repository_provider.dart';
+import 'package:capstone/core/shared/providers/verification_provider.dart';
 import 'package:capstone/features/public_user/setup/providers/face_detection_service_provider.dart';
 import 'package:capstone/features/public_user/setup/providers/ocr_service_provider.dart';
 import 'package:cloud_functions/cloud_functions.dart';
@@ -59,6 +60,10 @@ class UserNotifier extends Notifier<UserModel> {
   /// Replaces the signed-in user's profile photo. Camera only (no gallery).
   /// Returns an error message to show, or null on success or if the user cancelled.
   Future<String?> replaceProfilePicture(AppLocalizations l10n, {String? oldUrl}) async {
+    if (!ref.read(isVerifiedProvider)) {
+      return l10n.replacePhotoNeedsVerification;
+    }
+
     final authUser = ref.read(firebaseAuthProvider).currentUser;
     if (authUser == null) {
       return l10n.somethingWentWrong;

@@ -673,6 +673,7 @@
     }
   },
   "replacePhoto": "Replace photo",
+  "replacePhotoNeedsVerification": "You can change your profile photo once an administrator verifies your account.",
   "reporterMedicalInfo": "Reporter's Medical Information",
   "viewMedicalInfo": "View medical info",
   "medicalInfoAccessNote": "Shared by the reporter for this emergency only. Each view is logged.",

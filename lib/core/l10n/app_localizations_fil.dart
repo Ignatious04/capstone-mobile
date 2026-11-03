@@ -1590,6 +1590,10 @@ class AppLocalizationsFil extends AppLocalizations {
   String get replacePhoto => 'Palitan ang larawan';
 
   @override
+  String get replacePhotoNeedsVerification =>
+      'Maaari mong palitan ang iyong larawan kapag na-verify ng administrator ang iyong account.';
+
+  @override
   String get reporterMedicalInfo => 'Impormasyong Medikal ng Nag-ulat';
 
   @override
