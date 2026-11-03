@@ -88,6 +88,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       TitleText(
                         value: l10n.appTagline,
                         color: Colors.white,
+                        alignment: TextAlign.center,
                       ),
                     ],
                   ),

@@ -44,9 +44,7 @@ class _MedicalInformationScreenState extends ConsumerState<MedicalInformationScr
     heightController = TextEditingController(text: u.height == 0 ? '' : u.height.toString());
     weightController = TextEditingController(text: u.weight == 0 ? '' : u.weight.toString());
     vaccineDateController = TextEditingController(
-      text: vaccineDate == 0
-          ? ''
-          : DateFormat("MM/dd/yy").format(DateTime.fromMillisecondsSinceEpoch(vaccineDate)),
+      text: vaccineDate == 0 ? '' : DateFormat("MM/dd/yy").format(DateTime.fromMillisecondsSinceEpoch(vaccineDate)),
     );
   }
 
@@ -99,68 +97,87 @@ class _MedicalInformationScreenState extends ConsumerState<MedicalInformationScr
                     CustomDropdownButton(
                       title: l10n.bloodType.toUpperCase(),
                       value: bloodType.isEmpty ? null : bloodType,
-                      items: bloodItems.map((b) => DropdownMenuItem(value: b, child: Text(b))).toList(),
+                      items: bloodItems
+                          .map(
+                            (b) => DropdownMenuItem(
+                              value: b,
+                              child: BodyText(
+                                value: b,
+                              ),
+                            ),
+                          )
+                          .toList(),
                       onChanged: (v) => setState(() => bloodType = v ?? ''),
                     ),
                     const SizedBox(height: 10),
-                    Row(children: [
-                      Expanded(
-                        child: CustomTextField(
-                          title: l10n.heightCm.toUpperCase(),
-                          controller: heightController,
-                          keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: CustomTextField(
+                            title: l10n.heightCm.toUpperCase(),
+                            controller: heightController,
+                            keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                          ),
                         ),
-                      ),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        child: CustomTextField(
-                          title: l10n.weightKg.toUpperCase(),
-                          controller: weightController,
-                          keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: CustomTextField(
+                            title: l10n.weightKg.toUpperCase(),
+                            controller: weightController,
+                            keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                          ),
                         ),
-                      ),
-                    ]),
+                      ],
+                    ),
                     const SizedBox(height: 10),
                     CustomDropdownButton(
                       title: l10n.areYouVaccinated.toUpperCase(),
                       value: isVaccinated ? 'Yes' : 'No',
                       items: [
-                        DropdownMenuItem(value: 'Yes', child: Text(l10n.yes)),
-                        DropdownMenuItem(value: 'No', child: Text(l10n.no)),
+                        DropdownMenuItem(
+                          value: 'Yes',
+                          child: BodyText(value: l10n.yes),
+                        ),
+                        DropdownMenuItem(
+                          value: 'No',
+                          child: BodyText(value: l10n.no),
+                        ),
                       ],
                       onChanged: (v) => setState(() => isVaccinated = v == 'Yes'),
                     ),
                     if (isVaccinated) ...[
                       const SizedBox(height: 10),
-                      Row(children: [
-                        Expanded(
-                          child: CustomDropdownButton(
-                            title: l10n.vaccineType.toUpperCase(),
-                            value: vaccineType.isEmpty ? null : vaccineType,
-                            items: DropdownLists.vaccineItems(l10n),
-                            onChanged: (v) => setState(() => vaccineType = v ?? ''),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: CustomDropdownButton(
+                              title: l10n.vaccineType.toUpperCase(),
+                              value: vaccineType.isEmpty ? null : vaccineType,
+                              items: DropdownLists.vaccineItems(l10n),
+                              onChanged: (v) => setState(() => vaccineType = v ?? ''),
+                            ),
                           ),
-                        ),
-                        const SizedBox(width: 10),
-                        Expanded(
-                          child: CustomDatePickerWidget(
-                            title: l10n.vaccineDate.toUpperCase(),
-                            controller: vaccineDateController,
-                            onTap: () async {
-                              final date = await showDatePicker(
-                                context: context,
-                                initialDate: DateTime.now(),
-                                firstDate: DateTime(1900),
-                                lastDate: DateTime.now(),
-                              );
-                              if (date != null) {
-                                vaccineDateController.text = DateFormat("MM/dd/yy").format(date);
-                                setState(() => vaccineDate = date.millisecondsSinceEpoch);
-                              }
-                            },
+                          const SizedBox(width: 10),
+                          Expanded(
+                            child: CustomDatePickerWidget(
+                              title: l10n.vaccineDate.toUpperCase(),
+                              controller: vaccineDateController,
+                              onTap: () async {
+                                final date = await showDatePicker(
+                                  context: context,
+                                  initialDate: DateTime.now(),
+                                  firstDate: DateTime(1900),
+                                  lastDate: DateTime.now(),
+                                );
+                                if (date != null) {
+                                  vaccineDateController.text = DateFormat("MM/dd/yy").format(date);
+                                  setState(() => vaccineDate = date.millisecondsSinceEpoch);
+                                }
+                              },
+                            ),
                           ),
-                        ),
-                      ]),
+                        ],
+                      ),
                     ],
                   ],
                 ),

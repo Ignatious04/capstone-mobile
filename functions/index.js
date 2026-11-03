@@ -13,8 +13,8 @@ const VERIFICATION_COPY = {
     fil: {title: "Na-verify na ang account", body: "Naaprubahan na ang iyong account."},
   },
   rejected: {
-    en: {title: "Verification needs attention", body: "Open the app to see why and what to do next."},
-    fil: {title: "Kailangan ng aksyon sa verification", body: "Buksan ang app para makita ang dahilan at kung ano ang susunod na gagawin."},
+    en: {title: "Verification needs attention", body: "Check to see why and what to do next."},
+    fil: {title: "Kailangan ng aksyon sa verification", body: "Tignan para makita ang dahilan at kung ano ang susunod na gagawin."},
   },
 };
 
@@ -263,8 +263,9 @@ exports.recordGuardianConsent = onRequest({cors: true}, async (req, res) => {
   res.send("ok");
 });
 
-// Once an admin decides (approve or reject), the selfie and ID photo have served
-// their purpose, so delete them. Rejected users retake both on resubmission.
+// Once an admin decides, the ID photo has served its purpose, so delete it.
+// The selfie doubles as the profile photo, so keep it on approval.
+// Rejected users retake both on resubmission, so the selfie is deleted on rejection
 exports.purgeVerificationImages = onDocumentUpdated("users/{uid}", async (event) => {
   const before = event.data.before.data();
   const after = event.data.after.data();
@@ -274,16 +275,19 @@ exports.purgeVerificationImages = onDocumentUpdated("users/{uid}", async (event)
 
   const uid = event.params.uid;
   const bucket = admin.storage().bucket();
-  // Delete by folder so older uploads that are no longer linked are removed too.
-  await Promise.all([
-    bucket.deleteFiles({prefix: `users/${uid}/profile/`, force: true}),
-    bucket.deleteFiles({prefix: `users/${uid}/id/`, force: true}),
-  ]);
+  const approved = status === "approved";
 
-  await event.data.after.ref.update({
-    profileURL: admin.firestore.FieldValue.delete(),
-    idImageURL: admin.firestore.FieldValue.delete(),
-  });
+  // Delete by folder so older uploads that are no longer linked are removed too.
+  const deletions = [bucket.deleteFiles({prefix: `users/${uid}/id/`, force: true})];
+  const fieldUpdates = {idImageURL: admin.firestore.FieldValue.delete()};
+
+  if (!approved) {
+    deletions.push(bucket.deleteFiles({prefix: `users/${uid}/profile/`, force: true}));
+    fieldUpdates.profileURL = admin.firestore.FieldValue.delete();
+  }
+
+  await Promise.all(deletions);
+  await event.data.after.ref.update(fieldUpdates);
   logger.info("purged verification images", {uid, status});
 });
 

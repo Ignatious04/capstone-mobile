@@ -94,7 +94,7 @@ class DropdownLists {
   static List<DropdownMenuItem<String>> vaccineItems(AppLocalizations l10n) => [
     DropdownMenuItem(
       value: "Anti-Rabies",
-      child: Text(l10n.vaccineAntiRabies),
+      child: BodyText(value: l10n.vaccineAntiRabies),
     ),
   ];
 
