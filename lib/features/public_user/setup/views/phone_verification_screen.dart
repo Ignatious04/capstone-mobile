@@ -61,7 +61,6 @@ class _PhoneVerificationScreenState extends ConsumerState<PhoneVerificationScree
         final e164Number = "+63${contactNumController.text.trim()}";
         ref.read(userProvider.notifier).setContactNumber(e164Number);
         ref.read(userProvider.notifier).setIsContactNumberVerified(true);
-        CustomSnackbarHelper.show(context, text: l10n.phoneVerifiedOk);
       }
 
       next.status.whenOrNull(

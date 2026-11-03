@@ -83,7 +83,7 @@ class UserNotifier extends Notifier<UserModel> {
 
     final newUrl = await ref
         .read(storageRepositoryProvider)
-        .uploadProfilePicture(
+        .uploadAvatar(
           file: File(image.path),
           userID: authUser.uid,
           fileName: path.basename(image.path),

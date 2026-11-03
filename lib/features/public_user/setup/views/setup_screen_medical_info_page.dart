@@ -124,48 +124,50 @@ class _SetupScreenMedicalInfoPage extends ConsumerState<SetupScreenMedicalInfoPa
               }
             },
           ),
-          const SizedBox(
-            height: 10,
-          ),
-          Row(
-            children: [
-              Expanded(
-                child: CustomDropdownButton(
-                  title: l10n.vaccineType.toUpperCase(),
-                  value: user.vaccineType.isEmpty ? null : user.vaccineType,
-                  items: DropdownLists.vaccineItems(l10n),
-                  onChanged: (value) {
-                    ref.read(userProvider.notifier).setVaccineType(value!);
-                  },
+          if (user.isVaccinated) ...[
+            const SizedBox(
+              height: 10,
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: CustomDropdownButton(
+                    title: l10n.vaccineType.toUpperCase(),
+                    value: user.vaccineType.isEmpty ? null : user.vaccineType,
+                    items: DropdownLists.vaccineItems(l10n),
+                    onChanged: (value) {
+                      ref.read(userProvider.notifier).setVaccineType(value!);
+                    },
+                  ),
                 ),
-              ),
-              const SizedBox(
-                width: 10,
-              ),
-              Expanded(
-                child: CustomDatePickerWidget(
-                  title: l10n.vaccineDate.toUpperCase(),
-                  controller: vaccineDateController,
-                  onTap: () async {
-                    final date = await showDatePicker(
-                      context: context,
-                      initialDate: DateTime.now(),
-                      firstDate: DateTime(1900),
-                      lastDate: DateTime.now(),
-                    );
+                const SizedBox(
+                  width: 10,
+                ),
+                Expanded(
+                  child: CustomDatePickerWidget(
+                    title: l10n.vaccineDate.toUpperCase(),
+                    controller: vaccineDateController,
+                    onTap: () async {
+                      final date = await showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime(1900),
+                        lastDate: DateTime.now(),
+                      );
 
-                    if (date != null) {
-                      final formattedDate = DateFormat(
-                        "MM/dd/yy",
-                      ).format(date);
-                      vaccineDateController.text = formattedDate;
-                      ref.read(userProvider.notifier).setVaccineDate(date.millisecondsSinceEpoch);
-                    }
-                  },
+                      if (date != null) {
+                        final formattedDate = DateFormat(
+                          "MM/dd/yy",
+                        ).format(date);
+                        vaccineDateController.text = formattedDate;
+                        ref.read(userProvider.notifier).setVaccineDate(date.millisecondsSinceEpoch);
+                      }
+                    },
+                  ),
                 ),
-              ),
-            ],
-          ),
+              ],
+            ),
+          ],
         ],
       ),
     );

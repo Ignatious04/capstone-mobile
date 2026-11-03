@@ -106,12 +106,25 @@ class StorageRepository {
     return attachments;
   }
 
-    /// Deletes the file behind a download URL. A missing file counts as deleted.
+  /// Deletes the file behind a download URL. A missing file counts as deleted.
   Future<void> deleteByUrl(String url) async {
     try {
       await _storage.refFromURL(url).delete();
     } on FirebaseException catch (e) {
       if (e.code != 'object-not-found') rethrow;
     }
+  }
+
+  Future<String> uploadAvatar({
+    required File file,
+    required String userID,
+    required String fileName,
+  }) async {
+    final extension = path.extension(fileName);
+    final storageFileName = '${DateTime.now().millisecondsSinceEpoch}$extension';
+    final ref = _storage.ref().child('users/$userID/avatar/$storageFileName');
+
+    await ref.putFile(file);
+    return await ref.getDownloadURL();
   }
 }
