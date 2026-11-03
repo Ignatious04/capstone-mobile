@@ -500,5 +500,13 @@
   "guidesDisclaimer": "Pangkalahatang gabay lamang ito at hindi nito pinapalitan ang pagsasanay o ang mga tagubilin ng mga responder.",
   "guidesLoadError": "Hindi ma-load ang mga gabay.",
   "callServiceType": "Tumawag sa {service}",
-  "replacePhoto": "Palitan ang larawan"
+  "replacePhoto": "Palitan ang larawan",
+  "reporterMedicalInfo": "Impormasyong Medikal ng Nag-ulat",
+  "viewMedicalInfo": "Tingnan ang medical info",
+  "medicalInfoAccessNote": "Ibinahagi ng nag-ulat para sa emergency na ito lamang. Naka-log ang bawat pagtingin.",
+  "noMedicalInfoShared": "Walang ibinahaging medical info",
+  "medicalInfoLoadError": "Hindi ma-load ang medical info. Subukan muli.",
+  "reportIsForSomeoneElse": "Ang emergency na ito ay para sa ibang tao",
+  "reportIsForSomeoneElseHint": "I-on kung nag-uulat ka para sa ibang tao. Hindi ipapakita sa mga responder ang sarili mong medical info.",
+  "medicalSharingConsent": "Payagan ang medical responder na nakatalaga sa aking emergency report na makita ang aking blood type, taas at timbang habang aktibo ang report. Maaari ko itong i-off anumang oras."
 }

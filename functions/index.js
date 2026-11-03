@@ -5,6 +5,7 @@ admin.initializeApp();
 Object.assign(exports, require("./audit"));
 Object.assign(exports, require("./routing"));
 Object.assign(exports, require("./responses"));
+Object.assign(exports, require("./medical"));
 
 const VERIFICATION_COPY = {
   approved: {

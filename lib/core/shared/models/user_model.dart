@@ -47,6 +47,7 @@ class UserModel {
   final bool isVaccinated;
   final String vaccineType;
   final int vaccineDate;
+  final bool medicalSharingConsent;
 
   final int createdAt;
   final int updatedAt;
@@ -102,6 +103,7 @@ class UserModel {
     this.isVaccinated = false,
     this.vaccineType = "",
     this.vaccineDate = 0,
+    this.medicalSharingConsent = false,
     this.createdAt = 0,
     this.updatedAt = 0,
     this.isSetup = false,
@@ -151,6 +153,7 @@ class UserModel {
       isVaccinated: map['isVaccinated'] ?? false,
       vaccineType: map['vaccineType'] ?? '',
       vaccineDate: _toMillis(map['vaccineDate']) ?? 0,
+      medicalSharingConsent: map['medicalSharingConsent'] ?? false,
       createdAt: _toMillis(map['createdAt']) ?? 0,
       updatedAt: _toMillis(map['updatedAt']) ?? 0,
       isSetup: map["isSetup"] ?? false,
@@ -202,6 +205,7 @@ class UserModel {
       'isVaccinated': isVaccinated,
       'vaccineType': vaccineType,
       'vaccineDate': vaccineDate,
+      'medicalSharingConsent': medicalSharingConsent,
       'createdAt': createdAt,
       'updatedAt': updatedAt,
       'isSetup': isSetup,
@@ -245,6 +249,7 @@ class UserModel {
     bool? isVaccinated,
     String? vaccineType,
     int? vaccineDate,
+    bool? medicalSharingConsent,
     int? createdAt,
     int? updatedAt,
     bool? isSetup,
@@ -285,6 +290,7 @@ class UserModel {
       isVaccinated: isVaccinated ?? this.isVaccinated,
       vaccineType: vaccineType ?? this.vaccineType,
       vaccineDate: vaccineDate ?? this.vaccineDate,
+      medicalSharingConsent: medicalSharingConsent ?? this.medicalSharingConsent,
       createdAt: createdAt ?? this.createdAt,
       updatedAt: updatedAt ?? this.updatedAt,
       isSetup: isSetup ?? this.isSetup,

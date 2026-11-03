@@ -1588,4 +1588,31 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String get replacePhoto => 'Palitan ang larawan';
+
+  @override
+  String get reporterMedicalInfo => 'Impormasyong Medikal ng Nag-ulat';
+
+  @override
+  String get viewMedicalInfo => 'Tingnan ang medical info';
+
+  @override
+  String get medicalInfoAccessNote =>
+      'Ibinahagi ng nag-ulat para sa emergency na ito lamang. Naka-log ang bawat pagtingin.';
+
+  @override
+  String get noMedicalInfoShared => 'Walang ibinahaging medical info';
+
+  @override
+  String get medicalInfoLoadError => 'Hindi ma-load ang medical info. Subukan muli.';
+
+  @override
+  String get reportIsForSomeoneElse => 'Ang emergency na ito ay para sa ibang tao';
+
+  @override
+  String get reportIsForSomeoneElseHint =>
+      'I-on kung nag-uulat ka para sa ibang tao. Hindi ipapakita sa mga responder ang sarili mong medical info.';
+
+  @override
+  String get medicalSharingConsent =>
+      'Payagan ang medical responder na nakatalaga sa aking emergency report na makita ang aking blood type, taas at timbang habang aktibo ang report. Maaari ko itong i-off anumang oras.';
 }

@@ -37,6 +37,7 @@ class ReportNotifier extends Notifier<ReportModel> {
     required String additionalInformation,
     ReportPriorityEnum? priority,
     PoliceConcernTypeEnum? policeConcernType,
+    bool reportedForSelf = false,
   }) {
     return ref.read(auditLogRepositoryProvider).trackFailure(
       "normal",
@@ -70,6 +71,7 @@ class ReportNotifier extends Notifier<ReportModel> {
           description: description,
           attachments: attachments,
           additionalInformation: additionalInformation,
+          reportedForSelf: reportedForSelf,
           status: ReportStatusEnum.pending,
           createdAt: now,
         );
@@ -100,6 +102,7 @@ class ReportNotifier extends Notifier<ReportModel> {
   Future<void> submitQuickReport({
     required ServiceTypeEnum incidentType,
     required LatLng location,
+    bool reportedForSelf = false,
   }) {
     return ref.read(auditLogRepositoryProvider).trackFailure(
       "quick",
@@ -124,6 +127,7 @@ class ReportNotifier extends Notifier<ReportModel> {
           reportType: ReportTypeEnum.quick,
           incidentType: incidentType,
           priority: PriorityCalculator.forQuickReport(incidentType),
+          reportedForSelf: reportedForSelf,
           status: ReportStatusEnum.pending,
           location: GeoPoint(location.latitude, location.longitude),
           createdAt: now,

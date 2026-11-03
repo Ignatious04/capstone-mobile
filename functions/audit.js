@@ -19,7 +19,7 @@ const TRACKED_VALUES = new Set([
   "status", "assignedTo", "priority",
   "isDeactivated", "isContactNumberVerified", "isSetup", "verificationStatus",
   "rejectionReason", "rejectionCode", "reviewedBy", "resubmissionCount",
-  "consentStatus", "consentPurposes", "consentSendCount",
+  "consentStatus", "consentPurposes", "consentSendCount", "medicalSharingConsent",
   "routingStatus", "serviceID",
   "isActive", "isAvailable",
 ]);

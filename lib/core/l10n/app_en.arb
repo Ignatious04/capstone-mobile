@@ -672,5 +672,13 @@
       }
     }
   },
-  "replacePhoto": "Replace photo"
+  "replacePhoto": "Replace photo",
+  "reporterMedicalInfo": "Reporter's Medical Information",
+  "viewMedicalInfo": "View medical info",
+  "medicalInfoAccessNote": "Shared by the reporter for this emergency only. Each view is logged.",
+  "noMedicalInfoShared": "No medical info shared",
+  "medicalInfoLoadError": "Couldn't load medical info. Try again.",
+  "reportIsForSomeoneElse": "This emergency is for someone else",
+  "reportIsForSomeoneElseHint": "Turn on if you're reporting for another person. Your own medical info won't be shown to responders.",
+  "medicalSharingConsent": "Allow the medical responder assigned to my emergency report to view my blood type, height and weight while that report is active. I can turn this off anytime."
 }

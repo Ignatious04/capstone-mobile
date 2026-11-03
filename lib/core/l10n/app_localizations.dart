@@ -3067,6 +3067,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Replace photo'**
   String get replacePhoto;
+
+  /// No description provided for @reporterMedicalInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'Reporter\'s Medical Information'**
+  String get reporterMedicalInfo;
+
+  /// No description provided for @viewMedicalInfo.
+  ///
+  /// In en, this message translates to:
+  /// **'View medical info'**
+  String get viewMedicalInfo;
+
+  /// No description provided for @medicalInfoAccessNote.
+  ///
+  /// In en, this message translates to:
+  /// **'Shared by the reporter for this emergency only. Each view is logged.'**
+  String get medicalInfoAccessNote;
+
+  /// No description provided for @noMedicalInfoShared.
+  ///
+  /// In en, this message translates to:
+  /// **'No medical info shared'**
+  String get noMedicalInfoShared;
+
+  /// No description provided for @medicalInfoLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t load medical info. Try again.'**
+  String get medicalInfoLoadError;
+
+  /// No description provided for @reportIsForSomeoneElse.
+  ///
+  /// In en, this message translates to:
+  /// **'This emergency is for someone else'**
+  String get reportIsForSomeoneElse;
+
+  /// No description provided for @reportIsForSomeoneElseHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn on if you\'re reporting for another person. Your own medical info won\'t be shown to responders.'**
+  String get reportIsForSomeoneElseHint;
+
+  /// No description provided for @medicalSharingConsent.
+  ///
+  /// In en, this message translates to:
+  /// **'Allow the medical responder assigned to my emergency report to view my blood type, height and weight while that report is active. I can turn this off anytime.'**
+  String get medicalSharingConsent;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

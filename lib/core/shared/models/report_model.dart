@@ -37,6 +37,10 @@ class ReportModel {
   final DateTime? resolvedAt;
   final List<ServiceTypeEnum> secondaryServices;
 
+  /// True when the reporter is the person who needs help. Gates whether a
+  /// responder may see the reporter's own medical info.
+  final bool reportedForSelf;
+
   const ReportModel({
     this.reportID = '',
     this.referenceNumber = '',
@@ -59,6 +63,7 @@ class ReportModel {
     this.originalGpsLocation,
     this.resolvedAt,
     this.secondaryServices = const [],
+    this.reportedForSelf = false,
   });
 
   ReportModel copyWith({
@@ -83,6 +88,7 @@ class ReportModel {
     GeoPoint? originalGpsLocation,
     DateTime? resolvedAt,
     List<ServiceTypeEnum>? secondaryServices,
+    bool? reportedForSelf,
   }) {
     return ReportModel(
       reportID: reportID ?? this.reportID,
@@ -106,6 +112,7 @@ class ReportModel {
       originalGpsLocation: originalGpsLocation ?? this.originalGpsLocation,
       resolvedAt: resolvedAt ?? this.resolvedAt,
       secondaryServices: secondaryServices ?? this.secondaryServices,
+      reportedForSelf: reportedForSelf ?? this.reportedForSelf,
     );
   }
 
@@ -131,6 +138,7 @@ class ReportModel {
       'originalGpsLocation': originalGpsLocation,
       'resolvedAt': resolvedAt,
       'secondaryServices': secondaryServices.map((s) => s.name).toList(),
+      'reportedForSelf': reportedForSelf,
     };
   }
 
@@ -171,6 +179,7 @@ class ReportModel {
       secondaryServices: (map['secondaryServices'] as List<dynamic>? ?? [])
           .map((s) => ServiceTypeEnum.values.firstWhere((e) => e.name == s))
           .toList(),
+      reportedForSelf: map['reportedForSelf'] ?? false,
     );
   }
 }

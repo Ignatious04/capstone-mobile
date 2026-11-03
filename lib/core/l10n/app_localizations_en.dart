@@ -1582,4 +1582,30 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get replacePhoto => 'Replace photo';
+
+  @override
+  String get reporterMedicalInfo => 'Reporter\'s Medical Information';
+
+  @override
+  String get viewMedicalInfo => 'View medical info';
+
+  @override
+  String get medicalInfoAccessNote => 'Shared by the reporter for this emergency only. Each view is logged.';
+
+  @override
+  String get noMedicalInfoShared => 'No medical info shared';
+
+  @override
+  String get medicalInfoLoadError => 'Couldn\'t load medical info. Try again.';
+
+  @override
+  String get reportIsForSomeoneElse => 'This emergency is for someone else';
+
+  @override
+  String get reportIsForSomeoneElseHint =>
+      'Turn on if you\'re reporting for another person. Your own medical info won\'t be shown to responders.';
+
+  @override
+  String get medicalSharingConsent =>
+      'Allow the medical responder assigned to my emergency report to view my blood type, height and weight while that report is active. I can turn this off anytime.';
 }

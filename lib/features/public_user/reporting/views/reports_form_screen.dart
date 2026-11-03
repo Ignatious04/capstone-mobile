@@ -47,6 +47,7 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> {
   final reportsFormKey = GlobalKey<FormState>();
   bool _isPoliceEmergency = true;
   PoliceConcernTypeEnum? _policeConcernType;
+  bool _isForSomeoneElse = false;
 
   List<DropdownMenuItem<ServiceTypeEnum>> _emergencyTypes(AppLocalizations l10n) => [
     for (final type in const [ServiceTypeEnum.medical, ServiceTypeEnum.police, ServiceTypeEnum.fire])
@@ -261,6 +262,21 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> {
                                 maxLines: 5,
                                 vertical: 10,
                                 isRequired: true,
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              SwitchListTile(
+                                contentPadding: EdgeInsets.zero,
+                                activeThumbColor: Colors.deepOrange,
+                                title: BodyText(value: l10n.reportIsForSomeoneElse, isBold: true),
+                                subtitle: BodyText(
+                                  value: l10n.reportIsForSomeoneElseHint,
+                                  color: Colors.black54,
+                                  isBold: false,
+                                ),
+                                value: _isForSomeoneElse,
+                                onChanged: (v) => setState(() => _isForSomeoneElse = v),
                               ),
                               const SizedBox(
                                 height: 10,
@@ -541,6 +557,7 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> {
                                         description: incidentDescriptionController.text,
                                         additionalInformation: additionalInformationController.text,
                                         selectedLocation: _selectedLocation!,
+                                        reportedForSelf: !_isForSomeoneElse,
                                         priority: PriorityCalculator.forManualReport(
                                           ref.read(reportProvider).incidentType!,
                                           isPoliceEmergency: _isPoliceEmergency,

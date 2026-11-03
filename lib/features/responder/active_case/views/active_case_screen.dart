@@ -1,5 +1,6 @@
 // lib/features/responder/active_case/views/active_case_screen.dart
 import 'package:capstone/core/enums/audit_action_enum.dart';
+import 'package:capstone/core/enums/service_type_enum.dart';
 import 'package:capstone/core/l10n/enum_labels.dart';
 import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/enums/map_mode_enum.dart';
@@ -20,6 +21,7 @@ import 'package:capstone/features/public_user/reporting/widgets/report_status_wi
 import 'package:capstone/core/shared/widgets/section_title.dart';
 import 'package:capstone/features/public_user/reporting/widgets/victims_card.dart';
 import 'package:capstone/features/responder/active_case/widgets/active_case_action_bar.dart';
+import 'package:capstone/features/responder/active_case/widgets/reporter_medical_info_card.dart';
 import 'package:capstone/features/responder/active_case/widgets/responder_attachments_section.dart';
 import 'package:capstone/features/responder/active_case/widgets/responder_notes_section.dart';
 import 'package:flutter/material.dart';
@@ -173,12 +175,14 @@ class _ActiveCaseBody extends ConsumerWidget {
                           backgroundColor: Colors.white,
                           foregroundColor: Colors.deepOrange,
                           onPressed: () {
-                            ref.read(auditLogRepositoryProvider).log(
-                              AuditAction.directionsRequested,
-                              targetType: 'report',
-                              targetId: response.reportID,
-                              metadata: {'source': 'responder_active_case'},
-                            );
+                            ref
+                                .read(auditLogRepositoryProvider)
+                                .log(
+                                  AuditAction.directionsRequested,
+                                  targetType: 'report',
+                                  targetId: response.reportID,
+                                  metadata: {'source': 'responder_active_case'},
+                                );
                             launchDirections(location.latitude, location.longitude);
                           },
                           child: const Icon(Icons.directions, size: 40),
@@ -254,6 +258,12 @@ class _ActiveCaseBody extends ConsumerWidget {
                 const SizedBox(height: 10),
                 VictimsCard(victims: report.victims),
                 const SizedBox(height: 10),
+                if (response.serviceType == ServiceTypeEnum.medical) ...[
+                  SectionTitle(icon: Icons.medical_information_outlined, title: l10n.reporterMedicalInfo),
+                  const SizedBox(height: 10),
+                  ReporterMedicalInfoCard(reportID: response.reportID),
+                  const SizedBox(height: 10),
+                ],
                 SectionTitle(icon: Icons.attach_file, title: l10n.reporterAttachments),
                 const SizedBox(height: 10),
                 AttachmentsCard(attachments: report.attachments),

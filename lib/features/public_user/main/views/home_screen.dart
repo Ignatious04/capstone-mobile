@@ -114,6 +114,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           .submitQuickReport(
             incidentType: incidentType,
             location: location,
+            reportedForSelf: true,
           );
 
       if (!mounted) return;
