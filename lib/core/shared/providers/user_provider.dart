@@ -125,6 +125,7 @@ class UserNotifier extends Notifier<UserModel> {
         isVaccinated: false,
         vaccineType: '',
         vaccineDate: 0,
+        medicalSharingConsent: false,
       );
       user = state;
     }
@@ -369,6 +370,10 @@ class UserNotifier extends Notifier<UserModel> {
 
   void setVaccineDate(int value) {
     state = state.copyWith(vaccineDate: value);
+  }
+
+  void setMedicalSharingConsent(bool value) {
+    state = state.copyWith(medicalSharingConsent: value);
   }
 
   void setIsSetup(bool value) {

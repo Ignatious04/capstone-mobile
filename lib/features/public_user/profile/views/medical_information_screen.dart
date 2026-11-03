@@ -31,6 +31,7 @@ class _MedicalInformationScreenState extends ConsumerState<MedicalInformationScr
   late bool isVaccinated;
   late String vaccineType;
   late int vaccineDate;
+  late bool medicalSharingConsent;
   bool saving = false;
 
   @override
@@ -41,6 +42,7 @@ class _MedicalInformationScreenState extends ConsumerState<MedicalInformationScr
     isVaccinated = u.isVaccinated;
     vaccineType = u.vaccineType;
     vaccineDate = u.vaccineDate;
+    medicalSharingConsent = u.medicalSharingConsent;
     heightController = TextEditingController(text: u.height == 0 ? '' : u.height.toString());
     weightController = TextEditingController(text: u.weight == 0 ? '' : u.weight.toString());
     vaccineDateController = TextEditingController(
@@ -66,6 +68,7 @@ class _MedicalInformationScreenState extends ConsumerState<MedicalInformationScr
         'isVaccinated': isVaccinated,
         'vaccineType': isVaccinated ? vaccineType : '',
         'vaccineDate': isVaccinated ? vaccineDate : 0,
+        'medicalSharingConsent': medicalSharingConsent,
       });
       if (!mounted) return;
       Navigator.pop(context);
@@ -179,6 +182,15 @@ class _MedicalInformationScreenState extends ConsumerState<MedicalInformationScr
                         ],
                       ),
                     ],
+                    const SizedBox(height: 10),
+                    SwitchListTile(
+                      contentPadding: EdgeInsets.zero,
+                      value: medicalSharingConsent,
+                      onChanged: (v) => setState(() => medicalSharingConsent = v),
+                      title: BodyText(
+                        value: l10n.medicalSharingConsent,
+                      ),
+                    ),
                   ],
                 ),
               ),

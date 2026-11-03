@@ -178,10 +178,15 @@ class _ResponseCardState extends State<_ResponseCard> {
                 if (open) _markSeen();
               },
               leading: Badge(
+                alignment: Alignment(50, -12),
                 isLabelVisible: _hasUpdate,
-                smallSize: 10,
+                smallSize: 15,
                 backgroundColor: Colors.red,
-                child: const Icon(Icons.timeline, color: Colors.deepOrange),
+                child: const Icon(
+                  Icons.timeline,
+                  color: Colors.deepOrange,
+                  size: 25,
+                ),
               ),
               title: BodyText(
                 value: l10n.serviceStatusTimeline(response.serviceType.label(l10n)),

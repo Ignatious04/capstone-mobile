@@ -168,6 +168,17 @@ class _SetupScreenMedicalInfoPage extends ConsumerState<SetupScreenMedicalInfoPa
               ],
             ),
           ],
+          const SizedBox(height: 10),
+          SwitchListTile(
+            contentPadding: EdgeInsets.zero,
+            value: user.medicalSharingConsent,
+            onChanged: (value) {
+              ref.read(userProvider.notifier).setMedicalSharingConsent(value);
+            },
+            title: BodyText(
+              value: l10n.medicalSharingConsent,
+            ),
+          ),
         ],
       ),
     );
