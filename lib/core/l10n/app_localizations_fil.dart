@@ -305,7 +305,10 @@ class AppLocalizationsFil extends AppLocalizations {
   String get contactNumber => 'Numero ng Kontak';
 
   @override
-  String get homeAddress => 'Address ng Bahay';
+  String get homeAddress => 'Address sa Angeles City';
+
+  @override
+  String get homeAddressHelper => 'Kung saan ka nakatira, nagtatrabaho, o pansamantalang tumutuloy';
 
   @override
   String get sex => 'Kasarian';
@@ -320,7 +323,7 @@ class AppLocalizationsFil extends AppLocalizations {
   String get religion => 'Relihiyon';
 
   @override
-  String get houseNumber => 'Blg. ng Bahay';
+  String get houseNumber => 'Blg. ng Bahay/Gusali';
 
   @override
   String get street => 'Kalye';

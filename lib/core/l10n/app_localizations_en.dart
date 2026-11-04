@@ -305,7 +305,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get contactNumber => 'Contact Number';
 
   @override
-  String get homeAddress => 'Home Address';
+  String get homeAddress => 'Address in Angeles City';
+
+  @override
+  String get homeAddressHelper => 'Where you live, work, or are staying';
 
   @override
   String get sex => 'Sex';
@@ -320,7 +323,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get religion => 'Religion';
 
   @override
-  String get houseNumber => 'House No.';
+  String get houseNumber => 'House/Building No.';
 
   @override
   String get street => 'Street';

@@ -683,8 +683,14 @@ abstract class AppLocalizations {
   /// No description provided for @homeAddress.
   ///
   /// In en, this message translates to:
-  /// **'Home Address'**
+  /// **'Address in Angeles City'**
   String get homeAddress;
+
+  /// No description provided for @homeAddressHelper.
+  ///
+  /// In en, this message translates to:
+  /// **'Where you live, work, or are staying'**
+  String get homeAddressHelper;
 
   /// No description provided for @sex.
   ///
@@ -713,7 +719,7 @@ abstract class AppLocalizations {
   /// No description provided for @houseNumber.
   ///
   /// In en, this message translates to:
-  /// **'House No.'**
+  /// **'House/Building No.'**
   String get houseNumber;
 
   /// No description provided for @street.

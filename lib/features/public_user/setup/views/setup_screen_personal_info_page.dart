@@ -293,7 +293,12 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
               },
               hideErrorText: false,
               items: GuardianRelationshipEnum.values
-                  .map((r) => DropdownMenuItem(value: r.name, child: BodyText(value: r.label(l10n))))
+                  .map(
+                    (r) => DropdownMenuItem(
+                      value: r.name,
+                      child: BodyText(value: r.label(l10n)),
+                    ),
+                  )
                   .toList(),
               onChanged: (value) {
                 final relationship = GuardianRelationshipEnum.tryParse(value);
@@ -347,6 +352,7 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
           ),
           Row(
             children: [
+              BodyText(value: l10n.homeAddressHelper),
               Expanded(
                 flex: 2,
                 child: CustomTextField(
