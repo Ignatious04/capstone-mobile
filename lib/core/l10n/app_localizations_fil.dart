@@ -308,7 +308,7 @@ class AppLocalizationsFil extends AppLocalizations {
   String get homeAddress => 'Address sa Angeles City';
 
   @override
-  String get homeAddressHelper => 'Kung saan ka nakatira, nagtatrabaho, o pansamantalang tumutuloy';
+  String get homeAddressHelper => 'Kung saan ka nakatira, nagtatrabaho, o tumutuloy';
 
   @override
   String get sex => 'Kasarian';
@@ -1622,4 +1622,11 @@ class AppLocalizationsFil extends AppLocalizations {
   @override
   String get medicalSharingConsent =>
       'Payagan ang medical responder na nakatalaga sa aking emergency report na makita ang aking blood type, taas at timbang habang aktibo ang report. Maaari ko itong i-off anumang oras.';
+
+  @override
+  String get responderDeactivatedTitle => 'Ang account ay nakaset sa inactive';
+
+  @override
+  String get responderDeactivatedBody =>
+      'Ang iyong responder account ay nakaset sa inactive dahil sa iyong agency. I-contact ang iyong administrator kung sa tingin mo na ito ay isang pagkakamali.';
 }

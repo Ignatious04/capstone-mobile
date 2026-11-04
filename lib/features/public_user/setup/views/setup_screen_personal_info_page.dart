@@ -350,33 +350,55 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
           const SizedBox(
             height: 10,
           ),
+          Divider(
+            height: 10,
+          ),
+          const SizedBox(
+            height: 10,
+          ),
           Row(
             children: [
-              BodyText(value: l10n.homeAddressHelper),
+              Icon(
+                Icons.directions,
+                size: 25,
+                color: Colors.black54,
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: LabelText(
+                  value: l10n.homeAddressHelper.toUpperCase(),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
               Expanded(
-                flex: 2,
+                flex: 1,
                 child: CustomTextField(
                   key: ValueKey('houseNumber-field'),
                   title: l10n.houseNumber.toUpperCase(),
                   controller: houseNumController,
                   validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return l10n.fieldRequired(l10n.houseNumber);
-                    }
-
                     return null;
                   },
                   onChanged: (value) {
                     ref.read(userProvider.notifier).setHouseNum(value);
                   },
-                  isRequired: true,
                 ),
               ),
               const SizedBox(
                 width: 10,
               ),
               Expanded(
-                flex: 3,
+                flex: 1,
                 child: CustomTextField(
                   key: ValueKey('street-field'),
                   title: l10n.street.toUpperCase(),
@@ -419,6 +441,12 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
               return null;
             },
             isRequired: true,
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          Divider(
+            height: 10,
           ),
           const SizedBox(
             height: 10,

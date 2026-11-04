@@ -719,7 +719,7 @@ abstract class AppLocalizations {
   /// No description provided for @houseNumber.
   ///
   /// In en, this message translates to:
-  /// **'House/Building No.'**
+  /// **'House/Bldg No.'**
   String get houseNumber;
 
   /// No description provided for @street.
@@ -3127,6 +3127,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Allow the medical responder assigned to my emergency report to view my blood type, height and weight while that report is active. I can turn this off anytime.'**
   String get medicalSharingConsent;
+
+  /// No description provided for @responderDeactivatedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Account set to inactive'**
+  String get responderDeactivatedTitle;
+
+  /// No description provided for @responderDeactivatedBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Your responder account has been set to inactive by your agency. Please contact your administrator if you think this is a mistake.'**
+  String get responderDeactivatedBody;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

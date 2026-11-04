@@ -40,7 +40,7 @@ class EmergencyServiceCard extends StatelessWidget {
     return Card(
       elevation: 0,
       margin: const EdgeInsets.only(bottom: 10),
-      color: Colors.white,
+      color: Colors.white54,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
         side: BorderSide(
@@ -116,8 +116,10 @@ class EmergencyServiceCard extends StatelessWidget {
                             flex: 2,
                             child: CustomElevatedButton(
                               onPressed: onTap,
-                              icon: const Icon(Icons.near_me, color: Colors.white, size: 25),
+                              icon: const Icon(Icons.near_me, color: Colors.black, size: 25),
                               value: l10n.show,
+                              color: Colors.black,
+                              backgroundColor: Colors.white,
                             ),
                           ),
                           const SizedBox(width: 10),
@@ -138,6 +140,8 @@ class EmergencyServiceCard extends StatelessWidget {
                           onPressed: onDirectionsTap,
                           icon: const Icon(Icons.directions, color: Colors.white, size: 25),
                           value: l10n.getDirections,
+                          color: Colors.white,
+                          backgroundColor: Colors.black54,
                         ),
                       ),
                     ],

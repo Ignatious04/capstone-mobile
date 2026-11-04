@@ -99,7 +99,7 @@
   "emailAddress": "Email Address",
   "contactNumber": "Numero ng Kontak",
   "homeAddress": "Address sa Angeles City",
-  "homeAddressHelper": "Kung saan ka nakatira, nagtatrabaho, o pansamantalang tumutuloy",
+  "homeAddressHelper": "Kung saan ka nakatira, nagtatrabaho, o tumutuloy",
   "sex": "Kasarian",
   "nationality": "Nasyonalidad",
   "civilStatus": "Katayuang Sibil",
@@ -510,5 +510,7 @@
   "medicalInfoLoadError": "Hindi ma-load ang medical info. Subukan muli.",
   "reportIsForSomeoneElse": "Ang emergency na ito ay para sa ibang tao",
   "reportIsForSomeoneElseHint": "I-on kung nag-uulat ka para sa ibang tao. Hindi ipapakita sa mga responder ang sarili mong medical info.",
-  "medicalSharingConsent": "Payagan ang medical responder na nakatalaga sa aking emergency report na makita ang aking blood type, taas at timbang habang aktibo ang report. Maaari ko itong i-off anumang oras."
+  "medicalSharingConsent": "Payagan ang medical responder na nakatalaga sa aking emergency report na makita ang aking blood type, taas at timbang habang aktibo ang report. Maaari ko itong i-off anumang oras.",
+  "responderDeactivatedTitle": "Ang account ay nakaset sa inactive",
+  "responderDeactivatedBody": "Ang iyong responder account ay nakaset sa inactive dahil sa iyong agency. I-contact ang iyong administrator kung sa tingin mo na ito ay isang pagkakamali."
 }

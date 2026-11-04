@@ -323,7 +323,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get religion => 'Religion';
 
   @override
-  String get houseNumber => 'House/Building No.';
+  String get houseNumber => 'House/Bldg No.';
 
   @override
   String get street => 'Street';
@@ -1615,4 +1615,11 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get medicalSharingConsent =>
       'Allow the medical responder assigned to my emergency report to view my blood type, height and weight while that report is active. I can turn this off anytime.';
+
+  @override
+  String get responderDeactivatedTitle => 'Account set to inactive';
+
+  @override
+  String get responderDeactivatedBody =>
+      'Your responder account has been set to inactive by your agency. Please contact your administrator if you think this is a mistake.';
 }

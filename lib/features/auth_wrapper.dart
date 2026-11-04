@@ -1,4 +1,5 @@
 import 'package:capstone/core/enums/verification_status_enum.dart';
+import 'package:capstone/core/shared/providers/responder_active_guard_provider.dart';
 import 'package:capstone/core/shared/providers/responder_provider.dart';
 import 'package:capstone/core/shared/providers/session_provider.dart';
 import 'package:capstone/core/shared/providers/user_provider.dart';
@@ -11,6 +12,7 @@ import 'package:capstone/features/public_user/register/views/email_verification_
 import 'package:capstone/features/public_user/setup/views/welcome_screen.dart';
 import 'package:capstone/features/rejected_screen.dart';
 import 'package:capstone/features/responder/main/views/responder_main_screen.dart';
+import 'package:capstone/features/responder/responder_deactivated_screen.dart';
 import 'package:capstone/features/session_replaced_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -24,8 +26,12 @@ class AuthWrapper extends ConsumerWidget {
     //FirebaseAuth.instance.signOut();
 
     ref.watch(sessionGuardProvider); // starts the single-session guard
+    ref.watch(responderActiveGuardProvider); // add: signs out inactive responders
     if (ref.watch(sessionReplacedProvider)) {
       return const SessionReplacedScreen();
+    }
+    if (ref.watch(responderDeactivatedProvider)) { // add
+      return const ResponderDeactivatedScreen();
     }
 
     ref.listen(authStateProvider, (_, next) {

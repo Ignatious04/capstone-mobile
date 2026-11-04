@@ -54,7 +54,9 @@ class VerificationBanner extends ConsumerWidget {
                 BodyText(
                   value: l10n.verificationBannerBody,
                 ),
-                if (isPending && submittedAt != null) LabelText(value: l10n.verificationSubmittedAgo(_timeAgo(l10n, submittedAt))),
+                const SizedBox(height: 10),
+                if (isPending && submittedAt != null)
+                  LabelText(value: l10n.verificationSubmittedAgo(_timeAgo(l10n, submittedAt))),
               ],
             ),
           ),

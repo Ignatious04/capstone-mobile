@@ -8,6 +8,26 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 class LocationService {
   LatLng? currentLatLng;
 
+  LocationSettings _settings({
+    LocationAccuracy accuracy = LocationAccuracy.high,
+    int distanceFilter = 0,
+    Duration? timeLimit,
+  }) {
+    if (defaultTargetPlatform == TargetPlatform.android) {
+      return AndroidSettings(
+        accuracy: accuracy,
+        distanceFilter: distanceFilter,
+        timeLimit: timeLimit,
+        forceLocationManager: true,
+      );
+    }
+    return LocationSettings(
+      accuracy: accuracy,
+      distanceFilter: distanceFilter,
+      timeLimit: timeLimit,
+    );
+  }
+
   Future<LocationStatusEnum> checkLocationStatus() async {
     final serviceEnabled = await Geolocator.isLocationServiceEnabled();
 
@@ -58,9 +78,9 @@ class LocationService {
     Position position;
     try {
       position = await Geolocator.getCurrentPosition(
-        locationSettings: const LocationSettings(
+        locationSettings: _settings(
           accuracy: LocationAccuracy.high,
-          timeLimit: Duration(seconds: 10),
+          timeLimit: const Duration(seconds: 10),
         ),
       );
     } on TimeoutException {
@@ -70,9 +90,9 @@ class LocationService {
         position = lastKnown;
       } else {
         position = await Geolocator.getCurrentPosition(
-          locationSettings: const LocationSettings(
+          locationSettings: _settings(
             accuracy: LocationAccuracy.medium,
-            timeLimit: Duration(seconds: 20),
+            timeLimit: const Duration(seconds: 20),
           ),
         );
       }
@@ -84,13 +104,12 @@ class LocationService {
 
   Stream<LatLng> getLocationStream() async* {
     final last = await Geolocator.getLastKnownPosition();
-    if (last != null &&
-        DateTime.now().difference(last.timestamp) < const Duration(minutes: 1)) {
+    if (last != null && DateTime.now().difference(last.timestamp) < const Duration(minutes: 1)) {
       yield LatLng(last.latitude, last.longitude);
     }
 
     yield* Geolocator.getPositionStream(
-      locationSettings: const LocationSettings(
+      locationSettings: _settings(
         accuracy: LocationAccuracy.high,
         distanceFilter: 5,
       ),
@@ -103,6 +122,7 @@ class LocationService {
             accuracy: LocationAccuracy.high,
             distanceFilter: 10,
             intervalDuration: const Duration(seconds: 5),
+            forceLocationManager: true,
             foregroundNotificationConfig: ForegroundNotificationConfig(
               notificationTitle: l10n.locationShareTitle,
               notificationText: l10n.locationShareBody,

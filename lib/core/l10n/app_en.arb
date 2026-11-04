@@ -111,7 +111,7 @@
   "nationality": "Nationality",
   "civilStatus": "Civil Status",
   "religion": "Religion",
-  "houseNumber": "House/Building No.",
+  "houseNumber": "House/Bldg No.",
   "street": "Street",
   "barangay": "Barangay",
   "idType": "ID Type",
@@ -682,5 +682,7 @@
   "medicalInfoLoadError": "Couldn't load medical info. Try again.",
   "reportIsForSomeoneElse": "This emergency is for someone else",
   "reportIsForSomeoneElseHint": "Turn on if you're reporting for another person. Your own medical info won't be shown to responders.",
-  "medicalSharingConsent": "Allow the medical responder assigned to my emergency report to view my blood type, height and weight while that report is active. I can turn this off anytime."
+  "medicalSharingConsent": "Allow the medical responder assigned to my emergency report to view my blood type, height and weight while that report is active. I can turn this off anytime.",
+  "responderDeactivatedTitle": "Account set to inactive",
+  "responderDeactivatedBody": "Your responder account has been set to inactive by your agency. Please contact your administrator if you think this is a mistake."
 }

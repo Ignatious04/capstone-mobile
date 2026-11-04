@@ -54,6 +54,7 @@ class _SetupScreenMedicalInfoPage extends ConsumerState<SetupScreenMedicalInfoPa
           ),
           BodyText(
             value: l10n.medicalInfoHelp,
+            alignment: TextAlign.justify,
             isBold: false,
           ),
           const SizedBox(
@@ -169,14 +170,25 @@ class _SetupScreenMedicalInfoPage extends ConsumerState<SetupScreenMedicalInfoPa
             ),
           ],
           const SizedBox(height: 10),
-          SwitchListTile(
-            contentPadding: EdgeInsets.zero,
-            value: user.medicalSharingConsent,
-            onChanged: (value) {
-              ref.read(userProvider.notifier).setMedicalSharingConsent(value);
-            },
-            title: BodyText(
-              value: l10n.medicalSharingConsent,
+          Theme(
+            data: Theme.of(context).copyWith(
+              splashColor: Colors.transparent,
+              highlightColor: Colors.transparent,
+            ),
+            child: SwitchListTile(
+              activeThumbColor: Colors.deepOrange,
+              inactiveThumbColor: Colors.black54,
+              inactiveTrackColor: Colors.black12,
+              hoverColor: Colors.transparent,
+              contentPadding: EdgeInsets.zero,
+              value: user.medicalSharingConsent,
+              onChanged: (value) {
+                ref.read(userProvider.notifier).setMedicalSharingConsent(value);
+              },
+              title: BodyText(
+                value: l10n.medicalSharingConsent,
+                alignment: TextAlign.justify,
+              ),
             ),
           ),
         ],

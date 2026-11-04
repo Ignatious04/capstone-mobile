@@ -212,7 +212,6 @@ class _SetupScreenPageView extends ConsumerState<SetupScreenPageView> {
                               navigateToPage();
                             }
                           },
-
                           value: currentPage == numberOfPages - 1
                               ? (widget.resubmitFrom == null ? l10n.create : l10n.resubmit)
                               : l10n.next,

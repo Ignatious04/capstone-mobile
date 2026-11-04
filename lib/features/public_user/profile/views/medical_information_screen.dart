@@ -92,7 +92,7 @@ class _MedicalInformationScreenState extends ConsumerState<MedicalInformationScr
           children: [
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.all(20),
                 child: Column(
                   children: [
                     BodyText(value: l10n.medicalInfoHelp, isBold: false),
@@ -183,12 +183,22 @@ class _MedicalInformationScreenState extends ConsumerState<MedicalInformationScr
                       ),
                     ],
                     const SizedBox(height: 10),
-                    SwitchListTile(
-                      contentPadding: EdgeInsets.zero,
-                      value: medicalSharingConsent,
-                      onChanged: (v) => setState(() => medicalSharingConsent = v),
-                      title: BodyText(
-                        value: l10n.medicalSharingConsent,
+                    Theme(
+                      data: Theme.of(context).copyWith(
+                        splashColor: Colors.transparent,
+                        highlightColor: Colors.transparent,
+                      ),
+                      child: SwitchListTile(
+                        activeThumbColor: Colors.deepOrange,
+                        inactiveThumbColor: Colors.black54,
+                        inactiveTrackColor: Colors.black12,
+                        hoverColor: Colors.transparent,
+                        contentPadding: EdgeInsets.zero,
+                        value: medicalSharingConsent,
+                        onChanged: (v) => setState(() => medicalSharingConsent = v),
+                        title: BodyText(
+                          value: l10n.medicalSharingConsent,
+                        ),
                       ),
                     ),
                   ],

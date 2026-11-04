@@ -2,6 +2,7 @@ enum AuditAction {
   login('auth.login'),
   logout('auth.logout'),
   sessionReplaced('auth.session_replaced'),
+  responderDeactivated('auth.responder_deactivated'), // add
   passwordChanged('auth.password_changed'),
   passwordChangeFailed('auth.password_change_failed'),
   phoneLinked('auth.phone_linked'),
