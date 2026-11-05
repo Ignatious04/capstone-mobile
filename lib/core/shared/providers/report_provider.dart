@@ -7,6 +7,7 @@ import 'package:capstone/core/enums/report_type_enum.dart';
 import 'package:capstone/core/enums/service_type_enum.dart';
 import 'package:capstone/core/shared/providers/audit_log_repository_provider.dart';
 import 'package:capstone/core/shared/providers/firebase_auth_provider.dart';
+import 'package:capstone/core/shared/providers/user_provider.dart';
 import 'package:capstone/core/shared/providers/verification_provider.dart';
 import 'package:capstone/core/utilities/priority_calculator.dart';
 import 'package:capstone/core/utilities/reference_number_generator.dart';
@@ -43,6 +44,9 @@ class ReportNotifier extends Notifier<ReportModel> {
       "normal",
       () async {
         if (!ref.read(isVerifiedProvider)) throw NotVerifiedException();
+        if (ref.read(currentAuthenticatedUserProvider).value?.isReportingRestricted ?? false) {
+          throw ReportingRestrictedException();
+        }
         final reportRepository = ref.read(reportRepositoryProvider);
         final storageRepository = ref.read(storageRepositoryProvider);
         // final realtimeRepository = ref.read(realtimeDatabaseRepositoryProvider);

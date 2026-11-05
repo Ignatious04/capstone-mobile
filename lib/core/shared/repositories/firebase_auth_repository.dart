@@ -285,12 +285,15 @@ class FirebaseAuthRepository {
 
   Future<void> verifyPhoneNumber({
     required String phoneNumber,
+    int? forceResendingToken,
     required void Function(PhoneAuthCredential credential) onVerificationCompleted,
     required void Function(FirebaseAuthException e) onVerificationFailed,
     required void Function(String verificationId, int? resendToken) onCodeSent,
   }) async {
     await firebaseAuth.verifyPhoneNumber(
       phoneNumber: phoneNumber,
+      forceResendingToken: forceResendingToken,
+      timeout: const Duration(seconds: 60),
       verificationCompleted: onVerificationCompleted,
       verificationFailed: onVerificationFailed,
       codeSent: onCodeSent,

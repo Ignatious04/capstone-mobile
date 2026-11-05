@@ -25,7 +25,7 @@ class _PreCallGuidanceScreenState extends ConsumerState<PreCallGuidanceScreen> {
     final results = await Connectivity().checkConnectivity();
     final isOnline = !results.contains(ConnectivityResult.none);
     if (!mounted) return false;
-    return !isOnline || await ensureVerified(context, ref);
+    return !isOnline || await ensureCanReport(context, ref);
   }
 
   @override

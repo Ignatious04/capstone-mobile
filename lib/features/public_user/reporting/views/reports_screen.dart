@@ -174,7 +174,7 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
       floatingActionButton: FloatingActionButton(
         heroTag: "reportsFAB",
         onPressed: () async {
-          if (!await ensureVerified(context, ref)) return;
+          if (!await ensureCanReport(context, ref)) return;
 
           if (!context.mounted) return;
 

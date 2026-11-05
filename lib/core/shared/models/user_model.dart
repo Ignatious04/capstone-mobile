@@ -66,6 +66,11 @@ class UserModel {
 
   final int resubmissionCount;
 
+  // Server-owned (set by onPrankFlagChange). The client never writes these.
+  final int prankStrikes;
+  final int? reportingSuspendedUntil;
+  final bool reportingBanned;
+
   final String guardianName;
   final GuardianRelationshipEnum? guardianRelationship;
   final String guardianContact;
@@ -117,6 +122,9 @@ class UserModel {
     this.isDeactivated = false,
     this.deactivatedAt,
     this.resubmissionCount = 0,
+    this.prankStrikes = 0,
+    this.reportingSuspendedUntil,
+    this.reportingBanned = false,
     this.guardianName = "",
     this.guardianRelationship,
     this.guardianContact = "",
@@ -168,6 +176,9 @@ class UserModel {
       isDeactivated: map['isDeactivated'] ?? false,
       deactivatedAt: _toMillis(map['deactivatedAt']),
       resubmissionCount: map['resubmissionCount'] ?? 0,
+      prankStrikes: map['prankStrikes'] ?? 0,
+      reportingSuspendedUntil: _toMillis(map['reportingSuspendedUntil']),
+      reportingBanned: map['reportingBanned'] ?? false,
       guardianName: map['guardianName'] ?? '',
       guardianRelationship: GuardianRelationshipEnum.tryParse(map['guardianRelationship']),
       guardianContact: map['guardianContact'] ?? '',
@@ -304,6 +315,9 @@ class UserModel {
       deactivatedAt: deactivatedAt ?? this.deactivatedAt,
       verificationSubmittedAt: verificationSubmittedAt ?? this.verificationSubmittedAt,
       resubmissionCount: resubmissionCount,
+      prankStrikes: prankStrikes,
+      reportingSuspendedUntil: reportingSuspendedUntil,
+      reportingBanned: reportingBanned,
       guardianName: guardianName ?? this.guardianName,
       guardianRelationship: guardianRelationship ?? this.guardianRelationship,
       guardianContact: guardianContact ?? this.guardianContact,
@@ -313,6 +327,9 @@ class UserModel {
       consentPurposes: consentPurposes,
     );
   }
+
+  bool get isReportingRestricted =>
+      reportingBanned || (reportingSuspendedUntil ?? 0) > DateTime.now().millisecondsSinceEpoch;
 
   bool get isMinor {
     if (birthDate == 0) return false;

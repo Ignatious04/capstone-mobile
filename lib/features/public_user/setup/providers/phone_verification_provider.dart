@@ -6,12 +6,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class PhoneVerificationProvider {
   final String? verificationId;
+  final int? resendToken;
   final bool codeSent;
   final bool isVerified;
   final AsyncValue<void> status;
 
   const PhoneVerificationProvider({
     this.verificationId,
+    this.resendToken,
     this.codeSent = false,
     this.isVerified = false,
     this.status = const AsyncData(null),
@@ -19,12 +21,14 @@ class PhoneVerificationProvider {
 
   PhoneVerificationProvider copyWith({
     String? verificationId,
+    int? resendToken,
     bool? codeSent,
     bool? isVerified,
     AsyncValue<void>? status,
   }) {
     return PhoneVerificationProvider(
       verificationId: verificationId ?? this.verificationId,
+      resendToken: resendToken ?? this.resendToken,
       codeSent: codeSent ?? this.codeSent,
       isVerified: isVerified ?? this.isVerified,
       status: status ?? this.status,
@@ -48,6 +52,7 @@ class PhoneVerificationNotifier extends Notifier<PhoneVerificationProvider> {
           .read(firebaseAuthRepositoryProvider)
           .verifyPhoneNumber(
             phoneNumber: e164PhoneNumber,
+            forceResendingToken: state.resendToken,
             onVerificationCompleted: (credential) async {
               await ref.read(firebaseAuthRepositoryProvider).linkPhoneCredential(credential);
               await ref.read(userRepositoryProvider).updateUser(
@@ -62,6 +67,7 @@ class PhoneVerificationNotifier extends Notifier<PhoneVerificationProvider> {
             onCodeSent: (id, resendToken) {
               state = state.copyWith(
                 verificationId: id,
+                resendToken: resendToken,
                 codeSent: true,
                 status: const AsyncData(null),
               );

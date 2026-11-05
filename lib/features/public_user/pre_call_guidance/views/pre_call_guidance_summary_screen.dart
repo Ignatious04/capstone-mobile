@@ -286,7 +286,7 @@ class _PreCallGuidanceSummaryScreenState extends ConsumerState<PreCallGuidanceSu
                     final isOnlineNow = !connectivityResult.contains(ConnectivityResult.none);
 
                     if (!context.mounted) return;
-                    if (isOnlineNow && !await ensureVerified(context, ref)) return;
+                    if (isOnlineNow && !await ensureCanReport(context, ref)) return;
 
                     if (!isOnlineNow) {
                       if (!context.mounted) {

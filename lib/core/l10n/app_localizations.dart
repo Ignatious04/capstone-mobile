@@ -3139,6 +3139,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Your responder account has been set to inactive by your agency. Please contact your administrator if you think this is a mistake.'**
   String get responderDeactivatedBody;
+
+  /// No description provided for @confirmCreateTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Create your account?'**
+  String get confirmCreateTitle;
+
+  /// No description provided for @confirmCreateBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Please make sure your information is correct. It will be submitted for review.'**
+  String get confirmCreateBody;
+
+  /// No description provided for @confirmResubmitTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Resubmit your information?'**
+  String get confirmResubmitTitle;
+
+  /// No description provided for @confirmResubmitBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Please make sure the flagged details are fixed. Your information will go back to the review queue.'**
+  String get confirmResubmitBody;
+
+  /// No description provided for @reportingRestrictedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Online reporting restricted'**
+  String get reportingRestrictedTitle;
+
+  /// No description provided for @reportingSuspendedBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Your account was flagged for submitting a prank report, so online reporting is paused until {date}. You can still call emergency services at any time.'**
+  String reportingSuspendedBody(String date);
+
+  /// No description provided for @reportingBannedBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Online reporting is disabled on your account because of repeated prank reports. You can still call emergency services. To appeal, contact your administrator.'**
+  String get reportingBannedBody;
+
+  /// No description provided for @prankWarningTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Warning: prank report'**
+  String get prankWarningTitle;
+
+  /// No description provided for @prankWarningBody.
+  ///
+  /// In en, this message translates to:
+  /// **'One of your reports was marked as a prank. Prank reports take responders away from real emergencies, and repeated ones lead to suspension of online reporting.'**
+  String get prankWarningBody;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

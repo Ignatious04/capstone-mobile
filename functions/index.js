@@ -6,6 +6,7 @@ Object.assign(exports, require("./audit"));
 Object.assign(exports, require("./routing"));
 Object.assign(exports, require("./responses"));
 Object.assign(exports, require("./medical"));
+Object.assign(exports, require("./prank"));
 
 const VERIFICATION_COPY = {
   approved: {

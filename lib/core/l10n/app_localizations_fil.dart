@@ -1629,4 +1629,36 @@ class AppLocalizationsFil extends AppLocalizations {
   @override
   String get responderDeactivatedBody =>
       'Ang iyong responder account ay nakaset sa inactive dahil sa iyong agency. I-contact ang iyong administrator kung sa tingin mo na ito ay isang pagkakamali.';
+
+  @override
+  String get confirmCreateTitle => 'Gumawa ng account?';
+
+  @override
+  String get confirmCreateBody => 'Pakisiguro na tama ang iyong impormasyon. Ipapadala ito para sa pagsusuri.';
+
+  @override
+  String get confirmResubmitTitle => 'Ipadala muli ang iyong impormasyon?';
+
+  @override
+  String get confirmResubmitBody =>
+      'Pakisiguro na naayos na ang mga na-flag na detalye. Babalik ang iyong impormasyon sa pila ng pagsusuri.';
+
+  @override
+  String get reportingRestrictedTitle => 'Limitado ang online na pag-uulat';
+
+  @override
+  String reportingSuspendedBody(String date) {
+    return 'Na-flag ang iyong account dahil sa pag-uulat ng prank, kaya naka-pause ang online na pag-uulat hanggang $date. Maaari ka pa ring tumawag sa mga serbisyong pang-emergency anumang oras.';
+  }
+
+  @override
+  String get reportingBannedBody =>
+      'Naka-disable ang online na pag-uulat sa iyong account dahil sa paulit-ulit na prank na report. Maaari ka pa ring tumawag sa mga serbisyong pang-emergency. Para umapela, makipag-ugnayan sa iyong administrator.';
+
+  @override
+  String get prankWarningTitle => 'Babala: prank na report';
+
+  @override
+  String get prankWarningBody =>
+      'Ang isa sa iyong mga report ay minarkahang prank. Inilalayo ng mga prank na report ang mga responder sa totoong emergency, at ang paulit-ulit nito ay magreresulta sa pagsuspinde ng online na pag-uulat.';
 }

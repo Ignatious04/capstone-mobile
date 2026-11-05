@@ -84,7 +84,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   Future<void> _submitQuickReport(ServiceTypeEnum incidentType) async {
     final l10n = AppLocalizations.of(context)!;
 
-    if (!await ensureVerified(context, ref)) return;
+    if (!await ensureCanReport(context, ref)) return;
     final label = incidentType.label(l10n);
     final fix = await ref.read(locationServiceProvider).getCurrentLocation();
     final location = fix.latLng;

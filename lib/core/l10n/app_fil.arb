@@ -512,5 +512,14 @@
   "reportIsForSomeoneElseHint": "I-on kung nag-uulat ka para sa ibang tao. Hindi ipapakita sa mga responder ang sarili mong medical info.",
   "medicalSharingConsent": "Payagan ang medical responder na nakatalaga sa aking emergency report na makita ang aking blood type, taas at timbang habang aktibo ang report. Maaari ko itong i-off anumang oras.",
   "responderDeactivatedTitle": "Ang account ay nakaset sa inactive",
-  "responderDeactivatedBody": "Ang iyong responder account ay nakaset sa inactive dahil sa iyong agency. I-contact ang iyong administrator kung sa tingin mo na ito ay isang pagkakamali."
+  "responderDeactivatedBody": "Ang iyong responder account ay nakaset sa inactive dahil sa iyong agency. I-contact ang iyong administrator kung sa tingin mo na ito ay isang pagkakamali.",
+  "confirmCreateTitle": "Gumawa ng account?",
+  "confirmCreateBody": "Pakisiguro na tama ang iyong impormasyon. Ipapadala ito para sa pagsusuri.",
+  "confirmResubmitTitle": "Ipadala muli ang iyong impormasyon?",
+  "confirmResubmitBody": "Pakisiguro na naayos na ang mga na-flag na detalye. Babalik ang iyong impormasyon sa pila ng pagsusuri.",
+  "reportingRestrictedTitle": "Limitado ang online na pag-uulat",
+  "reportingSuspendedBody": "Na-flag ang iyong account dahil sa pag-uulat ng prank, kaya naka-pause ang online na pag-uulat hanggang {date}. Maaari ka pa ring tumawag sa mga serbisyong pang-emergency anumang oras.",
+  "reportingBannedBody": "Naka-disable ang online na pag-uulat sa iyong account dahil sa paulit-ulit na prank na report. Maaari ka pa ring tumawag sa mga serbisyong pang-emergency. Para umapela, makipag-ugnayan sa iyong administrator.",
+  "prankWarningTitle": "Babala: prank na report",
+  "prankWarningBody": "Ang isa sa iyong mga report ay minarkahang prank. Inilalayo ng mga prank na report ang mga responder sa totoong emergency, at ang paulit-ulit nito ay magreresulta sa pagsuspinde ng online na pag-uulat."
 }

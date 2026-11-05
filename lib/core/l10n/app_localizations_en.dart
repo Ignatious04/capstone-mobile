@@ -1622,4 +1622,36 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get responderDeactivatedBody =>
       'Your responder account has been set to inactive by your agency. Please contact your administrator if you think this is a mistake.';
+
+  @override
+  String get confirmCreateTitle => 'Create your account?';
+
+  @override
+  String get confirmCreateBody => 'Please make sure your information is correct. It will be submitted for review.';
+
+  @override
+  String get confirmResubmitTitle => 'Resubmit your information?';
+
+  @override
+  String get confirmResubmitBody =>
+      'Please make sure the flagged details are fixed. Your information will go back to the review queue.';
+
+  @override
+  String get reportingRestrictedTitle => 'Online reporting restricted';
+
+  @override
+  String reportingSuspendedBody(String date) {
+    return 'Your account was flagged for submitting a prank report, so online reporting is paused until $date. You can still call emergency services at any time.';
+  }
+
+  @override
+  String get reportingBannedBody =>
+      'Online reporting is disabled on your account because of repeated prank reports. You can still call emergency services. To appeal, contact your administrator.';
+
+  @override
+  String get prankWarningTitle => 'Warning: prank report';
+
+  @override
+  String get prankWarningBody =>
+      'One of your reports was marked as a prank. Prank reports take responders away from real emergencies, and repeated ones lead to suspension of online reporting.';
 }

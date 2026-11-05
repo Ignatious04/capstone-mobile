@@ -1,6 +1,7 @@
 import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/shared/models/user_model.dart';
 import 'package:capstone/core/shared/providers/user_provider.dart';
+import 'package:capstone/core/shared/widgets/custom_alert_dialog.dart';
 import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
 import 'package:capstone/core/shared/widgets/custom_header_widget.dart';
 import 'package:capstone/core/shared/widgets/custom_snackbar_helper.dart';
@@ -167,13 +168,23 @@ class _SetupScreenPageView extends ConsumerState<SetupScreenPageView> {
                             }
 
                             if (currentPage == numberOfPages - 1) {
+                              final isResubmission = widget.resubmitFrom != null;
+
+                              final confirmed = await showConfirmationDialog(
+                                context,
+                                title: isResubmission ? l10n.confirmResubmitTitle : l10n.confirmCreateTitle,
+                                content: isResubmission ? l10n.confirmResubmitBody : l10n.confirmCreateBody,
+                                cancelText: l10n.cancel,
+                                confirmText: isResubmission ? l10n.resubmit : l10n.create,
+                              );
+                              if (confirmed != true || !context.mounted) return;
+
+
                               showDialog(
                                 context: context,
                                 barrierDismissible: false,
                                 builder: (context) => showLoadingOverlay(),
                               );
-
-                              final isResubmission = widget.resubmitFrom != null;
 
                               try {
                                 await ref.read(userProvider.notifier).updateUserSetup(isResubmission: isResubmission);

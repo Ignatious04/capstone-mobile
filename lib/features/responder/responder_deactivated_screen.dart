@@ -1,4 +1,5 @@
 import 'package:capstone/core/l10n/app_localizations.dart';
+import 'package:capstone/core/shared/providers/firebase_auth_provider.dart';
 import 'package:capstone/core/shared/providers/responder_active_guard_provider.dart';
 import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
@@ -33,7 +34,10 @@ class ResponderDeactivatedScreen extends ConsumerWidget {
               const SizedBox(height: 20),
               CustomElevatedButton(
                 value: l10n.backToLogin,
-                onPressed: () => ref.read(responderDeactivatedProvider.notifier).dismiss(),
+                onPressed: () async {
+                  await ref.read(firebaseAuthRepositoryProvider).signOut();
+                  ref.read(responderDeactivatedProvider.notifier).dismiss();
+                },
               ),
             ],
           ),

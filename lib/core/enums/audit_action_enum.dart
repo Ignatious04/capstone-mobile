@@ -14,6 +14,7 @@ enum AuditAction {
   directionsRequested('emergency.directions_requested'),
   responderLocationSharingStarted('responder.location_sharing_started'),
   responderLocationSharingStopped('responder.location_sharing_stopped'),
+  reportBlockedRestricted('report.blocked_restricted'),
   ;
 
   const AuditAction(this.code);

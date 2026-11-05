@@ -30,7 +30,8 @@ class AuthWrapper extends ConsumerWidget {
     if (ref.watch(sessionReplacedProvider)) {
       return const SessionReplacedScreen();
     }
-    if (ref.watch(responderDeactivatedProvider)) { // add
+    if (ref.watch(responderDeactivatedProvider)) {
+      // add
       return const ResponderDeactivatedScreen();
     }
 
@@ -58,6 +59,10 @@ class AuthWrapper extends ConsumerWidget {
         return responderAsync.when(
           data: (responder) {
             if (responder != null) {
+              if (!responder.isActive) {
+                // guard is signing them out and the deactivated screen takes over
+                return const Scaffold(body: Center(child: CustomCircularProgressIndicator()));
+              }
               return const ResponderMainScreen();
             }
 

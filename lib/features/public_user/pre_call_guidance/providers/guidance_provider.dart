@@ -92,6 +92,11 @@ class GuidanceNotifier extends Notifier<QuestionState> {
         }
 
         final reportRepository = ref.read(reportRepositoryProvider);
+
+        if (ref.read(currentAuthenticatedUserProvider).value?.isReportingRestricted ?? false) {
+          throw ReportingRestrictedException();
+        }
+        
         // final realtimeRepository = ref.read(realtimeDatabaseRepositoryProvider);
         final userID = ref.read(firebaseAuthProvider).currentUser!.uid;
         final reportID = _pendingReportID ??= reportRepository.getReportID();

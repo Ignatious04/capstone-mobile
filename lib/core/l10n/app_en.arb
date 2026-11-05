@@ -684,5 +684,21 @@
   "reportIsForSomeoneElseHint": "Turn on if you're reporting for another person. Your own medical info won't be shown to responders.",
   "medicalSharingConsent": "Allow the medical responder assigned to my emergency report to view my blood type, height and weight while that report is active. I can turn this off anytime.",
   "responderDeactivatedTitle": "Account set to inactive",
-  "responderDeactivatedBody": "Your responder account has been set to inactive by your agency. Please contact your administrator if you think this is a mistake."
+  "responderDeactivatedBody": "Your responder account has been set to inactive by your agency. Please contact your administrator if you think this is a mistake.",
+  "confirmCreateTitle": "Create your account?",
+  "confirmCreateBody": "Please make sure your information is correct. It will be submitted for review.",
+  "confirmResubmitTitle": "Resubmit your information?",
+  "confirmResubmitBody": "Please make sure the flagged details are fixed. Your information will go back to the review queue.",
+  "reportingRestrictedTitle": "Online reporting restricted",
+  "reportingSuspendedBody": "Your account was flagged for submitting a prank report, so online reporting is paused until {date}. You can still call emergency services at any time.",
+  "@reportingSuspendedBody": {
+    "placeholders": {
+      "date": {
+        "type": "String"
+      }
+    }
+  },
+  "reportingBannedBody": "Online reporting is disabled on your account because of repeated prank reports. You can still call emergency services. To appeal, contact your administrator.",
+  "prankWarningTitle": "Warning: prank report",
+  "prankWarningBody": "One of your reports was marked as a prank. Prank reports take responders away from real emergencies, and repeated ones lead to suspension of online reporting."
 }
