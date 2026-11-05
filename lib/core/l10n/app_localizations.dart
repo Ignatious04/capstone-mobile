@@ -1823,8 +1823,14 @@ abstract class AppLocalizations {
   /// No description provided for @deactivateTitle.
   ///
   /// In en, this message translates to:
-  /// **'Deactivate your account?'**
+  /// **'Deactivation'**
   String get deactivateTitle;
+
+  /// No description provided for @deactivationBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to deactivate your account?'**
+  String get deactivationBody;
 
   /// No description provided for @deactivate.
   ///

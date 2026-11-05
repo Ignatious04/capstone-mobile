@@ -10,11 +10,14 @@ import 'package:capstone/core/services/location_service.dart';
 import 'package:capstone/core/shared/models/realtime_responder_location_model.dart';
 import 'package:capstone/core/shared/providers/location_provider.dart';
 import 'package:capstone/core/shared/providers/realtime_database_repository_provider.dart';
+import 'package:capstone/core/shared/providers/response_repository_provider.dart';
 import 'package:capstone/core/shared/repositories/audit_log_repository.dart';
 import 'package:capstone/core/shared/repositories/realtime_database_repository.dart';
+import 'package:capstone/core/shared/repositories/response_repository.dart';
 import 'package:capstone/features/responder/active_case/providers/active_case_provider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 final responderLocationSharingProvider = Provider<ResponderLocationSharer>((ref) {
@@ -22,6 +25,7 @@ final responderLocationSharingProvider = Provider<ResponderLocationSharer>((ref)
     database: ref.read(realtimeDatabaseRepositoryProvider),
     locationService: ref.read(locationServiceProvider),
     audit: ref.read(auditLogRepositoryProvider),
+    responses: ref.read(responseRepositoryProvider),
     l10n: () => lookupAppLocalizations(ref.read(localeProvider)),
   );
   ref.onDispose(sharer.dispose);
@@ -43,10 +47,15 @@ class ResponderLocationSharer {
     required this.database,
     required this.locationService,
     required this.audit,
+    required this.responses,
     required this.l10n,
   });
 
+  /// Within this distance of the incident, a `dispatched` case flips to `onScene`.
+  static const double arrivalRadiusMeters = 50;
+
   final AuditLogRepository audit;
+  final ResponseRepository responses;
 
   Future<void> stopSharing() => _stop();
 
@@ -59,6 +68,8 @@ class ResponderLocationSharer {
   StreamSubscription<LatLng>? _subscription;
   String? _sharingReportID;
   String? _sharingResponderID;
+  ActiveCase? _latestCase; // newest snapshot, so status changes are seen mid-stream
+  bool _arrivalSubmitted = false;
 
   static bool _shouldShare(ActiveCase? activeCase) {
     final response = activeCase?.response;
@@ -70,6 +81,7 @@ class ResponderLocationSharer {
   String _path(String reportID, String responderID) => 'responderLocations/$reportID/$responderID';
 
   Future<void> sync(ActiveCase? activeCase) async {
+    _latestCase = activeCase;
     if (activeCase == null || !_shouldShare(activeCase)) {
       await _stop();
       return;
@@ -101,16 +113,51 @@ class ResponderLocationSharer {
     }
     if (_sharingReportID != reportID) return;
 
-    _subscription = locationService.getResponderLocationStream(l10n: l10n()).listen(
-      (latLng) => _publish(activeCase, latLng),
-      onError: (e) => debugPrint('Responder location stream error: $e'),
-    );
+    _subscription = locationService
+        .getResponderLocationStream(l10n: l10n())
+        .listen(
+          (latLng) => _publish(activeCase, latLng),
+          onError: (e) => debugPrint('Responder location stream error: $e'),
+        );
     audit.log(AuditAction.responderLocationSharingStarted, targetType: 'report', targetId: reportID);
+  }
+
+  /// Auto-advances dispatched -> onScene once the responder is close enough.
+  /// Uses the newest case snapshot, since the one captured at start goes stale.
+  Future<void> _checkArrival(LatLng position) async {
+    final activeCase = _latestCase;
+    final incident = activeCase?.report.location;
+    if (activeCase == null || incident == null || _arrivalSubmitted) return;
+    if (activeCase.response.status != ReportStatusEnum.dispatched) return;
+
+    final meters = Geolocator.distanceBetween(
+      position.latitude,
+      position.longitude,
+      incident.latitude,
+      incident.longitude,
+    );
+    if (meters > arrivalRadiusMeters) return;
+
+    _arrivalSubmitted = true; // block duplicate writes while the update propagates
+    try {
+      await responses.updateStatus(activeCase.response.responseID, ReportStatusEnum.onScene);
+      audit.log(
+        AuditAction.responderAutoArrived,
+        targetType: 'report',
+        targetId: activeCase.response.reportID,
+        metadata: {'distanceMeters': meters.round()},
+      );
+    } catch (e) {
+      debugPrint('Auto on-scene update failed: $e');
+      _arrivalSubmitted = false; // retry on the next fix
+    }
   }
 
   Future<void> _publish(ActiveCase activeCase, LatLng latLng) async {
     final response = activeCase.response;
     if (_sharingReportID != response.reportID) return;
+
+    _checkArrival(latLng);
 
     final model = RealtimeResponderLocationModel(
       reportID: response.reportID,
@@ -136,6 +183,7 @@ class ResponderLocationSharer {
     final responderID = _sharingResponderID;
     _sharingReportID = null;
     _sharingResponderID = null;
+    _arrivalSubmitted = false;
     if (reportID == null || responderID == null) return;
 
     audit.log(AuditAction.responderLocationSharingStopped, targetType: 'report', targetId: reportID);

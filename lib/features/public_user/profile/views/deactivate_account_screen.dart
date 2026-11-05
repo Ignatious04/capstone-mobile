@@ -1,6 +1,7 @@
 import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/exceptions/auth_exception.dart';
 import 'package:capstone/core/shared/providers/firebase_auth_provider.dart';
+import 'package:capstone/core/shared/widgets/custom_alert_dialog.dart';
 import 'package:capstone/core/shared/widgets/custom_app_bar.dart';
 import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
 import 'package:capstone/core/shared/widgets/custom_snackbar_helper.dart';
@@ -29,20 +30,17 @@ class _DeactivateAccountScreenState extends ConsumerState<DeactivateAccountScree
   }
 
   Future<void> _onDeactivate(bool usesPassword) async {
+    final l10n = AppLocalizations.of(context)!;
     if (usesPassword && !formKey.currentState!.validate()) return;
 
-    final confirmed = await showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: BodyText(value: AppLocalizations.of(context)!.deactivateTitle),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        backgroundColor: Colors.white,
-        actions: [
-          CustomElevatedButton(onPressed: () => Navigator.pop(context, false), value: AppLocalizations.of(context)!.cancel),
-          CustomElevatedButton(onPressed: () => Navigator.pop(context, true), value: AppLocalizations.of(context)!.deactivate),
-        ],
-      ),
+    final confirmed = await showConfirmationDialog(
+      context,
+      title: l10n.deactivateTitle,
+      content: l10n.deactivationBody,
+      cancelText: l10n.cancel,
+      confirmText: l10n.deactivate,
     );
+
     if (confirmed != true || !mounted) return;
 
     final deactivated = await ref
@@ -91,8 +89,7 @@ class _DeactivateAccountScreenState extends ConsumerState<DeactivateAccountScree
                   TitleText(value: l10n.deactivateHeading, alignment: TextAlign.center),
                   const SizedBox(height: 10),
                   BodyText(
-                    value:
-                        l10n.deactivateBody,
+                    value: l10n.deactivateBody,
                     color: Colors.black54,
                     alignment: TextAlign.center,
                   ),

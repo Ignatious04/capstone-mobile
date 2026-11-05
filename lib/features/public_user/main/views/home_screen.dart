@@ -20,6 +20,7 @@ import 'package:capstone/core/shared/widgets/service_button.dart';
 import 'package:capstone/core/shared/widgets/verification_banner.dart';
 import 'package:capstone/core/utilities/call_launcher.dart';
 import 'package:capstone/core/utilities/distance_helper.dart';
+import 'package:capstone/core/utilities/submit_guard_mixin.dart';
 import 'package:capstone/features/public_user/guides/widgets/guides_entry_card.dart';
 import 'package:capstone/features/public_user/main/providers/nearest_emergency_services_provider.dart';
 import 'package:capstone/features/public_user/map/models/emergency_service_model.dart';
@@ -40,7 +41,7 @@ class HomeScreen extends ConsumerStatefulWidget {
   ConsumerState<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends ConsumerState<HomeScreen> {
+class _HomeScreenState extends ConsumerState<HomeScreen> with SubmitGuardMixin<HomeScreen> {
   bool showOptions = false;
   double radius = 12;
 
@@ -265,7 +266,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           children: [
                             Expanded(
                               child: ServiceButton(
-                                onPressed: () => _submitQuickReport(ServiceTypeEnum.fire),
+                                onPressed: () => guarded(() => _submitQuickReport(ServiceTypeEnum.fire)),
                                 value: ServiceTypeEnum.fire.label(l10n),
                                 icon: Icons.fire_truck,
                                 color: Colors.red,
@@ -275,7 +276,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             const SizedBox(width: 10),
                             Expanded(
                               child: ServiceButton(
-                                onPressed: () => _submitQuickReport(ServiceTypeEnum.police),
+                                onPressed: () => guarded(() => _submitQuickReport(ServiceTypeEnum.police)),
                                 value: l10n.quickCrime,
                                 icon: Icons.local_police,
                                 color: Colors.blue,
@@ -285,7 +286,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                             const SizedBox(width: 10),
                             Expanded(
                               child: ServiceButton(
-                                onPressed: () => _submitQuickReport(ServiceTypeEnum.medical),
+                                onPressed: () => guarded(() => _submitQuickReport(ServiceTypeEnum.medical)),
                                 value: ServiceTypeEnum.medical.label(l10n),
                                 icon: Icons.medical_services,
                                 color: Colors.green,

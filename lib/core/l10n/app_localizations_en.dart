@@ -909,7 +909,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get deactivateAccount => 'Deactivate Account';
 
   @override
-  String get deactivateTitle => 'Deactivate your account?';
+  String get deactivateTitle => 'Deactivation';
+
+  @override
+  String get deactivationBody => 'Are you sure you want to deactivate your account?';
 
   @override
   String get deactivate => 'Deactivate';

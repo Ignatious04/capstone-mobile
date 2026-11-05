@@ -175,7 +175,7 @@ class _SetupScreenPageView extends ConsumerState<SetupScreenPageView> {
                                 title: isResubmission ? l10n.confirmResubmitTitle : l10n.confirmCreateTitle,
                                 content: isResubmission ? l10n.confirmResubmitBody : l10n.confirmCreateBody,
                                 cancelText: l10n.cancel,
-                                confirmText: isResubmission ? l10n.resubmit : l10n.create,
+                                confirmText: isResubmission ? l10n.resubmit : l10n.confirm,
                               );
                               if (confirmed != true || !context.mounted) return;
 

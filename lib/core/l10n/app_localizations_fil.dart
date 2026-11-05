@@ -910,7 +910,10 @@ class AppLocalizationsFil extends AppLocalizations {
   String get deactivateAccount => 'I-deactivate ang Account';
 
   @override
-  String get deactivateTitle => 'I-deactivate ang iyong account?';
+  String get deactivateTitle => 'Deactivation?';
+
+  @override
+  String get deactivationBody => 'Sigurado kaba na gusto mong mag deactivate ng iyong account?';
 
   @override
   String get deactivate => 'I-deactivate';

@@ -18,6 +18,7 @@ import 'package:capstone/core/shared/widgets/loading_overlay_widget.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/widgets/text/label_text.dart';
 import 'package:capstone/core/utilities/priority_calculator.dart';
+import 'package:capstone/core/utilities/submit_guard_mixin.dart';
 import 'package:capstone/features/public_user/map/widgets/map_tile_widget.dart';
 import 'package:capstone/features/public_user/reporting/providers/pending_attachments_provider.dart';
 import 'package:capstone/core/shared/providers/location_provider.dart';
@@ -38,7 +39,7 @@ class ReportsFormScreen extends ConsumerStatefulWidget {
   ConsumerState<ReportsFormScreen> createState() => _ReportsFormScreenState();
 }
 
-class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> {
+class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> with SubmitGuardMixin<ReportsFormScreen> {
   final TextEditingController incidentDescriptionController = TextEditingController();
   final TextEditingController additionalInformationController = TextEditingController();
   final List<VictimControllers> _controllers = [];
@@ -517,7 +518,7 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> {
                           child: SizedBox(
                             width: double.infinity,
                             child: CustomElevatedButton(
-                              onPressed: () async {
+                              onPressed: () => guarded(() async {
                                 FocusManager.instance.primaryFocus?.unfocus();
                                 FocusScope.of(context).requestFocus(FocusNode());
 
@@ -607,7 +608,7 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> {
                                     text: l10n.reportSendError,
                                   );
                                 }
-                              },
+                              }),
                               value: l10n.submitReport,
                             ),
                           ),
