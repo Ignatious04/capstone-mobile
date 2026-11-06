@@ -1,6 +1,7 @@
 import 'package:capstone/core/enums/report_status_enum.dart';
 import 'package:capstone/core/enums/service_type_enum.dart';
 import 'package:capstone/core/shared/models/attachment_model.dart';
+import 'package:capstone/core/shared/models/dispatch_note_model.dart';
 import 'package:capstone/core/shared/models/responder_note_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -34,7 +35,8 @@ class ResponseModel {
 
   /// Free-text instructions from the dispatcher, written on the web dashboard.
   /// Read-only on mobile.
-  final String? dispatchNotes;
+  /// Dispatcher instructions, oldest -> newest (append-only list).
+  final List<DispatchNoteModel> dispatchNotes;
 
   const ResponseModel({
     required this.responseID,
@@ -54,7 +56,7 @@ class ResponseModel {
     this.etaDistanceMeters,
     this.responderNotes = const [],
     this.responderAttachments = const [],
-    this.dispatchNotes,
+    this.dispatchNotes = const [],
   });
 
   static String idFor(String reportID, ServiceTypeEnum type) => '${reportID}_${type.name}';
@@ -88,10 +90,13 @@ class ResponseModel {
       responderAttachments: (map['responderAttachments'] as List<dynamic>? ?? [])
           .map((a) => AttachmentModel.fromMap(Map<String, dynamic>.from(a)))
           .toList(),
-      dispatchNotes: switch (map['dispatchNotes']) {
-        final String s when s.trim().isNotEmpty => s.trim(),
-        _ => null,
-      },
+      dispatchNotes: map['dispatchNotes'] is List
+          ? (map['dispatchNotes'] as List)
+                .whereType<Map>()
+                .map((n) => DispatchNoteModel.fromMap(Map<String, dynamic>.from(n)))
+                .where((n) => n.text.isNotEmpty)
+                .toList()
+          : const [],
     );
   }
 }

@@ -21,7 +21,7 @@ import 'package:capstone/features/public_user/reporting/widgets/report_status_wi
 import 'package:capstone/core/shared/widgets/section_title.dart';
 import 'package:capstone/features/public_user/reporting/widgets/victims_card.dart';
 import 'package:capstone/features/responder/active_case/widgets/active_case_action_bar.dart';
-import 'package:capstone/features/responder/active_case/widgets/dispatch_notes_card.dart';
+import 'package:capstone/features/responder/active_case/widgets/dispatch_notes_section.dart';
 import 'package:capstone/features/responder/active_case/widgets/reporter_medical_info_card.dart';
 import 'package:capstone/features/responder/active_case/widgets/responder_attachments_section.dart';
 import 'package:capstone/features/responder/active_case/widgets/responder_notes_section.dart';
