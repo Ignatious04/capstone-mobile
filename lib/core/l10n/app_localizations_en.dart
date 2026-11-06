@@ -1657,4 +1657,7 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get prankWarningBody =>
       'One of your reports was marked as a prank. Prank reports take responders away from real emergencies, and repeated ones lead to suspension of online reporting.';
+
+  @override
+  String get dispatcherNotes => 'Dispatcher Notes';
 }

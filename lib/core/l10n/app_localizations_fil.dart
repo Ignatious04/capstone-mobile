@@ -1664,4 +1664,7 @@ class AppLocalizationsFil extends AppLocalizations {
   @override
   String get prankWarningBody =>
       'Ang isa sa iyong mga report ay minarkahang prank. Inilalayo ng mga prank na report ang mga responder sa totoong emergency, at ang paulit-ulit nito ay magreresulta sa pagsuspinde ng online na pag-uulat.';
+
+  @override
+  String get dispatcherNotes => 'Mga Tala ng Dispatcher';
 }

@@ -32,6 +32,10 @@ class ResponseModel {
   final List<ResponderNoteModel> responderNotes;
   final List<AttachmentModel> responderAttachments;
 
+  /// Free-text instructions from the dispatcher, written on the web dashboard.
+  /// Read-only on mobile.
+  final String? dispatchNotes;
+
   const ResponseModel({
     required this.responseID,
     required this.reportID,
@@ -50,6 +54,7 @@ class ResponseModel {
     this.etaDistanceMeters,
     this.responderNotes = const [],
     this.responderAttachments = const [],
+    this.dispatchNotes,
   });
 
   static String idFor(String reportID, ServiceTypeEnum type) => '${reportID}_${type.name}';
@@ -83,6 +88,10 @@ class ResponseModel {
       responderAttachments: (map['responderAttachments'] as List<dynamic>? ?? [])
           .map((a) => AttachmentModel.fromMap(Map<String, dynamic>.from(a)))
           .toList(),
+      dispatchNotes: switch (map['dispatchNotes']) {
+        final String s when s.trim().isNotEmpty => s.trim(),
+        _ => null,
+      },
     );
   }
 }

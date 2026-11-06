@@ -3199,6 +3199,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'One of your reports was marked as a prank. Prank reports take responders away from real emergencies, and repeated ones lead to suspension of online reporting.'**
   String get prankWarningBody;
+
+  /// No description provided for @dispatcherNotes.
+  ///
+  /// In en, this message translates to:
+  /// **'Dispatcher Notes'**
+  String get dispatcherNotes;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

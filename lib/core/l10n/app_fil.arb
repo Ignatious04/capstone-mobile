@@ -522,5 +522,6 @@
   "reportingSuspendedBody": "Na-flag ang iyong account dahil sa pag-uulat ng prank, kaya naka-pause ang online na pag-uulat hanggang {date}. Maaari ka pa ring tumawag sa mga serbisyong pang-emergency anumang oras.",
   "reportingBannedBody": "Naka-disable ang online na pag-uulat sa iyong account dahil sa paulit-ulit na prank na report. Maaari ka pa ring tumawag sa mga serbisyong pang-emergency. Para umapela, makipag-ugnayan sa iyong administrator.",
   "prankWarningTitle": "Babala: prank na report",
-  "prankWarningBody": "Ang isa sa iyong mga report ay minarkahang prank. Inilalayo ng mga prank na report ang mga responder sa totoong emergency, at ang paulit-ulit nito ay magreresulta sa pagsuspinde ng online na pag-uulat."
+  "prankWarningBody": "Ang isa sa iyong mga report ay minarkahang prank. Inilalayo ng mga prank na report ang mga responder sa totoong emergency, at ang paulit-ulit nito ay magreresulta sa pagsuspinde ng online na pag-uulat.",
+  "dispatcherNotes": "Mga Tala ng Dispatcher"
 }
