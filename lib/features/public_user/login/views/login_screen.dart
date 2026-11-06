@@ -138,7 +138,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           return null;
                         },
                         hideErrorText: false,
-                        onChanged: (value) {},
+                        onChanged: (value) {
+                          if (value.isEmpty && errorMessage != null) {
+                            setState(() => errorMessage = null);
+                          }
+                        },
                       ),
                       const SizedBox(
                         height: 10.0,
@@ -155,7 +159,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         },
                         obscureText: true,
                         hideErrorText: false,
-                        onChanged: (value) {},
+                        onChanged: (value) {
+                          if (value.isEmpty && errorMessage != null) {
+                            setState(() => errorMessage = null);
+                          }
+                        },
                       ),
                       if (errorMessage != null) ...[
                         LabelText(
