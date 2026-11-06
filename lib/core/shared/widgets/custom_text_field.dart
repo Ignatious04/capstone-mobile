@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-class CustomTextField extends StatelessWidget {
+class CustomTextField extends StatefulWidget {
   const CustomTextField({
     super.key,
     required this.title,
@@ -21,6 +21,7 @@ class CustomTextField extends StatelessWidget {
     this.maxLines = 1,
     this.onChanged,
     this.isRequired = false,
+    this.clearErrorWhenEmpty = true,
   });
 
   final String title;
@@ -40,6 +41,31 @@ class CustomTextField extends StatelessWidget {
   final int maxLines;
   final ValueChanged<String>? onChanged;
   final bool isRequired;
+  /// When true, clearing the field removes its error until the next
+  /// form-level validate() (e.g. on submit).
+  final bool clearErrorWhenEmpty;
+
+  @override
+  State<CustomTextField> createState() => _CustomTextFieldState();
+}
+
+class _CustomTextFieldState extends State<CustomTextField> {
+  final _fieldKey = GlobalKey<FormFieldState<String>>();
+  bool _isResetting = false;
+
+  void _handleChanged(String value) {
+    // reset() calls onChanged again, so guard against recursion.
+    if (_isResetting) return;
+
+    final field = _fieldKey.currentState;
+    if (widget.clearErrorWhenEmpty && value.isEmpty && (field?.hasError ?? false)) {
+      _isResetting = true;
+      field!.reset(); // clears the error and the "user interacted" flag
+      _isResetting = false;
+    }
+
+    widget.onChanged?.call(value);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,8 +78,8 @@ class CustomTextField extends StatelessWidget {
               color: Colors.black54,
             ),
             children: [
-              TextSpan(text: title),
-              if (isRequired)
+              TextSpan(text: widget.title),
+              if (widget.isRequired)
                 const TextSpan(
                   text: ' *',
                   style: TextStyle(
@@ -67,28 +93,29 @@ class CustomTextField extends StatelessWidget {
           height: 10,
         ),
         TextFormField(
-          controller: controller,
-          enabled: enabled,
-          validator: validator,
-          autovalidateMode: autovalidateMode,
-          keyboardType: keyboardType,
-          maxLines: maxLines,
-          inputFormatters: inputFormatters,
-          readOnly: isReadOnly,
+          key: _fieldKey,
+          controller: widget.controller,
+          enabled: widget.enabled,
+          validator: widget.validator,
+          autovalidateMode: widget.autovalidateMode,
+          keyboardType: widget.keyboardType,
+          maxLines: widget.maxLines,
+          inputFormatters: widget.inputFormatters,
+          readOnly: widget.isReadOnly,
           style:
               Theme.of(
                 context,
               ).textTheme.bodyMedium?.copyWith(
-                color: color,
+                color: widget.color,
               ),
-          obscureText: obscureText,
+          obscureText: widget.obscureText,
           decoration: InputDecoration(
-            errorStyle: hideErrorText
+            errorStyle: widget.hideErrorText
                 ? const TextStyle(
                     fontSize: 0,
                   )
                 : null,
-            prefixText: prefixText ?? "",
+            prefixText: widget.prefixText ?? "",
             prefixStyle: TextStyle(
               fontWeight: FontWeight.bold,
             ),
@@ -97,11 +124,11 @@ class CustomTextField extends StatelessWidget {
               borderRadius: BorderRadius.circular(10.0),
             ),
             contentPadding: EdgeInsets.symmetric(
-              vertical: vertical,
-              horizontal: horizontal,
+              vertical: widget.vertical,
+              horizontal: widget.horizontal,
             ),
           ),
-          onChanged: onChanged,
+          onChanged: _handleChanged,
           onTapOutside: (_) {
             FocusManager.instance.primaryFocus?.unfocus();
           },

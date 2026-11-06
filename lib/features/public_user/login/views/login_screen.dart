@@ -48,8 +48,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             errorMessage = error is AuthException ? error.localized(l10n) : l10n.somethingWentWrong;
           });
         },
-        data: (_) {
-          if (previous is AsyncLoading) {
+        data: (canEnter) {
+          if (previous is AsyncLoading && canEnter) {
             CustomSnackbarHelper.show(context, text: l10n.loginSuccess);
           }
         },
