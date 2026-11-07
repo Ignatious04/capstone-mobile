@@ -17,3 +17,16 @@ final responderLocationProvider = StreamProvider.autoDispose
         return LatLng(model.latitude, model.longitude);
       });
     });
+
+    typedef ResponderKey = ({String reportID, String responderID});
+
+/// Positions of every responder in [keys] who is currently sharing their location.
+/// Call from build(): it watches each responder's stream.
+List<LatLng> watchResponderPositions(WidgetRef ref, List<ResponderKey> keys) {
+  final positions = <LatLng>[];
+  for (final key in keys) {
+    final position = ref.watch(responderLocationProvider(key)).value;
+    if (position != null) positions.add(position);
+  }
+  return positions;
+}

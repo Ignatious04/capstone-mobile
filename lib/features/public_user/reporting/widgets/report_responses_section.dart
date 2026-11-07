@@ -89,7 +89,9 @@ class ReportResponsesSection extends ConsumerWidget {
           ],
           LocationCard(
             location: location,
-            responderLocations: [for (final item in live) item.position],
+            responders: [
+              for (final item in live) (reportID: item.response.reportID, responderID: item.response.assignedTo!),
+            ],
           ),
         ],
       ],
