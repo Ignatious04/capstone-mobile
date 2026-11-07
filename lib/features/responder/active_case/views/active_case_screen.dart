@@ -249,6 +249,20 @@ class _ActiveCaseBody extends ConsumerWidget {
                         BodyText(
                           value: report.description.isEmpty ? l10n.noDescriptionProvided : report.description,
                         ),
+                        const SizedBox(height: 10),
+                        Divider(height: 10),
+                        const SizedBox(height: 10),
+                        Center(
+                          child: LabelText(
+                            value: l10n.holdToUpdate,
+                            color: Colors.black54,
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        ActiveCaseActionBar(
+                          status: response.status,
+                          onAdvance: onAdvance,
+                        ),
                       ],
                     ),
                   ),
@@ -271,20 +285,7 @@ class _ActiveCaseBody extends ConsumerWidget {
                 const SizedBox(height: 10),
                 ResponderAttachmentsSection(response: response),
                 const SizedBox(height: 10),
-                SectionTitle(icon: Icons.notes, title: l10n.additionalInformation),
                 ResponderNotesSection(response: response),
-                const SizedBox(height: 20),
-                Center(
-                  child: LabelText(
-                    value: l10n.holdToUpdate,
-                    color: Colors.black54,
-                  ),
-                ),
-                const SizedBox(height: 10),
-                ActiveCaseActionBar(
-                  status: response.status,
-                  onAdvance: onAdvance,
-                ),
               ],
             ),
           ),
