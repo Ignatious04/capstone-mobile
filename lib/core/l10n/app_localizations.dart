@@ -3205,6 +3205,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Dispatcher Notes'**
   String get dispatcherNotes;
+
+  /// No description provided for @smsFallbackPrompt.
+  ///
+  /// In en, this message translates to:
+  /// **'Your report can\'t be sent online right now. Answer a few quick questions and send it by SMS instead?'**
+  String get smsFallbackPrompt;
+
+  /// No description provided for @useSmsReport.
+  ///
+  /// In en, this message translates to:
+  /// **'Use SMS'**
+  String get useSmsReport;
+
+  /// No description provided for @offlineSmsBanner.
+  ///
+  /// In en, this message translates to:
+  /// **'No internet connection. You can still send a report by SMS.'**
+  String get offlineSmsBanner;
+
+  /// No description provided for @offlineSmsBannerAction.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to report by SMS'**
+  String get offlineSmsBannerAction;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

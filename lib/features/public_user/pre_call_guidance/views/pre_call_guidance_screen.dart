@@ -6,10 +6,10 @@ import 'package:capstone/core/shared/widgets/service_button.dart';
 import 'package:capstone/features/public_user/guides/widgets/guides_entry_card.dart';
 import 'package:capstone/features/public_user/pre_call_guidance/providers/guidance_provider.dart';
 import 'package:capstone/core/themes/app_colors.dart';
+import 'package:capstone/features/public_user/pre_call_guidance/utilities/offline_report_helper.dart';
 import 'package:capstone/features/public_user/pre_call_guidance/views/pre_call_guidance_page_view.dart';
 import 'package:capstone/core/shared/providers/report_provider.dart';
 import 'package:capstone/core/shared/widgets/section_title.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -22,10 +22,11 @@ class PreCallGuidanceScreen extends ConsumerStatefulWidget {
 
 class _PreCallGuidanceScreenState extends ConsumerState<PreCallGuidanceScreen> {
   Future<bool> _canStart() async {
-    final results = await Connectivity().checkConnectivity();
-    final isOnline = !results.contains(ConnectivityResult.none);
+    final isOnline = !await isDeviceOffline();
     if (!mounted) return false;
-    return !isOnline || await ensureCanReport(context, ref);
+    // Offline reports go out by SMS, which is also verified-only. Check it now
+    // instead of letting NotVerifiedException surface after all the questions.
+    return isOnline ? await ensureCanReport(context, ref) : await ensureVerified(context, ref);
   }
 
   @override

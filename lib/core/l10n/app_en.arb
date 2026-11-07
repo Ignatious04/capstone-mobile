@@ -702,5 +702,9 @@
   "reportingBannedBody": "Online reporting is disabled on your account because of repeated prank reports. You can still call emergency services. To appeal, contact your administrator.",
   "prankWarningTitle": "Warning: prank report",
   "prankWarningBody": "One of your reports was marked as a prank. Prank reports take responders away from real emergencies, and repeated ones lead to suspension of online reporting.",
-  "dispatcherNotes": "Dispatcher Notes"
+  "dispatcherNotes": "Dispatcher Notes",
+  "smsFallbackPrompt": "Your report can't be sent online right now. Answer a few quick questions and send it by SMS instead?",
+  "useSmsReport": "Use SMS",
+  "offlineSmsBanner": "No internet connection. You can still send a report by SMS.",
+  "offlineSmsBannerAction": "Tap to report by SMS"
 }

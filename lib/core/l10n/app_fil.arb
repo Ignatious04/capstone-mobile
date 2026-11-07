@@ -523,5 +523,9 @@
   "reportingBannedBody": "Naka-disable ang online na pag-uulat sa iyong account dahil sa paulit-ulit na prank na report. Maaari ka pa ring tumawag sa mga serbisyong pang-emergency. Para umapela, makipag-ugnayan sa iyong administrator.",
   "prankWarningTitle": "Babala: prank na report",
   "prankWarningBody": "Ang isa sa iyong mga report ay minarkahang prank. Inilalayo ng mga prank na report ang mga responder sa totoong emergency, at ang paulit-ulit nito ay magreresulta sa pagsuspinde ng online na pag-uulat.",
-  "dispatcherNotes": "Mga Tala ng Dispatcher"
+  "dispatcherNotes": "Mga Tala ng Dispatcher",
+  "smsFallbackPrompt": "Hindi maipadala online ang report ngayon. Sagutin ang ilang maiikling tanong at ipadala ito sa pamamagitan ng SMS?",
+  "useSmsReport": "Gamitin ang SMS",
+  "offlineSmsBanner": "Walang koneksyon sa internet. Maaari ka pa ring magpadala ng report sa pamamagitan ng SMS.",
+  "offlineSmsBannerAction": "I-tap para mag-report sa SMS"
 }

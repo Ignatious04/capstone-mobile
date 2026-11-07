@@ -1,4 +1,5 @@
 import 'package:capstone/core/l10n/app_localizations.dart';
+import 'package:capstone/core/shared/providers/main_tab_provider.dart';
 import 'package:capstone/core/shared/widgets/custom_navigation_bar.dart';
 import 'package:capstone/features/public_user/main/views/home_screen.dart';
 import 'package:capstone/features/public_user/map/views/map_screen.dart';
@@ -7,16 +8,10 @@ import 'package:capstone/features/public_user/profile/views/profile_screen.dart'
 import 'package:capstone/features/public_user/reporting/views/reports_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class MainScreen extends StatefulWidget {
+class MainScreen extends ConsumerWidget {
   const MainScreen({super.key});
-
-  @override
-  State<MainScreen> createState() => _MainScreenState();
-}
-
-class _MainScreenState extends State<MainScreen> {
-  int currentPageIndex = 2;
 
   List<CustomNavigationBarItem> _navItems(AppLocalizations l10n) => [
     CustomNavigationBarItem(icon: Icons.map_outlined, activeIcon: Icons.map, label: l10n.map),
@@ -27,8 +22,9 @@ class _MainScreenState extends State<MainScreen> {
   ];
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
+    final currentPageIndex = ref.watch(mainTabProvider);
     final pages = const [
       MapScreen(),
       ReportsScreen(),
@@ -47,7 +43,7 @@ class _MainScreenState extends State<MainScreen> {
       ),
       bottomNavigationBar: CustomNavigationBar(
         currentIndex: currentPageIndex,
-        onTap: (value) => setState(() => currentPageIndex = value),
+        onTap: (value) => ref.read(mainTabProvider.notifier).set(value),
         items: _navItems(l10n),
       ),
     );

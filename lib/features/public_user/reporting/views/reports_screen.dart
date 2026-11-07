@@ -6,10 +6,12 @@ import 'package:capstone/core/shared/widgets/consent_banner.dart';
 import 'package:capstone/core/shared/widgets/custom_circular_progress_indicator.dart';
 import 'package:capstone/core/shared/widgets/custom_header_widget.dart';
 import 'package:capstone/core/shared/widgets/custom_snackbar_helper.dart';
+import 'package:capstone/core/shared/widgets/offline_sms_banner.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/widgets/verification_banner.dart';
 import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/core/shared/models/report_model.dart';
+import 'package:capstone/features/public_user/pre_call_guidance/utilities/offline_report_helper.dart';
 import 'package:capstone/features/public_user/reporting/widgets/report_card.dart';
 import 'package:capstone/core/shared/providers/report_repository_provider.dart';
 import 'package:capstone/features/public_user/reporting/views/reports_form_screen.dart';
@@ -31,6 +33,7 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
   static const _banners = Column(
     children: [
       ConsentBanner(),
+      OfflineSmsBanner(),
       VerificationBanner(),
     ],
   );
@@ -174,6 +177,8 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
       floatingActionButton: FloatingActionButton(
         heroTag: "reportsFAB",
         onPressed: () async {
+          if (await handleOffline(context, ref)) return;
+          if (!context.mounted) return;
           if (!await ensureCanReport(context, ref)) return;
 
           if (!context.mounted) return;

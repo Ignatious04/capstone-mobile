@@ -19,7 +19,7 @@ class LocationCard extends ConsumerWidget {
 
   final GeoPoint location;
 
-/// Every responder currently sharing their location. The positions are
+  /// Every responder currently sharing their location. The positions are
   /// watched here (and on the full-screen map) so both stay live.
   final List<ResponderKey> responders;
 
@@ -42,50 +42,54 @@ class LocationCard extends ConsumerWidget {
         children: [
           SizedBox(
             height: 250,
-            // Opaque so taps on the map (and on its pins) open the full-screen map.
-            child: GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => ReportLocationMapScreen(
-                    incident: incident,
-                    responders: responders,
+            child: Stack(
+              children: [
+                Positioned.fill(
+                  child: MapTileWidget(
+                    initialLocation: incident,
+                    fitToPoints: responderLocations.isEmpty ? const [] : [incident, ...responderLocations],
+                    mode: MapModeEnum.view,
+                    gesturesEnabled: false,
+                    extraMarkers: buildCaseMarkers(
+                      icons: icons,
+                      incident: incident,
+                      responders: responderLocations,
+                    ),
                   ),
                 ),
-              ),
-              child: Stack(
-                children: [
-                  Positioned.fill(
-                    child: MapTileWidget(
-                      initialLocation: incident,
-                      fitToPoints: responderLocations.isEmpty ? const [] : [incident, ...responderLocations],
-                      mode: MapModeEnum.view,
-                      gesturesEnabled: false,
-                      extraMarkers: buildCaseMarkers(
-                        icons: icons,
-                        incident: incident,
-                        responders: responderLocations,
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    right: 12,
-                    top: 12,
-                    child: IgnorePointer(
-                      child: Container(
-                        padding: const EdgeInsets.all(6),
-                        decoration: const BoxDecoration(
-                          color: Colors.white,
-                          shape: BoxShape.circle,
-                          boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 4)],
+                // Transparent layer above the native map view so taps reach Flutter
+                // and open the full-screen map.
+                Positioned.fill(
+                  child: GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => ReportLocationMapScreen(
+                          incident: incident,
+                          responders: responders,
                         ),
-                        child: const Icon(Icons.fullscreen, size: 22, color: Colors.deepOrange),
                       ),
                     ),
+                    child: const SizedBox.expand(),
                   ),
-                ],
-              ),
+                ),
+                Positioned(
+                  right: 12,
+                  top: 12,
+                  child: IgnorePointer(
+                    child: Container(
+                      padding: const EdgeInsets.all(6),
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                        shape: BoxShape.circle,
+                        boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 4)],
+                      ),
+                      child: const Icon(Icons.fullscreen, size: 22, color: Colors.deepOrange),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
           Padding(

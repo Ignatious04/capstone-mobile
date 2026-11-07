@@ -1667,4 +1667,18 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String get dispatcherNotes => 'Mga Tala ng Dispatcher';
+
+  @override
+  String get smsFallbackPrompt =>
+      'Hindi maipadala online ang report ngayon. Sagutin ang ilang maiikling tanong at ipadala ito sa pamamagitan ng SMS?';
+
+  @override
+  String get useSmsReport => 'Gamitin ang SMS';
+
+  @override
+  String get offlineSmsBanner =>
+      'Walang koneksyon sa internet. Maaari ka pa ring magpadala ng report sa pamamagitan ng SMS.';
+
+  @override
+  String get offlineSmsBannerAction => 'I-tap para mag-report sa SMS';
 }

@@ -15,6 +15,7 @@ import 'package:capstone/core/shared/widgets/custom_circular_progress_indicator.
 import 'package:capstone/core/shared/widgets/custom_header_widget.dart';
 import 'package:capstone/core/shared/widgets/custom_snackbar_helper.dart';
 import 'package:capstone/core/shared/widgets/loading_overlay_widget.dart';
+import 'package:capstone/core/shared/widgets/offline_sms_banner.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/widgets/service_button.dart';
 import 'package:capstone/core/shared/widgets/verification_banner.dart';
@@ -31,6 +32,7 @@ import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/public_user/notifications/views/notification_history_screen.dart';
 import 'package:capstone/core/shared/providers/report_provider.dart';
 import 'package:capstone/core/shared/widgets/section_title.dart';
+import 'package:capstone/features/public_user/pre_call_guidance/utilities/offline_report_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -85,6 +87,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SubmitGuardMixin<H
   Future<void> _submitQuickReport(ServiceTypeEnum incidentType) async {
     final l10n = AppLocalizations.of(context)!;
 
+    // Offline: go to the SMS flow for this service instead of timing out.
+    if (await handleOffline(context, ref, type: incidentType)) return;
+    if (!mounted) return;
+
     if (!await ensureCanReport(context, ref)) return;
     final label = incidentType.label(l10n);
     final fix = await ref.read(locationServiceProvider).getCurrentLocation();
@@ -122,9 +128,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SubmitGuardMixin<H
       Navigator.pop(context);
       CustomSnackbarHelper.show(context, text: l10n.reportSent);
     } on TimeoutException {
-      if (!context.mounted) return;
+      if (!mounted) return;
       Navigator.pop(context);
-      CustomSnackbarHelper.show(context, text: l10n.reportTimeoutError);
+      if (!context.mounted) return;
+      // connectivity_plus said online but the write never got through.
+      if (await confirmSmsFallback(context)) {
+        if (!mounted) return;
+        startGuidanceFlow(context, ref, incidentType);
+      } else if (mounted) {
+        CustomSnackbarHelper.show(context, text: l10n.reportTimeoutError);
+      }
     } catch (e, stack) {
       debugPrint("ERROR: $e");
       debugPrintStack(stackTrace: stack);
@@ -254,6 +267,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SubmitGuardMixin<H
                           height: 10,
                         ),
                         const ConsentBanner(),
+                        const OfflineSmsBanner(),
                         const VerificationBanner(),
                         SectionTitle(
                           icon: Icons.select_all,

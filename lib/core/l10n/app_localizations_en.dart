@@ -1660,4 +1660,17 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get dispatcherNotes => 'Dispatcher Notes';
+
+  @override
+  String get smsFallbackPrompt =>
+      'Your report can\'t be sent online right now. Answer a few quick questions and send it by SMS instead?';
+
+  @override
+  String get useSmsReport => 'Use SMS';
+
+  @override
+  String get offlineSmsBanner => 'No internet connection. You can still send a report by SMS.';
+
+  @override
+  String get offlineSmsBannerAction => 'Tap to report by SMS';
 }
