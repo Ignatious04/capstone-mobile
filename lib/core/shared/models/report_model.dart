@@ -41,6 +41,10 @@ class ReportModel {
   /// responder may see the reporter's own medical info.
   final bool reportedForSelf;
 
+  /// Set by the dashboard when staff flag this report as a prank. Read-only
+  /// on the client (see onPrankFlagChange), so it is deliberately NOT in toMap().
+  final bool isPrank;
+
   const ReportModel({
     this.reportID = '',
     this.referenceNumber = '',
@@ -64,6 +68,7 @@ class ReportModel {
     this.resolvedAt,
     this.secondaryServices = const [],
     this.reportedForSelf = false,
+    this.isPrank = false,
   });
 
   ReportModel copyWith({
@@ -89,6 +94,7 @@ class ReportModel {
     DateTime? resolvedAt,
     List<ServiceTypeEnum>? secondaryServices,
     bool? reportedForSelf,
+    bool? isPrank,
   }) {
     return ReportModel(
       reportID: reportID ?? this.reportID,
@@ -113,6 +119,7 @@ class ReportModel {
       resolvedAt: resolvedAt ?? this.resolvedAt,
       secondaryServices: secondaryServices ?? this.secondaryServices,
       reportedForSelf: reportedForSelf ?? this.reportedForSelf,
+      isPrank: isPrank ?? this.isPrank,
     );
   }
 
@@ -180,6 +187,7 @@ class ReportModel {
           .map((s) => ServiceTypeEnum.values.firstWhere((e) => e.name == s))
           .toList(),
       reportedForSelf: map['reportedForSelf'] ?? false,
+      isPrank: map['isPrank'] == true,
     );
   }
 }

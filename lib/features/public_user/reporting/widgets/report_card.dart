@@ -37,7 +37,7 @@ class ReportCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
-    return Card(
+    final card = Card(
       margin: const EdgeInsets.only(bottom: 10),
       color: Colors.white,
       shape: RoundedRectangleBorder(
@@ -158,6 +158,24 @@ class ReportCard extends StatelessWidget {
           ),
         ),
       ),
+    );
+
+    if (!report.isPrank) return card;
+
+    return Stack(
+      clipBehavior: Clip.none,
+      children: [
+        card,
+        const Positioned(
+          top: 6,
+          right: 6,
+          child: Icon(
+            Icons.error, // filled red circle with "!"
+            size: 22,
+            color: Colors.red,
+          ),
+        ),
+      ],
     );
   }
 }

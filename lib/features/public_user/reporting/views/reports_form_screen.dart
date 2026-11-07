@@ -41,7 +41,6 @@ class ReportsFormScreen extends ConsumerStatefulWidget {
 
 class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> with SubmitGuardMixin<ReportsFormScreen> {
   final TextEditingController incidentDescriptionController = TextEditingController();
-  final TextEditingController additionalInformationController = TextEditingController();
   final List<VictimControllers> _controllers = [];
   LatLng? _selectedLocation;
   GoogleMapController? _mapController;
@@ -93,7 +92,6 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> with Subm
       controller.dispose();
     }
     incidentDescriptionController.dispose();
-    additionalInformationController.dispose();
     super.dispose();
   }
 
@@ -490,29 +488,6 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> with Subm
                             const SizedBox(height: 10),
                           ],
                         ),
-                        ExpansionTile(
-                          title: Align(
-                            alignment: Alignment.centerLeft,
-                            child: BodyText(
-                              value: l10n.additionalInformation,
-                              isBold: false,
-                            ),
-                          ),
-                          tilePadding: EdgeInsets.symmetric(horizontal: 20),
-                          childrenPadding: EdgeInsets.symmetric(horizontal: 20),
-                          children: [
-                            CustomTextField(
-                              title: l10n.description.toUpperCase(),
-                              controller: additionalInformationController,
-                              keyboardType: TextInputType.multiline,
-                              maxLines: 5,
-                              vertical: 20,
-                            ),
-                            const SizedBox(
-                              height: 10,
-                            ),
-                          ],
-                        ),
                         Padding(
                           padding: EdgeInsets.all(20),
                           child: SizedBox(
@@ -556,7 +531,6 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> with Subm
                                       .read(reportProvider.notifier)
                                       .submitReport(
                                         description: incidentDescriptionController.text,
-                                        additionalInformation: additionalInformationController.text,
                                         selectedLocation: _selectedLocation!,
                                         reportedForSelf: !_isForSomeoneElse,
                                         priority: PriorityCalculator.forManualReport(

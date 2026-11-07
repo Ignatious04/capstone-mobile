@@ -656,12 +656,6 @@ abstract class AppLocalizations {
   /// **'No attachments provided.'**
   String get noAttachments;
 
-  /// No description provided for @noAdditionalInfo.
-  ///
-  /// In en, this message translates to:
-  /// **'No additional information provided.'**
-  String get noAdditionalInfo;
-
   /// No description provided for @noVictimInfo.
   ///
   /// In en, this message translates to:

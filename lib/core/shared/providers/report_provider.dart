@@ -35,7 +35,6 @@ class ReportNotifier extends Notifier<ReportModel> {
   Future<void> submitReport({
     required String description,
     required LatLng selectedLocation,
-    required String additionalInformation,
     ReportPriorityEnum? priority,
     PoliceConcernTypeEnum? policeConcernType,
     bool reportedForSelf = false,
@@ -74,7 +73,6 @@ class ReportNotifier extends Notifier<ReportModel> {
           policeConcernType: policeConcernType,
           description: description,
           attachments: attachments,
-          additionalInformation: additionalInformation,
           reportedForSelf: reportedForSelf,
           status: ReportStatusEnum.pending,
           createdAt: now,

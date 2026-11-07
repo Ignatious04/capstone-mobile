@@ -7,7 +7,6 @@ import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/widgets/text/label_text.dart';
 import 'package:capstone/core/shared/widgets/custom_app_bar.dart';
 import 'package:capstone/core/shared/models/report_model.dart';
-import 'package:capstone/features/public_user/reporting/widgets/additional_information_card.dart';
 import 'package:capstone/features/public_user/reporting/widgets/attachments_card.dart';
 import 'package:capstone/features/public_user/reporting/widgets/report_status_widget.dart';
 import 'package:capstone/core/shared/widgets/section_title.dart';
@@ -45,7 +44,6 @@ class _NormalReportsViewScreenState extends ConsumerState<NormalReportsViewScree
     final report = reportAsync.value ?? widget.report;
 
     final status = report.status!.name;
-    final information = report.additionalInformation.trim();
     final showGuidanceEntry = !(report.incidentType == ServiceTypeEnum.police && report.policeConcernType != null);
 
     return Scaffold(
@@ -153,10 +151,6 @@ class _NormalReportsViewScreenState extends ConsumerState<NormalReportsViewScree
                 SectionTitle(
                   icon: Icons.notes,
                   title: l10n.additionalInformation,
-                ),
-                const SizedBox(height: 10),
-                AdditionalInformationCard(
-                  additionalInfo: information,
                 ),
               ],
             ),

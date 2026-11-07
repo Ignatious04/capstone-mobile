@@ -293,9 +293,6 @@ class AppLocalizationsFil extends AppLocalizations {
   String get noAttachments => 'Walang ibinigay na kalakip.';
 
   @override
-  String get noAdditionalInfo => 'Walang ibinigay na karagdagang impormasyon.';
-
-  @override
   String get noVictimInfo => 'Walang ibinigay na impormasyon ng biktima.';
 
   @override

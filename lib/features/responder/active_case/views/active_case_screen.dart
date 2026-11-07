@@ -15,7 +15,6 @@ import 'package:capstone/core/utilities/directions_launcher.dart';
 import 'package:capstone/core/utilities/eta_calculator.dart';
 import 'package:capstone/features/public_user/map/widgets/map_tile_widget.dart';
 import 'package:capstone/core/shared/providers/response_repository_provider.dart';
-import 'package:capstone/features/public_user/reporting/widgets/additional_information_card.dart';
 import 'package:capstone/features/public_user/reporting/widgets/attachments_card.dart';
 import 'package:capstone/features/public_user/reporting/widgets/report_status_widget.dart';
 import 'package:capstone/core/shared/widgets/section_title.dart';
@@ -273,8 +272,6 @@ class _ActiveCaseBody extends ConsumerWidget {
                 ResponderAttachmentsSection(response: response),
                 const SizedBox(height: 10),
                 SectionTitle(icon: Icons.notes, title: l10n.additionalInformation),
-                AdditionalInformationCard(additionalInfo: report.additionalInformation.trim()),
-                const SizedBox(height: 10),
                 ResponderNotesSection(response: response),
                 const SizedBox(height: 20),
                 Center(

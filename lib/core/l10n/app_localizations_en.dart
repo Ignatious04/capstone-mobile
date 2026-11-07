@@ -293,9 +293,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get noAttachments => 'No attachments provided.';
 
   @override
-  String get noAdditionalInfo => 'No additional information provided.';
-
-  @override
   String get noVictimInfo => 'No victim information provided.';
 
   @override
