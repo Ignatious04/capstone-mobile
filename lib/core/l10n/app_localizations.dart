@@ -3223,6 +3223,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Tap to report by SMS'**
   String get offlineSmsBannerAction;
+
+  /// No description provided for @legal.
+  ///
+  /// In en, this message translates to:
+  /// **'Legal'**
+  String get legal;
+
+  /// No description provided for @reportingBannerRemaining.
+  ///
+  /// In en, this message translates to:
+  /// **'Time remaining: {time}'**
+  String reportingBannerRemaining(String time);
+
+  /// No description provided for @reportingBannerResumes.
+  ///
+  /// In en, this message translates to:
+  /// **'Online reporting resumes {date}. You can still call emergency services.'**
+  String reportingBannerResumes(String date);
+
+  /// No description provided for @durationDaysHours.
+  ///
+  /// In en, this message translates to:
+  /// **'{days, plural, =1{1 day} other{{days} days}} {hours} hr'**
+  String durationDaysHours(int days, int hours);
+
+  /// No description provided for @durationHoursMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'{hours} hr {minutes} min'**
+  String durationHoursMinutes(int hours, int minutes);
+
+  /// No description provided for @durationMinutes.
+  ///
+  /// In en, this message translates to:
+  /// **'{minutes} min'**
+  String durationMinutes(int minutes);
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

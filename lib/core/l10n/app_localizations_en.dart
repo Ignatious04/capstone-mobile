@@ -1670,4 +1670,38 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get offlineSmsBannerAction => 'Tap to report by SMS';
+
+  @override
+  String get legal => 'Legal';
+
+  @override
+  String reportingBannerRemaining(String time) {
+    return 'Time remaining: $time';
+  }
+
+  @override
+  String reportingBannerResumes(String date) {
+    return 'Online reporting resumes $date. You can still call emergency services.';
+  }
+
+  @override
+  String durationDaysHours(int days, int hours) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: '$days days',
+      one: '1 day',
+    );
+    return '$_temp0 $hours hr';
+  }
+
+  @override
+  String durationHoursMinutes(int hours, int minutes) {
+    return '$hours hr $minutes min';
+  }
+
+  @override
+  String durationMinutes(int minutes) {
+    return '$minutes min';
+  }
 }

@@ -7,6 +7,7 @@ import 'package:capstone/core/shared/widgets/custom_circular_progress_indicator.
 import 'package:capstone/core/shared/widgets/custom_header_widget.dart';
 import 'package:capstone/core/shared/widgets/custom_snackbar_helper.dart';
 import 'package:capstone/core/shared/widgets/offline_sms_banner.dart';
+import 'package:capstone/core/shared/widgets/reporting_restriction_banner.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/widgets/verification_banner.dart';
 import 'package:capstone/core/themes/app_colors.dart';
@@ -35,6 +36,7 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
       ConsentBanner(),
       OfflineSmsBanner(),
       VerificationBanner(),
+      ReportingRestrictionBanner(),
     ],
   );
 

@@ -16,6 +16,7 @@ import 'package:capstone/core/shared/widgets/custom_header_widget.dart';
 import 'package:capstone/core/shared/widgets/custom_snackbar_helper.dart';
 import 'package:capstone/core/shared/widgets/loading_overlay_widget.dart';
 import 'package:capstone/core/shared/widgets/offline_sms_banner.dart';
+import 'package:capstone/core/shared/widgets/reporting_restriction_banner.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/widgets/service_button.dart';
 import 'package:capstone/core/shared/widgets/verification_banner.dart';
@@ -269,6 +270,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SubmitGuardMixin<H
                         const ConsentBanner(),
                         const OfflineSmsBanner(),
                         const VerificationBanner(),
+                        const ReportingRestrictionBanner(),
                         SectionTitle(
                           icon: Icons.select_all,
                           title: l10n.quickReporting,

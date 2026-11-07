@@ -4,6 +4,7 @@ import 'package:capstone/core/shared/providers/locale_provider.dart';
 import 'package:capstone/core/shared/providers/user_provider.dart';
 import 'package:capstone/core/shared/widgets/custom_app_bar.dart';
 import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
+import 'package:capstone/core/shared/widgets/legal_links_card.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/widgets/text/title_text.dart';
 import 'package:capstone/features/public_user/profile/views/change_password_screen.dart';
@@ -97,6 +98,13 @@ class SettingsScreen extends ConsumerWidget {
                     },
                   ),
                 ),
+                const SizedBox(height: 10),
+                TitleText(
+                  value: l10n.legal,
+                  isBold: false,
+                ),
+                const SizedBox(height: 10),
+                const LegalLinksCard(),
                 const SizedBox(height: 10),
                 TitleText(
                   value: l10n.security,

@@ -705,5 +705,26 @@
   "smsFallbackPrompt": "Your report can't be sent online right now. Answer a few quick questions and send it by SMS instead?",
   "useSmsReport": "Use SMS",
   "offlineSmsBanner": "No internet connection. You can still send a report by SMS.",
-  "offlineSmsBannerAction": "Tap to report by SMS"
+  "offlineSmsBannerAction": "Tap to report by SMS",
+  "legal": "Legal",
+  "reportingBannerRemaining": "Time remaining: {time}",
+  "@reportingBannerRemaining": {
+    "placeholders": { "time": { "type": "String" } }
+  },
+  "reportingBannerResumes": "Online reporting resumes {date}. You can still call emergency services.",
+  "@reportingBannerResumes": {
+    "placeholders": { "date": { "type": "String" } }
+  },
+  "durationDaysHours": "{days, plural, =1{1 day} other{{days} days}} {hours} hr",
+  "@durationDaysHours": {
+    "placeholders": { "days": { "type": "int" }, "hours": { "type": "int" } }
+  },
+  "durationHoursMinutes": "{hours} hr {minutes} min",
+  "@durationHoursMinutes": {
+    "placeholders": { "hours": { "type": "int" }, "minutes": { "type": "int" } }
+  },
+  "durationMinutes": "{minutes} min",
+  "@durationMinutes": {
+    "placeholders": { "minutes": { "type": "int" } }
+  }
 }

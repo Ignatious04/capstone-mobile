@@ -1678,4 +1678,38 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String get offlineSmsBannerAction => 'I-tap para mag-report sa SMS';
+
+  @override
+  String get legal => 'Legal';
+
+  @override
+  String reportingBannerRemaining(String time) {
+    return 'Natitirang oras: $time';
+  }
+
+  @override
+  String reportingBannerResumes(String date) {
+    return 'Magpapatuloy ang online na pag-uulat sa $date. Maaari ka pa ring tumawag sa mga serbisyong pang-emergency.';
+  }
+
+  @override
+  String durationDaysHours(int days, int hours) {
+    String _temp0 = intl.Intl.pluralLogic(
+      days,
+      locale: localeName,
+      other: '$days araw',
+      one: '1 araw',
+    );
+    return '$_temp0 $hours oras';
+  }
+
+  @override
+  String durationHoursMinutes(int hours, int minutes) {
+    return '$hours oras $minutes min';
+  }
+
+  @override
+  String durationMinutes(int minutes) {
+    return '$minutes min';
+  }
 }

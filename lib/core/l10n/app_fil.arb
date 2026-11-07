@@ -526,5 +526,11 @@
   "smsFallbackPrompt": "Hindi maipadala online ang report ngayon. Sagutin ang ilang maiikling tanong at ipadala ito sa pamamagitan ng SMS?",
   "useSmsReport": "Gamitin ang SMS",
   "offlineSmsBanner": "Walang koneksyon sa internet. Maaari ka pa ring magpadala ng report sa pamamagitan ng SMS.",
-  "offlineSmsBannerAction": "I-tap para mag-report sa SMS"
+  "offlineSmsBannerAction": "I-tap para mag-report sa SMS",
+  "legal": "Legal",
+  "reportingBannerRemaining": "Natitirang oras: {time}",
+  "reportingBannerResumes": "Magpapatuloy ang online na pag-uulat sa {date}. Maaari ka pa ring tumawag sa mga serbisyong pang-emergency.",
+  "durationDaysHours": "{days, plural, =1{1 araw} other{{days} araw}} {hours} oras",
+  "durationHoursMinutes": "{hours} oras {minutes} min",
+  "durationMinutes": "{minutes} min"
 }

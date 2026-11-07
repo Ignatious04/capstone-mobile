@@ -12,8 +12,10 @@ import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
 import 'package:capstone/core/shared/widgets/custom_header_widget.dart';
 import 'package:capstone/core/shared/widgets/info_column.dart';
 import 'package:capstone/core/shared/widgets/language_selector.dart';
+import 'package:capstone/core/shared/widgets/legal_links_card.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/widgets/text/headline_text.dart';
+import 'package:capstone/core/shared/widgets/text/title_text.dart';
 import 'package:capstone/features/responder/active_case/providers/responder_location_sharing_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -136,6 +138,13 @@ class _ResponderProfileBody extends ConsumerWidget {
                     const LanguageSelector(),
                   ],
                 ),
+                const SizedBox(height: 20),
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: TitleText(value: l10n.legal, isBold: false),
+                ),
+                const SizedBox(height: 10),
+                const LegalLinksCard(),
                 const SizedBox(height: 20),
                 SizedBox(
                   width: double.infinity,
