@@ -25,7 +25,7 @@ class _LocationGateState extends ConsumerState<LocationGate> with WidgetsBinding
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
-    _checkLocation();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _checkLocation());
   }
 
   @override

@@ -10,6 +10,7 @@ import 'package:capstone/core/shared/providers/report_repository_provider.dart';
 import 'package:capstone/core/shared/providers/responder_repository_provider.dart';
 import 'package:capstone/core/shared/providers/user_repository_provider.dart';
 import 'package:capstone/core/shared/repositories/notification_history_repository.dart';
+import 'package:capstone/core/utilities/permission_queue.dart';
 import 'package:capstone/features/public_user/reporting/views/normal_reports_view_screen.dart';
 import 'package:capstone/features/public_user/reporting/views/pre_call_guidance_report_view_screen.dart';
 import 'package:capstone/firebase_options.dart';
@@ -72,7 +73,9 @@ class PushNotificationService {
     if (_initialized) return;
     _initialized = true;
 
-    await _messaging.requestPermission(alert: true, badge: true, sound: true);
+    await runPermissionRequest(
+      () => _messaging.requestPermission(alert: true, badge: true, sound: true),
+    );
 
     _onMessageSub = FirebaseMessaging.onMessage.listen(_handleForegroundMessage);
     _onOpenedSub = FirebaseMessaging.onMessageOpenedApp.listen(_handleNotificationTap);

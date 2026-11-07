@@ -1,6 +1,7 @@
 import 'package:capstone/core/l10n/app_localizations.dart';
 import 'dart:async';
 import 'package:capstone/core/enums/location_status_enum.dart';
+import 'package:capstone/core/utilities/permission_queue.dart';
 import 'package:flutter/foundation.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -52,7 +53,7 @@ class LocationService {
     LocationPermission permission = await Geolocator.checkPermission();
 
     if (permission == LocationPermission.denied) {
-      permission = await Geolocator.requestPermission();
+      permission = await runPermissionRequest(Geolocator.requestPermission);
     }
 
     if (permission == LocationPermission.denied) {
