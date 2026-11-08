@@ -1,5 +1,6 @@
 import 'package:capstone/core/shared/widgets/custom_circular_progress_indicator.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
+import 'package:capstone/core/themes/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class CustomElevatedButton extends StatelessWidget {
@@ -10,7 +11,10 @@ class CustomElevatedButton extends StatelessWidget {
     required this.value,
     this.icon,
     this.color = Colors.white,
-    this.backgroundColor = Colors.deepOrange,
+    this.backgroundColor = AppColors.themeColor,
+    this.iconColor,
+    this.borderColor = AppColors.bgWhiteDark,
+    this.borderRadius = 12,
     this.hasPadding = false,
     this.isLoading = false,
   });
@@ -21,6 +25,9 @@ class CustomElevatedButton extends StatelessWidget {
   final Widget? icon;
   final Color color;
   final Color backgroundColor;
+  final Color? iconColor;
+  final Color borderColor;
+  final double borderRadius;
   final bool hasPadding;
   final bool isLoading;
 
@@ -37,12 +44,15 @@ class CustomElevatedButton extends StatelessWidget {
             )
           : icon,
       style: ElevatedButton.styleFrom(
-        iconColor: color,
+        elevation: 0,
+        shadowColor: Colors.transparent,
+        iconColor: iconColor ?? color,
         backgroundColor: backgroundColor,
         // Keep the brand color while loading instead of the greyed-out disabled look.
         disabledBackgroundColor: isLoading ? backgroundColor : null,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(borderRadius),
+          side: BorderSide(color: borderColor),
         ),
       ),
       label: hasPadding

@@ -37,7 +37,6 @@ class _PreCallGuidanceScreenState extends ConsumerState<PreCallGuidanceScreen> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SizedBox(
                 width: double.infinity,
@@ -48,13 +47,12 @@ class _PreCallGuidanceScreenState extends ConsumerState<PreCallGuidanceScreen> {
               ),
               Padding(
                 padding: const EdgeInsets.only(
-                  top: 75,
+                  top: 50,
                   left: 20,
                   right: 20,
                   bottom: 20,
                 ),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     SectionTitle(
                       icon: Icons.question_answer,

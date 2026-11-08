@@ -23,7 +23,6 @@ import 'package:capstone/core/shared/widgets/verification_banner.dart';
 import 'package:capstone/core/utilities/call_launcher.dart';
 import 'package:capstone/core/utilities/distance_helper.dart';
 import 'package:capstone/core/utilities/submit_guard_mixin.dart';
-import 'package:capstone/features/public_user/guides/widgets/guides_entry_card.dart';
 import 'package:capstone/features/public_user/main/providers/nearest_emergency_services_provider.dart';
 import 'package:capstone/features/public_user/map/models/emergency_service_model.dart';
 import 'package:capstone/features/public_user/map/providers/contact_number_repository_provider.dart';
@@ -318,7 +317,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SubmitGuardMixin<H
                           children: [
                             const Expanded(
                               child: Divider(
-                                height: 1,
+                                height: 10,
                                 color: Colors.black54,
                               ),
                             ),
@@ -334,7 +333,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SubmitGuardMixin<H
                             ),
                             const Expanded(
                               child: Divider(
-                                height: 1,
+                                height: 10,
                                 color: Colors.black54,
                               ),
                             ),
@@ -382,10 +381,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SubmitGuardMixin<H
                             ),
                           ),
                         ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        const GuidesEntryCard(),
                         const SizedBox(
                           height: 10,
                         ),

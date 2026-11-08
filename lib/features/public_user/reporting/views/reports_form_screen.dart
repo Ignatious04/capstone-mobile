@@ -112,6 +112,7 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> with Subm
     final attachmentsList = ref.watch(pendingAttachmentsProvider);
     final victimsList = ref.watch(reportProvider).victims;
     final location = ref.watch(locationStreamProvider);
+    final screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
       appBar: CustomAppBar(value: l10n.emergencyReport),
@@ -128,8 +129,99 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> with Subm
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
+                        location.when(
+                          loading: () => SizedBox(
+                            height: screenHeight * 0.45,
+                            child: Center(
+                              child: CustomCircularProgressIndicator(),
+                            ),
+                          ),
+                          error: (error, stack) => SizedBox(
+                            height: screenHeight * 0.45,
+                            child: Center(
+                              child: Text(error.toString()),
+                            ),
+                          ),
+                          data: (latLng) {
+                            _selectedLocation ??= latLng;
+                            return Align(
+                              alignment: Alignment.center,
+                              child: Card(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.vertical(
+                                    bottom: Radius.circular(24),
+                                    // top: Radius.circular(24), // Uncomment if you want top corners rounded too
+                                  ),
+                                ),
+                                color: Colors.white,
+                                elevation: 1,
+                                margin: EdgeInsets.zero,
+                                clipBehavior: Clip.antiAlias,
+                                child: SizedBox(
+                                  width: double.infinity,
+                                  height: screenHeight * 0.45,
+                                  child: InkWell(
+                                    borderRadius: BorderRadius.circular(12),
+                                    onTap: () async {
+                                      final LatLng? location = await Navigator.push<LatLng>(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (_) => SelectLocationScreen(
+                                            initialLocation: _selectedLocation!,
+                                          ),
+                                        ),
+                                      );
+
+                                      if (location != null) {
+                                        setState(() {
+                                          _selectedLocation = location;
+                                        });
+
+                                        _mapController?.animateCamera(CameraUpdate.newLatLng(location));
+                                      }
+                                    },
+                                    child: Stack(
+                                      children: [
+                                        MapTileWidget(
+                                          initialLocation: _selectedLocation!,
+                                          mode: MapModeEnum.view,
+                                          onMapCreated: (controller) {
+                                            _mapController = controller;
+                                          },
+                                          extraMarkers: {
+                                            Marker(
+                                              markerId: const MarkerId('selected_location'),
+                                              position: _selectedLocation!,
+                                            ),
+                                          },
+                                        ),
+                                        Positioned(
+                                          right: 12,
+                                          top: 12,
+                                          child: Chip(
+                                            avatar: Icon(
+                                              Icons.edit_location_alt,
+                                              size: 25,
+                                              color: Colors.white,
+                                            ),
+                                            label: BodyText(
+                                              value: l10n.changeLocation,
+                                              color: Colors.white,
+                                              isBold: true,
+                                            ),
+                                            backgroundColor: Colors.deepOrange,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
                         Padding(
-                          padding: const EdgeInsets.only(top: 20.0, left: 20, right: 20),
+                          padding: const EdgeInsets.only(top: 10.0, left: 20, right: 20),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -286,98 +378,7 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> with Subm
                               const SizedBox(
                                 height: 10,
                               ),
-                              LabelText(
-                                value: l10n.location.toUpperCase(),
-                                color: Colors.black54,
-                              ),
-                              const SizedBox(
-                                height: 10,
-                              ),
-                              location.when(
-                                loading: () => const SizedBox(
-                                  height: 250,
-                                  child: Center(
-                                    child: CustomCircularProgressIndicator(),
-                                  ),
-                                ),
-                                error: (error, stack) => SizedBox(
-                                  height: 250,
-                                  child: Center(
-                                    child: Text(error.toString()),
-                                  ),
-                                ),
-                                data: (latLng) {
-                                  _selectedLocation ??= latLng;
-                                  return Align(
-                                    alignment: Alignment.center,
-                                    child: Card(
-                                      color: Colors.white,
-                                      elevation: 1,
-                                      margin: EdgeInsets.zero,
-                                      clipBehavior: Clip.antiAlias,
-                                      child: SizedBox(
-                                        width: double.infinity,
-                                        height: 250,
-                                        child: InkWell(
-                                          borderRadius: BorderRadius.circular(12),
-                                          onTap: () async {
-                                            final LatLng? location = await Navigator.push<LatLng>(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (_) => SelectLocationScreen(
-                                                  initialLocation: _selectedLocation!,
-                                                ),
-                                              ),
-                                            );
 
-                                            if (location != null) {
-                                              setState(() {
-                                                _selectedLocation = location;
-                                              });
-
-                                              _mapController?.animateCamera(CameraUpdate.newLatLng(location));
-                                            }
-                                          },
-                                          child: Stack(
-                                            children: [
-                                              MapTileWidget(
-                                                initialLocation: _selectedLocation!,
-                                                mode: MapModeEnum.view,
-                                                onMapCreated: (controller) {
-                                                  _mapController = controller;
-                                                },
-                                                extraMarkers: {
-                                                  Marker(
-                                                    markerId: const MarkerId('selected_location'),
-                                                    position: _selectedLocation!,
-                                                  ),
-                                                },
-                                              ),
-                                              Positioned(
-                                                right: 12,
-                                                top: 12,
-                                                child: Chip(
-                                                  avatar: Icon(
-                                                    Icons.edit_location_alt,
-                                                    size: 20,
-                                                    color: Colors.white,
-                                                  ),
-                                                  label: BodyText(
-                                                    value: l10n.changeLocation,
-                                                    color: Colors.white,
-                                                    isBold: true,
-                                                  ),
-                                                  backgroundColor: Colors.deepOrange,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  );
-                                },
-                              ),
                               const SizedBox(
                                 height: 10,
                               ),

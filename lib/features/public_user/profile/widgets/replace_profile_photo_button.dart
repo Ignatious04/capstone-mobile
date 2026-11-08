@@ -2,6 +2,7 @@ import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/shared/providers/user_provider.dart';
 import 'package:capstone/core/shared/providers/verification_provider.dart';
 import 'package:capstone/core/shared/widgets/custom_snackbar_helper.dart';
+import 'package:capstone/core/themes/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -60,7 +61,7 @@ class _ReplaceProfilePhotoButtonState extends ConsumerState<ReplaceProfilePhotoB
       label: Text(l10n.replacePhoto),
       style: TextButton.styleFrom(
         visualDensity: VisualDensity.compact,
-        foregroundColor: isVerified ? null : Theme.of(context).disabledColor,
+        foregroundColor: isVerified ? AppColors.blackTextFull : Theme.of(context).disabledColor,
       ),
     );
   }

@@ -1,4 +1,5 @@
 import 'package:capstone/core/shared/widgets/text/title_text.dart';
+import 'package:capstone/core/themes/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class SectionTitle extends StatelessWidget {
@@ -25,12 +26,13 @@ class SectionTitle extends StatelessWidget {
         Icon(
           icon,
           size: size,
-          color: Colors.black54,
+          color: AppColors.blackTextFull,
         ),
         const SizedBox(width: 10),
         Expanded(
           child: TitleText(
             value: title,
+            color: AppColors.blackTextFull,
             isBold: isBold,
           ),
         ),

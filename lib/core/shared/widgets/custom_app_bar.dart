@@ -1,4 +1,5 @@
 import 'package:capstone/core/shared/widgets/text/headline_text.dart';
+import 'package:capstone/core/themes/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -17,12 +18,12 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       toolbarHeight: 60,
       title: HeadlineText(
         value: value,
-        color: Colors.white,
+        color: AppColors.whiteTextFull,
         isBold: true,
       ),
       titleSpacing: 0,
       iconTheme: const IconThemeData(
-        color: Colors.white,
+        color: AppColors.whiteTextFull,
       ),
       actions: actions,
     );

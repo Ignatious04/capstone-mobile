@@ -28,6 +28,8 @@ class ProfileScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = AppLocalizations.of(context)!;
 
+    final screenWidth = MediaQuery.of(context).size.width;
+
     final userAsync = ref.watch(currentAuthenticatedUserProvider);
     return userAsync.when(
       data: (user) {
@@ -37,190 +39,244 @@ class ProfileScreen extends ConsumerWidget {
           );
         }
         return SafeArea(
-          child: Column(
-            children: [
-              SizedBox(
-                width: double.infinity,
-                child: CustomHeaderWidget(title: l10n.safetyProfile, body: l10n.viewManageAccount),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Hero(
-                      tag: "profile_pic",
-                      child: SizedBox(
-                        width: 150,
-                        height: 150,
-                        child: GestureDetector(
-                          onTap: user.profileURL == null
-                              ? null
-                              : () => Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (_) => ViewAttachmentScreen(
-                                      fileName: l10n.profilePhoto,
-                                      url: user.profileURL!,
-                                    ),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                SizedBox(
+                  width: double.infinity,
+                  child: CustomHeaderWidget(title: l10n.safetyProfile, body: l10n.viewManageAccount),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 100, left: 20, right: 20, bottom: 20),
+                  child: Stack(
+                    clipBehavior: Clip.none,
+                    children: [
+                      Card(
+                        elevation: 0,
+                        color: AppColors.bgWhite,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          side: BorderSide(
+                            color: AppColors.cardBorder,
+                          ),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 90, left: 20, right: 20, bottom: 20),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              ReplaceProfilePhotoButton(currentUrl: user.profileURL),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              HeadlineText(
+                                value: "${user.firstName} ${user.lastName}",
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              SizedBox(
+                                width: double.infinity,
+                                child: CustomElevatedButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) {
+                                          return PersonalInformationScreen();
+                                        },
+                                      ),
+                                    );
+                                  },
+                                  icon: Icon(
+                                    Icons.person,
+                                    size: 25,
+                                    color: AppColors.themeColor,
                                   ),
+                                  backgroundColor: AppColors.bgWhiteLight,
+                                  color: AppColors.blackTextFull,
+                                  borderRadius: 24,
+                                  value: l10n.personalInformation,
                                 ),
-                          child: ClipOval(
-                            child: user.profileURL != null
-                                ? CachedNetworkImage(
-                                    imageUrl: user.profileURL!,
-                                    width: 150,
-                                    height: 150,
-                                    fit: BoxFit.cover,
-                                     errorWidget: (_, _, _) => Container(
-                                      width: 150,
-                                      height: 150,
-                                      color: AppColors.lighterBlack,
-                                      child: const Icon(Icons.person, size: 50),
-                                    ),
-                                  )
-                                : Container(
-                                    color: AppColors.lighterBlack,
-                                    child: const Icon(Icons.person, size: 50),
+                              ),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              SizedBox(
+                                width: double.infinity,
+                                child: CustomElevatedButton(
+                                  onPressed: () {
+                                    if (!user.canEditMedicalInfo) {
+                                      CustomSnackbarHelper.show(context, text: l10n.medicalInfoNeedsConsent);
+                                      return;
+                                    }
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (_) => MedicalInformationScreen(user: user)),
+                                    );
+                                  },
+                                  icon: const Icon(
+                                    Icons.medical_information,
+                                    size: 25,
+                                    color: AppColors.themeColor,
                                   ),
+                                  backgroundColor: AppColors.bgWhiteLight,
+                                  color: AppColors.blackTextFull,
+                                  borderRadius: 24,
+                                  value: l10n.medicalInformation,
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              SizedBox(
+                                width: double.infinity,
+                                child: CustomElevatedButton(
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) {
+                                          return SettingsScreen();
+                                        },
+                                      ),
+                                    );
+                                  },
+                                  icon: Icon(
+                                    Icons.settings,
+                                    size: 25,
+                                    color: AppColors.themeColor,
+                                  ),
+                                  backgroundColor: AppColors.bgWhiteLight,
+                                  color: AppColors.blackTextFull,
+                                  borderRadius: 24,
+                                  value: l10n.settings,
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              SizedBox(
+                                width: double.infinity,
+                                child: CustomElevatedButton(
+                                  onPressed: () async {
+                                    final dialog = await showDialog<bool>(
+                                      context: context,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                          title: BodyText(value: l10n.logoutConfirm),
+                                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                                          backgroundColor: Colors.white,
+                                          actions: [
+                                            CustomElevatedButton(
+                                              onPressed: () {
+                                                Navigator.pop(context, false);
+                                              },
+                                              value: l10n.no,
+                                            ),
+                                            CustomElevatedButton(
+                                              onPressed: () {
+                                                Navigator.pop(context, true);
+                                              },
+                                              value: l10n.yes,
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+
+                                    if (dialog != true) {
+                                      return;
+                                    }
+
+                                    try {
+                                      final firebaseAuthRepository = ref.read(
+                                        firebaseAuthRepositoryProvider,
+                                      );
+
+                                      final uid = firebaseAuthRepository.currentUser?.uid;
+
+                                      if (uid != null) {
+                                        await ref.read(pushNotificationServiceProvider).clearToken(uid);
+                                      }
+                                      await firebaseAuthRepository.signOut();
+                                    } on AuthException catch (e) {
+                                      debugPrint(e.message);
+                                    }
+                                  },
+                                  icon: Icon(
+                                    Icons.logout,
+                                    size: 25,
+                                  ),
+                                  color: AppColors.danger,
+                                  backgroundColor: AppColors.bgWhiteLight,
+                                  borderColor: AppColors.danger.withValues(alpha: 0.5),
+                                  borderRadius: 24,
+                                  value: l10n.logout,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
-                    ),
-                    ReplaceProfilePhotoButton(currentUrl: user.profileURL),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    HeadlineText(
-                      value: "${user.firstName} ${user.lastName}",
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    SizedBox(
-                      width: double.infinity,
-                      child: CustomElevatedButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return PersonalInformationScreen();
-                              },
-                            ),
-                          );
-                        },
-                        icon: Icon(
-                          Icons.person,
-                          size: 25,
-                        ),
-                        backgroundColor: Colors.white,
-                        color: Colors.black,
-                        value: l10n.personalInformation,
-                      ),
-                    ),
-                    SizedBox(
-                      width: double.infinity,
-                      child: CustomElevatedButton(
-                        onPressed: () {
-                          if (!user.canEditMedicalInfo) {
-                            CustomSnackbarHelper.show(context, text: l10n.medicalInfoNeedsConsent);
-                            return;
-                          }
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (_) => MedicalInformationScreen(user: user)),
-                          );
-                        },
-                        icon: const Icon(Icons.medical_information, size: 25),
-                        backgroundColor: Colors.white,
-                        color: Colors.black,
-                        value: l10n.medicalInformation,
-                      ),
-                    ),
-                    SizedBox(
-                      width: double.infinity,
-                      child: CustomElevatedButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return SettingsScreen();
-                              },
-                            ),
-                          );
-                        },
-                        icon: Icon(
-                          Icons.settings,
-                          size: 25,
-                        ),
-                        backgroundColor: Colors.white,
-                        color: Colors.black,
-                        value: l10n.settings,
-                      ),
-                    ),
-                    SizedBox(
-                      width: double.infinity,
-                      child: CustomElevatedButton(
-                        onPressed: () async {
-                          final dialog = await showDialog<bool>(
-                            context: context,
-                            builder: (context) {
-                              return AlertDialog(
-                                title: BodyText(value: l10n.logoutConfirm),
-                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                                backgroundColor: Colors.white,
-                                actions: [
-                                  CustomElevatedButton(
-                                    onPressed: () {
-                                      Navigator.pop(context, false);
-                                    },
-                                    value: l10n.no,
+                      Positioned(
+                        top: -75,
+                        left: (screenWidth / 2) - 100,
+                        child: Hero(
+                          tag: "profile_pic",
+                          child: GestureDetector(
+                            onTap: user.profileURL == null
+                                ? null
+                                : () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => ViewAttachmentScreen(
+                                        fileName: l10n.profilePhoto,
+                                        url: user.profileURL!,
+                                      ),
+                                    ),
                                   ),
-                                  CustomElevatedButton(
-                                    onPressed: () {
-                                      Navigator.pop(context, true);
-                                    },
-                                    value: l10n.yes,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(color: Colors.white, width: 5),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withValues(alpha: 0.3), // Shadow color and opacity
+                                    spreadRadius: 1,
+                                    blurRadius: 5, // Softness of the shadow
+                                    offset: const Offset(0, 5), // Changes position of shadow (x, y)
                                   ),
                                 ],
-                              );
-                            },
-                          );
-
-                          if (dialog != true) {
-                            return;
-                          }
-
-                          try {
-                            final firebaseAuthRepository = ref.read(
-                              firebaseAuthRepositoryProvider,
-                            );
-
-                            final uid = firebaseAuthRepository.currentUser?.uid;
-
-                            if (uid != null) {
-                              await ref.read(pushNotificationServiceProvider).clearToken(uid);
-                            }
-                            await firebaseAuthRepository.signOut();
-                          } on AuthException catch (e) {
-                            debugPrint(e.message);
-                          }
-                        },
-                        icon: Icon(
-                          Icons.logout,
-                          size: 25,
+                              ),
+                              child: ClipOval(
+                                child: user.profileURL != null
+                                    ? CachedNetworkImage(
+                                        imageUrl: user.profileURL!,
+                                        width: 150,
+                                        height: 150,
+                                        fit: BoxFit.cover,
+                                        errorWidget: (_, _, _) => Container(
+                                          width: 150,
+                                          height: 150,
+                                          color: AppColors.lighterBlack,
+                                          child: const Icon(Icons.person, size: 50),
+                                        ),
+                                      )
+                                    : Container(
+                                        color: AppColors.lighterBlack,
+                                        child: const Icon(Icons.person, size: 50),
+                                      ),
+                              ),
+                            ),
+                          ),
                         ),
-                        color: Colors.red,
-                        backgroundColor: Colors.white,
-                        value: l10n.logout,
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         );
       },

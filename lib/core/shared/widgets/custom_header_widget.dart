@@ -1,5 +1,6 @@
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/widgets/text/headline_text.dart';
+import 'package:capstone/core/themes/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class CustomHeaderWidget extends StatelessWidget {
@@ -22,7 +23,7 @@ class CustomHeaderWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.deepOrange,
+        color: AppColors.themeColor,
         boxShadow: hasBoxShadow
             ? [
                 BoxShadow(
@@ -41,13 +42,13 @@ class CustomHeaderWidget extends StatelessWidget {
           children: [
             HeadlineText(
               value: title,
-              color: Colors.white,
+              color: AppColors.whiteTextFull,
               isBold: true,
             ),
             if (body != null)
               BodyText(
                 value: body!,
-                color: Colors.white,
+                color: AppColors.whiteTextFull,
               ),
             if (progressIndicator != null) ...[
               SizedBox(height: 10),

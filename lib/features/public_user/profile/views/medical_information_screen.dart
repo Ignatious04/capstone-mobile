@@ -9,6 +9,7 @@ import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
 import 'package:capstone/core/shared/widgets/custom_snackbar_helper.dart';
 import 'package:capstone/core/shared/widgets/custom_text_field.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
+import 'package:capstone/core/themes/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -106,6 +107,7 @@ class _MedicalInformationScreenState extends ConsumerState<MedicalInformationScr
                               value: b,
                               child: BodyText(
                                 value: b,
+                                color: AppColors.blackTextFull,
                               ),
                             ),
                           )
@@ -189,7 +191,7 @@ class _MedicalInformationScreenState extends ConsumerState<MedicalInformationScr
                         highlightColor: Colors.transparent,
                       ),
                       child: SwitchListTile(
-                        activeThumbColor: Colors.deepOrange,
+                        activeThumbColor: AppColors.themeColor,
                         inactiveThumbColor: Colors.black54,
                         inactiveTrackColor: Colors.black12,
                         hoverColor: Colors.transparent,

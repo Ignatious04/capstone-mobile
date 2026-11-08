@@ -10,6 +10,7 @@ import 'package:capstone/core/shared/providers/locale_provider.dart';
 import 'package:capstone/core/shared/providers/navigator_key_provider.dart';
 import 'package:capstone/core/shared/providers/notification_history_provider.dart';
 import 'package:capstone/core/shared/widgets/app_notification_overlay.dart';
+import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/auth_wrapper.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -134,7 +135,7 @@ class _MyAppState extends ConsumerState<MyApp> {
           brightness: Brightness.light,
         ),
         appBarTheme: const AppBarTheme(
-          backgroundColor: Colors.deepOrange,
+          backgroundColor: AppColors.themeColor,
           systemOverlayStyle: SystemUiOverlayStyle(
             statusBarColor: Colors.transparent,
             statusBarIconBrightness: Brightness.light,
@@ -145,7 +146,7 @@ class _MyAppState extends ConsumerState<MyApp> {
             overlayColor: Colors.transparent,
           ),
         ),
-        scaffoldBackgroundColor: const Color(0xFFF0F0F0),
+        scaffoldBackgroundColor: AppColors.bgWhiteDark,
         fontFamily: 'Inter',
       ),
       builder: (context, child) => AppNotificationOverlay(child: child!),

@@ -10,6 +10,7 @@ import 'package:capstone/core/shared/widgets/custom_text_field.dart';
 import 'package:capstone/core/shared/widgets/section_title.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/widgets/text/label_text.dart';
+import 'package:capstone/core/themes/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -199,7 +200,7 @@ class _UpdatePersonalInformationScreenState extends ConsumerState<UpdatePersonal
                                 title: l10n.firstName.toUpperCase(),
                                 controller: firstNameController,
                                 isReadOnly: true,
-                                color: Colors.black54,
+                                color: AppColors.blackTextMuted,
                               ),
                             ),
                             const SizedBox(width: 10),
@@ -209,7 +210,7 @@ class _UpdatePersonalInformationScreenState extends ConsumerState<UpdatePersonal
                                 title: l10n.middleName.toUpperCase(),
                                 controller: middleNameController,
                                 isReadOnly: true,
-                                color: Colors.black54,
+                                color: AppColors.blackTextMuted,
                               ),
                             ),
                           ],
@@ -219,7 +220,7 @@ class _UpdatePersonalInformationScreenState extends ConsumerState<UpdatePersonal
                           title: l10n.lastName.toUpperCase(),
                           controller: lastNameController,
                           isReadOnly: true,
-                          color: Colors.black54,
+                          color: AppColors.blackTextMuted,
                         ),
                         const SizedBox(height: 10),
                         Row(
@@ -230,7 +231,7 @@ class _UpdatePersonalInformationScreenState extends ConsumerState<UpdatePersonal
                                 title: l10n.birthDate.toUpperCase(),
                                 controller: birthDateController,
                                 isReadOnly: true,
-                                color: Colors.black54,
+                                color: AppColors.blackTextMuted,
                               ),
                             ),
                             const SizedBox(width: 10),
@@ -240,7 +241,7 @@ class _UpdatePersonalInformationScreenState extends ConsumerState<UpdatePersonal
                                 title: l10n.sex.toUpperCase(),
                                 controller: sexController,
                                 isReadOnly: true,
-                                color: Colors.black54,
+                                color: AppColors.blackTextMuted,
                               ),
                             ),
                           ],
@@ -276,7 +277,7 @@ class _UpdatePersonalInformationScreenState extends ConsumerState<UpdatePersonal
                             const Icon(
                               Icons.directions,
                               size: 25,
-                              color: Colors.black54,
+                              color: AppColors.blackTextMuted,
                             ),
                             const SizedBox(width: 10),
                             Expanded(
@@ -413,6 +414,7 @@ class _UpdatePersonalInformationScreenState extends ConsumerState<UpdatePersonal
                           child: CustomElevatedButton(
                             onPressed: () => _submit(l10n),
                             value: l10n.confirm,
+                            color: AppColors.whiteTextFull,
                           ),
                         ),
                       ],

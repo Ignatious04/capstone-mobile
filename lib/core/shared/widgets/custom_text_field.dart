@@ -1,3 +1,4 @@
+import 'package:capstone/core/themes/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -13,7 +14,7 @@ class CustomTextField extends StatefulWidget {
     this.keyboardType,
     this.inputFormatters,
     this.isReadOnly = false,
-    this.color = Colors.black,
+    this.color = AppColors.blackTextFull,
     this.obscureText = false,
     this.hideErrorText = true,
     this.vertical = 10,
@@ -41,6 +42,7 @@ class CustomTextField extends StatefulWidget {
   final int maxLines;
   final ValueChanged<String>? onChanged;
   final bool isRequired;
+
   /// When true, clearing the field removes its error until the next
   /// form-level validate() (e.g. on submit).
   final bool clearErrorWhenEmpty;
@@ -75,7 +77,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
         Text.rich(
           TextSpan(
             style: Theme.of(context).textTheme.labelMedium?.copyWith(
-              color: Colors.black54,
+              color: AppColors.blackTextMuted,
             ),
             children: [
               TextSpan(text: widget.title),

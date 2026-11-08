@@ -1,6 +1,7 @@
 import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/widgets/text/title_text.dart';
+import 'package:capstone/core/themes/app_colors.dart';
 import 'package:flutter/material.dart';
 
 Future<bool?> showConfirmationDialog(
@@ -53,14 +54,15 @@ class ConfirmationDialog extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
       ),
+      backgroundColor: AppColors.bgWhite,
       actions: [
         ElevatedButton(
           onPressed: () {
             Navigator.pop(context, false);
           },
           style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.deepOrange,
-            foregroundColor: Colors.white,
+            backgroundColor: AppColors.bgWhiteLight,
+            foregroundColor: AppColors.blackTextFull,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
             ),
@@ -72,8 +74,8 @@ class ConfirmationDialog extends StatelessWidget {
             Navigator.pop(context, true);
           },
           style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.deepOrange,
-            foregroundColor: Colors.white,
+             backgroundColor: AppColors.themeColor,
+            foregroundColor: AppColors.whiteTextFull,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
             ),

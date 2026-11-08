@@ -1,6 +1,7 @@
 // lib/core/shared/widgets/legal_links_card.dart
 import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
+import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/public_user/register/views/privacy_policy_screen.dart';
 import 'package:capstone/features/public_user/register/views/terms_and_conditions_screen.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +18,7 @@ class LegalLinksCard extends StatelessWidget {
       color: Colors.white,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
-        side: const BorderSide(color: Colors.black12),
+        side: const BorderSide(color: AppColors.cardBorder),
       ),
       child: Column(
         children: [

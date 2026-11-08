@@ -3,10 +3,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:capstone/core/shared/widgets/custom_app_bar.dart';
 import 'package:capstone/core/shared/widgets/custom_circular_progress_indicator.dart';
 import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
+import 'package:capstone/core/shared/widgets/info_column.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/providers/user_provider.dart';
-import 'package:capstone/core/shared/widgets/text/label_text.dart';
-import 'package:capstone/core/shared/widgets/text/title_text.dart';
+import 'package:capstone/core/shared/widgets/text/headline_text.dart';
 import 'package:capstone/core/shared/widgets/view_attachment_screen.dart';
 import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/public_user/profile/views/update_personal_information_screen.dart';
@@ -78,12 +78,13 @@ class PersonalInformationScreen extends ConsumerWidget {
                           const SizedBox(
                             height: 10,
                           ),
-                          TitleText(
+                          HeadlineText(
                             value: "${user.firstName} ${user.lastName}",
-                            isBold: true,
+                            color: AppColors.blackTextFull,
                           ),
                           BodyText(
                             value: user.contactNumber,
+                            color: AppColors.blackTextMuted,
                           ),
                           const SizedBox(
                             height: 10,
@@ -93,72 +94,48 @@ class PersonalInformationScreen extends ConsumerWidget {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                LabelText(
-                                  value: l10n.birthDate.toUpperCase(),
-                                  color: Colors.black54,
-                                ),
-                                BodyText(
+                                InfoColumn(
+                                  title: l10n.birthDate.toUpperCase(),
                                   value: DateFormat("MMMM dd, yyyy", Localizations.localeOf(context).toString()).format(
                                     DateTime.fromMillisecondsSinceEpoch(
                                       user.birthDate,
                                     ),
                                   ),
-                                  isBold: true,
                                 ),
                                 const SizedBox(
                                   height: 10,
                                 ),
-                                LabelText(
-                                  value: l10n.sex.toUpperCase(),
-                                  color: Colors.black54,
-                                ),
-                                BodyText(
+                                InfoColumn(
+                                  title: l10n.sex.toUpperCase(),
                                   value: user.sex,
-                                  isBold: true,
                                 ),
                                 const SizedBox(
                                   height: 10,
                                 ),
-                                LabelText(
-                                  value: l10n.homeAddress.toUpperCase(),
-                                  color: Colors.black54,
-                                ),
-                                BodyText(
+                                InfoColumn(
+                                  title: l10n.homeAddress.toUpperCase(),
                                   value: user.address,
-                                  isBold: true,
                                 ),
                                 const SizedBox(
                                   height: 10,
                                 ),
-                                LabelText(
-                                  value: l10n.nationality.toUpperCase(),
-                                  color: Colors.black54,
-                                ),
-                                BodyText(
+                                InfoColumn(
+                                  title: l10n.nationality.toUpperCase(),
                                   value: user.nationality,
-                                  isBold: true,
                                 ),
                                 const SizedBox(
                                   height: 10,
                                 ),
-                                LabelText(
-                                  value: l10n.civilStatus.toUpperCase(),
-                                  color: Colors.black54,
-                                ),
-                                BodyText(
+                                InfoColumn(
+                                  title: l10n.civilStatus.toUpperCase(),
                                   value: user.civilStatus,
-                                  isBold: true,
                                 ),
                                 const SizedBox(
                                   height: 10,
                                 ),
-                                LabelText(
-                                  value: l10n.religion.toUpperCase(),
-                                  color: Colors.black54,
-                                ),
-                                BodyText(
+                                InfoColumn(
+                                  title: l10n.religion.toUpperCase(),
                                   value: user.religion,
-                                  isBold: true,
                                 ),
                                 const SizedBox(
                                   height: 10,

@@ -28,20 +28,26 @@ class GuidesScreen extends ConsumerWidget {
       body: SafeArea(
         child: guidesAsync.when(
           loading: () => const Center(child: CustomCircularProgressIndicator()),
-          error: (_, _) => Center(child: BodyText(value: l10n.guidesLoadError, color: Colors.black54)),
+          error: (_, _) => Center(
+            child: BodyText(value: l10n.guidesLoadError, color: Colors.black54),
+          ),
           data: (guides) => ListView(
             padding: const EdgeInsets.all(20),
             children: [
               Container(
                 padding: const EdgeInsets.all(12),
                 decoration: BoxDecoration(
-                  color: AppColors.lighterDeepOrange,
+                  color: AppColors.lighterThemeColor,
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Icon(Icons.offline_pin_outlined, size: 20, color: Colors.deepOrange),
+                    const Icon(
+                      Icons.offline_pin_outlined,
+                      size: 25,
+                      color: AppColors.themeColor,
+                    ),
                     const SizedBox(width: 10),
                     Expanded(child: BodyText(value: l10n.guidesOfflineNote)),
                   ],
@@ -76,7 +82,7 @@ class _GuideCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       margin: EdgeInsets.zero,
-      color: Colors.white,
+      color: AppColors.bgWhiteLight,
       elevation: 1,
       clipBehavior: Clip.antiAlias,
       shape: RoundedRectangleBorder(

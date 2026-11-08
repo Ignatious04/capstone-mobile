@@ -1,3 +1,4 @@
+import 'package:capstone/core/themes/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class CustomDropdownButton<T> extends StatelessWidget {
@@ -28,7 +29,7 @@ class CustomDropdownButton<T> extends StatelessWidget {
         Text.rich(
           TextSpan(
             style: Theme.of(context).textTheme.labelMedium?.copyWith(
-              color: Colors.black54,
+              color: AppColors.blackTextMuted,
             ),
             children: [
               TextSpan(text: title),

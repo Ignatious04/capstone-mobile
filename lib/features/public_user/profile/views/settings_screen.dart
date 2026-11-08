@@ -7,6 +7,7 @@ import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
 import 'package:capstone/core/shared/widgets/legal_links_card.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/widgets/text/title_text.dart';
+import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/public_user/profile/views/change_password_screen.dart';
 import 'package:capstone/features/public_user/profile/views/deactivate_account_screen.dart';
 import 'package:capstone/features/public_user/profile/views/phone_number_verification_screen.dart';
@@ -63,7 +64,7 @@ class SettingsScreen extends ConsumerWidget {
                         context: context,
                         builder: (context) {
                           return SimpleDialog(
-                            backgroundColor: Colors.white,
+                            backgroundColor: AppColors.bgWhite,
                             title: TitleText(
                               value: l10n.selectLanguage,
                               isBold: false,

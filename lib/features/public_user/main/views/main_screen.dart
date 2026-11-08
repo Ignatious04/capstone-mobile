@@ -1,6 +1,7 @@
 import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/shared/providers/main_tab_provider.dart';
 import 'package:capstone/core/shared/widgets/custom_navigation_bar.dart';
+import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/public_user/main/views/home_screen.dart';
 import 'package:capstone/features/public_user/map/views/map_screen.dart';
 import 'package:capstone/features/public_user/pre_call_guidance/views/pre_call_guidance_screen.dart';
@@ -35,7 +36,7 @@ class MainScreen extends ConsumerWidget {
 
     return Scaffold(
       body: AnnotatedRegion<SystemUiOverlayStyle>(
-        value: SystemUiOverlayStyle(statusBarColor: Colors.deepOrange),
+        value: SystemUiOverlayStyle(statusBarColor: AppColors.themeColor),
         child: IndexedStack(
           index: currentPageIndex,
           children: pages,
