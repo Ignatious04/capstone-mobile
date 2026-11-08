@@ -42,14 +42,14 @@ Future<bool> ensureVerified(BuildContext context, WidgetRef ref) async {
 
   await showDialog<void>(
     context: context,
-    builder: (_) => AlertDialog(
+    builder: (dialogContext) => AlertDialog(
       title: TitleText(value: rejected ? l10n.verificationNotVerified : l10n.verificationPendingTitle),
       content: BodyText(
         value: rejected ? l10n.verificationRejectedBody : l10n.verificationPendingBody,
       ),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       actions: [
-        TextButton(onPressed: () => Navigator.pop(context), child: Text(l10n.ok)),
+        TextButton(onPressed: () => Navigator.pop(dialogContext), child: Text(l10n.ok)),
       ],
     ),
   );

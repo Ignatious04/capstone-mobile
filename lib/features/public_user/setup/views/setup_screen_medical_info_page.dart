@@ -34,6 +34,14 @@ class _SetupScreenMedicalInfoPage extends ConsumerState<SetupScreenMedicalInfoPa
   }
 
   @override
+  void dispose() {
+    heightController.dispose();
+    weightController.dispose();
+    vaccineDateController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 

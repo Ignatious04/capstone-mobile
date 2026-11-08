@@ -3,6 +3,7 @@ import 'package:capstone/core/enums/notification_type_enum.dart';
 import 'package:capstone/core/enums/report_type_enum.dart';
 import 'package:capstone/core/services/local_notification_service.dart';
 import 'package:capstone/core/shared/models/notification_model.dart';
+import 'package:capstone/core/shared/models/report_model.dart';
 import 'package:capstone/core/shared/providers/app_notification_provider.dart';
 import 'package:capstone/core/shared/providers/navigator_key_provider.dart';
 import 'package:capstone/core/shared/providers/notification_history_provider.dart';
@@ -203,14 +204,20 @@ class PushNotificationService {
     final navigatorState = ref.read(navigatorKeyProvider).currentState;
     if (navigatorState == null) return;
 
-    final report = await ref.read(reportRepositoryProvider).getReportByID(reportID);
+    final ReportModel? report;
+    try {
+      report = await ref.read(reportRepositoryProvider).getReportByID(reportID);
+    } catch (e) {
+      debugPrint('Could not open report from notification: $e');
+      return;
+    }
     if (report == null) return;
 
     navigatorState.push(
       MaterialPageRoute(
-        builder: (context) => report.reportType == ReportTypeEnum.preCallGuidance
-            ? PreCallGuidanceReportViewScreen(report: report)
-            : NormalReportsViewScreen(report: report),
+        builder: (context) => report?.reportType == ReportTypeEnum.preCallGuidance
+            ? PreCallGuidanceReportViewScreen(report: report!)
+            : NormalReportsViewScreen(report: report!),
       ),
     );
   }

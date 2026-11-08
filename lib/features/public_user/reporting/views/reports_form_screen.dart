@@ -49,6 +49,12 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> with Subm
   PoliceConcernTypeEnum? _policeConcernType;
   bool _isForSomeoneElse = false;
 
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() => ref.read(reportProvider.notifier).reset());
+  }
+
   List<DropdownMenuItem<ServiceTypeEnum>> _emergencyTypes(AppLocalizations l10n) => [
     for (final type in const [ServiceTypeEnum.medical, ServiceTypeEnum.police, ServiceTypeEnum.fire])
       DropdownMenuItem(
@@ -558,6 +564,8 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> with Subm
                                   if (!isNonEmergencyPolice && context.mounted) {
                                     await EmergencyGuidanceSheet.show(context, submittedIncidentType);
                                   }
+
+                                  ref.read(reportProvider.notifier).reset();
 
                                   if (!context.mounted) {
                                     return;

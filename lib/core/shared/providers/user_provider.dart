@@ -11,6 +11,7 @@ import 'package:capstone/core/shared/providers/verification_provider.dart';
 import 'package:capstone/features/public_user/setup/providers/face_detection_service_provider.dart';
 import 'package:capstone/features/public_user/setup/providers/ocr_service_provider.dart';
 import 'package:cloud_functions/cloud_functions.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as path;
@@ -207,7 +208,13 @@ class UserNotifier extends Notifier<UserModel> {
       return IdCaptureResult.unreadable.message(l10n);
     }
 
-    final result = await FirebaseFunctions.instance.httpsCallable('registerIdNumber').call({'idNumber': idNumber});
+    final HttpsCallableResult result;
+    try {
+      result = await FirebaseFunctions.instance.httpsCallable('registerIdNumber').call({'idNumber': idNumber});
+    } on FirebaseFunctionsException catch (e) {
+      debugPrint('registerIdNumber failed: ${e.code}');
+      return l10n.somethingWentWrong;
+    }
     final isDuplicate = (result.data as Map)['duplicate'] == true;
 
     if (isDuplicate) {

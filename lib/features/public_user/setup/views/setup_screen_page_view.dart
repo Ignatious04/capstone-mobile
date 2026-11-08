@@ -179,7 +179,6 @@ class _SetupScreenPageView extends ConsumerState<SetupScreenPageView> {
                               );
                               if (confirmed != true || !context.mounted) return;
 
-
                               showDialog(
                                 context: context,
                                 barrierDismissible: false,
@@ -195,13 +194,13 @@ class _SetupScreenPageView extends ConsumerState<SetupScreenPageView> {
                                 if (isResubmission) {
                                   await showDialog(
                                     context: context,
-                                    builder: (_) => AlertDialog(
+                                    builder: (dialogContext) => AlertDialog(
                                       title: TitleText(value: l10n.resubmitted),
                                       content: BodyText(
                                         value: l10n.resubmittedBody,
                                       ),
                                       actions: [
-                                        TextButton(onPressed: () => Navigator.pop(context), child: Text(l10n.ok)),
+                                        TextButton(onPressed: () => Navigator.pop(dialogContext), child: Text(l10n.ok)),
                                       ],
                                     ),
                                   );

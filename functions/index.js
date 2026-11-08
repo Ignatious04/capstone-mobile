@@ -31,6 +31,7 @@ const CONSENT_COPY = {
 };
 
 const {pickLang} = require("./copy");
+const {isMinor} = require("./age");
 
 const {logger} = require("firebase-functions");
 
@@ -43,11 +44,24 @@ exports.onVerificationChange = onDocumentUpdated("users/{uid}", async (event) =>
   if (!entry || !after.fcmToken) return;
   const copy = entry[pickLang(after)];
 
-  await admin.messaging().send({
-    token: after.fcmToken,
-    notification: copy,
-    data: {type: "verification", status: after.verificationStatus},
-  });
+  try {
+    await admin.messaging().send({
+      token: after.fcmToken,
+      notification: copy,
+      data: {type: "verification", status: after.verificationStatus},
+      android: {
+        priority: "high",
+        notification: {channelId: "high_importance_channel", sound: "default"},
+      },
+      apns: {payload: {aps: {"sound": "default", "content-available": 1}}},
+    });
+  } catch (err) {
+    if (err.code === "messaging/registration-token-not-registered") {
+      await event.data.after.ref.update({fcmToken: admin.firestore.FieldValue.delete()});
+    } else {
+      throw err;
+    }
+  }
 });
 
 exports.onConsentChange = onDocumentUpdated("users/{uid}", async (event) => {
@@ -97,19 +111,6 @@ function mailer() {
     secure: true,
     auth: {user: SMTP_USER.value(), pass: SMTP_PASS.value()},
   });
-}
-
-const PH_OFFSET_MS = 8 * 60 * 60 * 1000; // Philippines is UTC+8, no daylight saving
-
-function isMinor(ms) {
-  if (!ms) return false;
-  // Shift both dates to Philippine time, then read them with the UTC getters.
-  const dob = new Date(ms + PH_OFFSET_MS);
-  const now = new Date(Date.now() + PH_OFFSET_MS);
-  let age = now.getUTCFullYear() - dob.getUTCFullYear();
-  const m = now.getUTCMonth() - dob.getUTCMonth();
-  if (m < 0 || (m === 0 && now.getUTCDate() < dob.getUTCDate())) age--;
-  return age < 18;
 }
 
 const RELATIONSHIP_LABELS = {

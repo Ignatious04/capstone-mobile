@@ -1,10 +1,12 @@
 import java.util.Properties
 
 val localProperties = Properties().apply {
-    load(rootProject.file("local.properties").inputStream())
+    val file = rootProject.file("local.properties")
+    if (file.exists()) file.inputStream().use { load(it) }
 }
 
 val mapsApiKey = localProperties.getProperty("MAPS_API_KEY") ?: ""
+if (mapsApiKey.isEmpty()) logger.warn("MAPS_API_KEY missing from local.properties: maps will be blank")
 
 val keystoreFile = rootProject.file("key.properties")
 val keystoreProperties = Properties().apply {
@@ -61,10 +63,12 @@ android {
 
     buildTypes {
         release {
-            signingConfig = if (keystoreFile.exists())
+            signingConfig = if (keystoreFile.exists()) {
                 signingConfigs.getByName("release")
-            else
+            } else {
+                logger.warn("key.properties missing: signing release with the DEBUG key. Do not publish this build.")
                 signingConfigs.getByName("debug")
+            }
 
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),

@@ -1,11 +1,7 @@
 import 'package:url_launcher/url_launcher.dart';
 
 Future<void> launchSms(String phoneNumber, String body) async {
-  final uri = Uri(
-    scheme: 'sms',
-    path: phoneNumber,
-    queryParameters: {'body': body},
-  );
+  final uri = Uri.parse('sms:$phoneNumber?body=${Uri.encodeComponent(body)}');
 
   if (await canLaunchUrl(uri)) {
     await launchUrl(uri);

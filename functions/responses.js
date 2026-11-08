@@ -82,7 +82,7 @@ exports.onResponseStatusChange = onDocumentUpdated("responses/{responseID}", asy
 
   if (after.status === "resolved" && after.assignedTo) {
     await admin.database().ref(`responderLocations/${after.reportID}/${after.assignedTo}`).remove();
-    await releaseResponderIfIdle(after.assignedTo);
+    if (before.assignedTo) await releaseResponderIfIdle(before.assignedTo);
   }
 
   const copy = STATUS_COPY[after.status];

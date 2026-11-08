@@ -99,8 +99,10 @@ class _MyAppState extends ConsumerState<MyApp> {
       next.whenData((authUser) {
         final push = ref.read(pushNotificationServiceProvider);
         if (authUser != null && authUser.emailVerified) {
-          push.init();
-          push.registerToken(authUser.uid, languageCode: ref.read(localeProvider).languageCode);
+          push.init().catchError((Object e) => debugPrint('push init failed: $e'));
+          push
+              .registerToken(authUser.uid, languageCode: ref.read(localeProvider).languageCode)
+              .catchError((Object e) => debugPrint('registerToken failed: $e'));
         }
       });
     });

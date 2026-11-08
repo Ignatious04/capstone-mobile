@@ -68,6 +68,7 @@ class ResponderLocationSharer {
   StreamSubscription<LatLng>? _subscription;
   String? _sharingReportID;
   String? _sharingResponderID;
+  String? _deniedReportID; // permission refused for this case: don't re-prompt on every snapshot
   ActiveCase? _latestCase; // newest snapshot, so status changes are seen mid-stream
   bool _arrivalSubmitted = false;
 
@@ -86,7 +87,8 @@ class ResponderLocationSharer {
       await _stop();
       return;
     }
-    if (_sharingReportID == activeCase.response.reportID) return; // already sharing this case
+    final reportID = activeCase.response.reportID;
+    if (_sharingReportID == reportID || _deniedReportID == reportID) return; // sharing, or permission refused
     await _stop();
     await _start(activeCase);
   }
@@ -101,8 +103,17 @@ class ResponderLocationSharer {
     if (_sharingReportID != reportID) return; // case ended while we waited
     if (permission != LocationStatusEnum.ready) {
       _sharingReportID = null;
+      _deniedReportID = reportID;
       return;
     }
+
+    // If the app is killed or loses connection, the server clears this pin.
+    // Not awaited: registering needs a live connection and would hang offline.
+    unawaited(
+      database
+          .removeOnDisconnect(path: _path(reportID, activeCase.response.assignedTo ?? ''))
+          .catchError((Object e) => debugPrint('onDisconnect registration failed: $e')),
+    );
 
     // The stream only fires after movement, so publish an initial fix first.
     try {
@@ -183,6 +194,7 @@ class ResponderLocationSharer {
     final responderID = _sharingResponderID;
     _sharingReportID = null;
     _sharingResponderID = null;
+    _deniedReportID = null;
     _arrivalSubmitted = false;
     if (reportID == null || responderID == null) return;
 

@@ -1,18 +1,9 @@
 const {onCall, HttpsError} = require("firebase-functions/v2/https");
 const admin = require("firebase-admin");
+const {isMinor} = require("./age");
 
 // `pending` has no assignee; `resolved` ends access.
 const OPEN_STATUSES = new Set(["accepted", "dispatched", "onScene"]);
-
-const isMinor = (birthDate) => {
-  if (!birthDate) return false;
-  const dob = new Date(birthDate);
-  const now = new Date();
-  let age = now.getFullYear() - dob.getFullYear();
-  if (now.getMonth() < dob.getMonth() ||
-      (now.getMonth() === dob.getMonth() && now.getDate() < dob.getDate())) age--;
-  return age < 18;
-};
 
 exports.getReporterMedicalInfo = onCall(async (request) => {
   const uid = request.auth?.uid;

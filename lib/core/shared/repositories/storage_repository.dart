@@ -15,9 +15,11 @@ class StorageRepository {
     required File file,
     required String reportID,
     required String fileName,
+    required int index,
   }) async {
     final extension = path.extension(fileName);
-    final storageFileName = '${DateTime.now().millisecondsSinceEpoch}$extension';
+    // Deterministic name: a retry overwrites the same object instead of orphaning a copy.
+    final storageFileName = '$index$extension';
     final ref = _storage.ref().child('reports/$reportID/$storageFileName');
 
     final task = ref.putFile(file);
@@ -91,13 +93,15 @@ class StorageRepository {
   }) async {
     final attachments = <AttachmentModel>[];
 
-    for (final file in files) {
+    for (var i = 0; i < files.length; i++) {
+      final file = files[i];
       final fileName = path.basename(file.path);
 
       final attachment = await uploadAttachment(
         file: file,
         reportID: reportID,
         fileName: fileName,
+        index: i,
       );
 
       attachments.add(attachment);

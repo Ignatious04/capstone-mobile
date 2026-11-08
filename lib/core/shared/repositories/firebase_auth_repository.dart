@@ -189,6 +189,8 @@ class FirebaseAuthRepository {
         return AuthException(AuthErrorCode.requiresRecentLogin);
       case 'user-mismatch':
         return AuthException(AuthErrorCode.wrongGoogleAccount);
+      case 'email-already-in-use':
+        return AuthException(AuthErrorCode.emailExists);
       default:
         return AuthException(AuthErrorCode.generic);
     }

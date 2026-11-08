@@ -48,12 +48,31 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
     birthDateController.text = user.birthDate == 0
         ? ""
         : DateFormat("MM/dd/yy").format(DateTime.fromMillisecondsSinceEpoch(user.birthDate));
-    contactNumController = TextEditingController(
-      text: user.contactNumber.startsWith("+63") ? user.contactNumber.substring(3) : user.contactNumber,
-    );
+    contactNumController.text = user.contactNumber.startsWith("+63")
+        ? user.contactNumber.substring(3)
+        : user.contactNumber;
     houseNumController.text = user.houseNum;
     streetController.text = user.street;
-    barangayController.text = user.address;
+    barangayController.text = user.barangay;
+  }
+
+  @override
+  void dispose() {
+    for (final c in [
+      firstNameController,
+      middleNameController,
+      lastNameController,
+      birthDateController,
+      guardianNameController,
+      guardianContactController,
+      contactNumController,
+      houseNumController,
+      streetController,
+      barangayController,
+    ]) {
+      c.dispose();
+    }
+    super.dispose();
   }
 
   @override

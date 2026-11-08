@@ -43,7 +43,7 @@ async function nearestStation(type, location) {
 // each routed to its own nearest station. The response id is deterministic
 // (`{reportID}_{serviceType}`), so a retried event can't create it twice and
 // security rules can find a responder's response without a query.
-exports.onReportCreated = onDocumentCreated("reports/{reportID}", async (event) => {
+exports.onReportCreated = onDocumentCreated({document: "reports/{reportID}", retry: true}, async (event) => {
   const report = event.data.data();
   const ref = event.data.ref;
   const reportID = event.params.reportID;
@@ -96,5 +96,7 @@ exports.onReportCreated = onDocumentCreated("reports/{reportID}", async (event) 
     ...(primary && !preset ? {serviceID: primary.id, serviceDistanceMeters: primary.distance} : {}),
     routingStatus: primary ? "routed" : "unrouted",
     routedAt: admin.firestore.FieldValue.serverTimestamp(),
+  }).catch((err) => {
+    if (err.code !== 5) throw err; // 5 = NOT_FOUND: report was deleted, nothing to update
   });
 });

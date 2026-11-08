@@ -30,6 +30,11 @@ class RealtimeDatabaseRepository {
     await _firebaseDatabase.ref(path).remove();
   }
 
+  /// Asks the server to remove [path] if this client disconnects (app killed, network lost).
+  Future<void> removeOnDisconnect({required String path}) async {
+    await _firebaseDatabase.ref(path).onDisconnect().remove();
+  }
+
   Stream<DatabaseEvent> watch({required String path}) {
     return _firebaseDatabase.ref(path).onValue;
   }

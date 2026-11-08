@@ -31,7 +31,15 @@ class ReportRepository {
         .snapshots()
         .map((snapshot) {
           debugPrint('reports: ${snapshot.docs.length} docs, fromCache=${snapshot.metadata.isFromCache}');
-          return snapshot.docs.map((doc) => ReportModel.fromMap(doc.data())).toList();
+          final reports = <ReportModel>[];
+          for (final doc in snapshot.docs) {
+            try {
+              reports.add(ReportModel.fromMap(doc.data()));
+            } catch (e) {
+              debugPrint('Skipping malformed report ${doc.id}: $e');
+            }
+          }
+          return reports;
         });
   }
 

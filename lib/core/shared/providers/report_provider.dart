@@ -32,6 +32,8 @@ class ReportNotifier extends Notifier<ReportModel> {
     return const ReportModel();
   }
 
+  void reset() => state = const ReportModel();
+
   Future<void> submitReport({
     required String description,
     required LatLng selectedLocation,
@@ -110,6 +112,9 @@ class ReportNotifier extends Notifier<ReportModel> {
       "quick",
       () async {
         if (!ref.read(isVerifiedProvider)) throw NotVerifiedException();
+        if (ref.read(currentAuthenticatedUserProvider).value?.isReportingRestricted ?? false) {
+          throw ReportingRestrictedException();
+        }
         final reportRepository = ref.read(reportRepositoryProvider);
         // final realtimeRepository = ref.read(realtimeDatabaseRepositoryProvider);
         final userID = ref.read(firebaseAuthProvider).currentUser!.uid;
