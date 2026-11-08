@@ -6,6 +6,6 @@ Future<void> launchPhoneCall(String phoneNumber) async {
   if (await canLaunchUrl(uri)) {
     await launchUrl(uri);
   } else {
-    throw 'Could not launch dialer for $phoneNumber';
+    throw Exception('Could not launch dialer for $phoneNumber');
   }
 }

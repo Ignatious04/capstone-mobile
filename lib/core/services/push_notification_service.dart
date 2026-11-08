@@ -204,20 +204,21 @@ class PushNotificationService {
     final navigatorState = ref.read(navigatorKeyProvider).currentState;
     if (navigatorState == null) return;
 
-    final ReportModel? report;
+    final ReportModel? fetched;
     try {
-      report = await ref.read(reportRepositoryProvider).getReportByID(reportID);
+      fetched = await ref.read(reportRepositoryProvider).getReportByID(reportID);
     } catch (e) {
       debugPrint('Could not open report from notification: $e');
       return;
     }
+    final report = fetched;
     if (report == null) return;
 
     navigatorState.push(
       MaterialPageRoute(
-        builder: (context) => report?.reportType == ReportTypeEnum.preCallGuidance
-            ? PreCallGuidanceReportViewScreen(report: report!)
-            : NormalReportsViewScreen(report: report!),
+        builder: (context) => report.reportType == ReportTypeEnum.preCallGuidance
+            ? PreCallGuidanceReportViewScreen(report: report)
+            : NormalReportsViewScreen(report: report),
       ),
     );
   }

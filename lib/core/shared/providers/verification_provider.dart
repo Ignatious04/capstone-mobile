@@ -60,12 +60,12 @@ Future<void> _showNotice(BuildContext context, String title, String body) {
   final l10n = AppLocalizations.of(context)!;
   return showDialog<void>(
     context: context,
-    builder: (_) => AlertDialog(
+    builder: (dialogContext) => AlertDialog(
       title: TitleText(value: title),
       content: BodyText(value: body),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       actions: [
-        TextButton(onPressed: () => Navigator.pop(context), child: Text(l10n.ok)),
+        TextButton(onPressed: () => Navigator.pop(dialogContext), child: Text(l10n.ok)),
       ],
     ),
   );

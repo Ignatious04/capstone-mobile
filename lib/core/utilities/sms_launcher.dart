@@ -6,6 +6,6 @@ Future<void> launchSms(String phoneNumber, String body) async {
   if (await canLaunchUrl(uri)) {
     await launchUrl(uri);
   } else {
-    throw 'Could not launch messaging app for $phoneNumber';
+    throw Exception('Could not launch messaging app for $phoneNumber');
   }
 }

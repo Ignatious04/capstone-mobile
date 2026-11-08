@@ -82,7 +82,7 @@ exports.onResponseStatusChange = onDocumentUpdated("responses/{responseID}", asy
 
   if (after.status === "resolved" && after.assignedTo) {
     await admin.database().ref(`responderLocations/${after.reportID}/${after.assignedTo}`).remove();
-    if (before.assignedTo) await releaseResponderIfIdle(before.assignedTo);
+    await releaseResponderIfIdle(after.assignedTo);
   }
 
   const copy = STATUS_COPY[after.status];
@@ -124,7 +124,7 @@ exports.onResponseAssigned = onDocumentUpdated("responses/{responseID}", async (
   const after = event.data.after.data();
   const responderID = after.assignedTo;
   if (before.assignedTo === responderID) return;
-  await releaseResponderIfIdle(after.assignedTo);
+  if (before.assignedTo) await releaseResponderIfIdle(before.assignedTo);
 
   // The previous responder is no longer on this case: stop showing their pin.
   if (before.assignedTo) {
