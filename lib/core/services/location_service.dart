@@ -49,15 +49,26 @@ class LocationService {
     return LocationStatusEnum.ready;
   }
 
+  // A real system dialog waits on the person, so it takes far longer than this.
+  // If the request returns faster, the OS declined to show the dialog at all.
+  static const _promptMinDuration = Duration(milliseconds: 300);
+
   Future<LocationStatusEnum> requestPermission() async {
     LocationPermission permission = await Geolocator.checkPermission();
+    var promptShown = true;
 
     if (permission == LocationPermission.denied) {
-      permission = await runPermissionRequest(Geolocator.requestPermission);
+      permission = await runPermissionRequest(() async {
+        final stopwatch = Stopwatch()..start();
+        final result = await Geolocator.requestPermission();
+        promptShown = stopwatch.elapsed >= _promptMinDuration;
+        return result;
+      });
     }
 
     if (permission == LocationPermission.denied) {
-      return LocationStatusEnum.permissionDenied;
+      // Denied with no dialog shown: only Settings can grant it now.
+      return promptShown ? LocationStatusEnum.permissionDenied : LocationStatusEnum.permissionDeniedForever;
     }
 
     if (permission == LocationPermission.deniedForever) {

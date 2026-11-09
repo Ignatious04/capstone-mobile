@@ -3259,6 +3259,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{minutes} min'**
   String durationMinutes(int minutes);
+
+  /// No description provided for @autoArrivedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'ve arrived'**
+  String get autoArrivedTitle;
+
+  /// No description provided for @autoArrivedBody.
+  ///
+  /// In en, this message translates to:
+  /// **'You\'re within the arrival zone, so this case was marked On Scene.'**
+  String get autoArrivedBody;
+
+  /// No description provided for @arrivalZoneLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto-arrival within {meters} m'**
+  String arrivalZoneLabel(int meters);
+
+  /// No description provided for @notificationsOn.
+  ///
+  /// In en, this message translates to:
+  /// **'On'**
+  String get notificationsOn;
+
+  /// No description provided for @notificationsOff.
+  ///
+  /// In en, this message translates to:
+  /// **'Off – turn on to get report and case updates'**
+  String get notificationsOff;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -11,6 +11,7 @@ import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/public_user/profile/views/change_password_screen.dart';
 import 'package:capstone/features/public_user/profile/views/deactivate_account_screen.dart';
 import 'package:capstone/features/public_user/profile/views/phone_number_verification_screen.dart';
+import 'package:capstone/features/public_user/profile/widgets/notification_settings_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -99,6 +100,8 @@ class SettingsScreen extends ConsumerWidget {
                     },
                   ),
                 ),
+                const SizedBox(height: 10),
+                const NotificationSettingsTile(),
                 const SizedBox(height: 10),
                 TitleText(
                   value: l10n.legal,

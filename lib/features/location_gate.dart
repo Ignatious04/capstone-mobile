@@ -108,8 +108,7 @@ class _LocationGateState extends ConsumerState<LocationGate> with WidgetsBinding
       _status = status;
       _message = switch (status) {
         LocationStatusEnum.permissionDenied => l10n.locationPermissionRequired,
-        LocationStatusEnum.permissionDeniedForever =>
-          l10n.locationPermanentlyDenied,
+        LocationStatusEnum.permissionDeniedForever => l10n.locationPermanentlyDenied,
         LocationStatusEnum.serviceDisabled => l10n.locationServicesOff,
         LocationStatusEnum.ready => null,
       };
@@ -125,6 +124,24 @@ class _LocationGateState extends ConsumerState<LocationGate> with WidgetsBinding
         break;
       case LocationStatusEnum.serviceDisabled:
         await locationService.openLocationSettings();
+        break;
+      case LocationStatusEnum.permissionDenied:
+        if (_checking) return;
+        _checking = true; // keeps the resume listener from racing the system dialog
+        try {
+          final result = await locationService.requestPermission();
+          if (!mounted) return;
+          if (result == LocationStatusEnum.ready) {
+            _setReady();
+          } else {
+            _showError(result);
+            if (result == LocationStatusEnum.permissionDeniedForever) {
+              await locationService.openAppSettings();
+            }
+          }
+        } finally {
+          _checking = false;
+        }
         break;
       default:
         await _checkLocation();

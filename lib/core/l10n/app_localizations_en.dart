@@ -1704,4 +1704,21 @@ class AppLocalizationsEn extends AppLocalizations {
   String durationMinutes(int minutes) {
     return '$minutes min';
   }
+
+  @override
+  String get autoArrivedTitle => 'You\'ve arrived';
+
+  @override
+  String get autoArrivedBody => 'You\'re within the arrival zone, so this case was marked On Scene.';
+
+  @override
+  String arrivalZoneLabel(int meters) {
+    return 'Auto-arrival within $meters m';
+  }
+
+  @override
+  String get notificationsOn => 'On';
+
+  @override
+  String get notificationsOff => 'Off – turn on to get report and case updates';
 }

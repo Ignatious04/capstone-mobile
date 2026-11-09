@@ -1712,4 +1712,21 @@ class AppLocalizationsFil extends AppLocalizations {
   String durationMinutes(int minutes) {
     return '$minutes min';
   }
+
+  @override
+  String get autoArrivedTitle => 'Dumating ka na';
+
+  @override
+  String get autoArrivedBody => 'Nasa loob ka na ng arrival zone, kaya minarkahan ang kaso bilang Nasa Lugar.';
+
+  @override
+  String arrivalZoneLabel(int meters) {
+    return 'Awtomatikong dating sa loob ng $meters m';
+  }
+
+  @override
+  String get notificationsOn => 'Naka-on';
+
+  @override
+  String get notificationsOff => 'Naka-off – i-on para makatanggap ng mga update sa report at kaso';
 }

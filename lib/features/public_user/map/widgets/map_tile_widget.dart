@@ -18,6 +18,7 @@ class MapTileWidget extends StatefulWidget {
     this.mode = MapModeEnum.view,
     this.gesturesEnabled,
     this.extraMarkers = const {},
+    this.extraCircles = const {},
     this.fitToPoints = const [],
     this.followLocation = false,
   });
@@ -29,6 +30,7 @@ class MapTileWidget extends StatefulWidget {
   final MapModeEnum mode;
   final bool? gesturesEnabled;
   final Set<Marker> extraMarkers;
+  final Set<Circle> extraCircles;
   final List<LatLng> fitToPoints;
 
   /// When true, the camera re-centers whenever [initialLocation] changes.
@@ -194,6 +196,7 @@ class _MapTileWidgetState extends State<MapTileWidget> {
             if (widget.fitToPoints.length >= 2) _fit();
           },
           markers: _showCenterPin ? {} : _buildMarkers(),
+          circles: _showCenterPin ? {} : widget.extraCircles,
           onCameraIdle: () {
             if (_cameraPosition != null) {
               widget.onLocationChanged?.call(

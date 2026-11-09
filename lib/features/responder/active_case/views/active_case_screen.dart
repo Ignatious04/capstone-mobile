@@ -20,6 +20,7 @@ import 'package:capstone/features/public_user/reporting/widgets/attachments_card
 import 'package:capstone/features/public_user/reporting/widgets/report_status_widget.dart';
 import 'package:capstone/core/shared/widgets/section_title.dart';
 import 'package:capstone/features/public_user/reporting/widgets/victims_card.dart';
+import 'package:capstone/features/responder/active_case/providers/responder_location_sharing_provider.dart';
 import 'package:capstone/features/responder/active_case/widgets/active_case_action_bar.dart';
 import 'package:capstone/features/responder/active_case/widgets/dispatch_notes_section.dart';
 import 'package:capstone/features/responder/active_case/widgets/reporter_medical_info_card.dart';
@@ -163,8 +164,35 @@ class _ActiveCaseBody extends ConsumerWidget {
                             ),
                           ),
                         },
+                        extraCircles: {
+                          if (response.status == ReportStatusEnum.dispatched)
+                            Circle(
+                              circleId: const CircleId('arrivalZone'),
+                              center: LatLng(location.latitude, location.longitude),
+                              radius: ResponderLocationSharer.arrivalRadiusMeters, // meters
+                              strokeWidth: 2,
+                              strokeColor: AppColors.themeColor,
+                              fillColor: AppColors.themeColor.withValues(alpha: 0.15),
+                            ),
+                        },
                       ),
                     ),
+                    if (response.status == ReportStatusEnum.dispatched)
+                      Positioned(
+                        left: 12,
+                        top: 12,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                          decoration: BoxDecoration(
+                            color: AppColors.bgWhiteLight,
+                            borderRadius: BorderRadius.circular(20),
+                            boxShadow: const [BoxShadow(color: Colors.black26, blurRadius: 4)],
+                          ),
+                          child: LabelText(
+                            value: l10n.arrivalZoneLabel(ResponderLocationSharer.arrivalRadiusMeters.round()),
+                          ),
+                        ),
+                      ),
                     Positioned(
                       right: 20,
                       bottom: 20,

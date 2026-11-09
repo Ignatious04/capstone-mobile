@@ -1,4 +1,5 @@
 import 'package:capstone/core/enums/audit_action_enum.dart';
+import 'package:capstone/core/services/local_notification_service.dart';
 import 'package:capstone/core/shared/providers/audit_log_repository_provider.dart';
 import 'package:capstone/core/shared/providers/locale_provider.dart';
 import 'package:capstone/core/l10n/app_localizations.dart';
@@ -157,6 +158,13 @@ class ResponderLocationSharer {
         targetType: 'report',
         targetId: activeCase.response.reportID,
         metadata: {'distanceMeters': meters.round()},
+      );
+      final t = l10n();
+      LocalNotificationService.instance.show(
+        id: activeCase.response.reportID.hashCode,
+        title: t.autoArrivedTitle,
+        body: t.autoArrivedBody,
+        data: {'type': 'autoArrived', 'reportID': activeCase.response.reportID},
       );
     } catch (e) {
       debugPrint('Auto on-scene update failed: $e');

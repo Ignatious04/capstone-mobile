@@ -726,5 +726,13 @@
   "durationMinutes": "{minutes} min",
   "@durationMinutes": {
     "placeholders": { "minutes": { "type": "int" } }
-  }
+  },
+  "autoArrivedTitle": "You've arrived",
+  "autoArrivedBody": "You're within the arrival zone, so this case was marked On Scene.",
+  "arrivalZoneLabel": "Auto-arrival within {meters} m",
+  "@arrivalZoneLabel": {
+    "placeholders": { "meters": { "type": "int" } }
+  },
+  "notificationsOn": "On",
+  "notificationsOff": "Off – turn on to get report and case updates"
 }

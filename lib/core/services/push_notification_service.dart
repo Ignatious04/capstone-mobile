@@ -195,7 +195,7 @@ class PushNotificationService {
   // Responders land on the Active Case tab, which already streams their assigned report.
 
   Future<void> _openFromData(Map<String, dynamic> data) async {
-    if (data['type'] == 'reportAssigned') return;
+    if (data['type'] == 'reportAssigned' || data['type'] == 'autoArrived') return;
 
     final reportID = data['reportID'] as String?;
     debugPrint('Notification tapped, reportID: $reportID');
@@ -222,6 +222,27 @@ class PushNotificationService {
       ),
     );
   }
+
+  Future<bool> areNotificationsEnabled() async {
+    final settings = await _messaging.getNotificationSettings();
+    return _isAllowed(settings.authorizationStatus);
+  }
+
+  /// [promptShown] is false when the OS refused to show a dialog (already
+  /// denied), so the caller should send the person to Settings instead.
+  Future<({bool enabled, bool promptShown})> requestNotificationPermission() async {
+    var promptShown = true;
+    final settings = await runPermissionRequest(() async {
+      final stopwatch = Stopwatch()..start();
+      final result = await _messaging.requestPermission(alert: true, badge: true, sound: true);
+      promptShown = stopwatch.elapsed >= const Duration(milliseconds: 300);
+      return result;
+    });
+    return (enabled: _isAllowed(settings.authorizationStatus), promptShown: promptShown);
+  }
+
+  bool _isAllowed(AuthorizationStatus status) =>
+      status == AuthorizationStatus.authorized || status == AuthorizationStatus.provisional;
 }
 
 final pushNotificationServiceProvider = Provider<PushNotificationService>((ref) {
