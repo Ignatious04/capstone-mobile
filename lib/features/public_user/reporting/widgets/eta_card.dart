@@ -1,6 +1,7 @@
 import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/widgets/text/label_text.dart';
+import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/core/utilities/eta_calculator.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -31,14 +32,14 @@ class EtaCard extends StatelessWidget {
     final detail = isOnScene ? null : l10n.distanceAway(eta.distanceLabel);
 
     return Card(
-      color: Colors.white,
+      color: AppColors.bgWhiteLight,
       elevation: 1,
       margin: EdgeInsets.zero,
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Row(
           children: [
-            const Icon(Icons.timer_outlined, size: 30, color: Colors.deepOrange),
+            const Icon(Icons.timer_outlined, size: 30, color: AppColors.themeColor),
             const SizedBox(width: 12),
             Expanded(
               child: Column(

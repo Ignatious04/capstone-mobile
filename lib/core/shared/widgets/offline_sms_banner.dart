@@ -27,7 +27,7 @@ class OfflineSmsBanner extends ConsumerWidget {
       decoration: BoxDecoration(
         color: AppColors.lighterDeepOrange,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.deepOrange),
+        border: Border.all(color: AppColors.themeColor),
       ),
       child: InkWell(
         borderRadius: BorderRadius.circular(12),
@@ -36,7 +36,7 @@ class OfflineSmsBanner extends ConsumerWidget {
           padding: const EdgeInsets.all(12),
           child: Row(
             children: [
-              const Icon(Icons.sms_outlined, color: Colors.deepOrange, size: 25),
+              const Icon(Icons.sms_outlined, color: AppColors.themeColor, size: 25),
               const SizedBox(width: 10),
               Expanded(
                 child: Column(
@@ -48,7 +48,7 @@ class OfflineSmsBanner extends ConsumerWidget {
                   ],
                 ),
               ),
-              const Icon(Icons.chevron_right, color: Colors.deepOrange),
+              const Icon(Icons.chevron_right, color: AppColors.themeColor),
             ],
           ),
         ),

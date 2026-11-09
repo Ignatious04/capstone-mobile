@@ -16,6 +16,7 @@ import 'package:capstone/core/shared/widgets/legal_links_card.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/widgets/text/headline_text.dart';
 import 'package:capstone/core/shared/widgets/text/title_text.dart';
+import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/responder/active_case/providers/responder_location_sharing_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -164,8 +165,8 @@ class _ResponderProfileBody extends ConsumerWidget {
                       await ref.read(firebaseAuthRepositoryProvider).signOut();
                     },
                     icon: const Icon(Icons.logout, size: 25),
-                    color: Colors.red,
-                    backgroundColor: Colors.white,
+                    color: AppColors.danger,
+                    backgroundColor: AppColors.bgWhiteLight,
                     value: l10n.logout,
                   ),
                 ),

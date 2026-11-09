@@ -10,10 +10,10 @@ class CustomElevatedButton extends StatelessWidget {
     this.onLongPress,
     required this.value,
     this.icon,
-    this.color = Colors.white,
+    this.color = AppColors.whiteTextFull,
     this.backgroundColor = AppColors.themeColor,
     this.iconColor,
-    this.borderColor = AppColors.bgWhiteDark,
+    this.borderColor = Colors.black26,
     this.borderRadius = 12,
     this.hasPadding = false,
     this.isLoading = false,
@@ -40,12 +40,12 @@ class CustomElevatedButton extends StatelessWidget {
           ? SizedBox(
               width: 20,
               height: 20,
-              child: CustomCircularProgressIndicator(color: Colors.white),
+              child: CustomCircularProgressIndicator(color: AppColors.whiteTextFull),
             )
           : icon,
       style: ElevatedButton.styleFrom(
-        elevation: 0,
-        shadowColor: Colors.transparent,
+        elevation: 1,
+        surfaceTintColor: Colors.transparent,
         iconColor: iconColor ?? color,
         backgroundColor: backgroundColor,
         // Keep the brand color while loading instead of the greyed-out disabled look.

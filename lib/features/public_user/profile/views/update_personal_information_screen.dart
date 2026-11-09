@@ -186,7 +186,7 @@ class _UpdatePersonalInformationScreenState extends ConsumerState<UpdatePersonal
                         const SizedBox(height: 10),
                         LabelText(
                           value: l10n.requiredNote.toUpperCase(),
-                          color: Colors.red,
+                          color: AppColors.danger,
                           isBold: false,
                         ),
                         const SizedBox(height: 10),

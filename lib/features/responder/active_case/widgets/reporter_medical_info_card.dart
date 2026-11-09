@@ -3,6 +3,7 @@ import 'package:capstone/core/shared/widgets/custom_circular_progress_indicator.
 import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/widgets/text/label_text.dart';
+import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/public_user/reporting/widgets/empty_card.dart';
 import 'package:capstone/features/responder/active_case/providers/reporter_medical_info_provider.dart';
 import 'package:flutter/material.dart';
@@ -57,7 +58,7 @@ class _ReporterMedicalInfoCardState extends ConsumerState<ReporterMedicalInfoCar
     }
 
     return Card(
-      color: Colors.white,
+      color: AppColors.bgWhiteLight,
       elevation: 1,
       margin: EdgeInsets.zero,
       child: Padding(
@@ -79,10 +80,10 @@ class _ReporterMedicalInfoCardState extends ConsumerState<ReporterMedicalInfoCar
             : Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  BodyText(value: l10n.medicalInfoAccessNote, color: Colors.black54, isBold: false),
+                  BodyText(value: l10n.medicalInfoAccessNote, color: AppColors.blackTextMuted, isBold: false),
                   const SizedBox(height: 10),
                   if (_failed) ...[
-                    BodyText(value: l10n.medicalInfoLoadError, color: Colors.red, isBold: false),
+                    BodyText(value: l10n.medicalInfoLoadError, color: AppColors.danger, isBold: false),
                     const SizedBox(height: 10),
                   ],
                   SizedBox(

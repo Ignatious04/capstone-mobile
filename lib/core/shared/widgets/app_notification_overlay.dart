@@ -1,5 +1,6 @@
 import 'package:capstone/core/shared/providers/app_notification_provider.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
+import 'package:capstone/core/themes/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -46,7 +47,7 @@ class AppNotificationOverlay extends ConsumerWidget {
                     key: ValueKey(notification.message),
                     elevation: 6,
                     borderRadius: BorderRadius.circular(12),
-                    color: notification.color ?? Colors.deepOrange,
+                    color: notification.color ?? AppColors.themeColor,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 16,
@@ -59,7 +60,7 @@ class AppNotificationOverlay extends ConsumerWidget {
                             width: 100,
                             child: BodyText(
                               value: notification.message,
-                              color: Colors.white,
+                              color: AppColors.whiteTextFull,
                             ),
                           ),
                           const SizedBox(width: 10),
@@ -73,7 +74,7 @@ class AppNotificationOverlay extends ConsumerWidget {
                             },
                             child: const Icon(
                               Icons.close,
-                              color: Colors.white,
+                              color: AppColors.whiteTextFull,
                             ),
                           ),
                         ],

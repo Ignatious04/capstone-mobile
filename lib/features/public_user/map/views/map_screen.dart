@@ -3,6 +3,7 @@ import 'package:capstone/core/enums/map_mode_enum.dart';
 import 'package:capstone/core/shared/providers/location_provider.dart';
 import 'package:capstone/core/shared/widgets/custom_circular_progress_indicator.dart';
 import 'package:capstone/core/shared/widgets/custom_header_widget.dart';
+import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/public_user/map/providers/filtered_emergency_service_provider.dart';
 import 'package:capstone/features/public_user/map/widgets/emergency_services_panel.dart';
 import 'package:capstone/features/public_user/map/widgets/map_tile_widget.dart';
@@ -30,7 +31,7 @@ class _MapScreenState extends ConsumerState<MapScreen> {
             Icon(
               Icons.location_off_outlined,
               size: 50,
-              color: Colors.grey.shade600,
+              color: AppColors.blackTextMuted,
             ),
             const SizedBox(height: 12),
             Text(
@@ -42,7 +43,7 @@ class _MapScreenState extends ConsumerState<MapScreen> {
               error.toString(),
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: Colors.grey.shade600,
+                color: AppColors.blackTextMuted,
                 fontSize: 12,
               ),
             ),
@@ -60,7 +61,7 @@ class _MapScreenState extends ConsumerState<MapScreen> {
 
     if (latLng == null) {
       return Scaffold(
-        backgroundColor: Colors.grey.shade100,
+        backgroundColor: AppColors.bgWhite,
         body: SafeArea(
           child: locationAsync.hasError
               ? _buildLocationError(locationAsync.error!)
@@ -72,7 +73,7 @@ class _MapScreenState extends ConsumerState<MapScreen> {
     final servicesAsync = ref.watch(filteredEmergencyServicesProvider);
 
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
+      backgroundColor: AppColors.bgWhite,
       body: SafeArea(
         child: servicesAsync.when(
           data: (services) {
@@ -105,7 +106,7 @@ class _MapScreenState extends ConsumerState<MapScreen> {
                   child: Material(
                     elevation: 5,
                     borderRadius: BorderRadius.circular(12),
-                    color: Colors.white,
+                    color: AppColors.bgWhiteLight,
                     child: InkWell(
                       borderRadius: BorderRadius.circular(12),
                       onTap: () {
@@ -123,7 +124,7 @@ class _MapScreenState extends ConsumerState<MapScreen> {
                         height: 50,
                         child: Icon(
                           Icons.my_location,
-                          color: Colors.deepOrange,
+                          color: AppColors.themeColor,
                           size: 25,
                         ),
                       ),

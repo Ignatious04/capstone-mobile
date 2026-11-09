@@ -43,11 +43,11 @@ class ReportingRestrictionBanner extends ConsumerWidget {
       decoration: BoxDecoration(
         color: AppColors.lighterRed,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.red),
+        border: Border.all(color: AppColors.danger),
       ),
       child: Row(
         children: [
-          const Icon(Icons.block, color: Colors.red, size: 25),
+          const Icon(Icons.block, color: AppColors.danger, size: 25),
           const SizedBox(width: 10),
           Expanded(
             child: Column(

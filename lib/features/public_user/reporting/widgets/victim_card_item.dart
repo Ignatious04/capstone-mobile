@@ -2,6 +2,7 @@ import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/widgets/text/label_text.dart';
 import 'package:capstone/core/shared/widgets/text/title_text.dart';
+import 'package:capstone/core/themes/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class VictimCardItem extends StatelessWidget {
@@ -23,7 +24,7 @@ class VictimCardItem extends StatelessWidget {
     return Container(
       width: double.infinity,
       decoration: BoxDecoration(
-        color: Colors.black54,
+        color: AppColors.blackTextMuted,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Padding(
@@ -37,13 +38,13 @@ class VictimCardItem extends StatelessWidget {
                   width: 30,
                   height: 30,
                   decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.2),
+                    color: AppColors.whiteTextFull.withValues(alpha: 0.2),
                     shape: BoxShape.circle,
                   ),
                   child: Center(
                     child: LabelText(
                       value: '$index',
-                      color: Colors.white,
+                      color: AppColors.whiteTextFull,
                       isBold: true,
                       alignment: TextAlign.center,
                     ),
@@ -53,7 +54,7 @@ class VictimCardItem extends StatelessWidget {
                 Expanded(
                   child: TitleText(
                     value: name.isEmpty ? l10n.unnamedVictim : name,
-                    color: Colors.white,
+                    color: AppColors.whiteTextFull,
                     isBold: false,
                   ),
                 ),
@@ -63,7 +64,7 @@ class VictimCardItem extends StatelessWidget {
               const SizedBox(height: 10),
               BodyText(
                 value: description,
-                color: Colors.white,
+                color: AppColors.whiteTextFull,
               ),
             ],
           ],

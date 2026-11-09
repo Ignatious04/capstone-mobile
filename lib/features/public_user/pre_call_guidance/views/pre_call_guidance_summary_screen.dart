@@ -16,6 +16,7 @@ import 'package:capstone/core/shared/widgets/loading_overlay_widget.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/widgets/text/label_text.dart';
 import 'package:capstone/core/shared/widgets/text/title_text.dart';
+import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/public_user/pre_call_guidance/providers/guidance_provider.dart';
 import 'package:capstone/features/public_user/reporting/views/select_location_screen.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -120,7 +121,7 @@ class _PreCallGuidanceSummaryScreenState extends ConsumerState<PreCallGuidanceSu
             height: 20,
           ),
           Card(
-            color: Colors.white,
+            color: AppColors.bgWhiteLight,
             elevation: 1,
             margin: EdgeInsets.zero,
             child: Padding(
@@ -129,7 +130,7 @@ class _PreCallGuidanceSummaryScreenState extends ConsumerState<PreCallGuidanceSu
                 children: [
                   Icon(
                     Icons.check_circle,
-                    color: Colors.green,
+                    color: AppColors.darkerGreen,
                     size: 50,
                   ),
                   const SizedBox(height: 10),
@@ -148,7 +149,7 @@ class _PreCallGuidanceSummaryScreenState extends ConsumerState<PreCallGuidanceSu
           ),
           SizedBox(height: 10),
           Card(
-            color: Colors.white,
+            color: AppColors.bgWhiteLight,
             elevation: 1,
             margin: EdgeInsets.zero,
             child: ListView.separated(
@@ -172,7 +173,7 @@ class _PreCallGuidanceSummaryScreenState extends ConsumerState<PreCallGuidanceSu
                   ),
                   leading: Icon(
                     item.answer == true ? Icons.check_circle : Icons.cancel,
-                    color: item.answer == true ? Colors.green : Colors.red,
+                    color: item.answer == true ? AppColors.darkerGreen : AppColors.danger,
                   ),
                 );
               },
@@ -188,7 +189,7 @@ class _PreCallGuidanceSummaryScreenState extends ConsumerState<PreCallGuidanceSu
                   SizedBox(
                     height: 25,
                     width: 25,
-                    child: CustomCircularProgressIndicator(color: Colors.deepOrange),
+                    child: CustomCircularProgressIndicator(color: AppColors.themeColor),
                   ),
                   SizedBox(width: 10),
                   BodyText(value: l10n.gettingLocation),
@@ -208,7 +209,7 @@ class _PreCallGuidanceSummaryScreenState extends ConsumerState<PreCallGuidanceSu
                   Theme.of(
                     context,
                   ).textTheme.bodyMedium?.copyWith(
-                    color: Colors.black,
+                    color: AppColors.blackTextFull,
                   ),
               decoration: InputDecoration(
                 labelText: l10n.landmarkLabel.toUpperCase(),
@@ -216,14 +217,14 @@ class _PreCallGuidanceSummaryScreenState extends ConsumerState<PreCallGuidanceSu
                     Theme.of(
                       context,
                     ).textTheme.bodyMedium?.copyWith(
-                      color: Colors.black54,
+                      color: AppColors.blackTextMuted,
                     ),
                 hintText: l10n.landmarkHint,
                 hintStyle:
                     Theme.of(
                       context,
                     ).textTheme.bodyMedium?.copyWith(
-                      color: Colors.black54,
+                      color: AppColors.blackTextMuted,
                     ),
               ),
               onTapOutside: (_) {
@@ -235,11 +236,11 @@ class _PreCallGuidanceSummaryScreenState extends ConsumerState<PreCallGuidanceSu
                 icon: const Icon(
                   Icons.edit_location_alt,
                   size: 25,
-                  color: Colors.black54,
+                  color: AppColors.blackTextMuted,
                 ),
                 label: BodyText(
                   value: _adjustedLocation == null ? l10n.adjustLocation : l10n.locationAdjusted,
-                  color: Colors.black54,
+                  color: AppColors.blackTextMuted,
                 ),
                 onPressed: () async {
                   final picked = await Navigator.push<LatLng>(
@@ -310,22 +311,22 @@ class _PreCallGuidanceSummaryScreenState extends ConsumerState<PreCallGuidanceSu
                     await _submitGuidance(isOnline: isOnlineNow, fix: location.value!);
                   },
             value: l10n.submitReport,
-            color: Colors.white,
-            backgroundColor: Colors.deepOrange,
+            color: AppColors.whiteTextFull,
+            backgroundColor: AppColors.themeColor,
           ),
           LabelText(value: widget.callLabel),
           CustomElevatedButton(
             onPressed: widget.onCall,
             value: l10n.call.toUpperCase(),
             icon: const Icon(Icons.call),
-            color: Colors.white,
-            backgroundColor: Colors.green, // differs from Submit so the two aren't confused
+            color: AppColors.whiteTextFull,
+            backgroundColor: AppColors.darkerGreen, // differs from Submit so the two aren't confused
           ),
           CustomElevatedButton(
             onPressed: widget.onCancel,
             value: l10n.cancel,
-            color: Colors.white,
-            backgroundColor: Colors.black54,
+            color: AppColors.whiteTextFull,
+            backgroundColor: AppColors.blackTextMuted,
           ),
           const SizedBox(
             height: 20,

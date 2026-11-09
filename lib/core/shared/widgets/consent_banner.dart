@@ -66,11 +66,11 @@ class ConsentBanner extends ConsumerWidget {
       decoration: BoxDecoration(
         color: AppColors.lighterDeepOrange,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.deepOrange),
+        border: Border.all(color: AppColors.themeColor),
       ),
       child: Row(
         children: [
-          const Icon(Icons.family_restroom, color: Colors.deepOrange, size: 25),
+          const Icon(Icons.family_restroom, color: AppColors.themeColor, size: 25),
           const SizedBox(width: 10),
           Expanded(
             child: Column(
@@ -90,7 +90,7 @@ class ConsentBanner extends ConsumerWidget {
                         onPressed: isSending ? null : () => ref.read(resendConsentProvider.notifier).resend(),
                         child: BodyText(
                           value: isSending ? l10n.loading : l10n.consentResend,
-                          color: Colors.deepOrange,
+                          color: AppColors.themeColor,
                           isBold: true,
                         ),
                       ),

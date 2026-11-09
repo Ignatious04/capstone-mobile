@@ -39,7 +39,7 @@ class ReportCard extends StatelessWidget {
 
     final card = Card(
       margin: const EdgeInsets.only(bottom: 10),
-      color: Colors.white,
+      color: AppColors.bgWhiteLight,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
         side: BorderSide(
@@ -50,7 +50,7 @@ class ReportCard extends StatelessWidget {
         width: double.infinity,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12),
-          color: Colors.white,
+          color: AppColors.bgWhiteLight,
         ),
         child: Padding(
           padding: const EdgeInsets.all(20.0),
@@ -100,7 +100,7 @@ class ReportCard extends StatelessWidget {
                 ),
                 VerticalDivider(
                   width: 1,
-                  color: Colors.black54,
+                  color: AppColors.blackTextMuted,
                 ),
                 SizedBox(
                   width: 10,
@@ -149,7 +149,7 @@ class ReportCard extends StatelessWidget {
                     child: const Icon(
                       Icons.arrow_right,
                       size: 50,
-                      color: Colors.deepOrange,
+                      color: AppColors.themeColor,
                     ),
                   ),
                 ),
@@ -172,7 +172,7 @@ class ReportCard extends StatelessWidget {
           child: Icon(
             Icons.error, // filled red circle with "!"
             size: 22,
-            color: Colors.red,
+            color: AppColors.danger,
           ),
         ),
       ],

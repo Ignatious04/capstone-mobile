@@ -4,6 +4,7 @@ import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/widgets/text/headline_text.dart';
 import 'package:capstone/core/shared/widgets/text/title_text.dart';
+import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/public_user/setup/views/setup_screen_page_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -19,7 +20,7 @@ class WelcomeScreen extends ConsumerWidget {
     return Scaffold(
       body: AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle(
-          statusBarColor: Colors.deepOrange,
+          statusBarColor: AppColors.themeColor,
         ),
         child: SafeArea(
           child: Padding(
@@ -31,7 +32,7 @@ class WelcomeScreen extends ConsumerWidget {
                   Icon(
                     Icons.shield_outlined,
                     size: 100,
-                    color: Colors.black54,
+                    color: AppColors.blackTextMuted,
                   ),
                   const SizedBox(
                     height: 10,
@@ -45,7 +46,7 @@ class WelcomeScreen extends ConsumerWidget {
                   ),
                   TitleText(
                     value: l10n.hello,
-                    color: Colors.black54,
+                    color: AppColors.blackTextMuted,
                   ),
                   const SizedBox(
                     height: 10,
@@ -53,7 +54,7 @@ class WelcomeScreen extends ConsumerWidget {
                   BodyText(
                     value: l10n.welcomeSetup,
                     alignment: TextAlign.center,
-                    color: Colors.black54,
+                    color: AppColors.blackTextMuted,
                   ),
                   const SizedBox(
                     height: 10,
@@ -75,7 +76,7 @@ class WelcomeScreen extends ConsumerWidget {
                   SizedBox(
                     width: double.infinity,
                     child: CustomElevatedButton(
-                      backgroundColor: Colors.black54,
+                      backgroundColor: AppColors.blackTextMuted,
                       onPressed: () async {
                         await ref.read(firebaseAuthRepositoryProvider).signOut();
                       },

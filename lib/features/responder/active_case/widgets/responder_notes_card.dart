@@ -2,6 +2,7 @@ import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/shared/models/responder_note_model.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/widgets/text/label_text.dart';
+import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/core/utilities/formatter.dart';
 import 'package:capstone/features/public_user/reporting/widgets/empty_card.dart';
 import 'package:flutter/material.dart';
@@ -36,7 +37,7 @@ class ResponderNotesCard extends StatelessWidget {
     final ordered = notes.reversed.toList();
 
     return Card(
-      color: Colors.white,
+      color: AppColors.bgWhiteLight,
       elevation: 1,
       margin: EdgeInsets.zero,
       shape: RoundedRectangleBorder(
@@ -58,7 +59,7 @@ class ResponderNotesCard extends StatelessWidget {
                         if (ordered[i].createdAt != null) Formatter.formatDateTime(ordered[i].createdAt!, locale),
                         if (ordered[i].editedAt != null) l10n.edited,
                       ].join(' • '),
-                      color: Colors.black54,
+                      color: AppColors.blackTextMuted,
                     ),
                   ),
                   if (currentUserID != null && ordered[i].authorID == currentUserID) ...[
@@ -71,7 +72,7 @@ class ResponderNotesCard extends StatelessWidget {
                     if (onDelete != null)
                       _NoteAction(
                         icon: Icons.delete_outline,
-                        color: Colors.red,
+                        color: AppColors.danger,
                         tooltip: l10n.deleteNote,
                         onTap: () => onDelete!(ordered[i]),
                       ),
@@ -99,7 +100,7 @@ class _NoteAction extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-      icon: Icon(icon, size: 20, color: color ?? Colors.black54),
+      icon: Icon(icon, size: 20, color: color ?? AppColors.blackTextMuted),
       tooltip: tooltip,
       onPressed: onTap,
       visualDensity: VisualDensity.compact,

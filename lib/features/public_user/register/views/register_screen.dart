@@ -8,6 +8,7 @@ import 'package:capstone/core/shared/providers/user_provider.dart';
 import 'package:capstone/core/shared/widgets/google_sign_in_button.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/widgets/text/label_text.dart';
+import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/public_user/register/providers/register_provider.dart';
 import 'package:capstone/features/public_user/register/views/privacy_policy_screen.dart';
 import 'package:capstone/features/public_user/register/views/terms_and_conditions_screen.dart';
@@ -158,7 +159,7 @@ class _RegisterScreenPage extends ConsumerState<RegisterScreen> {
                                 padding: const EdgeInsets.symmetric(horizontal: 5.0),
                                 child: LabelText(
                                   value: l10n.agreeToTerms,
-                                  color: Colors.deepOrange,
+                                  color: AppColors.themeColor,
                                 ),
                               ),
                             ),
@@ -192,7 +193,7 @@ class _RegisterScreenPage extends ConsumerState<RegisterScreen> {
                                 padding: const EdgeInsets.symmetric(horizontal: 5.0),
                                 child: LabelText(
                                   value: l10n.acknowledgePrivacy,
-                                  color: Colors.deepOrange,
+                                  color: AppColors.themeColor,
                                 ),
                               ),
                             ),
@@ -227,7 +228,7 @@ class _RegisterScreenPage extends ConsumerState<RegisterScreen> {
                           Expanded(child: Divider(color: Colors.black.withValues(alpha: 0.2))),
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 10),
-                            child: BodyText(value: l10n.or.toUpperCase(), color: Colors.black54),
+                            child: BodyText(value: l10n.or.toUpperCase(), color: AppColors.blackTextMuted),
                           ),
                           Expanded(child: Divider(color: Colors.black.withValues(alpha: 0.2))),
                         ],

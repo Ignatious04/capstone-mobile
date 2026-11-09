@@ -174,7 +174,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SubmitGuardMixin<H
         children: [
           Container(
             decoration: BoxDecoration(
-              color: Colors.deepOrange,
+              color: AppColors.themeColor,
               boxShadow: [
                 BoxShadow(
                   color: Colors.black26,
@@ -204,7 +204,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SubmitGuardMixin<H
                           );
                         },
                         icon: Icon(Icons.notifications),
-                        style: IconButton.styleFrom(backgroundColor: Colors.deepOrange, foregroundColor: Colors.white),
+                        style: IconButton.styleFrom(backgroundColor: AppColors.themeColor, foregroundColor: AppColors.whiteTextFull),
                       ),
                       if (unreadCount > 0)
                         Positioned(
@@ -213,11 +213,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SubmitGuardMixin<H
                           child: Container(
                             padding: const EdgeInsets.all(4),
                             constraints: const BoxConstraints(minWidth: 16, minHeight: 16),
-                            decoration: const BoxDecoration(color: Colors.red, shape: BoxShape.circle),
+                            decoration: const BoxDecoration(color: AppColors.danger, shape: BoxShape.circle),
                             child: Text(
                               '$unreadCount',
                               textAlign: TextAlign.center,
-                              style: const TextStyle(color: Colors.white, fontSize: 10),
+                              style: const TextStyle(color: AppColors.whiteTextFull, fontSize: 10),
                             ),
                           ),
                         ),
@@ -244,7 +244,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SubmitGuardMixin<H
                           height: 10,
                         ),
                         Card(
-                          color: Colors.white,
+                          color: AppColors.bgWhiteLight,
                           elevation: 1,
                           margin: EdgeInsets.zero,
                           clipBehavior: Clip.antiAlias,
@@ -318,7 +318,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SubmitGuardMixin<H
                             const Expanded(
                               child: Divider(
                                 height: 10,
-                                color: Colors.black54,
+                                color: AppColors.blackTextMuted,
                               ),
                             ),
                             const SizedBox(
@@ -326,7 +326,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SubmitGuardMixin<H
                             ),
                             BodyText(
                               value: l10n.or.toUpperCase(),
-                              color: Colors.black54,
+                              color: AppColors.blackTextMuted,
                             ),
                             const SizedBox(
                               width: 10,
@@ -334,7 +334,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SubmitGuardMixin<H
                             const Expanded(
                               child: Divider(
                                 height: 10,
-                                color: Colors.black54,
+                                color: AppColors.blackTextMuted,
                               ),
                             ),
                           ],
@@ -355,8 +355,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SubmitGuardMixin<H
                               launchPhoneCall("*123#");
                             },
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.red,
-                              iconColor: Colors.white,
+                              backgroundColor: AppColors.danger,
+                              iconColor: AppColors.whiteTextFull,
                               fixedSize: const Size(95, 100),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(radius),
@@ -374,7 +374,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SubmitGuardMixin<H
                                 ),
                                 BodyText(
                                   value: l10n.call911Button,
-                                  color: Colors.white,
+                                  color: AppColors.whiteTextFull,
                                   isBold: true,
                                 ),
                               ],

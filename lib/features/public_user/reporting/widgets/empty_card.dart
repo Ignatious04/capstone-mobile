@@ -15,7 +15,7 @@ class EmptyCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Colors.white,
+      color: AppColors.bgWhiteLight,
       elevation: 1,
       margin: EdgeInsets.zero,
       shape: RoundedRectangleBorder(

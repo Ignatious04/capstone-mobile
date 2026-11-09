@@ -157,7 +157,7 @@ class _ResponseCardState extends State<_ResponseCard> {
     final responderID = response.assignedTo;
 
     return Card(
-      color: Colors.white,
+      color: AppColors.bgWhiteLight,
       elevation: 1,
       margin: EdgeInsets.zero,
       clipBehavior: Clip.antiAlias, // keeps the tile's ripple inside the rounded corners
@@ -183,10 +183,10 @@ class _ResponseCardState extends State<_ResponseCard> {
                 alignment: Alignment(50, -12),
                 isLabelVisible: _hasUpdate,
                 smallSize: 15,
-                backgroundColor: Colors.red,
+                backgroundColor: AppColors.danger,
                 child: const Icon(
                   Icons.timeline,
-                  color: Colors.deepOrange,
+                  color: AppColors.themeColor,
                   size: 25,
                 ),
               ),
@@ -241,7 +241,7 @@ class _UnassignedHeader extends StatelessWidget {
               children: [
                 LabelText(value: l10n.responder.toUpperCase()),
                 BodyText(value: response.serviceType.label(l10n), isBold: true),
-                BodyText(value: l10n.awaitingResponder, color: Colors.black54),
+                BodyText(value: l10n.awaitingResponder, color: AppColors.blackTextMuted),
               ],
             ),
           ),
@@ -276,7 +276,7 @@ class _ResponderPlaceholder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Card(
-      color: Colors.white,
+      color: AppColors.bgWhiteLight,
       elevation: 1,
       margin: EdgeInsets.zero,
       child: SizedBox(

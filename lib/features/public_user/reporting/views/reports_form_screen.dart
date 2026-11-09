@@ -17,6 +17,7 @@ import 'package:capstone/core/shared/widgets/emergency_guidance_sheet.dart';
 import 'package:capstone/core/shared/widgets/loading_overlay_widget.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/widgets/text/label_text.dart';
+import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/core/utilities/priority_calculator.dart';
 import 'package:capstone/core/utilities/submit_guard_mixin.dart';
 import 'package:capstone/features/public_user/map/widgets/map_tile_widget.dart';
@@ -153,7 +154,7 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> with Subm
                                     // top: Radius.circular(24), // Uncomment if you want top corners rounded too
                                   ),
                                 ),
-                                color: Colors.white,
+                                color: AppColors.bgWhiteLight,
                                 elevation: 1,
                                 margin: EdgeInsets.zero,
                                 clipBehavior: Clip.antiAlias,
@@ -202,14 +203,14 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> with Subm
                                             avatar: Icon(
                                               Icons.edit_location_alt,
                                               size: 25,
-                                              color: Colors.white,
+                                              color: AppColors.whiteTextFull,
                                             ),
                                             label: BodyText(
                                               value: l10n.changeLocation,
-                                              color: Colors.white,
+                                              color: AppColors.whiteTextFull,
                                               isBold: true,
                                             ),
-                                            backgroundColor: Colors.deepOrange,
+                                            backgroundColor: AppColors.themeColor,
                                           ),
                                         ),
                                       ],
@@ -232,7 +233,7 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> with Subm
                               const SizedBox(height: 10),
                               BodyText(
                                 value: l10n.requiredNote.toUpperCase(),
-                                color: Colors.red,
+                                color: AppColors.danger,
                                 isBold: false,
                               ),
                               const SizedBox(height: 10),
@@ -258,15 +259,15 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> with Subm
                               ),
                               const SizedBox(height: 10),
                               if (ref.watch(reportProvider).incidentType == ServiceTypeEnum.police) ...[
-                                LabelText(value: l10n.isThisEmergency.toUpperCase(), color: Colors.black54),
+                                LabelText(value: l10n.isThisEmergency.toUpperCase(), color: AppColors.blackTextMuted),
                                 const SizedBox(height: 10),
                                 SizedBox(
                                   width: double.infinity,
                                   child: SegmentedButton<bool>(
                                     style: SegmentedButton.styleFrom(
                                       iconSize: 25,
-                                      selectedBackgroundColor: Colors.deepOrange,
-                                      selectedForegroundColor: Colors.white,
+                                      selectedBackgroundColor: AppColors.themeColor,
+                                      selectedForegroundColor: AppColors.whiteTextFull,
                                       shape: const RoundedRectangleBorder(
                                         borderRadius: BorderRadius.all(
                                           Radius.circular(12.0),
@@ -279,7 +280,7 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> with Subm
                                         label: BodyText(
                                           value: l10n.emergency,
                                           isBold: true,
-                                          color: _isPoliceEmergency ? Colors.white : Colors.black,
+                                          color: _isPoliceEmergency ? AppColors.whiteTextFull : AppColors.blackTextFull,
                                         ),
                                       ),
                                       ButtonSegment(
@@ -287,7 +288,7 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> with Subm
                                         label: BodyText(
                                           value: l10n.nonEmergency,
                                           isBold: true,
-                                          color: _isPoliceEmergency ? Colors.black : Colors.white,
+                                          color: _isPoliceEmergency ? AppColors.blackTextFull : AppColors.whiteTextFull,
                                         ),
                                       ),
                                     ],
@@ -365,11 +366,11 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> with Subm
                               ),
                               SwitchListTile(
                                 contentPadding: EdgeInsets.zero,
-                                activeThumbColor: Colors.deepOrange,
+                                activeThumbColor: AppColors.themeColor,
                                 title: BodyText(value: l10n.reportIsForSomeoneElse, isBold: true),
                                 subtitle: BodyText(
                                   value: l10n.reportIsForSomeoneElseHint,
-                                  color: Colors.black54,
+                                  color: AppColors.blackTextMuted,
                                   isBold: false,
                                 ),
                                 value: _isForSomeoneElse,
@@ -424,7 +425,7 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> with Subm
                                   children: [
                                     Container(
                                       height: 1,
-                                      color: Colors.black,
+                                      color: AppColors.blackTextFull,
                                     ),
                                     const SizedBox(height: 10),
                                     CustomTextField(

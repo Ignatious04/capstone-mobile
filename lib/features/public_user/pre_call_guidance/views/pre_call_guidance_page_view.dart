@@ -3,6 +3,7 @@ import 'package:capstone/core/shared/providers/report_provider.dart';
 import 'package:capstone/core/shared/widgets/custom_app_bar.dart';
 import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
 import 'package:capstone/core/shared/widgets/text/label_text.dart';
+import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/core/utilities/call_nearest_service.dart';
 import 'package:capstone/features/public_user/main/providers/nearest_emergency_services_provider.dart';
 import 'package:capstone/features/public_user/pre_call_guidance/providers/guidance_provider.dart';
@@ -84,7 +85,7 @@ class _PreCallGuidancePageViewState extends ConsumerState<PreCallGuidancePageVie
           children: [
             LinearProgressIndicator(
               value: (state.currentPage + 1) / state.questions.length,
-              color: Colors.white,
+              color: AppColors.whiteTextFull,
               backgroundColor: Colors.black26,
             ),
             Expanded(
@@ -134,8 +135,8 @@ class _PreCallGuidancePageViewState extends ConsumerState<PreCallGuidancePageVie
                   },
                   value: l10n.call.toUpperCase(),
                   icon: const Icon(Icons.call),
-                  color: Colors.white,
-                  backgroundColor: Colors.deepOrange,
+                  color: AppColors.whiteTextFull,
+                  backgroundColor: AppColors.themeColor,
                 ),
               ),
             ],

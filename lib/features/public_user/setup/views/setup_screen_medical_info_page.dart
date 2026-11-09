@@ -6,6 +6,7 @@ import 'package:capstone/core/shared/widgets/custom_text_field.dart';
 import 'package:capstone/core/shared/providers/user_provider.dart';
 import 'package:capstone/core/shared/widgets/section_title.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
+import 'package:capstone/core/themes/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -184,9 +185,9 @@ class _SetupScreenMedicalInfoPage extends ConsumerState<SetupScreenMedicalInfoPa
               highlightColor: Colors.transparent,
             ),
             child: SwitchListTile(
-              activeThumbColor: Colors.deepOrange,
-              inactiveThumbColor: Colors.black54,
-              inactiveTrackColor: Colors.black12,
+              activeThumbColor: AppColors.themeColor,
+              inactiveThumbColor: AppColors.blackTextMuted,
+              inactiveTrackColor: AppColors.cardBorder,
               hoverColor: Colors.transparent,
               contentPadding: EdgeInsets.zero,
               value: user.medicalSharingConsent,

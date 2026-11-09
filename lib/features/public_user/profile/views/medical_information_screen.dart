@@ -192,8 +192,8 @@ class _MedicalInformationScreenState extends ConsumerState<MedicalInformationScr
                       ),
                       child: SwitchListTile(
                         activeThumbColor: AppColors.themeColor,
-                        inactiveThumbColor: Colors.black54,
-                        inactiveTrackColor: Colors.black12,
+                        inactiveThumbColor: AppColors.blackTextMuted,
+                        inactiveTrackColor: AppColors.cardBorder,
                         hoverColor: Colors.transparent,
                         contentPadding: EdgeInsets.zero,
                         value: medicalSharingConsent,

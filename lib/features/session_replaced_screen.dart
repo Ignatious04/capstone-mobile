@@ -3,6 +3,7 @@ import 'package:capstone/core/shared/providers/session_provider.dart';
 import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/widgets/text/title_text.dart';
+import 'package:capstone/core/themes/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -21,13 +22,13 @@ class SessionReplacedScreen extends ConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const Icon(Icons.devices_other, size: 50, color: Colors.deepOrange),
+              const Icon(Icons.devices_other, size: 50, color: AppColors.themeColor),
               const SizedBox(height: 10),
               TitleText(value: l10n.signedOutTitle, alignment: TextAlign.center),
               const SizedBox(height: 10),
               BodyText(
                 value: l10n.signedOutBody,
-                color: Colors.black54,
+                color: AppColors.blackTextMuted,
                 alignment: TextAlign.center,
               ),
               const SizedBox(height: 20),

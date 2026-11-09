@@ -7,6 +7,7 @@ import 'package:capstone/core/shared/widgets/text/title_text.dart';
 import 'package:capstone/core/shared/widgets/custom_app_bar.dart';
 import 'package:capstone/core/shared/widgets/info_column.dart';
 import 'package:capstone/core/shared/models/report_model.dart';
+import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/public_user/reporting/widgets/report_status_widget.dart';
 import 'package:capstone/core/shared/widgets/section_title.dart';
 import 'package:capstone/features/public_user/reporting/widgets/report_responses_section.dart';
@@ -56,7 +57,7 @@ class SmsReportViewScreen extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Card(
-                color: Colors.white,
+                color: AppColors.bgWhiteLight,
                 elevation: 1,
                 margin: EdgeInsets.zero,
                 child: Padding(
@@ -71,13 +72,13 @@ class SmsReportViewScreen extends ConsumerWidget {
                             width: 50,
                             height: 50,
                             decoration: BoxDecoration(
-                              color: Colors.deepOrange,
+                              color: AppColors.themeColor,
                               borderRadius: BorderRadius.circular(12),
                             ),
                             child: const Icon(
                               Icons.emergency_outlined,
                               size: 30,
-                              color: Colors.white,
+                              color: AppColors.whiteTextFull,
                             ),
                           ),
                           const SizedBox(width: 10),
@@ -111,7 +112,7 @@ class SmsReportViewScreen extends ConsumerWidget {
                         alignment: Alignment.center,
                         child: const Icon(
                           Icons.sms,
-                          color: Colors.green,
+                          color: AppColors.darkerGreen,
                           size: 50,
                         ),
                       ),
@@ -141,7 +142,7 @@ class SmsReportViewScreen extends ConsumerWidget {
               ),
               const SizedBox(height: 10),
               Card(
-                color: Colors.white,
+                color: AppColors.bgWhiteLight,
                 child: Padding(
                   padding: const EdgeInsets.all(20),
                   child: Column(
@@ -172,7 +173,7 @@ class SmsReportViewScreen extends ConsumerWidget {
               ),
               const SizedBox(height: 10),
               Card(
-                color: Colors.white,
+                color: AppColors.bgWhiteLight,
                 child: ListView.separated(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
@@ -194,7 +195,7 @@ class SmsReportViewScreen extends ConsumerWidget {
                       ),
                       leading: Icon(
                         item.answer == true ? Icons.check_circle : Icons.cancel,
-                        color: item.answer == true ? Colors.green : Colors.red,
+                        color: item.answer == true ? AppColors.darkerGreen : AppColors.danger,
                       ),
                     );
                   },

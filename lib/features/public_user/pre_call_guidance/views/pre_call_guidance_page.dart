@@ -2,6 +2,7 @@ import 'package:capstone/core/l10n/enum_labels.dart';
 import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
 import 'package:capstone/core/shared/widgets/text/headline_text.dart';
+import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/public_user/pre_call_guidance/models/pre_call_guidance_model.dart';
 import 'package:capstone/features/public_user/pre_call_guidance/providers/guidance_provider.dart';
 import 'package:flutter/material.dart';
@@ -42,8 +43,8 @@ class PreCallGuidancePage extends ConsumerWidget {
                 onNext();
               },
               value: l10n.no.toUpperCase(),
-              color: Colors.white,
-              backgroundColor: Colors.deepOrange,
+              color: AppColors.whiteTextFull,
+              backgroundColor: AppColors.themeColor,
               hasPadding: true,
             ),
             const SizedBox(
@@ -55,8 +56,8 @@ class PreCallGuidancePage extends ConsumerWidget {
                 onNext();
               },
               value: l10n.yes.toUpperCase(),
-              color: Colors.white,
-              backgroundColor: Colors.deepOrange,
+              color: AppColors.whiteTextFull,
+              backgroundColor: AppColors.themeColor,
               hasPadding: true,
             ),
           ],

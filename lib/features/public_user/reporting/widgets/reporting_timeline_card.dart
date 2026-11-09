@@ -2,6 +2,7 @@ import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/shared/models/response_model.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/widgets/text/label_text.dart';
+import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/core/utilities/eta_calculator.dart';
 import 'package:capstone/core/utilities/formatter.dart';
 import 'package:flutter/material.dart';
@@ -68,7 +69,7 @@ class ReportTimelineCard extends StatelessWidget {
     if (embedded) return rows;
 
     return Card(
-      color: Colors.white,
+      color: AppColors.bgWhiteLight,
       elevation: 1,
       margin: EdgeInsets.zero,
       child: Padding(
@@ -98,7 +99,7 @@ class _TimelineRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = step.isReached ? Colors.deepOrange : Colors.black26;
+    final color = step.isReached ? AppColors.themeColor : AppColors.lighterBlack;
 
     return IntrinsicHeight(
       child: Row(
@@ -113,12 +114,12 @@ class _TimelineRow extends StatelessWidget {
                   height: 12,
                   margin: const EdgeInsets.only(top: 4),
                   decoration: BoxDecoration(
-                    color: step.isReached ? color : Colors.white,
+                    color: step.isReached ? color : AppColors.bgWhiteLight,
                     border: Border.all(color: color, width: 2),
                     shape: BoxShape.circle,
                   ),
                 ),
-                if (!isLast) Expanded(child: Container(width: 2, color: Colors.black12)),
+                if (!isLast) Expanded(child: Container(width: 2, color: AppColors.cardBorder)),
               ],
             ),
           ),
@@ -134,7 +135,7 @@ class _TimelineRow extends StatelessWidget {
                     value: step.time == null ? '—' : Formatter.formatDateTime(step.time!, locale),
                     isBold: step.isReached,
                   ),
-                  if (step.note != null) BodyText(value: step.note!, color: Colors.black54),
+                  if (step.note != null) BodyText(value: step.note!, color: AppColors.blackTextMuted),
                 ],
               ),
             ),

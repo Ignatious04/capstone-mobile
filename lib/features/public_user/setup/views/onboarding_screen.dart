@@ -1,6 +1,7 @@
 import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/widgets/text/headline_text.dart';
+import 'package:capstone/core/themes/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -14,7 +15,7 @@ class OnboardingScreen extends StatelessWidget {
     return Scaffold(
       body: AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle(
-          statusBarColor: Colors.deepOrange,
+          statusBarColor: AppColors.themeColor,
         ),
         child: SafeArea(
           child: Padding(
@@ -26,7 +27,7 @@ class OnboardingScreen extends StatelessWidget {
                   Icon(
                     Icons.check,
                     size: 75,
-                    color: Colors.green,
+                    color: AppColors.darkerGreen,
                   ),
                   const SizedBox(
                     height: 10,
@@ -42,7 +43,7 @@ class OnboardingScreen extends StatelessWidget {
                     value:
                         l10n.onboardingBody,
                     alignment: TextAlign.center,
-                    color: Colors.black54,
+                    color: AppColors.blackTextMuted,
                   ),
                   const SizedBox(
                     height: 10,
@@ -51,7 +52,7 @@ class OnboardingScreen extends StatelessWidget {
                     width: double.infinity,
                     child: FilledButton(
                       style: FilledButton.styleFrom(
-                        backgroundColor: Colors.deepOrange,
+                        backgroundColor: AppColors.themeColor,
                       ),
                       onPressed: () {
                         debugPrint("Pressed");

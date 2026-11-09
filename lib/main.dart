@@ -131,7 +131,7 @@ class _MyAppState extends ConsumerState<MyApp> {
       theme: ThemeData(
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.deepOrange,
+          seedColor: AppColors.themeColor,
           brightness: Brightness.light,
         ),
         appBarTheme: const AppBarTheme(

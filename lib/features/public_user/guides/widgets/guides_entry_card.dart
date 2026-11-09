@@ -37,11 +37,11 @@ class GuidesEntryCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     TitleText(value: l10n.guidesTitle),
-                    BodyText(value: l10n.guidesEntrySubtitle, color: Colors.black54),
+                    BodyText(value: l10n.guidesEntrySubtitle, color: AppColors.blackTextMuted),
                   ],
                 ),
               ),
-              const Icon(Icons.chevron_right, color: Colors.black54),
+              const Icon(Icons.chevron_right, color: AppColors.blackTextMuted),
             ],
           ),
         ),

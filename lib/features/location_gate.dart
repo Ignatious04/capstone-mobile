@@ -4,6 +4,7 @@ import 'package:capstone/core/shared/providers/location_provider.dart';
 import 'package:capstone/core/shared/widgets/custom_circular_progress_indicator.dart';
 import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
+import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/public_user/main/views/main_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -156,7 +157,7 @@ class _LocationGateState extends ConsumerState<LocationGate> with WidgetsBinding
                       Icon(
                         Icons.location_off,
                         size: 100,
-                        color: Colors.black54,
+                        color: AppColors.blackTextMuted,
                       ),
                       const SizedBox(height: 10),
                       BodyText(

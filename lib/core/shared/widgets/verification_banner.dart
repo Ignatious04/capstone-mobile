@@ -37,13 +37,13 @@ class VerificationBanner extends ConsumerWidget {
       decoration: BoxDecoration(
         color: AppColors.lighterDeepOrange,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.deepOrange),
+        border: Border.all(color: AppColors.themeColor),
       ),
       child: Row(
         children: [
           const Icon(
             Icons.lock_outline,
-            color: Colors.deepOrange,
+            color: AppColors.themeColor,
             size: 25,
           ),
           const SizedBox(width: 10),

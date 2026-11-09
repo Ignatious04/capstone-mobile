@@ -85,7 +85,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 const TextSpan(
                   text: ' *',
                   style: TextStyle(
-                    color: Colors.red,
+                    color: AppColors.danger,
                   ),
                 ),
             ],

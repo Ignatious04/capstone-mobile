@@ -1,4 +1,5 @@
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
+import 'package:capstone/core/themes/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class CustomSnackbar extends SnackBar {
@@ -7,12 +8,12 @@ class CustomSnackbar extends SnackBar {
     required String text,
     Color? color,
   }) : super(
-         backgroundColor: Colors.deepOrange,
+         backgroundColor: AppColors.themeColor,
          behavior: SnackBarBehavior.floating,
          showCloseIcon: true,
          content: BodyText(
            value: text,
-           color: color ?? Colors.white,
+           color: color ?? AppColors.whiteTextFull,
          ),
        );
 }

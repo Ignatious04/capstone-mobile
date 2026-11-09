@@ -1,6 +1,7 @@
 import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/enums/map_mode_enum.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
+import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/core/utilities/case_marker_icons.dart';
 import 'package:capstone/features/public_user/map/widgets/map_tile_widget.dart';
 import 'package:capstone/features/public_user/reporting/providers/responder_location_provider.dart';
@@ -33,7 +34,7 @@ class LocationCard extends ConsumerWidget {
     final icons = ref.watch(caseMarkerIconsProvider).value;
 
     return Card(
-      color: Colors.white,
+      color: AppColors.bgWhiteLight,
       elevation: 1,
       margin: EdgeInsets.zero,
       clipBehavior: Clip.antiAlias,
@@ -81,11 +82,11 @@ class LocationCard extends ConsumerWidget {
                     child: Container(
                       padding: const EdgeInsets.all(6),
                       decoration: const BoxDecoration(
-                        color: Colors.white,
+                        color: AppColors.bgWhiteLight,
                         shape: BoxShape.circle,
                         boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 4)],
                       ),
-                      child: const Icon(Icons.fullscreen, size: 22, color: Colors.deepOrange),
+                      child: const Icon(Icons.fullscreen, size: 22, color: AppColors.themeColor),
                     ),
                   ),
                 ),
@@ -99,7 +100,7 @@ class LocationCard extends ConsumerWidget {
               children: [
                 const Icon(
                   Icons.place_outlined,
-                  color: Colors.black54,
+                  color: AppColors.blackTextMuted,
                   size: 25,
                 ),
                 const SizedBox(width: 10),
@@ -109,7 +110,7 @@ class LocationCard extends ConsumerWidget {
                     children: [
                       BodyText(
                         value: l10n.reportedLocation.toUpperCase(),
-                        color: Colors.black54,
+                        color: AppColors.blackTextMuted,
                       ),
                       const SizedBox(height: 10),
                       BodyText(

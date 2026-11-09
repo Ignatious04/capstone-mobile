@@ -87,7 +87,7 @@ class ResponderCard extends StatelessWidget {
                   const SizedBox(height: 10),
                   Row(
                     children: [
-                      const Icon(Icons.phone, size: 25, color: Colors.black54),
+                      const Icon(Icons.phone, size: 25, color: AppColors.blackTextMuted),
                       const SizedBox(width: 5),
                       BodyText(value: responder.contactNumber),
                     ],
@@ -103,7 +103,7 @@ class ResponderCard extends StatelessWidget {
     if (embedded) return content;
 
     return Card(
-      color: Colors.white,
+      color: AppColors.bgWhiteLight,
       elevation: 1,
       margin: EdgeInsets.zero,
       child: content,

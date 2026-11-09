@@ -60,7 +60,7 @@ class AttachmentsCardItem extends StatelessWidget {
                         child: Icon(
                           Icons.broken_image_outlined,
                           size: 36,
-                          color: Colors.white,
+                          color: AppColors.whiteTextFull,
                         ),
                       );
                     },
@@ -80,7 +80,7 @@ class AttachmentsCardItem extends StatelessWidget {
                     decoration: BoxDecoration(color: Colors.black54, shape: BoxShape.circle),
                     child: Padding(
                       padding: EdgeInsets.all(4),
-                      child: Icon(Icons.close, size: 16, color: Colors.white),
+                      child: Icon(Icons.close, size: 16, color: AppColors.whiteTextFull),
                     ),
                   ),
                 ),

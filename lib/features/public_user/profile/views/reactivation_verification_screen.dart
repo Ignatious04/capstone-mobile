@@ -5,6 +5,7 @@ import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
 import 'package:capstone/core/shared/widgets/custom_snackbar_helper.dart';
 import 'package:capstone/core/shared/widgets/custom_text_field.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
+import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/public_user/profile/providers/deactivate_account_provider.dart';
 import 'package:capstone/features/public_user/profile/providers/reactivation_phone_provider.dart';
 import 'package:flutter/material.dart';
@@ -92,7 +93,7 @@ class _ReactivationVerificationScreenState extends ConsumerState<ReactivationVer
                 value: !phoneState.codeSent
                     ? l10n.sendingCodeTo(widget.contactNumber)
                     : l10n.enterCodeSentTo(widget.contactNumber),
-                color: Colors.black54,
+                color: AppColors.blackTextMuted,
                 alignment: TextAlign.center,
               ),
               const SizedBox(height: 20),

@@ -8,6 +8,7 @@ import 'package:capstone/core/shared/widgets/custom_snackbar_helper.dart';
 import 'package:capstone/core/shared/widgets/loading_overlay_widget.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/widgets/text/title_text.dart';
+import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/public_user/setup/views/phone_verification_screen.dart';
 import 'package:capstone/features/public_user/setup/views/setup_screen_user_card_page.dart';
 import 'package:capstone/features/public_user/setup/views/setup_screen_personal_info_page.dart';
@@ -107,7 +108,7 @@ class _SetupScreenPageView extends ConsumerState<SetupScreenPageView> {
         Navigator.pop(context);
       },
       child: AnnotatedRegion<SystemUiOverlayStyle>(
-        value: SystemUiOverlayStyle(statusBarColor: Colors.deepOrange),
+        value: SystemUiOverlayStyle(statusBarColor: AppColors.themeColor),
         child: Scaffold(
           body: SafeArea(
             child: Column(
@@ -117,8 +118,8 @@ class _SetupScreenPageView extends ConsumerState<SetupScreenPageView> {
                   body: widget.resubmitFrom == null ? l10n.setupSafetyProfile : l10n.fixFlaggedDetails,
                   progressIndicator: LinearProgressIndicator(
                     value: (currentPage + 1) / numberOfPages,
-                    color: Colors.white,
-                    backgroundColor: Colors.white30,
+                    color: AppColors.whiteTextFull,
+                    backgroundColor: AppColors.whiteTextFull.withValues(alpha: 0.3),
                   ),
                 ),
                 Expanded(

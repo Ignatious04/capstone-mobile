@@ -1,3 +1,4 @@
+import 'package:capstone/core/themes/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class CustomDatePickerWidget extends StatelessWidget {
@@ -24,7 +25,7 @@ class CustomDatePickerWidget extends StatelessWidget {
         Text.rich(
           TextSpan(
             style: Theme.of(context).textTheme.labelMedium?.copyWith(
-              color: Colors.black54,
+              color: AppColors.blackTextMuted,
             ),
             children: [
               TextSpan(text: title),
@@ -32,7 +33,7 @@ class CustomDatePickerWidget extends StatelessWidget {
                 const TextSpan(
                   text: ' *',
                   style: TextStyle(
-                    color: Colors.red,
+                    color: AppColors.danger,
                   ),
                 ),
             ],
@@ -49,7 +50,7 @@ class CustomDatePickerWidget extends StatelessWidget {
               Theme.of(
                 context,
               ).textTheme.bodyMedium?.copyWith(
-                color: Colors.black,
+                color: AppColors.blackTextFull,
               ),
           decoration: InputDecoration(
             errorStyle: TextStyle(fontSize: 0),

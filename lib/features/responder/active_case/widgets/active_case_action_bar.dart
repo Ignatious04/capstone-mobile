@@ -1,6 +1,7 @@
 import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/enums/report_status_enum.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
+import 'package:capstone/core/themes/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class ActiveCaseActionBar extends StatefulWidget {
@@ -20,8 +21,9 @@ class ActiveCaseActionBar extends StatefulWidget {
 }
 
 class _ActiveCaseActionBarState extends State<ActiveCaseActionBar> with SingleTickerProviderStateMixin {
-  static const _baseColor = Colors.deepOrange;
-  static final _fillColor = Colors.deepOrange.shade900; // swap for Colors.black54 to keep the old held look
+  static const _baseColor = AppColors.themeColor;
+  // Darker shade of the theme color, drawn as the hold-to-confirm fill (swap for AppColors.blackTextMuted for a neutral held look).
+  static final _fillColor = HSLColor.fromColor(AppColors.themeColor).withLightness(0.25).toColor();
   static const _maxDrift = 24.0; // px the finger may wander before the hold is cancelled
 
   late final AnimationController _controller;
@@ -120,9 +122,9 @@ class _ActiveCaseActionBarState extends State<ActiveCaseActionBar> with SingleTi
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(action.icon, color: Colors.white),
+                    Icon(action.icon, color: AppColors.whiteTextFull),
                     const SizedBox(width: 8),
-                    BodyText(value: action.label, color: Colors.white, isBold: true),
+                    BodyText(value: action.label, color: AppColors.whiteTextFull, isBold: true),
                   ],
                 ),
               ),

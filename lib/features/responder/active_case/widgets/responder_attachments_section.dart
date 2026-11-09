@@ -6,6 +6,7 @@ import 'package:capstone/core/shared/widgets/custom_alert_dialog.dart';
 import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
 import 'package:capstone/core/shared/widgets/custom_snackbar_helper.dart';
 import 'package:capstone/core/shared/widgets/section_title.dart';
+import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/public_user/reporting/widgets/attachments_card.dart';
 import 'package:capstone/features/responder/active_case/providers/responder_attachment_provider.dart';
 import 'package:flutter/material.dart';
@@ -50,7 +51,7 @@ class ResponderAttachmentsSection extends ConsumerWidget {
         );
 
     if (error != null && context.mounted) {
-      CustomSnackbarHelper.show(context, text: error, color: Colors.white);
+      CustomSnackbarHelper.show(context, text: error, color: AppColors.whiteTextFull);
     }
   }
 
@@ -70,7 +71,7 @@ class ResponderAttachmentsSection extends ConsumerWidget {
         .removeImage(responseID: response.responseID, attachment: attachment, l10n: l10n);
 
     if (error != null && context.mounted) {
-      CustomSnackbarHelper.show(context, text: error, color: Colors.red);
+      CustomSnackbarHelper.show(context, text: error, color: AppColors.danger);
     }
   }
 
@@ -100,7 +101,7 @@ class ResponderAttachmentsSection extends ConsumerWidget {
               ? const SizedBox(
                   width: 18,
                   height: 18,
-                  child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+                  child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.whiteTextFull),
                 )
               : const Icon(Icons.add_a_photo),
         ),

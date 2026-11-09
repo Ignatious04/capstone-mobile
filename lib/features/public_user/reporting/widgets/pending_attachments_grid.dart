@@ -63,7 +63,7 @@ class PendingAttachmentsGrid extends StatelessWidget {
                       child: Icon(
                         Icons.broken_image_outlined,
                         size: 36,
-                        color: Colors.white,
+                        color: AppColors.whiteTextFull,
                       ),
                     ),
                   ),
@@ -79,7 +79,7 @@ class PendingAttachmentsGrid extends StatelessWidget {
                 iconSize: 18,
                 style: IconButton.styleFrom(
                   backgroundColor: Colors.black54,
-                  foregroundColor: Colors.white,
+                  foregroundColor: AppColors.whiteTextFull,
                   minimumSize: const Size(32, 32),
                   padding: EdgeInsets.zero,
                   tapTargetSize: MaterialTapTargetSize.padded,

@@ -4,6 +4,7 @@ import 'package:capstone/core/shared/providers/responder_active_guard_provider.d
 import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/widgets/text/title_text.dart';
+import 'package:capstone/core/themes/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -22,13 +23,13 @@ class ResponderDeactivatedScreen extends ConsumerWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              const Icon(Icons.person_off_outlined, size: 50, color: Colors.deepOrange),
+              const Icon(Icons.person_off_outlined, size: 50, color: AppColors.themeColor),
               const SizedBox(height: 10),
               TitleText(value: l10n.responderDeactivatedTitle, alignment: TextAlign.center),
               const SizedBox(height: 10),
               BodyText(
                 value: l10n.responderDeactivatedBody,
-                color: Colors.black54,
+                color: AppColors.blackTextMuted,
                 alignment: TextAlign.center,
               ),
               const SizedBox(height: 20),

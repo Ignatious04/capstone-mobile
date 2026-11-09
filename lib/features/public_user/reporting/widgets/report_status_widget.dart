@@ -2,6 +2,7 @@ import 'package:capstone/core/enums/report_status_enum.dart';
 import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/l10n/enum_labels.dart';
 import 'package:capstone/core/shared/widgets/text/label_text.dart';
+import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/core/utilities/formatter.dart';
 import 'package:flutter/material.dart';
 
@@ -23,7 +24,7 @@ class ReportStatusWidget extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
-        color: Colors.black54,
+        color: AppColors.blackTextMuted,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Row(
@@ -33,7 +34,7 @@ class ReportStatusWidget extends StatelessWidget {
             width: 10,
             height: 10,
             decoration: const BoxDecoration(
-              color: Colors.white,
+              color: AppColors.whiteTextFull,
               shape: BoxShape.circle,
             ),
           ),
@@ -43,13 +44,13 @@ class ReportStatusWidget extends StatelessWidget {
             children: [
               LabelText(
                 value: reportStatusLabelFromName(l10n, status),
-                color: Colors.white,
+                color: AppColors.whiteTextFull,
                 isBold: true,
               ),
               if (resolvedTime != null)
                 LabelText(
                   value: Formatter.formatDateTime(resolvedTime, locale),
-                  color: Colors.white70,
+                  color: AppColors.whiteTextMuted,
                 ),
             ],
           ),

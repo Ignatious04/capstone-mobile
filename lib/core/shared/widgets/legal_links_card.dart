@@ -15,7 +15,7 @@ class LegalLinksCard extends StatelessWidget {
 
     return Card(
       margin: EdgeInsets.zero,
-      color: Colors.white,
+      color: AppColors.bgWhiteLight,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
         side: const BorderSide(color: AppColors.cardBorder),

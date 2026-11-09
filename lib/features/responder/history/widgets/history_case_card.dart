@@ -36,7 +36,7 @@ class HistoryCaseCard extends ConsumerWidget {
 
     return Card(
       margin: const EdgeInsets.only(bottom: 10),
-      color: Colors.white,
+      color: AppColors.bgWhiteLight,
       clipBehavior: Clip.antiAlias,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
@@ -55,10 +55,10 @@ class HistoryCaseCard extends ConsumerWidget {
                 width: 50,
                 height: 50,
                 decoration: BoxDecoration(
-                  color: Colors.deepOrange,
+                  color: AppColors.themeColor,
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: Icon(_icon(report?.incidentType), size: 30, color: Colors.white),
+                child: Icon(_icon(report?.incidentType), size: 30, color: AppColors.whiteTextFull),
               ),
               const SizedBox(width: 10),
               Expanded(
@@ -71,12 +71,12 @@ class HistoryCaseCard extends ConsumerWidget {
                     ),
                     BodyText(
                       value: closedAt == null ? '—' : l10n.resolvedAt(Formatter.formatDateTime(closedAt, locale)),
-                      color: Colors.black54,
+                      color: AppColors.blackTextMuted,
                     ),
                   ],
                 ),
               ),
-              const Icon(Icons.chevron_right, size: 30, color: Colors.deepOrange),
+              const Icon(Icons.chevron_right, size: 30, color: AppColors.themeColor),
             ],
           ),
         ),

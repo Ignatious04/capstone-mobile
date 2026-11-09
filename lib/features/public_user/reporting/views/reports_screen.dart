@@ -43,7 +43,7 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
   Color _getStatusColor(ReportModel report) {
     switch (report.status) {
       case ReportStatusEnum.pending:
-        return Colors.deepOrange;
+        return AppColors.themeColor;
       case ReportStatusEnum.accepted:
         return Colors.blue;
       case ReportStatusEnum.dispatched:
@@ -51,9 +51,9 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
       case ReportStatusEnum.onScene:
         return AppColors.darkerGreen;
       case ReportStatusEnum.resolved:
-        return Colors.black54;
+        return AppColors.blackTextMuted;
       default:
-        return Colors.black;
+        return AppColors.blackTextFull;
     }
   }
 
@@ -68,9 +68,9 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
       case ReportStatusEnum.onScene:
         return AppColors.lighterGreen;
       case ReportStatusEnum.resolved:
-        return Colors.grey;
+        return AppColors.lighterBlack;
       default:
-        return Colors.black;
+        return AppColors.blackTextFull;
     }
   }
 
@@ -127,7 +127,7 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
                                   Icon(
                                     Icons.no_cell_outlined,
                                     size: 100,
-                                    color: Colors.black54,
+                                    color: AppColors.blackTextMuted,
                                   ),
                                   const SizedBox(height: 10),
                                   BodyText(
@@ -200,8 +200,8 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
             );
           }
         },
-        backgroundColor: Colors.deepOrange,
-        foregroundColor: Colors.white,
+        backgroundColor: AppColors.themeColor,
+        foregroundColor: AppColors.whiteTextFull,
         child: Icon(Icons.add),
       ),
     );

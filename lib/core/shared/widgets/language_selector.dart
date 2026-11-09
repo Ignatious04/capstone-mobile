@@ -1,5 +1,6 @@
 import 'package:capstone/core/shared/providers/locale_provider.dart';
 import 'package:capstone/core/shared/widgets/text/label_text.dart';
+import 'package:capstone/core/themes/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -17,13 +18,13 @@ class LanguageSelector extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final current = ref.watch(localeProvider).languageCode;
-    final selectedBg = onDark ? Colors.white : Colors.deepOrange;
-    final selectedFg = onDark ? Colors.deepOrange : Colors.white;
-    final idleFg = onDark ? Colors.white : Colors.black87;
+    final selectedBg = onDark ? AppColors.whiteTextFull : AppColors.themeColor;
+    final selectedFg = onDark ? AppColors.themeColor : AppColors.whiteTextFull;
+    final idleFg = onDark ? AppColors.whiteTextFull : AppColors.blackTextFull;
 
     return Container(
       decoration: BoxDecoration(
-        border: Border.all(color: onDark ? Colors.white : Colors.black26),
+        border: Border.all(color: onDark ? AppColors.whiteTextFull : AppColors.cardBorder),
         borderRadius: BorderRadius.circular(20),
       ),
       child: Row(

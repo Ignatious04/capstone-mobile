@@ -4,6 +4,7 @@ import 'package:capstone/core/shared/models/response_model.dart';
 import 'package:capstone/core/shared/providers/firebase_auth_provider.dart';
 import 'package:capstone/core/shared/widgets/custom_alert_dialog.dart';
 import 'package:capstone/core/shared/widgets/custom_snackbar_helper.dart';
+import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/responder/active_case/providers/responder_note_provider.dart';
 import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
 import 'package:capstone/core/shared/widgets/custom_text_field.dart';
@@ -43,7 +44,7 @@ class ResponderNotesSection extends ConsumerWidget {
         .read(responderNoteProvider.notifier)
         .deleteNote(responseID: response.responseID, note: note, l10n: l10n);
     if (error != null && context.mounted) {
-      CustomSnackbarHelper.show(context, text: error, color: Colors.red);
+      CustomSnackbarHelper.show(context, text: error, color: AppColors.danger);
     }
   }
 
@@ -142,7 +143,7 @@ class _NoteSheetState extends ConsumerState<_NoteSheet> {
               ),
               if (_error != null) ...[
                 const SizedBox(height: 10),
-                BodyText(value: _error!, color: Colors.red),
+                BodyText(value: _error!, color: AppColors.danger),
               ],
               const SizedBox(height: 10),
               CustomElevatedButton(
@@ -152,7 +153,7 @@ class _NoteSheetState extends ConsumerState<_NoteSheet> {
                     ? const SizedBox(
                         width: 18,
                         height: 18,
-                        child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+                        child: CircularProgressIndicator(strokeWidth: 2, color: AppColors.whiteTextFull),
                       )
                     : const Icon(Icons.check),
               ),

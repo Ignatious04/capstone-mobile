@@ -2,6 +2,7 @@ import 'package:capstone/core/l10n/enum_labels.dart';
 import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/enums/service_type_enum.dart';
 import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
+import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/core/utilities/call_nearest_service.dart';
 import 'package:capstone/core/utilities/emergency_guidance_tips.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
@@ -50,7 +51,7 @@ class EmergencyGuidanceSheet extends ConsumerWidget {
                 width: 40,
                 height: 4,
                 decoration: BoxDecoration(
-                  color: Colors.black54,
+                  color: AppColors.blackTextMuted,
                   borderRadius: BorderRadius.circular(4),
                 ),
               ),
@@ -58,7 +59,7 @@ class EmergencyGuidanceSheet extends ConsumerWidget {
             const SizedBox(height: 10),
             Row(
               children: [
-                const Icon(Icons.info_outline, color: Colors.deepOrange, size: 25),
+                const Icon(Icons.info_outline, color: AppColors.themeColor, size: 25),
                 const SizedBox(width: 10),
                 Expanded(
                   child: TitleText(
@@ -70,7 +71,7 @@ class EmergencyGuidanceSheet extends ConsumerWidget {
             const SizedBox(height: 10),
             BodyText(
               value: l10n.guidanceSheetIntro,
-              color: Colors.black54,
+              color: AppColors.blackTextMuted,
             ),
             const SizedBox(height: 10),
             ...tips.map(
@@ -81,7 +82,7 @@ class EmergencyGuidanceSheet extends ConsumerWidget {
                   children: [
                     const Padding(
                       padding: EdgeInsets.only(top: 5),
-                      child: Icon(Icons.circle, size: 10, color: Colors.deepOrange),
+                      child: Icon(Icons.circle, size: 10, color: AppColors.themeColor),
                     ),
                     const SizedBox(width: 10),
                     Expanded(child: BodyText(value: tip)),
@@ -92,7 +93,7 @@ class EmergencyGuidanceSheet extends ConsumerWidget {
             const SizedBox(height: 10),
             BodyText(
               value: l10n.guidanceSheetDisclaimer,
-              color: Colors.black54,
+              color: AppColors.blackTextMuted,
             ),
             const SizedBox(height: 10),
             if (nearestName != null && nearestName.isNotEmpty) BodyText(value: nearestName),
@@ -102,8 +103,8 @@ class EmergencyGuidanceSheet extends ConsumerWidget {
                 onPressed: () => callNearestService(context, ref, incidentType, source: 'while_you_wait'),
                 value: l10n.call.toUpperCase(),
                 icon: const Icon(Icons.call),
-                color: Colors.white,
-                backgroundColor: Colors.green,
+                color: AppColors.whiteTextFull,
+                backgroundColor: AppColors.darkerGreen,
               ),
             ),
           ],

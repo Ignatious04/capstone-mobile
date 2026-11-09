@@ -9,6 +9,7 @@ import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/widgets/text/headline_text.dart';
 import 'package:capstone/core/shared/widgets/text/label_text.dart';
 import 'package:capstone/core/shared/widgets/text/title_text.dart';
+import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/public_user/login/providers/login_provider.dart';
 import 'package:capstone/features/public_user/register/views/register_screen.dart';
 import 'package:capstone/features/public_user/login/views/reset_password_screen.dart';
@@ -70,7 +71,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         flexibleSpace: Container(
           alignment: Alignment.center,
           decoration: BoxDecoration(
-            color: Colors.deepOrange,
+            color: AppColors.themeColor,
             borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
           ),
           child: Stack(
@@ -82,12 +83,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     children: [
                       const HeadlineText(
                         value: "Saup Angeles",
-                        color: Colors.white,
+                        color: AppColors.whiteTextFull,
                         isBold: true,
                       ),
                       TitleText(
                         value: l10n.appTagline,
-                        color: Colors.white,
+                        color: AppColors.whiteTextFull,
                         alignment: TextAlign.center,
                       ),
                     ],
@@ -118,11 +119,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     children: [
                       TitleText(
                         value: l10n.loginWelcome,
-                        color: Colors.black,
+                        color: AppColors.blackTextFull,
                       ),
                       BodyText(
                         value: l10n.loginSubtitle,
-                        color: Colors.black54,
+                        color: AppColors.blackTextMuted,
                       ),
                       const SizedBox(
                         height: 20.0,
@@ -168,7 +169,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       if (errorMessage != null) ...[
                         LabelText(
                           value: errorMessage!,
-                          color: Colors.red[700]!,
+                          color: AppColors.danger,
                         ),
                       ],
                       const SizedBox(
@@ -191,7 +192,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             padding: const EdgeInsets.symmetric(horizontal: 5.0),
                             child: LabelText(
                               value: l10n.forgotPassword,
-                              color: Colors.deepOrange,
+                              color: AppColors.themeColor,
                             ),
                           ),
                         ),
@@ -226,7 +227,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           Expanded(
                             child: Container(
                               height: 1,
-                              color: Colors.black54,
+                              color: AppColors.blackTextMuted,
                             ),
                           ),
                           const SizedBox(
@@ -234,7 +235,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           ),
                           BodyText(
                             value: l10n.or.toUpperCase(),
-                            color: Colors.black54,
+                            color: AppColors.blackTextMuted,
                           ),
                           const SizedBox(
                             width: 10,
@@ -242,7 +243,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           Expanded(
                             child: Container(
                               height: 1,
-                              color: Colors.black54,
+                              color: AppColors.blackTextMuted,
                             ),
                           ),
                         ],
@@ -257,7 +258,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          LabelText(value: l10n.noAccountPrompt, color: Colors.black54),
+                          LabelText(value: l10n.noAccountPrompt, color: AppColors.blackTextMuted),
                           SizedBox(width: 5),
                           InkWell(
                             onTap: () {
@@ -274,7 +275,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                               padding: const EdgeInsets.symmetric(horizontal: 5.0),
                               child: LabelText(
                                 value: l10n.createOne,
-                                color: Colors.deepOrange,
+                                color: AppColors.themeColor,
                               ),
                             ),
                           ),

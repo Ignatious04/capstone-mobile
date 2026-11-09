@@ -9,6 +9,7 @@ import 'package:capstone/core/shared/providers/user_provider.dart';
 import 'package:capstone/core/services/camera_service.dart';
 import 'package:capstone/core/shared/widgets/text/label_text.dart';
 import 'package:capstone/core/shared/widgets/section_title.dart';
+import 'package:capstone/core/themes/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -165,7 +166,7 @@ class _SetupScreenUserCardPage extends ConsumerState<SetupScreenUserCardPage> {
                                   Center(
                                     child: LabelText(
                                       value: l10n.alignId,
-                                      color: Colors.black54,
+                                      color: AppColors.blackTextMuted,
                                     ),
                                   ),
                                 ],
@@ -231,13 +232,13 @@ class _SetupScreenUserCardPage extends ConsumerState<SetupScreenUserCardPage> {
                     const SizedBox(height: 10),
                     LabelText(
                       value: idCheckError!,
-                      color: Colors.red,
+                      color: AppColors.danger,
                     ),
                   ] else if (field.hasError) ...[
                     const SizedBox(height: 10),
                     LabelText(
                       value: field.errorText ?? "",
-                      color: Colors.red,
+                      color: AppColors.danger,
                     ),
                   ],
                   if (field.value != null && user.idNumber.isNotEmpty) ...[

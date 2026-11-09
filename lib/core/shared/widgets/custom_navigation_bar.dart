@@ -66,7 +66,7 @@ class _NavButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const inactive = Colors.white70;
+    const inactive = AppColors.whiteTextMuted;
 
     return Semantics(
       button: true,
@@ -81,21 +81,21 @@ class _NavButton extends StatelessWidget {
             Icon(
               selected ? item.activeIcon : item.icon,
               size: 25,
-              color: selected ? Colors.white : inactive,
+              color: selected ? AppColors.whiteTextFull : inactive,
             ),
             const SizedBox(height: 5),
             AnimatedContainer(
               duration: const Duration(milliseconds: 200),
               padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
               decoration: BoxDecoration(
-                color: selected ? Colors.white : Colors.transparent,
+                color: selected ? AppColors.whiteTextFull : Colors.transparent,
                 borderRadius: BorderRadius.circular(10),
               ),
               child: FittedBox(
                 fit: BoxFit.scaleDown,
                 child: LabelText(
                   value: item.label,
-                  color: selected ? Colors.deepOrange : inactive,
+                  color: selected ? AppColors.themeColor : inactive,
                 ),
               ),
             ),

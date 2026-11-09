@@ -15,9 +15,9 @@ class MainScreen extends ConsumerWidget {
   const MainScreen({super.key});
 
   List<CustomNavigationBarItem> _navItems(AppLocalizations l10n) => [
+    CustomNavigationBarItem(icon: Icons.home_outlined, activeIcon: Icons.home, label: l10n.home),
     CustomNavigationBarItem(icon: Icons.map_outlined, activeIcon: Icons.map, label: l10n.map),
     CustomNavigationBarItem(icon: Icons.chat_bubble_outline, activeIcon: Icons.chat_bubble, label: l10n.reports),
-    CustomNavigationBarItem(icon: Icons.home_outlined, activeIcon: Icons.home, label: l10n.home),
     CustomNavigationBarItem(icon: Icons.menu_book_outlined, activeIcon: Icons.menu_book, label: l10n.guidance),
     CustomNavigationBarItem(icon: Icons.account_circle_outlined, activeIcon: Icons.account_circle, label: l10n.profile),
   ];
@@ -27,9 +27,9 @@ class MainScreen extends ConsumerWidget {
     final l10n = AppLocalizations.of(context)!;
     final currentPageIndex = ref.watch(mainTabProvider);
     final pages = const [
+      HomeScreen(),
       MapScreen(),
       ReportsScreen(),
-      HomeScreen(),
       PreCallGuidanceScreen(),
       ProfileScreen(),
     ];

@@ -39,11 +39,11 @@ class SettingsScreen extends ConsumerWidget {
                 const SizedBox(height: 10),
                 Card(
                   margin: EdgeInsets.all(0),
-                  color: Colors.white,
+                  color: AppColors.bgWhiteLight,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
                     side: BorderSide(
-                      color: Colors.black12,
+                      color: AppColors.cardBorder,
                     ),
                   ),
                   child: ListTile(
@@ -115,11 +115,11 @@ class SettingsScreen extends ConsumerWidget {
                   const SizedBox(height: 10),
                   Card(
                     margin: EdgeInsets.all(0),
-                    color: Colors.white,
+                    color: AppColors.bgWhiteLight,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                       side: BorderSide(
-                        color: Colors.black12,
+                        color: AppColors.cardBorder,
                       ),
                     ),
                     child: ListTile(
@@ -158,8 +158,8 @@ class SettingsScreen extends ConsumerWidget {
                         MaterialPageRoute(builder: (context) => const DeactivateAccountScreen()),
                       );
                     },
-                    color: Colors.red,
-                    backgroundColor: Colors.white,
+                    color: AppColors.danger,
+                    backgroundColor: AppColors.bgWhiteLight,
                     value: l10n.deactivateAccount,
                   ),
                 ),

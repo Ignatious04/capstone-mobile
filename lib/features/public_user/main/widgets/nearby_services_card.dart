@@ -37,7 +37,7 @@ class NearbyServicesCard extends ConsumerWidget {
     return Card(
       elevation: 0,
       margin: const EdgeInsets.only(bottom: 10),
-      color: Colors.white,
+      color: AppColors.bgWhiteLight,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
         side: BorderSide(
@@ -71,7 +71,7 @@ class NearbyServicesCard extends ConsumerWidget {
                       TitleText(value: name),
                       BodyText(
                         value: contactNumber,
-                        color: Colors.black54,
+                        color: AppColors.blackTextMuted,
                       ),
                     ],
                   ),
@@ -89,7 +89,7 @@ class NearbyServicesCard extends ConsumerWidget {
                     children: [
                       BodyText(
                         value: address,
-                        color: Colors.black54,
+                        color: AppColors.blackTextMuted,
                         isOverflow: false,
                       ),
                       Row(
@@ -97,11 +97,11 @@ class NearbyServicesCard extends ConsumerWidget {
                           Icon(
                             Icons.location_on,
                             size: 25,
-                            color: Colors.black54,
+                            color: AppColors.blackTextMuted,
                           ),
                           BodyText(
                             value: DistanceHelper.formatDistance(distanceMeters),
-                            color: Colors.black54,
+                            color: AppColors.blackTextMuted,
                           ),
                         ],
                       ),
@@ -121,7 +121,7 @@ class NearbyServicesCard extends ConsumerWidget {
                           icon: Icon(
                             Icons.call,
                             size: 25,
-                            color: Colors.white,
+                            color: AppColors.whiteTextFull,
                           ),
                           value: l10n.call,
                         ),

@@ -1,3 +1,4 @@
+import 'package:capstone/core/themes/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class HeadlineText extends StatelessWidget {
@@ -5,7 +6,7 @@ class HeadlineText extends StatelessWidget {
     super.key,
     required this.value,
     this.alignment = TextAlign.left,
-    this.color = Colors.black,
+    this.color = AppColors.blackTextFull,
     this.isBold = false,
   });
 

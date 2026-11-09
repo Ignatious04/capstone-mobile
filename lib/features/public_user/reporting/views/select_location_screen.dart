@@ -2,6 +2,7 @@ import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/constants/map_bounds.dart';
 import 'package:capstone/core/enums/map_mode_enum.dart';
 import 'package:capstone/core/shared/widgets/custom_app_bar.dart';
+import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/public_user/map/widgets/map_tile_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -48,8 +49,8 @@ class _SelectLocationScreenState extends State<SelectLocationScreen> {
         onPressed: () {
           Navigator.pop(context, _selectedLocation);
         },
-        backgroundColor: Colors.deepOrange,
-        foregroundColor: Colors.white,
+        backgroundColor: AppColors.themeColor,
+        foregroundColor: AppColors.whiteTextFull,
         label: Text(l10n.confirm),
         icon: const Icon(Icons.check),
       ),

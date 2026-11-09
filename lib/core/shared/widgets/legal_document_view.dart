@@ -28,7 +28,7 @@ class _LegalDocumentViewState extends State<LegalDocumentView> {
       builder: (context, snapshot) {
         if (snapshot.hasError) {
           return Center(
-            child: BodyText(value: l10n.legalLoadError, color: Colors.black54),
+            child: BodyText(value: l10n.legalLoadError, color: AppColors.blackTextMuted),
           );
         }
 
@@ -75,10 +75,10 @@ class _SectionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       margin: EdgeInsets.zero,
-      color: Colors.white,
+      color: AppColors.bgWhiteLight,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
-        side: const BorderSide(color: Colors.black12),
+        side: const BorderSide(color: AppColors.cardBorder),
       ),
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -101,7 +101,7 @@ class _SectionCard extends StatelessWidget {
       _Paragraph(:final text) => _buildParagraph(text),
       _SubHeading(:final text) => Padding(
         padding: const EdgeInsets.only(top: 4),
-        child: BodyText(value: text, isBold: true, color: Colors.deepOrange),
+        child: BodyText(value: text, isBold: true, color: AppColors.themeColor),
       ),
       _Bullets(:final items) => Column(
         children: [
@@ -113,7 +113,7 @@ class _SectionCard extends StatelessWidget {
                 children: [
                   const Padding(
                     padding: EdgeInsets.only(top: 7),
-                    child: Icon(Icons.circle, size: 6, color: Colors.black54),
+                    child: Icon(Icons.circle, size: 6, color: AppColors.blackTextMuted),
                   ),
                   const SizedBox(width: 10),
                   Expanded(child: _RichBody(item)),
@@ -130,7 +130,7 @@ class _SectionCard extends StatelessWidget {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(width: 24, child: BodyText(value: "${i + 1}.", color: Colors.black54)),
+                  SizedBox(width: 24, child: BodyText(value: "${i + 1}.", color: AppColors.blackTextMuted)),
                   Expanded(child: _RichBody(items[i])),
                 ],
               ),
@@ -155,7 +155,7 @@ class _SectionCard extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Icon(Icons.info_outline, size: 20, color: Colors.deepOrange),
+          const Icon(Icons.info_outline, size: 20, color: AppColors.themeColor),
           const SizedBox(width: 10),
           Expanded(child: _RichBody(text)),
         ],
@@ -168,7 +168,7 @@ class _SectionCard extends StatelessWidget {
     final columnCount = rows.first.length;
 
     return Table(
-      border: TableBorder.all(color: Colors.black12, borderRadius: BorderRadius.circular(8)),
+      border: TableBorder.all(color: AppColors.cardBorder, borderRadius: BorderRadius.circular(8)),
       defaultVerticalAlignment: TableCellVerticalAlignment.middle,
       children: [
         for (var r = 0; r < rows.length; r++)
@@ -225,7 +225,7 @@ class _RichBody extends StatelessWidget {
     return Text.rich(
       TextSpan(
         style: base?.copyWith(
-          color: Colors.black,
+          color: AppColors.blackTextFull,
           fontWeight: isBold ? FontWeight.bold : null,
         ),
         children: spans,

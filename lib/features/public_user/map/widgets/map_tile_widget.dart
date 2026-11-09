@@ -1,6 +1,7 @@
 import 'package:capstone/core/constants/map_bounds.dart';
 import 'package:capstone/core/enums/map_mode_enum.dart';
 import 'package:capstone/core/enums/service_type_enum.dart';
+import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/core/utilities/icon_to_bitmap_descriptor.dart';
 import 'package:capstone/features/public_user/map/models/emergency_service_model.dart';
 import 'package:flutter/foundation.dart';
@@ -213,7 +214,7 @@ class _MapTileWidgetState extends State<MapTileWidget> {
                 child: Icon(
                   Icons.location_pin,
                   size: 50,
-                  color: Colors.red,
+                  color: AppColors.themeColor,
                 ),
               ),
             ),

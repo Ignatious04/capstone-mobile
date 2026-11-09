@@ -6,6 +6,7 @@ import 'package:capstone/core/shared/widgets/custom_alert_dialog.dart';
 import 'package:capstone/core/shared/widgets/custom_app_bar.dart';
 import 'package:capstone/core/shared/widgets/custom_snackbar_helper.dart';
 import 'package:capstone/core/shared/widgets/text/title_text.dart';
+import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/public_user/notifications/widgets/notification_card.dart';
 import 'package:capstone/features/public_user/reporting/views/normal_reports_view_screen.dart';
 import 'package:capstone/features/public_user/reporting/views/pre_call_guidance_report_view_screen.dart';
@@ -63,7 +64,7 @@ class NotificationHistoryScreen extends ConsumerWidget {
                         const Icon(
                           Icons.notifications_none,
                           size: 100,
-                          color: Colors.black54,
+                          color: AppColors.blackTextMuted,
                         ),
                         const SizedBox(height: 10),
                         Center(

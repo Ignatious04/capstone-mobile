@@ -141,7 +141,7 @@ class _EmergencyServicesPanelState extends ConsumerState<EmergencyServicesPanel>
             _scrollController = scrollController;
             return Container(
               decoration: const BoxDecoration(
-                color: Color(0xFFF0F0F0),
+                color: AppColors.bgWhite,
                 borderRadius: BorderRadius.vertical(
                   top: Radius.circular(24),
                 ),
@@ -169,7 +169,7 @@ class _EmergencyServicesPanelState extends ConsumerState<EmergencyServicesPanel>
                                 width: 50,
                                 height: 5,
                                 decoration: BoxDecoration(
-                                  color: Colors.black54,
+                                  color: AppColors.blackTextMuted,
                                   borderRadius: BorderRadius.circular(12),
                                 ),
                               ),
@@ -222,9 +222,9 @@ class _EmergencyServicesPanelState extends ConsumerState<EmergencyServicesPanel>
                                         onSelected: (_) {
                                           ref.read(emergencyServiceFilterProvider.notifier).setType(type);
                                         },
-                                        selectedColor: Colors.deepOrange,
+                                        selectedColor: AppColors.themeColor,
                                         labelStyle: TextStyle(
-                                          color: isSelected ? Colors.white : Colors.black,
+                                          color: isSelected ? AppColors.whiteTextFull : AppColors.blackTextFull,
                                         ),
                                       );
                                     }).toList(),

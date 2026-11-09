@@ -3,6 +3,7 @@ import 'package:capstone/core/shared/models/dispatch_note_model.dart';
 import 'package:capstone/core/shared/widgets/section_title.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/widgets/text/label_text.dart';
+import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/core/utilities/formatter.dart';
 import 'package:flutter/material.dart';
 
@@ -46,7 +47,7 @@ class DispatchNotesSection extends StatelessWidget {
                         if (ordered[i].authorName.isNotEmpty) ordered[i].authorName,
                         if (ordered[i].createdAt != null) Formatter.formatDateTime(ordered[i].createdAt!, locale),
                       ].join(' • '),
-                      color: Colors.black54,
+                      color: AppColors.blackTextMuted,
                     ),
                     const SizedBox(height: 4),
                   ],

@@ -1,4 +1,5 @@
 import 'package:capstone/core/l10n/app_localizations.dart';
+import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/public_user/reporting/models/victim_model.dart';
 import 'package:capstone/features/public_user/reporting/widgets/empty_card.dart';
 import 'package:capstone/features/public_user/reporting/widgets/victim_card_item.dart';
@@ -21,7 +22,7 @@ class VictimsCard extends StatelessWidget {
     }
 
     return Card(
-      color: Colors.white,
+      color: AppColors.bgWhiteLight,
       elevation: 1,
       margin: EdgeInsets.zero,
       child: Padding(

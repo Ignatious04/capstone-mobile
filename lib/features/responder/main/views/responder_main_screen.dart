@@ -1,5 +1,6 @@
 import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/shared/widgets/custom_navigation_bar.dart';
+import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/responder/active_case/providers/responder_location_sharing_provider.dart';
 import 'package:capstone/features/responder/active_case/views/active_case_screen.dart';
 import 'package:capstone/features/responder/history/views/history_screen.dart';
@@ -40,7 +41,7 @@ class _ResponderMainScreenState extends ConsumerState<ResponderMainScreen> {
 
     return Scaffold(
       body: AnnotatedRegion<SystemUiOverlayStyle>(
-        value: const SystemUiOverlayStyle(statusBarColor: Colors.deepOrange),
+        value: const SystemUiOverlayStyle(statusBarColor: AppColors.themeColor),
         child: IndexedStack(
           index: currentPageIndex,
           children: pages,

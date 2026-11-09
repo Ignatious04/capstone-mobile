@@ -11,6 +11,7 @@ import 'package:capstone/core/shared/widgets/custom_circular_progress_indicator.
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/widgets/text/label_text.dart';
 import 'package:capstone/core/shared/widgets/text/title_text.dart';
+import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/core/utilities/directions_launcher.dart';
 import 'package:capstone/core/utilities/eta_calculator.dart';
 import 'package:capstone/features/public_user/map/widgets/map_tile_widget.dart';
@@ -69,7 +70,7 @@ class ActiveCaseScreen extends ConsumerWidget {
     final caseAsync = ref.watch(activeCaseProvider);
 
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
+      backgroundColor: AppColors.bgWhite,
       body: SafeArea(
         child: caseAsync.when(
           data: (activeCase) {
@@ -102,13 +103,13 @@ class _NoActiveCase extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(Icons.emergency_outlined, size: 100, color: Colors.black54),
+            const Icon(Icons.emergency_outlined, size: 100, color: AppColors.blackTextMuted),
             const SizedBox(height: 10),
             TitleText(value: l10n.noActiveCase),
             const SizedBox(height: 10),
             BodyText(
               value: l10n.noActiveCaseHint,
-              color: Colors.black54,
+              color: AppColors.blackTextMuted,
               alignment: TextAlign.center,
             ),
           ],
@@ -144,7 +145,7 @@ class _ActiveCaseBody extends ConsumerWidget {
           width: double.infinity,
           child: location == null
               ? Container(
-                  color: Colors.grey.shade300,
+                  color: AppColors.cardBorder,
                   child: Center(child: Text(l10n.noLocationOnReport)),
                 )
               : Stack(
@@ -172,8 +173,8 @@ class _ActiveCaseBody extends ConsumerWidget {
                         height: 50,
                         child: FloatingActionButton(
                           heroTag: 'directionsFAB',
-                          backgroundColor: Colors.white,
-                          foregroundColor: Colors.deepOrange,
+                          backgroundColor: AppColors.bgWhiteLight,
+                          foregroundColor: AppColors.themeColor,
                           onPressed: () {
                             ref
                                 .read(auditLogRepositoryProvider)
@@ -201,7 +202,7 @@ class _ActiveCaseBody extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Card(
-                  color: Colors.white,
+                  color: AppColors.bgWhiteLight,
                   elevation: 1,
                   margin: EdgeInsets.zero,
                   child: Padding(
@@ -216,10 +217,10 @@ class _ActiveCaseBody extends ConsumerWidget {
                               width: 50,
                               height: 50,
                               decoration: BoxDecoration(
-                                color: Colors.deepOrange,
+                                color: AppColors.themeColor,
                                 borderRadius: BorderRadius.circular(12),
                               ),
-                              child: const Icon(Icons.emergency_outlined, size: 30, color: Colors.white),
+                              child: const Icon(Icons.emergency_outlined, size: 30, color: AppColors.whiteTextFull),
                             ),
                             const SizedBox(width: 10),
                             Expanded(
@@ -255,7 +256,7 @@ class _ActiveCaseBody extends ConsumerWidget {
                         Center(
                           child: LabelText(
                             value: l10n.holdToUpdate,
-                            color: Colors.black54,
+                            color: AppColors.blackTextMuted,
                           ),
                         ),
                         const SizedBox(height: 10),

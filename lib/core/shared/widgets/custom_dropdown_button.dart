@@ -37,7 +37,7 @@ class CustomDropdownButton<T> extends StatelessWidget {
                 const TextSpan(
                   text: ' *',
                   style: TextStyle(
-                    color: Colors.red,
+                    color: AppColors.danger,
                   ),
                 ),
             ],

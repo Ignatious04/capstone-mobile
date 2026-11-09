@@ -166,13 +166,15 @@ class ProfileScreen extends ConsumerWidget {
                                         return AlertDialog(
                                           title: BodyText(value: l10n.logoutConfirm),
                                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                                          backgroundColor: Colors.white,
+                                          backgroundColor: AppColors.bgWhite,
                                           actions: [
                                             CustomElevatedButton(
                                               onPressed: () {
                                                 Navigator.pop(context, false);
                                               },
                                               value: l10n.no,
+                                              backgroundColor: AppColors.bgWhiteLight,
+                                              color: AppColors.blackTextFull,
                                             ),
                                             CustomElevatedButton(
                                               onPressed: () {

@@ -4,6 +4,7 @@ import 'package:capstone/core/shared/providers/locale_provider.dart';
 import 'package:capstone/core/shared/widgets/custom_app_bar.dart';
 import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
 import 'package:capstone/core/shared/widgets/legal_document_view.dart';
+import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/core/utilities/call_nearest_service.dart';
 import 'package:capstone/features/public_user/guides/models/guides_model.dart';
 import 'package:capstone/features/public_user/guides/providers/guides_provider.dart';
@@ -41,8 +42,8 @@ class GuideDetailScreen extends ConsumerWidget {
                   ),
                   value: l10n.callServiceType(guide.type.label(l10n)),
                   icon: const Icon(Icons.call),
-                  color: Colors.white,
-                  backgroundColor: Colors.green,
+                  color: AppColors.whiteTextFull,
+                  backgroundColor: AppColors.darkerGreen,
                 ),
               ),
             ),

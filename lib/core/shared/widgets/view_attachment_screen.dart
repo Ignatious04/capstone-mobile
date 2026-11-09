@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:capstone/core/shared/widgets/custom_app_bar.dart';
 import 'package:capstone/core/shared/widgets/custom_circular_progress_indicator.dart';
+import 'package:capstone/core/themes/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class ViewAttachmentScreen extends StatelessWidget {
@@ -28,7 +29,7 @@ class ViewAttachmentScreen extends StatelessWidget {
     child: Icon(
       Icons.broken_image_outlined,
       size: 36,
-      color: Colors.black54,
+      color: AppColors.blackTextMuted,
     ),
   );
 

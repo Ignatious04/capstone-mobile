@@ -6,6 +6,7 @@ import 'package:capstone/core/shared/widgets/custom_elevated_button.dart';
 import 'package:capstone/core/shared/widgets/custom_snackbar_helper.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/widgets/text/title_text.dart';
+import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/core/utilities/call_launcher.dart';
 import 'package:capstone/features/public_user/setup/views/setup_screen_page_view.dart';
 import 'package:flutter/material.dart';
@@ -47,7 +48,7 @@ class RejectedScreen extends ConsumerWidget {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const Icon(Icons.error_outline, size: 50, color: Colors.deepOrange),
+                const Icon(Icons.error_outline, size: 50, color: AppColors.themeColor),
                 const SizedBox(height: 10),
                 TitleText(
                   value: l10n.rejectedCouldntVerifyAccount,
@@ -58,7 +59,7 @@ class RejectedScreen extends ConsumerWidget {
                   value: user.canResubmit
                       ? l10n.rejectedNeedsUpdate
                       : l10n.rejectedUnableToApprove,
-                  color: Colors.black54,
+                  color: AppColors.blackTextMuted,
                   alignment: TextAlign.center,
                 ),
                 if (hasDetails) ...[
@@ -66,9 +67,9 @@ class RejectedScreen extends ConsumerWidget {
                   Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: Colors.deepOrange.withValues(alpha: 0.08),
+                      color: AppColors.themeColor.withValues(alpha: 0.08),
                       borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: Colors.deepOrange.withValues(alpha: 0.3)),
+                      border: Border.all(color: AppColors.themeColor.withValues(alpha: 0.3)),
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -95,17 +96,17 @@ class RejectedScreen extends ConsumerWidget {
                 else
                   BodyText(
                     value: l10n.contactAdmin,
-                    color: Colors.black54,
+                    color: AppColors.blackTextMuted,
                     alignment: TextAlign.center,
                   ),
                 const SizedBox(height: 10),
                 OutlinedButton.icon(
                   onPressed: () => _call911(context),
-                  icon: const Icon(Icons.call, color: Colors.red),
-                  label: BodyText(value: l10n.call911, color: Colors.red, isBold: true),
+                  icon: const Icon(Icons.call, color: AppColors.danger),
+                  label: BodyText(value: l10n.call911, color: AppColors.danger, isBold: true),
                   style: OutlinedButton.styleFrom(
                     padding: const EdgeInsets.all(14),
-                    side: const BorderSide(color: Colors.red),
+                    side: const BorderSide(color: AppColors.danger),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                   ),
                 ),

@@ -27,7 +27,7 @@ class SetupScreenSummaryPage extends ConsumerWidget {
             height: 10,
           ),
           Card(
-            color: Colors.white,
+            color: AppColors.bgWhiteLight,
             child: SizedBox(
               width: double.infinity,
               child: Padding(
@@ -144,7 +144,7 @@ class SetupScreenSummaryPage extends ConsumerWidget {
             decoration: BoxDecoration(
               color: AppColors.lighterDeepOrange,
               borderRadius: BorderRadius.circular(12),
-              border: Border.all(color: Colors.deepOrange, width: 1),
+              border: Border.all(color: AppColors.themeColor, width: 1),
             ),
             child: SizedBox(
               width: double.infinity,
@@ -154,7 +154,7 @@ class SetupScreenSummaryPage extends ConsumerWidget {
                   children: [
                     const Icon(
                       Icons.warning,
-                      color: Colors.red,
+                      color: AppColors.danger,
                     ),
                     const SizedBox(
                       width: 20,
@@ -162,7 +162,7 @@ class SetupScreenSummaryPage extends ConsumerWidget {
                     Expanded(
                       child: BodyText(
                         value: l10n.reminder,
-                        color: Colors.red,
+                        color: AppColors.danger,
                       ),
                     ),
                   ],

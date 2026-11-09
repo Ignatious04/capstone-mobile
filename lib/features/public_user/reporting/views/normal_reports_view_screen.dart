@@ -7,6 +7,7 @@ import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/widgets/text/label_text.dart';
 import 'package:capstone/core/shared/widgets/custom_app_bar.dart';
 import 'package:capstone/core/shared/models/report_model.dart';
+import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/public_user/reporting/widgets/attachments_card.dart';
 import 'package:capstone/features/public_user/reporting/widgets/report_status_widget.dart';
 import 'package:capstone/core/shared/widgets/section_title.dart';
@@ -70,7 +71,7 @@ class _NormalReportsViewScreenState extends ConsumerState<NormalReportsViewScree
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Card(
-                  color: Colors.white,
+                  color: AppColors.bgWhiteLight,
                   elevation: 1,
                   margin: EdgeInsets.zero,
                   child: Padding(
@@ -85,13 +86,13 @@ class _NormalReportsViewScreenState extends ConsumerState<NormalReportsViewScree
                               width: 50,
                               height: 50,
                               decoration: BoxDecoration(
-                                color: Colors.deepOrange,
+                                color: AppColors.themeColor,
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               child: const Icon(
                                 Icons.emergency_outlined,
                                 size: 30,
-                                color: Colors.white,
+                                color: AppColors.whiteTextFull,
                               ),
                             ),
                             const SizedBox(width: 10),

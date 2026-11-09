@@ -29,7 +29,7 @@ class GuidesScreen extends ConsumerWidget {
         child: guidesAsync.when(
           loading: () => const Center(child: CustomCircularProgressIndicator()),
           error: (_, _) => Center(
-            child: BodyText(value: l10n.guidesLoadError, color: Colors.black54),
+            child: BodyText(value: l10n.guidesLoadError, color: AppColors.blackTextMuted),
           ),
           data: (guides) => ListView(
             padding: const EdgeInsets.all(20),
@@ -64,7 +64,7 @@ class GuidesScreen extends ConsumerWidget {
                   ],
                   const SizedBox(height: 10),
                 ],
-              BodyText(value: l10n.guidesDisclaimer, color: Colors.black54),
+              BodyText(value: l10n.guidesDisclaimer, color: AppColors.blackTextMuted),
             ],
           ),
         ),
@@ -87,7 +87,7 @@ class _GuideCard extends StatelessWidget {
       clipBehavior: Clip.antiAlias,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
-        side: const BorderSide(color: Colors.black12),
+        side: const BorderSide(color: AppColors.cardBorder),
       ),
       child: InkWell(
         onTap: () => Navigator.push(
@@ -109,11 +109,11 @@ class _GuideCard extends StatelessWidget {
                   children: [
                     TitleText(value: guide.title),
                     const SizedBox(height: 2),
-                    BodyText(value: guide.summary, color: Colors.black54),
+                    BodyText(value: guide.summary, color: AppColors.blackTextMuted),
                   ],
                 ),
               ),
-              const Icon(Icons.chevron_right, color: Colors.black54),
+              const Icon(Icons.chevron_right, color: AppColors.blackTextMuted),
             ],
           ),
         ),

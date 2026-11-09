@@ -1,5 +1,6 @@
 import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/shared/models/attachment_model.dart';
+import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/public_user/reporting/widgets/attachments_card_item.dart';
 import 'package:capstone/features/public_user/reporting/widgets/empty_card.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +31,7 @@ class AttachmentsCard extends StatelessWidget {
     }
 
     return Card(
-      color: Colors.white,
+      color: AppColors.bgWhiteLight,
       elevation: 1,
       margin: EdgeInsets.zero,
       shape: RoundedRectangleBorder(

@@ -151,7 +151,7 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
                       padding: const EdgeInsets.only(top: 4),
                       child: Text(
                         field.errorText!,
-                        style: const TextStyle(color: Colors.red, fontSize: 12),
+                        style: const TextStyle(color: AppColors.danger, fontSize: 12),
                       ),
                     ),
                 ],
@@ -163,7 +163,7 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
           ),
           LabelText(
             value: l10n.requiredNote.toUpperCase(),
-            color: Colors.red,
+            color: AppColors.danger,
             isBold: false,
           ),
           const SizedBox(
@@ -380,7 +380,7 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
               Icon(
                 Icons.directions,
                 size: 25,
-                color: Colors.black54,
+                color: AppColors.blackTextMuted,
               ),
               const SizedBox(
                 width: 10,

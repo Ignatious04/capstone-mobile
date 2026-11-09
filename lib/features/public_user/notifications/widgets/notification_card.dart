@@ -3,6 +3,7 @@ import 'package:capstone/core/enums/notification_type_enum.dart';
 import 'package:capstone/core/shared/models/notification_model.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/widgets/text/title_text.dart';
+import 'package:capstone/core/themes/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -36,7 +37,7 @@ class NotificationCard extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
 
     return Card(
-      color: notification.isRead ? Colors.white : Colors.deepOrange.shade50,
+      color: notification.isRead ? AppColors.bgWhiteLight : AppColors.lighterDeepOrange,
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(12),
@@ -45,7 +46,7 @@ class NotificationCard extends StatelessWidget {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Icon(_icon, color: Colors.deepOrange),
+              Icon(_icon, color: AppColors.themeColor),
               const SizedBox(width: 12),
               Expanded(
                 child: Column(
@@ -60,7 +61,7 @@ class NotificationCard extends StatelessWidget {
                         "MMM dd, yyyy • h:mm a",
                         Localizations.localeOf(context).toString(),
                       ).format(notification.createdAt),
-                      color: Colors.grey,
+                      color: AppColors.blackTextMuted,
                     ),
                   ],
                 ),
@@ -70,11 +71,11 @@ class NotificationCard extends StatelessWidget {
                   width: 10,
                   height: 10,
                   margin: const EdgeInsets.only(left: 8, top: 4),
-                  decoration: const BoxDecoration(color: Colors.deepOrange, shape: BoxShape.circle),
+                  decoration: const BoxDecoration(color: AppColors.themeColor, shape: BoxShape.circle),
                 ),
               if (onDelete != null)
                 IconButton(
-                  icon: const Icon(Icons.delete_outline, color: Colors.grey),
+                  icon: const Icon(Icons.delete_outline, color: AppColors.blackTextMuted),
                   tooltip: l10n.deleteNotification,
                   padding: EdgeInsets.zero,
                   constraints: const BoxConstraints(minWidth: 32, minHeight: 32),

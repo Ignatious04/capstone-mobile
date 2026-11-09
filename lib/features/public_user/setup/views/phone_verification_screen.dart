@@ -6,6 +6,7 @@ import 'package:capstone/core/shared/widgets/custom_snackbar_helper.dart';
 import 'package:capstone/core/shared/widgets/custom_text_field.dart';
 import 'package:capstone/core/shared/widgets/section_title.dart';
 import 'package:capstone/core/shared/widgets/text/label_text.dart';
+import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/public_user/setup/providers/phone_verification_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -109,9 +110,9 @@ class _PhoneVerificationScreenState extends ConsumerState<PhoneVerificationScree
           if (isVerified) ...[
             Row(
               children: [
-                Icon(Icons.check_circle, color: Colors.green, size: 20),
+                Icon(Icons.check_circle, color: AppColors.darkerGreen, size: 20),
                 SizedBox(width: 6),
-                Text(l10n.phoneVerified, style: TextStyle(color: Colors.green)),
+                Text(l10n.phoneVerified, style: TextStyle(color: AppColors.darkerGreen)),
               ],
             ),
           ] else if (!phoneState.codeSent) ...[
