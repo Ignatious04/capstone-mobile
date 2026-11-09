@@ -8,6 +8,7 @@ import 'package:capstone/core/shared/widgets/custom_app_bar.dart';
 import 'package:capstone/core/shared/widgets/info_column.dart';
 import 'package:capstone/core/shared/models/report_model.dart';
 import 'package:capstone/core/themes/app_colors.dart';
+import 'package:capstone/features/public_user/reporting/widgets/report_map_header.dart';
 import 'package:capstone/features/public_user/reporting/widgets/report_status_widget.dart';
 import 'package:capstone/core/shared/widgets/section_title.dart';
 import 'package:capstone/features/public_user/reporting/widgets/report_responses_section.dart';
@@ -52,118 +53,126 @@ class QuickReportViewScreen extends ConsumerWidget {
       ),
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Card(
-                color: AppColors.bgWhiteLight,
-                elevation: 1,
-                margin: EdgeInsets.zero,
-                child: Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            width: 50,
-                            height: 50,
-                            decoration: BoxDecoration(
-                              color: AppColors.themeColor,
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: const Icon(
-                              Icons.emergency_outlined,
-                              size: 30,
-                              color: AppColors.whiteTextFull,
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                          Expanded(
-                            child: Column(
+              ReportMapHeader(report: currentReport),
+              Padding(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Card(
+                      color: AppColors.bgWhiteLight,
+                      elevation: 1,
+                      margin: EdgeInsets.zero,
+                      child: Padding(
+                        padding: const EdgeInsets.all(20),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                BodyText(
-                                  value: l10n.emergencyType.toUpperCase(),
+                                Container(
+                                  width: 50,
+                                  height: 50,
+                                  decoration: BoxDecoration(
+                                    color: AppColors.themeColor,
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: const Icon(
+                                    Icons.emergency_outlined,
+                                    size: 30,
+                                    color: AppColors.whiteTextFull,
+                                  ),
                                 ),
-                                BodyText(
-                                  value: currentReport.incidentType!.label(l10n),
-                                  isBold: true,
+                                const SizedBox(width: 10),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      BodyText(
+                                        value: l10n.emergencyType.toUpperCase(),
+                                      ),
+                                      BodyText(
+                                        value: currentReport.incidentType!.label(l10n),
+                                        isBold: true,
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ],
                             ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 10),
-                      ReportStatusWidget(
-                        status: status,
-                        resolvedAt: currentReport.resolvedAt,
-                      ),
-                      const SizedBox(height: 10),
-                      Divider(
-                        height: 1,
-                      ),
-                      const SizedBox(height: 10),
-                      Align(
-                        alignment: Alignment.center,
-                        child: const Icon(
-                          Icons.quickreply,
-                          color: AppColors.darkerGreen,
-                          size: 50,
+                            const SizedBox(height: 10),
+                            ReportStatusWidget(
+                              status: status,
+                              resolvedAt: currentReport.resolvedAt,
+                            ),
+                            const SizedBox(height: 10),
+                            Divider(
+                              height: 1,
+                            ),
+                            const SizedBox(height: 10),
+                            Align(
+                              alignment: Alignment.center,
+                              child: const Icon(
+                                Icons.quickreply,
+                                color: AppColors.darkerGreen,
+                                size: 50,
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            Align(
+                              alignment: Alignment.center,
+                              child: TitleText(
+                                value: l10n.quickReportLabel,
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            BodyText(
+                              value: l10n.quickReportNote,
+                              alignment: TextAlign.center,
+                              isOverflow: false,
+                            ),
+                          ],
                         ),
                       ),
-                      const SizedBox(height: 10),
-                      Align(
-                        alignment: Alignment.center,
-                        child: TitleText(
-                          value: l10n.quickReportLabel,
+                    ),
+                    const SizedBox(height: 10),
+                    ReportResponsesSection(report: currentReport),
+                    const SizedBox(height: 10),
+                    SectionTitle(
+                      icon: Icons.info,
+                      title: l10n.incidentInformation,
+                    ),
+                    const SizedBox(height: 10),
+                    Card(
+                      color: AppColors.bgWhiteLight,
+                      child: Padding(
+                        padding: const EdgeInsets.all(20),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            InfoColumn(
+                              title: l10n.referenceNumber.toUpperCase(),
+                              value: currentReport.referenceNumber,
+                            ),
+                            const SizedBox(height: 10),
+                            InfoColumn(
+                              title: l10n.submitted.toUpperCase(),
+                              value: currentReport.createdAt != null
+                                  ? DateFormat(
+                                      "MMMM dd, yyyy • hh:mm a",
+                                      Localizations.localeOf(context).toString(),
+                                    ).format(currentReport.createdAt!)
+                                  : "-",
+                            ),
+                          ],
                         ),
                       ),
-                      const SizedBox(height: 10),
-                      BodyText(
-                        value: l10n.quickReportNote,
-                        alignment: TextAlign.center,
-                        isOverflow: false,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              const SizedBox(height: 10),
-              ReportResponsesSection(report: currentReport),
-              const SizedBox(height: 10),
-              SectionTitle(
-                icon: Icons.info,
-                title: l10n.incidentInformation,
-              ),
-              const SizedBox(height: 10),
-              Card(
-                color: AppColors.bgWhiteLight,
-                child: Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      InfoColumn(
-                        title: l10n.referenceNumber.toUpperCase(),
-                        value: currentReport.referenceNumber,
-                      ),
-                      const SizedBox(height: 10),
-                      InfoColumn(
-                        title: l10n.submitted.toUpperCase(),
-                        value: currentReport.createdAt != null
-                            ? DateFormat(
-                                "MMMM dd, yyyy • hh:mm a",
-                                Localizations.localeOf(context).toString(),
-                              ).format(currentReport.createdAt!)
-                            : "-",
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ],

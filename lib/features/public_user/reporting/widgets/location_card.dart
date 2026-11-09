@@ -1,6 +1,7 @@
 import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/enums/map_mode_enum.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
+import 'package:capstone/core/shared/widgets/text/label_text.dart';
 import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/core/utilities/case_marker_icons.dart';
 import 'package:capstone/features/public_user/map/widgets/map_tile_widget.dart';
@@ -16,6 +17,7 @@ class LocationCard extends ConsumerWidget {
     super.key,
     required this.location,
     this.responders = const [],
+    this.attached = false,
   });
 
   final GeoPoint location;
@@ -23,6 +25,11 @@ class LocationCard extends ConsumerWidget {
   /// Every responder currently sharing their location. The positions are
   /// watched here (and on the full-screen map) so both stay live.
   final List<ResponderKey> responders;
+
+  /// Edge-to-edge header style (rounded bottom corners), like the map on the
+  /// report form screen. Meant to sit at the very top of a screen, outside
+  /// any padding.
+  final bool attached;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -34,6 +41,11 @@ class LocationCard extends ConsumerWidget {
     final icons = ref.watch(caseMarkerIconsProvider).value;
 
     return Card(
+      shape: attached
+          ? const RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(bottom: Radius.circular(24)),
+            )
+          : null,
       color: AppColors.bgWhiteLight,
       elevation: 1,
       margin: EdgeInsets.zero,
@@ -108,11 +120,10 @@ class LocationCard extends ConsumerWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      BodyText(
+                      LabelText(
                         value: l10n.reportedLocation.toUpperCase(),
                         color: AppColors.blackTextMuted,
                       ),
-                      const SizedBox(height: 10),
                       BodyText(
                         value:
                             '${location.latitude.toStringAsFixed(6)}, '

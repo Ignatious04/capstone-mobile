@@ -9,6 +9,7 @@ import 'package:capstone/core/shared/widgets/custom_app_bar.dart';
 import 'package:capstone/core/shared/models/report_model.dart';
 import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/public_user/reporting/widgets/attachments_card.dart';
+import 'package:capstone/features/public_user/reporting/widgets/report_map_header.dart';
 import 'package:capstone/features/public_user/reporting/widgets/report_status_widget.dart';
 import 'package:capstone/core/shared/widgets/section_title.dart';
 import 'package:capstone/features/public_user/reporting/widgets/report_responses_section.dart';
@@ -65,96 +66,97 @@ class _NormalReportsViewScreenState extends ConsumerState<NormalReportsViewScree
       ),
       body: SafeArea(
         child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Card(
-                  color: AppColors.bgWhiteLight,
-                  elevation: 1,
-                  margin: EdgeInsets.zero,
-                  child: Padding(
-                    padding: const EdgeInsets.all(20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              ReportMapHeader(report: report),
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Card(
+                      color: AppColors.bgWhiteLight,
+                      elevation: 1,
+                      margin: EdgeInsets.zero,
+                      child: Padding(
+                        padding: const EdgeInsets.all(20),
+                        child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Container(
-                              width: 50,
-                              height: 50,
-                              decoration: BoxDecoration(
-                                color: AppColors.themeColor,
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: const Icon(
-                                Icons.emergency_outlined,
-                                size: 30,
-                                color: AppColors.whiteTextFull,
-                              ),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                  width: 50,
+                                  height: 50,
+                                  decoration: BoxDecoration(
+                                    color: AppColors.themeColor,
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: const Icon(
+                                    Icons.emergency_outlined,
+                                    size: 30,
+                                    color: AppColors.whiteTextFull,
+                                  ),
+                                ),
+                                const SizedBox(width: 10),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      BodyText(
+                                        value: l10n.incidentType.toUpperCase(),
+                                      ),
+                                      BodyText(
+                                        value: report.incidentType!.label(l10n),
+                                        isBold: true,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
                             ),
-                            const SizedBox(width: 10),
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  BodyText(
-                                    value: l10n.incidentType.toUpperCase(),
-                                  ),
-                                  BodyText(
-                                    value: report.incidentType!.label(l10n),
-                                    isBold: true,
-                                  ),
-                                ],
-                              ),
+                            const SizedBox(height: 10),
+                            ReportStatusWidget(
+                              status: status,
+                              resolvedAt: report.resolvedAt,
+                            ),
+                            const SizedBox(height: 10),
+                            LabelText(
+                              value: l10n.description.toUpperCase(),
+                            ),
+                            BodyText(
+                              value: report.description.isEmpty ? l10n.noDescriptionProvided : report.description,
                             ),
                           ],
                         ),
-                        const SizedBox(height: 10),
-                        ReportStatusWidget(
-                          status: status,
-                          resolvedAt: report.resolvedAt,
-                        ),
-                        const SizedBox(height: 10),
-                        LabelText(
-                          value: l10n.description.toUpperCase(),
-                        ),
-                        BodyText(
-                          value: report.description.isEmpty ? l10n.noDescriptionProvided : report.description,
-                        ),
-                      ],
+                      ),
                     ),
-                  ),
+                    const SizedBox(height: 10),
+                    ReportResponsesSection(report: report),
+                    const SizedBox(height: 10),
+                    SectionTitle(
+                      icon: Icons.people_outline,
+                      title: l10n.victims,
+                    ),
+                    const SizedBox(height: 10),
+                    VictimsCard(
+                      victims: report.victims,
+                    ),
+                    const SizedBox(height: 10),
+                    SectionTitle(
+                      icon: Icons.attach_file,
+                      title: l10n.attachments,
+                    ),
+                    const SizedBox(height: 10),
+                    AttachmentsCard(
+                      attachments: report.attachments,
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 10),
-                ReportResponsesSection(report: report),
-                const SizedBox(height: 10),
-                SectionTitle(
-                  icon: Icons.people_outline,
-                  title: l10n.victims,
-                ),
-                const SizedBox(height: 10),
-                VictimsCard(
-                  victims: report.victims,
-                ),
-                const SizedBox(height: 10),
-                SectionTitle(
-                  icon: Icons.attach_file,
-                  title: l10n.attachments,
-                ),
-                const SizedBox(height: 10),
-                AttachmentsCard(
-                  attachments: report.attachments,
-                ),
-                const SizedBox(height: 10),
-                SectionTitle(
-                  icon: Icons.notes,
-                  title: l10n.additionalInformation,
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

@@ -209,7 +209,7 @@ class _EmergencyServicesPanelState extends ConsumerState<EmergencyServicesPanel>
                                     height: 10,
                                   ),
                                   Wrap(
-                                    spacing: 8,
+                                    spacing: 10,
                                     children: ServiceTypeEnum.values.map((type) {
                                       final isSelected = ref.watch(emergencyServiceFilterProvider) == type;
 
@@ -217,15 +217,14 @@ class _EmergencyServicesPanelState extends ConsumerState<EmergencyServicesPanel>
                                         label: BodyText(
                                           value: type.label(l10n),
                                           isBold: true,
+                                          color: isSelected ? AppColors.whiteTextFull : AppColors.blackTextFull,
                                         ),
                                         selected: isSelected,
                                         onSelected: (_) {
                                           ref.read(emergencyServiceFilterProvider.notifier).setType(type);
                                         },
                                         selectedColor: AppColors.themeColor,
-                                        labelStyle: TextStyle(
-                                          color: isSelected ? AppColors.whiteTextFull : AppColors.blackTextFull,
-                                        ),
+                                        checkmarkColor: AppColors.whiteTextFull,
                                       );
                                     }).toList(),
                                   ),
