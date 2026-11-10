@@ -734,5 +734,8 @@
     "placeholders": { "meters": { "type": "int" } }
   },
   "notificationsOn": "On",
-  "notificationsOff": "Off – turn on to get report and case updates"
+  "notificationsOff": "Off – turn on to get report and case updates",
+  "filterAll": "All",
+  "noMatchingReports": "No reports match these filters.",
+  "clearFilters": "Clear filters"
 }

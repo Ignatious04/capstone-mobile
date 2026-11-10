@@ -537,5 +537,8 @@
   "autoArrivedBody": "Nasa loob ka na ng arrival zone, kaya minarkahan ang kaso bilang Nasa Lugar.",
   "arrivalZoneLabel": "Awtomatikong dating sa loob ng {meters} m",
   "notificationsOn": "Naka-on",
-  "notificationsOff": "Naka-off – i-on para makatanggap ng mga update sa report at kaso"
+  "notificationsOff": "Naka-off – i-on para makatanggap ng mga update sa report at kaso",
+  "filterAll": "Lahat",
+  "noMatchingReports": "Walang ulat na tumutugma sa mga filter.",
+  "clearFilters": "I-clear ang mga filter"
 }

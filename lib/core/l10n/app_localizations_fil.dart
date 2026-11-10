@@ -1729,4 +1729,13 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String get notificationsOff => 'Naka-off – i-on para makatanggap ng mga update sa report at kaso';
+
+  @override
+  String get filterAll => 'Lahat';
+
+  @override
+  String get noMatchingReports => 'Walang ulat na tumutugma sa mga filter.';
+
+  @override
+  String get clearFilters => 'I-clear ang mga filter';
 }

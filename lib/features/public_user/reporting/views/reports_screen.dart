@@ -1,5 +1,7 @@
+import 'package:capstone/core/enums/service_type_enum.dart';
 import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/enums/report_status_enum.dart';
+import 'package:capstone/core/l10n/enum_labels.dart';
 import 'package:capstone/core/shared/providers/firebase_auth_provider.dart';
 import 'package:capstone/core/shared/providers/verification_provider.dart';
 import 'package:capstone/core/shared/widgets/consent_banner.dart';
@@ -29,6 +31,94 @@ class ReportsScreen extends ConsumerStatefulWidget {
 
 class _ReportsScreenState extends ConsumerState<ReportsScreen> {
   final ScrollController _scrollController = ScrollController();
+
+  ReportStatusEnum? _statusFilter;
+  ServiceTypeEnum? _typeFilter;
+
+  void _clearFilters() => setState(() {
+    _statusFilter = null;
+    _typeFilter = null;
+  });
+
+  List<ReportModel> _applyFilters(List<ReportModel> reports) {
+    return reports.where((r) {
+      final matchesStatus = _statusFilter == null || r.status == _statusFilter;
+      final matchesType = _typeFilter == null || r.incidentType == _typeFilter;
+      return matchesStatus && matchesType;
+    }).toList();
+  }
+
+  Widget _filterChip({
+    required String label,
+    required bool selected,
+    required VoidCallback onTap,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.only(right: 10),
+      child: ChoiceChip(
+        label: BodyText(
+          value: label,
+          isBold: true,
+          color: selected ? AppColors.whiteTextFull : AppColors.blackTextFull,
+        ),
+        selected: selected,
+        onSelected: (_) => onTap(),
+        selectedColor: AppColors.themeColor,
+        checkmarkColor: AppColors.whiteTextFull,
+      ),
+    );
+  }
+
+  Widget _buildFilters(AppLocalizations l10n) {
+    return Column(
+      children: [
+        SizedBox(
+          height: 44,
+          child: ListView(
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            children: [
+              _filterChip(
+                label: l10n.filterAll,
+                selected: _statusFilter == null,
+                onTap: () => setState(() => _statusFilter = null),
+              ),
+              for (final status in ReportStatusEnum.values)
+                _filterChip(
+                  label: status.label(l10n),
+                  selected: _statusFilter == status,
+                  onTap: () => setState(
+                    () => _statusFilter = _statusFilter == status ? null : status,
+                  ),
+                ),
+            ],
+          ),
+        ),
+        SizedBox(
+          height: 44,
+          child: ListView(
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            children: [
+              _filterChip(
+                label: l10n.filterAll,
+                selected: _typeFilter == null,
+                onTap: () => setState(() => _typeFilter = null),
+              ),
+              for (final type in ServiceTypeEnum.values)
+                _filterChip(
+                  label: type.label(l10n),
+                  selected: _typeFilter == type,
+                  onTap: () => setState(
+                    () => _typeFilter = _typeFilter == type ? null : type,
+                  ),
+                ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
 
   // Scrolls with the list instead of sitting above it, so they never push it down.
   static const _banners = Column(
@@ -98,6 +188,7 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
     final l10n = AppLocalizations.of(context)!;
 
     final reports = ref.watch(reportsStreamProvider);
+    final hasAnyReports = reports.value?.isNotEmpty ?? false;
 
     return Scaffold(
       body: SafeArea(
@@ -107,12 +198,13 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
               width: double.infinity,
               child: CustomHeaderWidget(title: l10n.reports, body: l10n.reportsSubtitle),
             ),
+            if (hasAnyReports) _buildFilters(l10n),
             Expanded(
               child: RefreshIndicator(
                 onRefresh: _refresh,
                 child: reports.when(
-                  data: (reports) {
-                    if (reports.isEmpty) {
+                  data: (allReports) {
+                    if (allReports.isEmpty) {
                       return ListView(
                         physics: const AlwaysScrollableScrollPhysics(),
                         padding: const EdgeInsets.all(20),
@@ -136,6 +228,35 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
                                   ),
                                 ],
                               ),
+                            ),
+                          ),
+                        ],
+                      );
+                    }
+                    final reports = _applyFilters(allReports);
+                    if (reports.isEmpty) {
+                      return ListView(
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        padding: const EdgeInsets.all(20),
+                        children: [
+                          _banners,
+                          const SizedBox(height: 40),
+                          Center(
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(
+                                  Icons.filter_list_off,
+                                  size: 80,
+                                  color: AppColors.blackTextMuted,
+                                ),
+                                const SizedBox(height: 10),
+                                BodyText(value: l10n.noMatchingReports, isBold: true),
+                                TextButton(
+                                  onPressed: _clearFilters,
+                                  child: Text(l10n.clearFilters),
+                                ),
+                              ],
                             ),
                           ),
                         ],
@@ -193,6 +314,7 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
           );
 
           if (submitted == true && mounted) {
+            _clearFilters();
             _scrollController.animateTo(
               0,
               duration: const Duration(milliseconds: 300),

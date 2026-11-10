@@ -3289,6 +3289,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Off – turn on to get report and case updates'**
   String get notificationsOff;
+
+  /// No description provided for @filterAll.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get filterAll;
+
+  /// No description provided for @noMatchingReports.
+  ///
+  /// In en, this message translates to:
+  /// **'No reports match these filters.'**
+  String get noMatchingReports;
+
+  /// No description provided for @clearFilters.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear filters'**
+  String get clearFilters;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

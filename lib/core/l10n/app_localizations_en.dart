@@ -1721,4 +1721,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get notificationsOff => 'Off – turn on to get report and case updates';
+
+  @override
+  String get filterAll => 'All';
+
+  @override
+  String get noMatchingReports => 'No reports match these filters.';
+
+  @override
+  String get clearFilters => 'Clear filters';
 }

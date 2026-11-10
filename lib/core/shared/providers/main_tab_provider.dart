@@ -5,7 +5,7 @@ const kGuidanceTabIndex = 3;
 
 class MainTabNotifier extends Notifier<int> {
   @override
-  int build() => 2; // Home
+  int build() => 0; // Home
 
   void set(int index) => state = index;
 }

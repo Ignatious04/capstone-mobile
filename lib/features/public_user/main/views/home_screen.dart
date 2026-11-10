@@ -7,7 +7,6 @@ import 'package:capstone/core/enums/map_mode_enum.dart';
 import 'package:capstone/core/enums/service_type_enum.dart';
 import 'package:capstone/core/shared/providers/audit_log_repository_provider.dart';
 import 'package:capstone/core/shared/providers/location_provider.dart';
-import 'package:capstone/core/shared/providers/notification_history_provider.dart';
 import 'package:capstone/core/shared/providers/verification_provider.dart';
 import 'package:capstone/core/shared/widgets/consent_banner.dart';
 import 'package:capstone/core/shared/widgets/custom_alert_dialog.dart';
@@ -29,9 +28,9 @@ import 'package:capstone/features/public_user/map/providers/contact_number_repos
 import 'package:capstone/features/public_user/map/widgets/map_tile_widget.dart';
 import 'package:capstone/features/public_user/main/widgets/nearby_services_card.dart';
 import 'package:capstone/core/themes/app_colors.dart';
-import 'package:capstone/features/public_user/notifications/views/notification_history_screen.dart';
 import 'package:capstone/core/shared/providers/report_provider.dart';
 import 'package:capstone/core/shared/widgets/section_title.dart';
+import 'package:capstone/features/public_user/notifications/widgets/notification_bell_button.dart';
 import 'package:capstone/features/public_user/pre_call_guidance/utilities/offline_report_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -155,7 +154,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SubmitGuardMixin<H
     final l10n = AppLocalizations.of(context)!;
     final location = ref.watch(locationStreamProvider);
     final nearestServicesAsync = ref.watch(nearestEmergencyServicesProvider);
-    final unreadCount = ref.watch(unreadNotificationCountProvider);
 
     ref.listen(nearestEmergencyServicesProvider, (previous, next) {
       next.whenData((nearest) {
@@ -193,36 +191,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SubmitGuardMixin<H
                 ),
                 Padding(
                   padding: const EdgeInsets.only(right: 20.0),
-                  child: Stack(
-                    clipBehavior: Clip.none,
-                    children: [
-                      IconButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (_) => const NotificationHistoryScreen()),
-                          );
-                        },
-                        icon: Icon(Icons.notifications),
-                        style: IconButton.styleFrom(backgroundColor: AppColors.themeColor, foregroundColor: AppColors.whiteTextFull),
-                      ),
-                      if (unreadCount > 0)
-                        Positioned(
-                          right: 4,
-                          top: 4,
-                          child: Container(
-                            padding: const EdgeInsets.all(4),
-                            constraints: const BoxConstraints(minWidth: 16, minHeight: 16),
-                            decoration: const BoxDecoration(color: AppColors.danger, shape: BoxShape.circle),
-                            child: Text(
-                              '$unreadCount',
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(color: AppColors.whiteTextFull, fontSize: 10),
-                            ),
-                          ),
-                        ),
-                    ],
-                  ),
+                  child: const NotificationBellButton(),
                 ),
               ],
             ),

@@ -14,7 +14,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class NotificationHistoryScreen extends ConsumerWidget {
-  const NotificationHistoryScreen({super.key});
+  const NotificationHistoryScreen({super.key, this.isResponder = false});
+
+  /// Responder notifications point at the Active Case tab, not the reporter-side
+  /// report screens, so tapping one only marks it as read.
+  final bool isResponder;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -97,6 +101,7 @@ class NotificationHistoryScreen extends ConsumerWidget {
                               if (!notification.isRead) {
                                 ref.read(notificationHistoryProvider.notifier).markAsRead(notification.id);
                               }
+                              if (isResponder) return;
                               final reportID = notification.reportID;
                               if (reportID == null) return;
 
