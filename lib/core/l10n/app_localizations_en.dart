@@ -534,10 +534,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'Angeles City\'s declared emergency response time is 10–15 minutes; please note that actual response time may vary depending on responder availability, traffic, and the nature of each case.';
 
   @override
-  String get reportSent => 'Report sent!';
+  String get quickReportSuccess => 'Quick report submitted successfully!';
 
   @override
-  String get reportSentSuccess => 'Report sent successfully!';
+  String get reportSentSuccess => 'Report submitted successfully!';
 
   @override
   String get reportSendError => 'An error has occurred while trying to send your report!';
@@ -1114,6 +1114,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get holdToUpdate => 'Hold for 2 seconds to update';
+
+  @override
+  String get holdToReport => 'Hold a button for 1 second to send a report';
 
   @override
   String get enRoute => 'En Route';
@@ -1732,6 +1735,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get clearFilters => 'Clear filters';
 
   @override
+  String get mapLayers => 'Map layers';
+
+  @override
+  String get mapLayerDefault => 'Default';
+
+  @override
+  String get mapLayerSatellite => 'Satellite';
+
+  @override
   String get smsReviewTitle => 'Review SMS Report';
 
   @override
@@ -1754,4 +1766,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get smsNotSentYet => 'Not yet, open again';
+
+  @override
+  String get primaryService => 'Primary';
+
+  @override
+  String get secondaryService => 'Secondary';
 }

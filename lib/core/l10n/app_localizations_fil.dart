@@ -535,7 +535,7 @@ class AppLocalizationsFil extends AppLocalizations {
       'Ang itinakdang oras ng pagtugon sa emergency ng Angeles City ay 10–15 minuto; tandaan na maaaring mag-iba ang aktwal na oras depende sa availability ng responder, trapiko, at uri ng bawat kaso.';
 
   @override
-  String get reportSent => 'Naipadala ang report!';
+  String get quickReportSuccess => 'Quick report submitted successfully!';
 
   @override
   String get reportSentSuccess => 'Matagumpay na naipadala ang report!';
@@ -1118,6 +1118,9 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String get holdToUpdate => 'Pindutin nang 2 segundo para mag-update';
+
+  @override
+  String get holdToReport => 'Pindutin nang 1 segundo para magpadala ng report';
 
   @override
   String get enRoute => 'Papunta na';
@@ -1740,6 +1743,15 @@ class AppLocalizationsFil extends AppLocalizations {
   String get clearFilters => 'I-clear ang mga filter';
 
   @override
+  String get mapLayers => 'Layers ng mapa';
+
+  @override
+  String get mapLayerDefault => 'Default';
+
+  @override
+  String get mapLayerSatellite => 'Satellite';
+
+  @override
   String get smsReviewTitle => 'Suriin ang SMS Report';
 
   @override
@@ -1762,4 +1774,10 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String get smsNotSentYet => 'Hindi pa, buksan muli';
+
+  @override
+  String get primaryService => 'Pangunahin';
+
+  @override
+  String get secondaryService => 'Pangalawa';
 }

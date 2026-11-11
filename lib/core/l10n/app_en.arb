@@ -205,8 +205,8 @@
   },
   "quickReportBody": "This immediately sends your current location as an emergency report. Only use this for real emergencies.",
   "responseTimeNotice": "Angeles City's declared emergency response time is 10–15 minutes; please note that actual response time may vary depending on responder availability, traffic, and the nature of each case.",
-  "reportSent": "Report sent!",
-  "reportSentSuccess": "Report sent successfully!",
+  "quickReportSuccess": "Quick report submitted successfully!",
+  "reportSentSuccess": "Report submitted successfully!",
   "reportSendError": "An error has occurred while trying to send your report!",
   "call911Button": "CALL 911",
   "nearbyServices": "Nearby Services",
@@ -458,6 +458,7 @@
   "reporterAttachments": "Reporter Attachments",
   "responderAttachments": "Responder Attachments",
   "holdToUpdate": "Hold for 2 seconds to update",
+  "holdToReport": "Hold a button for 1 second to send a report",
   "enRoute": "En Route",
   "arrivedOnScene": "Arrived on Scene",
   "resolveCase": "Resolve Case",
@@ -738,6 +739,9 @@
   "filterAll": "All",
   "noMatchingReports": "No reports match these filters.",
   "clearFilters": "Clear filters",
+  "mapLayers": "Map layers",
+  "mapLayerDefault": "Default",
+  "mapLayerSatellite": "Satellite",
   "smsReviewTitle": "Review SMS Report",
   "smsReviewIntro": "Your report is ready. Tap the button below to open your messaging app, then press send.",
   "smsReviewRecipient": "To: {number}",
@@ -747,5 +751,7 @@
   "openMessagesButton": "Open Messages",
   "smsSentQuestion": "Did you send the message?",
   "smsSentConfirm": "Yes, I sent it",
-  "smsNotSentYet": "Not yet, open again"
+  "smsNotSentYet": "Not yet, open again",
+  "primaryService": "Primary",
+  "secondaryService": "Secondary"
 }

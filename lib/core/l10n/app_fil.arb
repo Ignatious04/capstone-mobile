@@ -353,6 +353,7 @@
   "reporterAttachments": "Mga Kalakip ng Nag-ulat",
   "responderAttachments": "Mga Kalakip ng Responder",
   "holdToUpdate": "Pindutin nang 2 segundo para mag-update",
+  "holdToReport": "Pindutin nang 1 segundo para magpadala ng report",
   "enRoute": "Papunta na",
   "arrivedOnScene": "Dumating sa Lugar",
   "resolveCase": "Lutasin ang Kaso",
@@ -541,11 +542,16 @@
   "filterAll": "Lahat",
   "noMatchingReports": "Walang ulat na tumutugma sa mga filter.",
   "clearFilters": "I-clear ang mga filter",
+  "mapLayers": "Layers ng mapa",
+  "mapLayerDefault": "Default",
+  "mapLayerSatellite": "Satellite",
   "smsReviewTitle": "Suriin ang SMS Report",
   "smsReviewIntro": "Handa na ang iyong report. Pindutin ang button sa ibaba para buksan ang messaging app, pagkatapos ay pindutin ang send.",
   "smsReviewRecipient": "Ipapadala sa: {number}",
   "openMessagesButton": "Buksan ang Messages",
   "smsSentQuestion": "Naipadala mo ba ang mensahe?",
   "smsSentConfirm": "Oo, naipadala ko na",
-  "smsNotSentYet": "Hindi pa, buksan muli"
+  "smsNotSentYet": "Hindi pa, buksan muli",
+  "primaryService": "Pangunahin",
+  "secondaryService": "Pangalawa"
 }

@@ -1112,16 +1112,16 @@ abstract class AppLocalizations {
   /// **'Angeles City\'s declared emergency response time is 10–15 minutes; please note that actual response time may vary depending on responder availability, traffic, and the nature of each case.'**
   String get responseTimeNotice;
 
-  /// No description provided for @reportSent.
+  /// No description provided for @quickReportSuccess.
   ///
   /// In en, this message translates to:
-  /// **'Report sent!'**
-  String get reportSent;
+  /// **'Quick report submitted successfully!'**
+  String get quickReportSuccess;
 
   /// No description provided for @reportSentSuccess.
   ///
   /// In en, this message translates to:
-  /// **'Report sent successfully!'**
+  /// **'Report submitted successfully!'**
   String get reportSentSuccess;
 
   /// No description provided for @reportSendError.
@@ -2209,6 +2209,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Hold for 2 seconds to update'**
   String get holdToUpdate;
+
+  /// No description provided for @holdToReport.
+  ///
+  /// In en, this message translates to:
+  /// **'Hold a button for 1 second to send a report'**
+  String get holdToReport;
 
   /// No description provided for @enRoute.
   ///
@@ -3308,6 +3314,24 @@ abstract class AppLocalizations {
   /// **'Clear filters'**
   String get clearFilters;
 
+  /// No description provided for @mapLayers.
+  ///
+  /// In en, this message translates to:
+  /// **'Map layers'**
+  String get mapLayers;
+
+  /// No description provided for @mapLayerDefault.
+  ///
+  /// In en, this message translates to:
+  /// **'Default'**
+  String get mapLayerDefault;
+
+  /// No description provided for @mapLayerSatellite.
+  ///
+  /// In en, this message translates to:
+  /// **'Satellite'**
+  String get mapLayerSatellite;
+
   /// No description provided for @smsReviewTitle.
   ///
   /// In en, this message translates to:
@@ -3349,6 +3373,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Not yet, open again'**
   String get smsNotSentYet;
+
+  /// No description provided for @primaryService.
+  ///
+  /// In en, this message translates to:
+  /// **'Primary'**
+  String get primaryService;
+
+  /// No description provided for @secondaryService.
+  ///
+  /// In en, this message translates to:
+  /// **'Secondary'**
+  String get secondaryService;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

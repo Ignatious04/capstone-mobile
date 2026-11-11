@@ -6,6 +6,7 @@ import 'package:capstone/core/shared/widgets/custom_header_widget.dart';
 import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/public_user/map/providers/filtered_emergency_service_provider.dart';
 import 'package:capstone/features/public_user/map/widgets/emergency_services_panel.dart';
+import 'package:capstone/features/public_user/map/widgets/map_layer_button.dart';
 import 'package:capstone/features/public_user/map/widgets/map_tile_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -84,6 +85,7 @@ class _MapScreenState extends ConsumerState<MapScreen> {
                     initialLocation: latLng,
                     services: services,
                     mode: MapModeEnum.explore,
+                    showLayerToggle: false, // placed below, clear of the header
                     onMapCreated: (controller) {
                       setState(() {
                         _mapController = controller;
@@ -99,6 +101,11 @@ class _MapScreenState extends ConsumerState<MapScreen> {
                     title: l10n.serviceMap,
                     body: l10n.findNearbyServices,
                   ),
+                ),
+                 const Positioned(
+                  right: 20,
+                  bottom: 185,
+                  child: MapLayerButton(),
                 ),
                 Positioned(
                   right: 20,

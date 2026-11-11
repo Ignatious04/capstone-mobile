@@ -1,4 +1,3 @@
-import 'package:capstone/core/l10n/enum_labels.dart';
 import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/shared/models/response_model.dart';
 import 'package:capstone/core/shared/providers/report_repository_provider.dart';
@@ -10,6 +9,7 @@ import 'package:capstone/core/shared/widgets/text/label_text.dart';
 import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/public_user/reporting/widgets/attachments_card.dart';
 import 'package:capstone/features/public_user/reporting/widgets/location_card.dart';
+import 'package:capstone/features/public_user/reporting/widgets/report_service_types_widget.dart';
 import 'package:capstone/features/public_user/reporting/widgets/report_status_widget.dart';
 import 'package:capstone/features/public_user/reporting/widgets/reporting_timeline_card.dart';
 import 'package:capstone/features/public_user/reporting/widgets/victims_card.dart';
@@ -53,10 +53,7 @@ class HistoryCaseDetailScreen extends ConsumerWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       LabelText(value: l10n.emergencyType.toUpperCase()),
-                      BodyText(
-                        value: report.incidentType?.label(l10n) ?? '—',
-                        isBold: true,
-                      ),
+                      ReportServiceTypesWidget(report: report),
                       const SizedBox(height: 10),
                       ReportStatusWidget(status: response.status.name),
                       const SizedBox(height: 10),
@@ -71,7 +68,7 @@ class HistoryCaseDetailScreen extends ConsumerWidget {
                   ),
                 ),
               ),
-                            const SizedBox(height: 10),
+              const SizedBox(height: 10),
               SectionTitle(icon: Icons.timeline, title: l10n.statusTimeline),
               const SizedBox(height: 10),
               ReportTimelineCard(createdAt: report.createdAt, response: response),

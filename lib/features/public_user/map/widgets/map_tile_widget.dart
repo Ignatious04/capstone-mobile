@@ -1,14 +1,17 @@
 import 'package:capstone/core/constants/map_bounds.dart';
 import 'package:capstone/core/enums/map_mode_enum.dart';
 import 'package:capstone/core/enums/service_type_enum.dart';
+import 'package:capstone/core/shared/providers/map_layer_provider.dart';
 import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/core/utilities/icon_to_bitmap_descriptor.dart';
 import 'package:capstone/features/public_user/map/models/emergency_service_model.dart';
+import 'package:capstone/features/public_user/map/widgets/map_layer_button.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-class MapTileWidget extends StatefulWidget {
+class MapTileWidget extends ConsumerStatefulWidget {
   const MapTileWidget({
     super.key,
     this.onMapCreated,
@@ -21,6 +24,7 @@ class MapTileWidget extends StatefulWidget {
     this.extraCircles = const {},
     this.fitToPoints = const [],
     this.followLocation = false,
+    this.showLayerToggle,
   });
 
   final void Function(GoogleMapController controller)? onMapCreated;
@@ -37,11 +41,16 @@ class MapTileWidget extends StatefulWidget {
   /// Off by default so other map views keep their current behavior.
   final bool followLocation;
 
+  /// Whether to show the layer (default / satellite) button on the map.
+  /// Defaults to true for interactive maps and false for small, static
+  /// previews. The selected layer is applied to every map either way.
+  final bool? showLayerToggle;
+
   @override
-  State<MapTileWidget> createState() => _MapTileWidgetState();
+  ConsumerState<MapTileWidget> createState() => _MapTileWidgetState();
 }
 
-class _MapTileWidgetState extends State<MapTileWidget> {
+class _MapTileWidgetState extends ConsumerState<MapTileWidget> {
   CameraPosition? _cameraPosition;
 
   GoogleMapController? _controller;
@@ -80,6 +89,8 @@ class _MapTileWidgetState extends State<MapTileWidget> {
   bool get _showCenterPin => widget.mode == MapModeEnum.selectLocation;
 
   bool get _gesturesEnabled => widget.gesturesEnabled ?? (widget.mode != MapModeEnum.view);
+
+  bool get _showLayerToggle => widget.showLayerToggle ?? _gesturesEnabled;
 
   late BitmapDescriptor _medicalMarkerIcon;
   late BitmapDescriptor _policeMarkerIcon;
@@ -181,6 +192,7 @@ class _MapTileWidgetState extends State<MapTileWidget> {
             AngelesCityMap.minZoom,
             AngelesCityMap.maxZoom,
           ),
+          mapType: ref.watch(mapLayerProvider).mapType,
           scrollGesturesEnabled: _gesturesEnabled,
           zoomGesturesEnabled: _gesturesEnabled,
           rotateGesturesEnabled: _gesturesEnabled,
@@ -208,6 +220,13 @@ class _MapTileWidgetState extends State<MapTileWidget> {
             _cameraPosition = position;
           },
         ),
+
+        if (_showLayerToggle)
+          const Positioned(
+           top: 12,
+           right: 12,
+            child: MapLayerButton(),
+          ),
 
         if (_showCenterPin)
           IgnorePointer(

@@ -9,6 +9,7 @@ import 'package:capstone/core/shared/widgets/info_column.dart';
 import 'package:capstone/core/shared/models/report_model.dart';
 import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/public_user/reporting/widgets/report_map_header.dart';
+import 'package:capstone/features/public_user/reporting/widgets/report_service_types_widget.dart';
 import 'package:capstone/features/public_user/reporting/widgets/report_status_widget.dart';
 import 'package:capstone/core/shared/widgets/section_title.dart';
 import 'package:capstone/features/public_user/reporting/widgets/report_responses_section.dart';
@@ -95,10 +96,7 @@ class SmsReportViewScreen extends ConsumerWidget {
                                       BodyText(
                                         value: l10n.emergencyType.toUpperCase(),
                                       ),
-                                      BodyText(
-                                        value: currentReport.incidentType!.label(l10n),
-                                        isBold: true,
-                                      ),
+                                      ReportServiceTypesWidget(report: currentReport),
                                     ],
                                   ),
                                 ),

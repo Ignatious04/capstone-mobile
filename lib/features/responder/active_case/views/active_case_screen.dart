@@ -1,7 +1,6 @@
 // lib/features/responder/active_case/views/active_case_screen.dart
 import 'package:capstone/core/enums/audit_action_enum.dart';
 import 'package:capstone/core/enums/service_type_enum.dart';
-import 'package:capstone/core/l10n/enum_labels.dart';
 import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/enums/map_mode_enum.dart';
 import 'package:capstone/core/enums/report_status_enum.dart';
@@ -17,6 +16,7 @@ import 'package:capstone/core/utilities/eta_calculator.dart';
 import 'package:capstone/features/public_user/map/widgets/map_tile_widget.dart';
 import 'package:capstone/core/shared/providers/response_repository_provider.dart';
 import 'package:capstone/features/public_user/reporting/widgets/attachments_card.dart';
+import 'package:capstone/features/public_user/reporting/widgets/report_service_types_widget.dart';
 import 'package:capstone/features/public_user/reporting/widgets/report_status_widget.dart';
 import 'package:capstone/core/shared/widgets/section_title.dart';
 import 'package:capstone/features/public_user/reporting/widgets/victims_card.dart';
@@ -155,6 +155,7 @@ class _ActiveCaseBody extends ConsumerWidget {
                       child: MapTileWidget(
                         initialLocation: LatLng(location.latitude, location.longitude),
                         mode: MapModeEnum.view,
+                        showLayerToggle: true,
                         extraMarkers: {
                           Marker(
                             markerId: const MarkerId('incident'),
@@ -256,10 +257,7 @@ class _ActiveCaseBody extends ConsumerWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   LabelText(value: l10n.emergencyType.toUpperCase()),
-                                  BodyText(
-                                    value: report.incidentType?.label(l10n) ?? '—',
-                                    isBold: true,
-                                  ),
+                                  ReportServiceTypesWidget(report: report),
                                 ],
                               ),
                             ),

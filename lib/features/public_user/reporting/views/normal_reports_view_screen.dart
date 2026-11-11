@@ -10,6 +10,7 @@ import 'package:capstone/core/shared/models/report_model.dart';
 import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/public_user/reporting/widgets/attachments_card.dart';
 import 'package:capstone/features/public_user/reporting/widgets/report_map_header.dart';
+import 'package:capstone/features/public_user/reporting/widgets/report_service_types_widget.dart';
 import 'package:capstone/features/public_user/reporting/widgets/report_status_widget.dart';
 import 'package:capstone/core/shared/widgets/section_title.dart';
 import 'package:capstone/features/public_user/reporting/widgets/report_responses_section.dart';
@@ -108,10 +109,7 @@ class _NormalReportsViewScreenState extends ConsumerState<NormalReportsViewScree
                                       BodyText(
                                         value: l10n.incidentType.toUpperCase(),
                                       ),
-                                      BodyText(
-                                        value: report.incidentType!.label(l10n),
-                                        isBold: true,
-                                      ),
+                                      ReportServiceTypesWidget(report: report),
                                     ],
                                   ),
                                 ),

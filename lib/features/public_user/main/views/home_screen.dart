@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:capstone/core/l10n/enum_labels.dart';
 import 'package:capstone/core/l10n/app_localizations.dart';
 import 'package:capstone/core/enums/audit_action_enum.dart';
@@ -9,15 +8,15 @@ import 'package:capstone/core/shared/providers/audit_log_repository_provider.dar
 import 'package:capstone/core/shared/providers/location_provider.dart';
 import 'package:capstone/core/shared/providers/verification_provider.dart';
 import 'package:capstone/core/shared/widgets/consent_banner.dart';
-import 'package:capstone/core/shared/widgets/custom_alert_dialog.dart';
 import 'package:capstone/core/shared/widgets/custom_circular_progress_indicator.dart';
 import 'package:capstone/core/shared/widgets/custom_header_widget.dart';
 import 'package:capstone/core/shared/widgets/custom_snackbar_helper.dart';
+import 'package:capstone/core/shared/widgets/hold_service_button.dart';
 import 'package:capstone/core/shared/widgets/loading_overlay_widget.dart';
 import 'package:capstone/core/shared/widgets/offline_sms_banner.dart';
 import 'package:capstone/core/shared/widgets/reporting_restriction_banner.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
-import 'package:capstone/core/shared/widgets/service_button.dart';
+import 'package:capstone/core/shared/widgets/text/label_text.dart';
 import 'package:capstone/core/shared/widgets/verification_banner.dart';
 import 'package:capstone/core/utilities/call_launcher.dart';
 import 'package:capstone/core/utilities/distance_helper.dart';
@@ -93,22 +92,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SubmitGuardMixin<H
     if (!await ensureCanReport(context, ref)) return;
     if (!mounted) return;
 
-    // Start the GPS fix now, but don't wait for it. It runs while the user
-    // reads the dialog. ignore() stops an unhandled-error report if they cancel.
-    final locationFuture = ref.read(locationServiceProvider).getCurrentLocation();
-    locationFuture.ignore();
-
-    final label = incidentType.label(l10n);
-
-    final confirmed = await showConfirmationDialog(
-      context,
-      title: l10n.quickReportTitle(label),
-      content: "${l10n.quickReportBody} ${l10n.responseTimeNotice}",
-    );
-
-    if (confirmed != true) return;
-    if (!mounted) return;
-
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -116,7 +99,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SubmitGuardMixin<H
     );
 
     try {
-      final fix = await locationFuture;
+      final fix = await ref.read(locationServiceProvider).getCurrentLocation();
       await ref
           .read(reportProvider.notifier)
           .submitQuickReport(
@@ -127,7 +110,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SubmitGuardMixin<H
 
       if (!mounted) return;
       Navigator.pop(context);
-      CustomSnackbarHelper.show(context, text: l10n.reportSent);
+      CustomSnackbarHelper.show(context, text: l10n.quickReportSuccess);
     } on TimeoutException {
       if (!mounted) return;
       Navigator.pop(context);
@@ -251,8 +234,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SubmitGuardMixin<H
                         Row(
                           children: [
                             Expanded(
-                              child: ServiceButton(
-                                onPressed: () => guarded(() => _submitQuickReport(ServiceTypeEnum.fire)),
+                              child: HoldServiceButton(
+                                enabled: !isBusy,
+                                onHoldComplete: () => guarded(() => _submitQuickReport(ServiceTypeEnum.fire)),
                                 value: ServiceTypeEnum.fire.label(l10n),
                                 icon: Icons.fire_truck,
                                 color: Colors.red,
@@ -261,8 +245,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SubmitGuardMixin<H
                             ),
                             const SizedBox(width: 10),
                             Expanded(
-                              child: ServiceButton(
-                                onPressed: () => guarded(() => _submitQuickReport(ServiceTypeEnum.police)),
+                               child: HoldServiceButton(
+                                enabled: !isBusy,
+                                onHoldComplete: () => guarded(() => _submitQuickReport(ServiceTypeEnum.police)),
                                 value: l10n.quickCrime,
                                 icon: Icons.local_police,
                                 color: Colors.blue,
@@ -271,8 +256,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SubmitGuardMixin<H
                             ),
                             const SizedBox(width: 10),
                             Expanded(
-                              child: ServiceButton(
-                                onPressed: () => guarded(() => _submitQuickReport(ServiceTypeEnum.medical)),
+                              child: HoldServiceButton(
+                                enabled: !isBusy,
+                                onHoldComplete: () => guarded(() => _submitQuickReport(ServiceTypeEnum.medical)),
                                 value: ServiceTypeEnum.medical.label(l10n),
                                 icon: Icons.medical_services,
                                 color: Colors.green,
@@ -284,6 +270,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SubmitGuardMixin<H
                         const SizedBox(
                           height: 10,
                         ),
+                        Center(
+                          child: LabelText(
+                            value: l10n.holdToReport,
+                            color: AppColors.blackTextMuted,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                         ),
                         Row(
                           children: [
                             const Expanded(
