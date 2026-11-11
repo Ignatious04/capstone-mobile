@@ -37,18 +37,16 @@ class ResponseRepository {
   /// Every service's response to one report, primary first. `userID` is part
   /// of the query so it matches the "reporter can read" rule.
   Stream<List<ResponseModel>> watchForReport({required String reportID, required String userID}) {
-    return _responses
-        .where('reportID', isEqualTo: reportID)
-        .where('userID', isEqualTo: userID)
-        .snapshots()
-        .map((snapshot) {
-          final list = snapshot.docs.map(_fromDoc).toList();
-          list.sort((a, b) {
-            if (a.isPrimary != b.isPrimary) return a.isPrimary ? -1 : 1;
-            return a.serviceType.index.compareTo(b.serviceType.index);
-          });
-          return list;
-        });
+    return _responses.where('reportID', isEqualTo: reportID).where('userID', isEqualTo: userID).snapshots().map((
+      snapshot,
+    ) {
+      final list = snapshot.docs.map(_fromDoc).toList();
+      list.sort((a, b) {
+        if (a.isPrimary != b.isPrimary) return a.isPrimary ? -1 : 1;
+        return a.serviceType.index.compareTo(b.serviceType.index);
+      });
+      return list;
+    });
   }
 
   Future<void> updateStatus(
@@ -83,7 +81,7 @@ class ResponseRepository {
     });
   }
 
-    List<Map<String, dynamic>> _mapList(DocumentSnapshot<Map<String, dynamic>> snap, String field) =>
+  List<Map<String, dynamic>> _mapList(DocumentSnapshot<Map<String, dynamic>> snap, String field) =>
       (snap.data()?[field] as List<dynamic>? ?? []).map((e) => Map<String, dynamic>.from(e as Map)).toList();
 
   // Notes have no id, so match on author + creation time.
@@ -121,6 +119,13 @@ class ResponseRepository {
       if (i == -1) return;
       notes.removeAt(i);
       tx.update(doc, {'responderNotes': notes});
+    });
+  }
+
+  Future<void> setEta(String responseID, {required int etaSeconds, required double etaDistanceMeters}) {
+    return _responses.doc(responseID).update({
+      'etaSeconds': etaSeconds,
+      'etaDistanceMeters': etaDistanceMeters,
     });
   }
 }

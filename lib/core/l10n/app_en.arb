@@ -753,5 +753,9 @@
   "smsSentConfirm": "Yes, I sent it",
   "smsNotSentYet": "Not yet, open again",
   "primaryService": "Primary",
-  "secondaryService": "Secondary"
+  "secondaryService": "Secondary",
+  "submittingReport": "Submitting your report...",
+  "sendingQuickReport": "Sending your quick report...",
+  "submittingGuidanceReport": "Submitting your report...",
+  "settingUpAccount": "Setting up your account..."
 }

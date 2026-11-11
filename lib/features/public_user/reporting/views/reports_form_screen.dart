@@ -102,8 +102,8 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> with Subm
     super.dispose();
   }
 
-  Widget showLoadingOverlay() {
-    return LoadingOverlayWidget();
+  Widget showLoadingOverlay(String message) {
+    return LoadingOverlayWidget(message: message);
   }
 
   @override
@@ -531,7 +531,7 @@ class _ReportsFormScreenState extends ConsumerState<ReportsFormScreen> with Subm
                                 showDialog(
                                   context: context,
                                   barrierDismissible: false,
-                                  builder: (context) => showLoadingOverlay(),
+                                  builder: (context) => showLoadingOverlay(l10n.submittingReport),
                                 );
 
                                 try {

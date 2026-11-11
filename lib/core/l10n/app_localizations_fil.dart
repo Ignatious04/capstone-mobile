@@ -535,7 +535,7 @@ class AppLocalizationsFil extends AppLocalizations {
       'Ang itinakdang oras ng pagtugon sa emergency ng Angeles City ay 10–15 minuto; tandaan na maaaring mag-iba ang aktwal na oras depende sa availability ng responder, trapiko, at uri ng bawat kaso.';
 
   @override
-  String get quickReportSuccess => 'Quick report submitted successfully!';
+  String get quickReportSuccess => 'Matagumpay na naipadala ang quick report!';
 
   @override
   String get reportSentSuccess => 'Matagumpay na naipadala ang report!';
@@ -1780,4 +1780,16 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String get secondaryService => 'Pangalawa';
+
+  @override
+  String get submittingReport => 'Isinusumite ang iyong report...';
+
+  @override
+  String get sendingQuickReport => 'Ipinapadala ang iyong quick report...';
+
+  @override
+  String get submittingGuidanceReport => 'Isinusumite ang iyong report...';
+
+  @override
+  String get settingUpAccount => 'Sine-set up ang iyong account...';
 }

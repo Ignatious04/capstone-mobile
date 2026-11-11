@@ -53,7 +53,7 @@ class _PreCallGuidanceSummaryScreenState extends ConsumerState<PreCallGuidanceSu
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (context) => const LoadingOverlayWidget(),
+      builder: (context) => LoadingOverlayWidget(message: l10n.submittingGuidanceReport),
     );
 
     try {

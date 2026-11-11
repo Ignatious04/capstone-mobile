@@ -1772,4 +1772,16 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get secondaryService => 'Secondary';
+
+  @override
+  String get submittingReport => 'Submitting your report...';
+
+  @override
+  String get sendingQuickReport => 'Sending your quick report...';
+
+  @override
+  String get submittingGuidanceReport => 'Submitting your report...';
+
+  @override
+  String get settingUpAccount => 'Setting up your account...';
 }

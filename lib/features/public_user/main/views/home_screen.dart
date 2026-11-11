@@ -95,7 +95,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SubmitGuardMixin<H
     showDialog(
       context: context,
       barrierDismissible: false,
-      builder: (context) => const LoadingOverlayWidget(),
+      builder: (context) => LoadingOverlayWidget(message: l10n.sendingQuickReport),
     );
 
     try {

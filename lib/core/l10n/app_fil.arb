@@ -170,7 +170,7 @@
   "quickReportTitle": "Magpadala ng mabilis na report sa {label}?",
   "quickReportBody": "Agad nitong ipapadala ang iyong kasalukuyang lokasyon bilang emergency report. Gamitin lamang ito sa totoong emergency.",
   "responseTimeNotice": "Ang itinakdang oras ng pagtugon sa emergency ng Angeles City ay 10–15 minuto; tandaan na maaaring mag-iba ang aktwal na oras depende sa availability ng responder, trapiko, at uri ng bawat kaso.",
-  "reportSent": "Naipadala ang report!",
+  "quickReportSuccess": "Matagumpay na naipadala ang quick report!",
   "reportSentSuccess": "Matagumpay na naipadala ang report!",
   "reportSendError": "Nagkaroon ng error habang ipinapadala ang iyong report!",
   "call911Button": "TUMAWAG SA 911",
@@ -553,5 +553,9 @@
   "smsSentConfirm": "Oo, naipadala ko na",
   "smsNotSentYet": "Hindi pa, buksan muli",
   "primaryService": "Pangunahin",
-  "secondaryService": "Pangalawa"
+  "secondaryService": "Pangalawa",
+  "submittingReport": "Isinusumite ang iyong report...",
+  "sendingQuickReport": "Ipinapadala ang iyong quick report...",
+  "submittingGuidanceReport": "Isinusumite ang iyong report...",
+  "settingUpAccount": "Sine-set up ang iyong account..."
 }

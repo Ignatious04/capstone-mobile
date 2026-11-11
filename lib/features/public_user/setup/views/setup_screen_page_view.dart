@@ -80,8 +80,8 @@ class _SetupScreenPageView extends ConsumerState<SetupScreenPageView> {
     );
   }
 
-  Widget showLoadingOverlay() {
-    return LoadingOverlayWidget();
+  Widget showLoadingOverlay(String message) {
+    return LoadingOverlayWidget(message: message);
   }
 
   @override
@@ -183,7 +183,7 @@ class _SetupScreenPageView extends ConsumerState<SetupScreenPageView> {
                               showDialog(
                                 context: context,
                                 barrierDismissible: false,
-                                builder: (context) => showLoadingOverlay(),
+                                builder: (context) => showLoadingOverlay(l10n.settingUpAccount),
                               );
 
                               try {

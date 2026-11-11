@@ -1,4 +1,6 @@
 // lib/features/responder/active_case/views/active_case_screen.dart
+import 'dart:async';
+
 import 'package:capstone/core/enums/audit_action_enum.dart';
 import 'package:capstone/core/enums/service_type_enum.dart';
 import 'package:capstone/core/l10n/app_localizations.dart';
@@ -36,34 +38,40 @@ class ActiveCaseScreen extends ConsumerWidget {
   const ActiveCaseScreen({super.key});
 
   Future<void> _advanceStatus(WidgetRef ref, ActiveCase activeCase) async {
+    // Grab everything from ref before any await.
     final repo = ref.read(responseRepositoryProvider);
+    final locationService = ref.read(locationServiceProvider);
     final response = activeCase.response;
+    final incident = activeCase.report.location;
+
     final next = switch (response.status) {
       ReportStatusEnum.accepted => ReportStatusEnum.dispatched, // En Route
       ReportStatusEnum.dispatched => ReportStatusEnum.onScene, // Arrived
       ReportStatusEnum.onScene => ReportStatusEnum.resolved, // Resolve
-      _ => null, // pending/resolved: nothing for the responder to do here
+      _ => null,
     };
     if (next == null) return;
-    EtaEstimate? eta;
-    final incident = activeCase.report.location;
-    if (next == ReportStatusEnum.dispatched && incident != null) {
-      try {
-        final locationService = ref.read(locationServiceProvider);
-        await locationService.requestPermission();
-        final fix = await locationService.getCurrentLocation().timeout(const Duration(seconds: 5));
-        eta = EtaCalculator.estimate(fix.latLng, LatLng(incident.latitude, incident.longitude));
-      } catch (_) {
-        // No fix: still dispatch, just without a recorded ETA.
-      }
-    }
 
-    await repo.updateStatus(
-      response.responseID,
-      next,
-      etaSeconds: eta?.duration.inSeconds,
-      etaDistanceMeters: eta?.distanceMeters,
-    );
+    // 1. Flip the status immediately.
+    await repo.updateStatus(response.responseID, next);
+
+    // 2. ETA is best-effort and fills in afterward.
+    if (next == ReportStatusEnum.dispatched && incident != null) {
+      unawaited(() async {
+        try {
+          await locationService.requestPermission();
+          final fix = await locationService.getCurrentLocation().timeout(const Duration(seconds: 5));
+          final eta = EtaCalculator.estimate(fix.latLng, LatLng(incident.latitude, incident.longitude));
+          await repo.setEta(
+            response.responseID,
+            etaSeconds: eta.duration.inSeconds,
+            etaDistanceMeters: eta.distanceMeters,
+          );
+        } catch (_) {
+          // No fix: dispatched without an ETA, same as before.
+        }
+      }());
+    }
   }
 
   @override

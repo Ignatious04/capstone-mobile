@@ -3385,6 +3385,30 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Secondary'**
   String get secondaryService;
+
+  /// No description provided for @submittingReport.
+  ///
+  /// In en, this message translates to:
+  /// **'Submitting your report...'**
+  String get submittingReport;
+
+  /// No description provided for @sendingQuickReport.
+  ///
+  /// In en, this message translates to:
+  /// **'Sending your quick report...'**
+  String get sendingQuickReport;
+
+  /// No description provided for @submittingGuidanceReport.
+  ///
+  /// In en, this message translates to:
+  /// **'Submitting your report...'**
+  String get submittingGuidanceReport;
+
+  /// No description provided for @settingUpAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Setting up your account...'**
+  String get settingUpAccount;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
