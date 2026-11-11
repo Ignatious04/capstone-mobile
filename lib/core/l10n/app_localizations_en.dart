@@ -1730,4 +1730,28 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get clearFilters => 'Clear filters';
+
+  @override
+  String get smsReviewTitle => 'Review SMS Report';
+
+  @override
+  String get smsReviewIntro =>
+      'Your report is ready. Tap the button below to open your messaging app, then press send.';
+
+  @override
+  String smsReviewRecipient(String number) {
+    return 'To: $number';
+  }
+
+  @override
+  String get openMessagesButton => 'Open Messages';
+
+  @override
+  String get smsSentQuestion => 'Did you send the message?';
+
+  @override
+  String get smsSentConfirm => 'Yes, I sent it';
+
+  @override
+  String get smsNotSentYet => 'Not yet, open again';
 }

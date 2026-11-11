@@ -19,6 +19,21 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+/// An SMS report that has been built but not yet handed to the messaging app.
+class SmsDraft {
+  const SmsDraft({
+    required this.number,
+    required this.body,
+    required this.referenceNumber,
+    required this.incidentType,
+  });
+
+  final String number;
+  final String body;
+  final String referenceNumber;
+  final ServiceTypeEnum incidentType;
+}
+
 final guidanceProvider = NotifierProvider<GuidanceNotifier, QuestionState>(
   GuidanceNotifier.new,
 );
@@ -30,6 +45,9 @@ class GuidanceNotifier extends Notifier<QuestionState> {
   String? _pendingReferenceNumber;
   DateTime? _pendingCreatedAt;
   static const _pendingTtl = Duration(minutes: 10);
+
+  /// Set by the offline path; SmsReviewScreen shows it and calls [openSmsDraft].
+  SmsDraft? smsDraft;
 
   void _clearPending() {
     _pendingReportID = null;
@@ -173,18 +191,32 @@ class GuidanceNotifier extends Notifier<QuestionState> {
     }
     buffer.writeln('Location: ${location.latitude.toStringAsFixed(7)}, ${location.longitude.toStringAsFixed(7)}');
 
+    smsDraft = SmsDraft(
+      number: number,
+      body: buffer.toString(),
+      referenceNumber: referenceNumber,
+      incidentType: incidentType,
+    );
+  }
+
+  /// Opens the native messaging app with the draft. Called from the review
+  /// screen so the audit entry reflects an actual launch, not just a built draft.
+  Future<void> openSmsDraft() async {
+   final draft = smsDraft;
+   if (draft == null) return;
+
     ref
         .read(auditLogRepositoryProvider)
         .log(
           AuditAction.smsFallbackLaunched,
           targetType: 'report',
           metadata: {
-            'referenceNumber': referenceNumber,
-            'incidentType': incidentType.name,
-            'destination': number,
+            'referenceNumber': draft.referenceNumber,
+            'incidentType': draft.incidentType.name,
+            'destination': draft.number,
           },
         );
-    await launchSms(number, buffer.toString());
+    await launchSms(draft.number, draft.body);
   }
 
   void loadQuestions(ServiceTypeEnum type) {

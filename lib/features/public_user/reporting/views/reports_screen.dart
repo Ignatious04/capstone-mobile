@@ -6,6 +6,7 @@ import 'package:capstone/core/shared/providers/firebase_auth_provider.dart';
 import 'package:capstone/core/shared/providers/verification_provider.dart';
 import 'package:capstone/core/shared/widgets/consent_banner.dart';
 import 'package:capstone/core/shared/widgets/custom_circular_progress_indicator.dart';
+import 'package:capstone/core/shared/widgets/custom_dropdown_button.dart';
 import 'package:capstone/core/shared/widgets/custom_header_widget.dart';
 import 'package:capstone/core/shared/widgets/custom_snackbar_helper.dart';
 import 'package:capstone/core/shared/widgets/offline_sms_banner.dart';
@@ -48,75 +49,57 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
     }).toList();
   }
 
-  Widget _filterChip({
-    required String label,
-    required bool selected,
-    required VoidCallback onTap,
-  }) {
-    return Padding(
-      padding: const EdgeInsets.only(right: 10),
-      child: ChoiceChip(
-        label: BodyText(
-          value: label,
-          isBold: true,
-          color: selected ? AppColors.whiteTextFull : AppColors.blackTextFull,
-        ),
-        selected: selected,
-        onSelected: (_) => onTap(),
-        selectedColor: AppColors.themeColor,
-        checkmarkColor: AppColors.whiteTextFull,
-      ),
-    );
-  }
-
   Widget _buildFilters(AppLocalizations l10n) {
-    return Column(
-      children: [
-        SizedBox(
-          height: 44,
-          child: ListView(
-            scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            children: [
-              _filterChip(
-                label: l10n.filterAll,
-                selected: _statusFilter == null,
-                onTap: () => setState(() => _statusFilter = null),
-              ),
-              for (final status in ReportStatusEnum.values)
-                _filterChip(
-                  label: status.label(l10n),
-                  selected: _statusFilter == status,
-                  onTap: () => setState(
-                    () => _statusFilter = _statusFilter == status ? null : status,
-                  ),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: CustomDropdownButton<ReportStatusEnum?>(
+              // Re-created when the filter is changed from outside (e.g. _clearFilters),
+              // because DropdownButtonFormField only reads initialValue once.
+              key: ValueKey('status-$_statusFilter'),
+              title: l10n.status.toUpperCase(),
+              value: _statusFilter,
+              isExpanded: true,
+              items: [
+                DropdownMenuItem<ReportStatusEnum?>(
+                  value: null,
+                  child: BodyText(value: l10n.filterAll, isBold: true, isOverflow: true),
                 ),
-            ],
-          ),
-        ),
-        SizedBox(
-          height: 44,
-          child: ListView(
-            scrollDirection: Axis.horizontal,
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            children: [
-              _filterChip(
-                label: l10n.filterAll,
-                selected: _typeFilter == null,
-                onTap: () => setState(() => _typeFilter = null),
-              ),
-              for (final type in ServiceTypeEnum.values)
-                _filterChip(
-                  label: type.label(l10n),
-                  selected: _typeFilter == type,
-                  onTap: () => setState(
-                    () => _typeFilter = _typeFilter == type ? null : type,
+                for (final status in ReportStatusEnum.values)
+                  DropdownMenuItem<ReportStatusEnum?>(
+                    value: status,
+                    child: BodyText(value: status.label(l10n), isBold: true, isOverflow: true),
                   ),
-                ),
-            ],
+              ],
+              onChanged: (value) => setState(() => _statusFilter = value),
+            ),
           ),
-        ),
-      ],
+          const SizedBox(width: 10),
+          Expanded(
+            child: CustomDropdownButton<ServiceTypeEnum?>(
+              key: ValueKey('type-$_typeFilter'),
+              title: l10n.emergencyType.toUpperCase(),
+              value: _typeFilter,
+              isExpanded: true,
+              items: [
+                DropdownMenuItem<ServiceTypeEnum?>(
+                  value: null,
+                  child: BodyText(value: l10n.filterAll, isBold: true, isOverflow: true),
+                ),
+                for (final type in ServiceTypeEnum.values)
+                  DropdownMenuItem<ServiceTypeEnum?>(
+                    value: type,
+                    child: BodyText(value: type.label(l10n), isBold: true, isOverflow: true),
+                  ),
+              ],
+              onChanged: (value) => setState(() => _typeFilter = value),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -198,6 +181,7 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
               width: double.infinity,
               child: CustomHeaderWidget(title: l10n.reports, body: l10n.reportsSubtitle),
             ),
+            const SizedBox(height: 10),
             if (hasAnyReports) _buildFilters(l10n),
             Expanded(
               child: RefreshIndicator(

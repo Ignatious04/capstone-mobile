@@ -77,7 +77,7 @@ class _SetupScreenMedicalInfoPage extends ConsumerState<SetupScreenMedicalInfoPa
               if (user.bloodType.isNotEmpty) user.bloodType, // keeps an old "O" from breaking the dropdown
             }.map((b) => DropdownMenuItem(value: b, child: Text(b))).toList(),
             onChanged: (value) {
-              ref.read(userProvider.notifier).setBloodType(value!);
+              ref.read(userProvider.notifier).setBloodType(value ?? '');
             },
           ),
           const SizedBox(
@@ -146,7 +146,7 @@ class _SetupScreenMedicalInfoPage extends ConsumerState<SetupScreenMedicalInfoPa
                     value: user.vaccineType.isEmpty ? null : user.vaccineType,
                     items: DropdownLists.vaccineItems(l10n),
                     onChanged: (value) {
-                      ref.read(userProvider.notifier).setVaccineType(value!);
+                      ref.read(userProvider.notifier).setVaccineType(value ?? '');
                     },
                   ),
                 ),

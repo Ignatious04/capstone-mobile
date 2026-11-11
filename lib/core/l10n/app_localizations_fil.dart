@@ -1738,4 +1738,28 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String get clearFilters => 'I-clear ang mga filter';
+
+  @override
+  String get smsReviewTitle => 'Suriin ang SMS Report';
+
+  @override
+  String get smsReviewIntro =>
+      'Handa na ang iyong report. Pindutin ang button sa ibaba para buksan ang messaging app, pagkatapos ay pindutin ang send.';
+
+  @override
+  String smsReviewRecipient(String number) {
+    return 'Ipapadala sa: $number';
+  }
+
+  @override
+  String get openMessagesButton => 'Buksan ang Messages';
+
+  @override
+  String get smsSentQuestion => 'Naipadala mo ba ang mensahe?';
+
+  @override
+  String get smsSentConfirm => 'Oo, naipadala ko na';
+
+  @override
+  String get smsNotSentYet => 'Hindi pa, buksan muli';
 }

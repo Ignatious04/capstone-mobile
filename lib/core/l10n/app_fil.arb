@@ -540,5 +540,12 @@
   "notificationsOff": "Naka-off – i-on para makatanggap ng mga update sa report at kaso",
   "filterAll": "Lahat",
   "noMatchingReports": "Walang ulat na tumutugma sa mga filter.",
-  "clearFilters": "I-clear ang mga filter"
+  "clearFilters": "I-clear ang mga filter",
+  "smsReviewTitle": "Suriin ang SMS Report",
+  "smsReviewIntro": "Handa na ang iyong report. Pindutin ang button sa ibaba para buksan ang messaging app, pagkatapos ay pindutin ang send.",
+  "smsReviewRecipient": "Ipapadala sa: {number}",
+  "openMessagesButton": "Buksan ang Messages",
+  "smsSentQuestion": "Naipadala mo ba ang mensahe?",
+  "smsSentConfirm": "Oo, naipadala ko na",
+  "smsNotSentYet": "Hindi pa, buksan muli"
 }

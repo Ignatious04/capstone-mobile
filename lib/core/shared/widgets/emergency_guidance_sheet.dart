@@ -12,13 +12,25 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class EmergencyGuidanceSheet extends ConsumerWidget {
-  const EmergencyGuidanceSheet({super.key, required this.incidentType});
+  const EmergencyGuidanceSheet({
+    super.key,
+    required this.incidentType,
+    this.showDone = false,
+  });
 
   final ServiceTypeEnum incidentType;
+  final bool showDone;
 
   /// Shows the sheet, or does nothing if there's no guidance content
   /// for this incident type (e.g. non-emergency police reports).
-  static Future<void> show(BuildContext context, ServiceTypeEnum incidentType) {
+  ///
+  /// With [dismissible] false, tapping outside or dragging down won't close it;
+  /// the user has to press Done.
+  static Future<void> show(
+    BuildContext context,
+    ServiceTypeEnum incidentType, {
+    bool dismissible = true,
+  }) {
     if (EmergencyGuidanceTips.forType(incidentType, AppLocalizations.of(context)!).isEmpty) {
       return Future.value();
     }
@@ -26,10 +38,12 @@ class EmergencyGuidanceSheet extends ConsumerWidget {
     return showModalBottomSheet(
       context: context,
       isScrollControlled: true,
+      isDismissible: dismissible,
+      enableDrag: dismissible,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
-      builder: (_) => EmergencyGuidanceSheet(incidentType: incidentType),
+      builder: (_) => EmergencyGuidanceSheet(incidentType: incidentType, showDone: !dismissible),
     );
   }
 
@@ -107,6 +121,18 @@ class EmergencyGuidanceSheet extends ConsumerWidget {
                 backgroundColor: AppColors.darkerGreen,
               ),
             ),
+            if (showDone) ...[
+              const SizedBox(height: 10),
+              SizedBox(
+                width: double.infinity,
+                child: CustomElevatedButton(
+                  onPressed: () => Navigator.pop(context),
+                  value: l10n.done,
+                  color: AppColors.whiteTextFull,
+                  backgroundColor: AppColors.blackTextMuted,
+                ),
+              ),
+            ],
           ],
         ),
       ),

@@ -18,6 +18,7 @@ import 'package:capstone/core/shared/widgets/text/label_text.dart';
 import 'package:capstone/core/shared/widgets/text/title_text.dart';
 import 'package:capstone/core/themes/app_colors.dart';
 import 'package:capstone/features/public_user/pre_call_guidance/providers/guidance_provider.dart';
+import 'package:capstone/features/public_user/pre_call_guidance/views/sms_review_screen.dart';
 import 'package:capstone/features/public_user/reporting/views/select_location_screen.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
@@ -67,16 +68,25 @@ class _PreCallGuidanceSummaryScreenState extends ConsumerState<PreCallGuidanceSu
           );
 
       if (!mounted) return;
-      Navigator.pop(context);
+      Navigator.pop(context); // dismiss loading overlay
+
+      if (isSMS) {
+        // The report isn't sent until the user presses send in their messaging
+        // app, so keep this screen (and its answers) alive until they confirm.
+        final sent = await Navigator.push<bool>(
+          context,
+          MaterialPageRoute(builder: (_) => const SmsReviewScreen()),
+        );
+        if (sent == true && mounted) Navigator.pop(context);
+        return;
+      }
 
       final incidentType = ref.read(reportProvider).incidentType!;
       await EmergencyGuidanceSheet.show(context, incidentType);
       if (!mounted) return;
       Navigator.pop(context);
 
-      if (!isSMS) {
-        CustomSnackbarHelper.show(context, text: l10n.guidanceSubmitted);
-      }
+      CustomSnackbarHelper.show(context, text: l10n.guidanceSubmitted);
     } on TimeoutException {
       if (!mounted) return;
       Navigator.pop(context); // dismiss loading overlay
@@ -296,7 +306,8 @@ class _PreCallGuidanceSummaryScreenState extends ConsumerState<PreCallGuidanceSu
 
                       final confirmed = await showConfirmationDialog(
                         context,
-                        title: l10n.offlineSmsPrompt,
+                        title: l10n.attention,
+                        content: l10n.offlineSmsPrompt,
                       );
 
                       if (confirmed != true) {

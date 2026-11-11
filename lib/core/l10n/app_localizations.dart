@@ -3307,6 +3307,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Clear filters'**
   String get clearFilters;
+
+  /// No description provided for @smsReviewTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Review SMS Report'**
+  String get smsReviewTitle;
+
+  /// No description provided for @smsReviewIntro.
+  ///
+  /// In en, this message translates to:
+  /// **'Your report is ready. Tap the button below to open your messaging app, then press send.'**
+  String get smsReviewIntro;
+
+  /// No description provided for @smsReviewRecipient.
+  ///
+  /// In en, this message translates to:
+  /// **'To: {number}'**
+  String smsReviewRecipient(String number);
+
+  /// No description provided for @openMessagesButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Messages'**
+  String get openMessagesButton;
+
+  /// No description provided for @smsSentQuestion.
+  ///
+  /// In en, this message translates to:
+  /// **'Did you send the message?'**
+  String get smsSentQuestion;
+
+  /// No description provided for @smsSentConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes, I sent it'**
+  String get smsSentConfirm;
+
+  /// No description provided for @smsNotSentYet.
+  ///
+  /// In en, this message translates to:
+  /// **'Not yet, open again'**
+  String get smsNotSentYet;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

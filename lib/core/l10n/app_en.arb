@@ -737,5 +737,15 @@
   "notificationsOff": "Off – turn on to get report and case updates",
   "filterAll": "All",
   "noMatchingReports": "No reports match these filters.",
-  "clearFilters": "Clear filters"
+  "clearFilters": "Clear filters",
+  "smsReviewTitle": "Review SMS Report",
+  "smsReviewIntro": "Your report is ready. Tap the button below to open your messaging app, then press send.",
+  "smsReviewRecipient": "To: {number}",
+  "@smsReviewRecipient": {
+    "placeholders": { "number": { "type": "String" } }
+  },
+  "openMessagesButton": "Open Messages",
+  "smsSentQuestion": "Did you send the message?",
+  "smsSentConfirm": "Yes, I sent it",
+  "smsNotSentYet": "Not yet, open again"
 }

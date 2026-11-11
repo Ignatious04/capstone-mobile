@@ -91,13 +91,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SubmitGuardMixin<H
     if (!mounted) return;
 
     if (!await ensureCanReport(context, ref)) return;
-    final label = incidentType.label(l10n);
-    final fix = await ref.read(locationServiceProvider).getCurrentLocation();
-    final location = fix.latLng;
+    if (!mounted) return;
 
-    if (!mounted) {
-      return;
-    }
+    // Start the GPS fix now, but don't wait for it. It runs while the user
+    // reads the dialog. ignore() stops an unhandled-error report if they cancel.
+    final locationFuture = ref.read(locationServiceProvider).getCurrentLocation();
+    locationFuture.ignore();
+
+    final label = incidentType.label(l10n);
 
     final confirmed = await showConfirmationDialog(
       context,
@@ -115,11 +116,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> with SubmitGuardMixin<H
     );
 
     try {
+      final fix = await locationFuture;
       await ref
           .read(reportProvider.notifier)
           .submitQuickReport(
             incidentType: incidentType,
-            location: location,
+            location: fix.latLng,
             reportedForSelf: true,
           );
 
