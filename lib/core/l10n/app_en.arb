@@ -757,5 +757,13 @@
   "submittingReport": "Submitting your report...",
   "sendingQuickReport": "Sending your quick report...",
   "submittingGuidanceReport": "Submitting your report...",
-  "settingUpAccount": "Setting up your account..."
+  "settingUpAccount": "Setting up your account...",
+  "minimumAgeRequired": "You must be at least {age} years old to register",
+  "@minimumAgeRequired": {
+    "placeholders": {
+      "age": {
+        "type": "int"
+      }
+    }
+  }
 }

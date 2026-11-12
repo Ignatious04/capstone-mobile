@@ -3409,6 +3409,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Setting up your account...'**
   String get settingUpAccount;
+
+  /// No description provided for @minimumAgeRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'You must be at least {age} years old to register'**
+  String minimumAgeRequired(int age);
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

@@ -557,5 +557,6 @@
   "submittingReport": "Isinusumite ang iyong report...",
   "sendingQuickReport": "Ipinapadala ang iyong quick report...",
   "submittingGuidanceReport": "Isinusumite ang iyong report...",
-  "settingUpAccount": "Sine-set up ang iyong account..."
+  "settingUpAccount": "Sine-set up ang iyong account...",
+  "minimumAgeRequired": "Dapat ay hindi bababa sa {age} taong gulang para makapagparehistro"
 }

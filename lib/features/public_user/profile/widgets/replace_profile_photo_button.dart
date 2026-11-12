@@ -61,7 +61,7 @@ class _ReplaceProfilePhotoButtonState extends ConsumerState<ReplaceProfilePhotoB
       label: Text(l10n.replacePhoto),
       style: TextButton.styleFrom(
         visualDensity: VisualDensity.compact,
-        foregroundColor: isVerified ? AppColors.blackTextFull : Theme.of(context).disabledColor,
+        foregroundColor: isVerified ? AppColors.themeColor : Theme.of(context).disabledColor,
       ),
     );
   }

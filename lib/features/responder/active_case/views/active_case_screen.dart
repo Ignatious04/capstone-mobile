@@ -9,20 +9,25 @@ import 'package:capstone/core/enums/report_status_enum.dart';
 import 'package:capstone/core/shared/providers/audit_log_repository_provider.dart';
 import 'package:capstone/core/shared/providers/location_provider.dart';
 import 'package:capstone/core/shared/widgets/custom_circular_progress_indicator.dart';
+import 'package:capstone/core/shared/widgets/custom_header_widget.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
 import 'package:capstone/core/shared/widgets/text/label_text.dart';
 import 'package:capstone/core/shared/widgets/text/title_text.dart';
 import 'package:capstone/core/themes/app_colors.dart';
+import 'package:capstone/core/utilities/case_marker_icons.dart';
 import 'package:capstone/core/utilities/directions_launcher.dart';
 import 'package:capstone/core/utilities/eta_calculator.dart';
+import 'package:capstone/features/public_user/map/widgets/map_layer_button.dart';
 import 'package:capstone/features/public_user/map/widgets/map_tile_widget.dart';
 import 'package:capstone/core/shared/providers/response_repository_provider.dart';
+import 'package:capstone/features/public_user/notifications/widgets/notification_bell_button.dart';
 import 'package:capstone/features/public_user/reporting/widgets/attachments_card.dart';
 import 'package:capstone/features/public_user/reporting/widgets/report_service_types_widget.dart';
 import 'package:capstone/features/public_user/reporting/widgets/report_status_widget.dart';
 import 'package:capstone/core/shared/widgets/section_title.dart';
 import 'package:capstone/features/public_user/reporting/widgets/victims_card.dart';
 import 'package:capstone/features/responder/active_case/providers/responder_location_sharing_provider.dart';
+import 'package:capstone/features/responder/active_case/views/active_case_map_screen.dart';
 import 'package:capstone/features/responder/active_case/widgets/active_case_action_bar.dart';
 import 'package:capstone/features/responder/active_case/widgets/dispatch_notes_section.dart';
 import 'package:capstone/features/responder/active_case/widgets/reporter_medical_info_card.dart';
@@ -145,12 +150,39 @@ class _ActiveCaseBody extends ConsumerWidget {
     final response = activeCase.response;
     final location = report.location;
     final screenHeight = MediaQuery.of(context).size.height;
+    final icons = ref.watch(caseMarkerIconsProvider).value;
 
     return Column(
       children: [
         // Map — ~45% of the screen
+        Container(
+          decoration: BoxDecoration(
+            color: AppColors.themeColor,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black26,
+                blurRadius: 12,
+                offset: Offset(0, 3),
+              ),
+            ],
+          ),
+          child: Row(
+            children: [
+              Expanded(
+                child: CustomHeaderWidget(
+                  title: l10n.activeCase,
+                  hasBoxShadow: false,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(right: 20.0),
+                child: const NotificationBellButton(),
+              ),
+            ],
+          ),
+        ),
         SizedBox(
-          height: screenHeight * 0.45,
+          height: screenHeight * 0.40,
           width: double.infinity,
           child: location == null
               ? Container(
@@ -163,16 +195,11 @@ class _ActiveCaseBody extends ConsumerWidget {
                       child: MapTileWidget(
                         initialLocation: LatLng(location.latitude, location.longitude),
                         mode: MapModeEnum.view,
-                        showLayerToggle: true,
-                        extraMarkers: {
-                          Marker(
-                            markerId: const MarkerId('incident'),
-                            position: LatLng(location.latitude, location.longitude),
-                            icon: BitmapDescriptor.defaultMarkerWithHue(
-                              BitmapDescriptor.hueRed,
-                            ),
-                          ),
-                        },
+                        showLayerToggle: false,
+                        extraMarkers: buildCaseMarkers(
+                          icons: icons,
+                          incident: LatLng(location.latitude, location.longitude),
+                       ),
                         extraCircles: {
                           if (response.status == ReportStatusEnum.dispatched)
                             Circle(
@@ -204,6 +231,34 @@ class _ActiveCaseBody extends ConsumerWidget {
                       ),
                     Positioned(
                       right: 20,
+                      bottom: 140,
+                      child: SizedBox(
+                        width: 50,
+                        height: 50,
+                        child: FloatingActionButton(
+                          heroTag: 'fullMapFAB',
+                          backgroundColor: AppColors.bgWhiteLight,
+                          foregroundColor: AppColors.themeColor,
+                          onPressed: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => ActiveCaseMapScreen(
+                                incident: LatLng(location.latitude, location.longitude),
+                                reportID: response.reportID,
+                              ),
+                            ),
+                          ),
+                          child: const Icon(Icons.fullscreen, size: 30),
+                        ),
+                      ),
+                    ),
+                    const Positioned(
+                      right: 20,
+                      bottom: 80,
+                      child: MapLayerButton(),
+                    ),
+                    Positioned(
+                      right: 20,
                       bottom: 20,
                       child: SizedBox(
                         width: 50,
@@ -230,7 +285,6 @@ class _ActiveCaseBody extends ConsumerWidget {
                   ],
                 ),
         ),
-
         // Details — scrollable, fills the rest
         Expanded(
           child: SingleChildScrollView(

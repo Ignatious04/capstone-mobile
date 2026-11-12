@@ -27,6 +27,14 @@ class SetupScreenPersonalInfoPage extends ConsumerStatefulWidget {
 }
 
 class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfoPage> {
+  static const int _minimumAge = 12; // change to 14 if you prefer
+
+  /// Latest birth date that still satisfies the minimum age (today minus N years).
+  DateTime get _latestAllowedBirthDate {
+    final now = DateTime.now();
+    return DateTime(now.year - _minimumAge, now.month, now.day);
+  }
+
   TextEditingController firstNameController = TextEditingController();
   TextEditingController middleNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
@@ -96,10 +104,11 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
           ),
           FormField<File>(
             initialValue: user.profileImage,
-            autovalidateMode: AutovalidateMode.onUserInteractionIfError,
             validator: (value) {
               if (value == null) {
-                return l10n.fieldRequired(l10n.profilePhoto);
+                final message = l10n.fieldRequired(l10n.profilePhoto);
+                CustomSnackbarHelper.show(context, text: message);
+                return message;
               }
               return null;
             },
@@ -146,14 +155,6 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
                       value: l10n.tapToTakePhoto,
                     ),
                   ),
-                  if (field.hasError)
-                    Padding(
-                      padding: const EdgeInsets.only(top: 4),
-                      child: Text(
-                        field.errorText!,
-                        style: const TextStyle(color: AppColors.danger, fontSize: 12),
-                      ),
-                    ),
                 ],
               );
             },
@@ -243,14 +244,24 @@ class _SetupScreenPersonalInfoPage extends ConsumerState<SetupScreenPersonalInfo
                       return l10n.fieldRequired(l10n.birthDate);
                     }
 
+                    final dob = DateTime.fromMillisecondsSinceEpoch(user.birthDate);
+                    if (dob.isAfter(_latestAllowedBirthDate)) {
+                      return l10n.minimumAgeRequired(_minimumAge);
+                    }
+
                     return null;
                   },
                   onTap: () async {
+                    final latest = _latestAllowedBirthDate;
+                    final saved = user.birthDate == 0
+                        ? null
+                        : DateTime.fromMillisecondsSinceEpoch(user.birthDate);
                     final date = await showDatePicker(
                       context: context,
-                      initialDate: DateTime.now(),
+                      // initialDate must fall inside [firstDate, lastDate] or the picker asserts
+                      initialDate: (saved != null && !saved.isAfter(latest)) ? saved : latest,
                       firstDate: DateTime(1900),
-                      lastDate: DateTime.now(),
+                      lastDate: latest,
                     );
 
                     if (date != null) {

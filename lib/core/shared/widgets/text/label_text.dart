@@ -7,13 +7,17 @@ class LabelText extends StatelessWidget {
     required this.value,
     this.alignment = TextAlign.left,
     this.color = AppColors.blackTextFull,
+    this.decorationColor = Colors.transparent,
     this.isBold = false,
+    this.hasUnderline = false,
   });
 
   final String value;
   final TextAlign alignment;
   final Color color;
+  final Color decorationColor;
   final bool isBold;
+  final bool hasUnderline;
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +30,8 @@ class LabelText extends StatelessWidget {
           ).textTheme.labelMedium?.copyWith(
             color: color,
             fontWeight: isBold ? FontWeight.bold : null,
+            decoration: hasUnderline ? TextDecoration.underline : null,
+            decorationColor: decorationColor,
           ),
     );
   }

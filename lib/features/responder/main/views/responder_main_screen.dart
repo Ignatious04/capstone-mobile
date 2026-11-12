@@ -50,16 +50,6 @@ class _ResponderMainScreenState extends ConsumerState<ResponderMainScreen> {
               index: currentPageIndex,
               children: pages,
             ),
-            const Positioned(
-              top: 0,
-              right: 12,
-              child: SafeArea(
-                child: Padding(
-                  padding: EdgeInsets.only(top: 8),
-                  child: NotificationBellButton(isResponder: true),
-                ),
-              ),
-            ),
           ],
         ),
       ),

@@ -58,7 +58,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     });
 
     return Scaffold(
-      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         toolbarHeight: 200,
         shape: RoundedRectangleBorder(
@@ -77,22 +76,20 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           child: Stack(
             children: [
               Center(
-                child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const HeadlineText(
-                        value: "Saup Angeles",
-                        color: AppColors.whiteTextFull,
-                        isBold: true,
-                      ),
-                      TitleText(
-                        value: l10n.appTagline,
-                        color: AppColors.whiteTextFull,
-                        alignment: TextAlign.center,
-                      ),
-                    ],
-                  ),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const HeadlineText(
+                      value: "Saup Angeles",
+                      color: AppColors.whiteTextFull,
+                      isBold: true,
+                    ),
+                    TitleText(
+                      value: l10n.appTagline,
+                      color: AppColors.whiteTextFull,
+                      alignment: TextAlign.center,
+                    ),
+                  ],
                 ),
               ),
               Positioned(
@@ -105,7 +102,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         ),
       ),
       body: SafeArea(
-        child: Center(
+        child: SingleChildScrollView(
           child: Column(
             children: [
               const SizedBox(height: 10),
@@ -135,7 +132,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           if (value == null || value.isEmpty) {
                             return l10n.fieldRequired(l10n.emailOrResponderCode);
                           }
-
+          
                           return null;
                         },
                         hideErrorText: false,
@@ -155,7 +152,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           if (value == null || value.isEmpty) {
                             return l10n.fieldRequired(l10n.password);
                           }
-
+          
                           return null;
                         },
                         obscureText: true,
@@ -206,9 +203,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           isLoading: isLoading,
                           onPressed: () async {
                             setState(() => errorMessage = null);
-
+          
                             if (!loginKey.currentState!.validate()) return;
-
+          
                             await ref
                                 .read(loginProvider.notifier)
                                 .signIn(

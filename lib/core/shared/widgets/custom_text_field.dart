@@ -16,6 +16,7 @@ class CustomTextField extends StatefulWidget {
     this.isReadOnly = false,
     this.color = AppColors.blackTextFull,
     this.obscureText = false,
+    this.showVisibilityToggle = true,
     this.hideErrorText = true,
     this.vertical = 10,
     this.horizontal = 10,
@@ -36,6 +37,9 @@ class CustomTextField extends StatefulWidget {
   final bool isReadOnly;
   final Color color;
   final bool obscureText;
+
+  /// When [obscureText] is true, shows an eye button that reveals/hides the text.
+  final bool showVisibilityToggle;
   final bool hideErrorText;
   final double vertical;
   final double horizontal;
@@ -54,6 +58,13 @@ class CustomTextField extends StatefulWidget {
 class _CustomTextFieldState extends State<CustomTextField> {
   final _fieldKey = GlobalKey<FormFieldState<String>>();
   bool _isResetting = false;
+  late bool _obscured = widget.obscureText;
+
+  // Only obscured, editable fields get the eye button.
+  bool get _canToggleVisibility =>
+      widget.obscureText && widget.showVisibilityToggle && widget.enabled && !widget.isReadOnly;
+
+  void _toggleVisibility() => setState(() => _obscured = !_obscured);
 
   void _handleChanged(String value) {
     // reset() calls onChanged again, so guard against recursion.
@@ -110,7 +121,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
               ).textTheme.bodyMedium?.copyWith(
                 color: widget.color,
               ),
-          obscureText: widget.obscureText,
+          obscureText: _obscured,
           decoration: InputDecoration(
             errorStyle: widget.hideErrorText
                 ? const TextStyle(
@@ -129,6 +140,17 @@ class _CustomTextFieldState extends State<CustomTextField> {
               vertical: widget.vertical,
               horizontal: widget.horizontal,
             ),
+            suffixIcon: _canToggleVisibility
+                ? IconButton(
+                    icon: Icon(
+                      _obscured ? Icons.visibility_outlined : Icons.visibility_off_outlined,
+                      size: 15,
+                    ),
+                    visualDensity: VisualDensity.compact,
+                    onPressed: _toggleVisibility,
+                    highlightColor: Colors.transparent,
+                  )
+                : null,
           ),
           onChanged: _handleChanged,
           onTapOutside: (_) {

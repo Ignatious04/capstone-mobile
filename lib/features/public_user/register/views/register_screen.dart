@@ -160,6 +160,8 @@ class _RegisterScreenPage extends ConsumerState<RegisterScreen> {
                                 child: LabelText(
                                   value: l10n.agreeToTerms,
                                   color: AppColors.themeColor,
+                                  decorationColor: AppColors.themeColor,
+                                  hasUnderline: true,
                                 ),
                               ),
                             ),
@@ -194,6 +196,8 @@ class _RegisterScreenPage extends ConsumerState<RegisterScreen> {
                                 child: LabelText(
                                   value: l10n.acknowledgePrivacy,
                                   color: AppColors.themeColor,
+                                  decorationColor: AppColors.themeColor,
+                                  hasUnderline: true,
                                 ),
                               ),
                             ),

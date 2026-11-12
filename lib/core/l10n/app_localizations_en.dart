@@ -1784,4 +1784,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settingUpAccount => 'Setting up your account...';
+
+  @override
+  String minimumAgeRequired(int age) {
+    return 'You must be at least $age years old to register';
+  }
 }

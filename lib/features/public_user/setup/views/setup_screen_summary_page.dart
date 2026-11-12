@@ -51,10 +51,10 @@ class SetupScreenSummaryPage extends ConsumerWidget {
                             value: ref.read(userProvider).middleName,
                           ),
                         ] else ...[
-                            InfoColumn(
-                              title: l10n.middleName.toUpperCase(),
-                              value: "--",
-                            ),       
+                          InfoColumn(
+                            title: l10n.middleName.toUpperCase(),
+                            value: "--",
+                          ),
                         ],
                         const SizedBox(
                           height: 10,
@@ -91,11 +91,18 @@ class SetupScreenSummaryPage extends ConsumerWidget {
                         const SizedBox(
                           height: 10,
                         ),
-                        InfoColumn(
-                          title: l10n.homeAddress.toUpperCase(),
-                          value:
-                              "${ref.read(userProvider).houseNum}, ${ref.read(userProvider).street}, ${ref.read(userProvider).barangay}",
-                        ),
+                        if (ref.read(userProvider).houseNum != "") ...[
+                          InfoColumn(
+                            title: l10n.homeAddress.toUpperCase(),
+                            value:
+                                "${ref.read(userProvider).houseNum}, ${ref.read(userProvider).street}, ${ref.read(userProvider).barangay}",
+                          ),
+                        ] else ...[
+                          InfoColumn(
+                            title: l10n.homeAddress.toUpperCase(),
+                            value: "${ref.read(userProvider).street}, ${ref.read(userProvider).barangay}",
+                          ),
+                        ],
                         const SizedBox(
                           height: 10,
                         ),

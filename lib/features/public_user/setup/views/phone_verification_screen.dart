@@ -120,8 +120,10 @@ class _PhoneVerificationScreenState extends ConsumerState<PhoneVerificationScree
               value: isSending ? l10n.sending : l10n.sendVerificationCode,
               onPressed: isSending ? () {} : handleSendCode,
             ),
+            const SizedBox(height: 10),
             LabelText(
               value: "A quick security check will open in the browser and the user should return to the app.",
+              color: AppColors.blackTextMuted,
             ),
           ] else ...[
             CustomTextField(

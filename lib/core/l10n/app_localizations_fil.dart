@@ -1792,4 +1792,9 @@ class AppLocalizationsFil extends AppLocalizations {
 
   @override
   String get settingUpAccount => 'Sine-set up ang iyong account...';
+
+  @override
+  String minimumAgeRequired(int age) {
+    return 'Dapat ay hindi bababa sa $age taong gulang para makapagparehistro';
+  }
 }
