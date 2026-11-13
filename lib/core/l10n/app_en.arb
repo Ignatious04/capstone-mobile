@@ -780,5 +780,26 @@
     "placeholders": {
       "count": { "type": "int" }
     }
-  }
+  },
+  "schedule": "Schedule",
+  "scheduleSubtitle": "Your upcoming duty shifts",
+  "onDutyNow": "On duty now",
+  "onDutyUntil": "Until {time}",
+  "@onDutyUntil": { "placeholders": { "time": { "type": "String" } } },
+  "offDuty": "Off duty",
+  "nextShiftAt": "Next shift: {when}",
+  "@nextShiftAt": { "placeholders": { "when": { "type": "String" } } },
+  "noUpcomingShifts": "No shifts scheduled in the next {days} days",
+  "@noUpcomingShifts": { "placeholders": { "days": { "type": "int" } } },
+  "upcomingShifts": "Upcoming Shifts",
+  "scheduleToday": "Today",
+  "scheduleTomorrow": "Tomorrow",
+  "dutyExtra": "Extra",
+  "dutyOvertime": "Overtime",
+  "dutyOnLeave": "On leave",
+  "dutySwappedAway": "Swapped",
+  "dutySwapCover": "Swap cover",
+  "personalShift": "Personal shift",
+  "scheduleNextDay": "+1 day",
+  "scheduleLoadError": "Couldn't load your schedule. Please try again."
 }

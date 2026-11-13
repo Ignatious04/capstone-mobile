@@ -1827,4 +1827,64 @@ class AppLocalizationsEn extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String get schedule => 'Schedule';
+
+  @override
+  String get scheduleSubtitle => 'Your upcoming duty shifts';
+
+  @override
+  String get onDutyNow => 'On duty now';
+
+  @override
+  String onDutyUntil(String time) {
+    return 'Until $time';
+  }
+
+  @override
+  String get offDuty => 'Off duty';
+
+  @override
+  String nextShiftAt(String when) {
+    return 'Next shift: $when';
+  }
+
+  @override
+  String noUpcomingShifts(int days) {
+    return 'No shifts scheduled in the next $days days';
+  }
+
+  @override
+  String get upcomingShifts => 'Upcoming Shifts';
+
+  @override
+  String get scheduleToday => 'Today';
+
+  @override
+  String get scheduleTomorrow => 'Tomorrow';
+
+  @override
+  String get dutyExtra => 'Extra';
+
+  @override
+  String get dutyOvertime => 'Overtime';
+
+  @override
+  String get dutyOnLeave => 'On leave';
+
+  @override
+  String get dutySwappedAway => 'Swapped';
+
+  @override
+  String get dutySwapCover => 'Swap cover';
+
+  @override
+  String get personalShift => 'Personal shift';
+
+  @override
+  String get scheduleNextDay => '+1 day';
+
+  @override
+  String get scheduleLoadError => 'Couldn\'t load your schedule. Please try again.';
 }

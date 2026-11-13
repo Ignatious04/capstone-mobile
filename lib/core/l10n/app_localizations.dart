@@ -3475,6 +3475,114 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'{count, plural, =1{1 member} other{{count} members}}'**
   String memberCount(int count);
+
+  /// No description provided for @schedule.
+  ///
+  /// In en, this message translates to:
+  /// **'Schedule'**
+  String get schedule;
+
+  /// No description provided for @scheduleSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Your upcoming duty shifts'**
+  String get scheduleSubtitle;
+
+  /// No description provided for @onDutyNow.
+  ///
+  /// In en, this message translates to:
+  /// **'On duty now'**
+  String get onDutyNow;
+
+  /// No description provided for @onDutyUntil.
+  ///
+  /// In en, this message translates to:
+  /// **'Until {time}'**
+  String onDutyUntil(String time);
+
+  /// No description provided for @offDuty.
+  ///
+  /// In en, this message translates to:
+  /// **'Off duty'**
+  String get offDuty;
+
+  /// No description provided for @nextShiftAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Next shift: {when}'**
+  String nextShiftAt(String when);
+
+  /// No description provided for @noUpcomingShifts.
+  ///
+  /// In en, this message translates to:
+  /// **'No shifts scheduled in the next {days} days'**
+  String noUpcomingShifts(int days);
+
+  /// No description provided for @upcomingShifts.
+  ///
+  /// In en, this message translates to:
+  /// **'Upcoming Shifts'**
+  String get upcomingShifts;
+
+  /// No description provided for @scheduleToday.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get scheduleToday;
+
+  /// No description provided for @scheduleTomorrow.
+  ///
+  /// In en, this message translates to:
+  /// **'Tomorrow'**
+  String get scheduleTomorrow;
+
+  /// No description provided for @dutyExtra.
+  ///
+  /// In en, this message translates to:
+  /// **'Extra'**
+  String get dutyExtra;
+
+  /// No description provided for @dutyOvertime.
+  ///
+  /// In en, this message translates to:
+  /// **'Overtime'**
+  String get dutyOvertime;
+
+  /// No description provided for @dutyOnLeave.
+  ///
+  /// In en, this message translates to:
+  /// **'On leave'**
+  String get dutyOnLeave;
+
+  /// No description provided for @dutySwappedAway.
+  ///
+  /// In en, this message translates to:
+  /// **'Swapped'**
+  String get dutySwappedAway;
+
+  /// No description provided for @dutySwapCover.
+  ///
+  /// In en, this message translates to:
+  /// **'Swap cover'**
+  String get dutySwapCover;
+
+  /// No description provided for @personalShift.
+  ///
+  /// In en, this message translates to:
+  /// **'Personal shift'**
+  String get personalShift;
+
+  /// No description provided for @scheduleNextDay.
+  ///
+  /// In en, this message translates to:
+  /// **'+1 day'**
+  String get scheduleNextDay;
+
+  /// No description provided for @scheduleLoadError.
+  ///
+  /// In en, this message translates to:
+  /// **'Couldn\'t load your schedule. Please try again.'**
+  String get scheduleLoadError;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

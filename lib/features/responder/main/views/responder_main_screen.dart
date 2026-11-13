@@ -7,6 +7,7 @@ import 'package:capstone/features/responder/active_case/providers/responder_loca
 import 'package:capstone/features/responder/active_case/views/active_case_screen.dart';
 import 'package:capstone/features/responder/history/views/history_screen.dart';
 import 'package:capstone/features/responder/profile/views/responder_profile_screen.dart';
+import 'package:capstone/features/responder/schedule/views/responder_schedule_screen.dart';
 import 'package:capstone/features/responder/teams/responder_teams_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -30,6 +31,7 @@ class _ResponderMainScreenState extends ConsumerState<ResponderMainScreen> {
     ),
     CustomNavigationBarItem(icon: Icons.history, activeIcon: Icons.history, label: l10n.history),
     if (showTeams) CustomNavigationBarItem(icon: Icons.groups_outlined, activeIcon: Icons.groups, label: l10n.teams),
+    CustomNavigationBarItem(icon: Icons.calendar_month_outlined, activeIcon: Icons.calendar_month, label: l10n.schedule),
     CustomNavigationBarItem(icon: Icons.account_circle_outlined, activeIcon: Icons.account_circle, label: l10n.profile),
   ];
 
@@ -42,6 +44,7 @@ class _ResponderMainScreenState extends ConsumerState<ResponderMainScreen> {
       const ActiveCaseScreen(),
       const ResponderHistoryScreen(),
       if (showTeams) const ResponderTeamsScreen(),
+      const ResponderScheduleScreen(),
       const ResponderProfileScreen(),
     ];
     final index = currentPageIndex.clamp(0, pages.length - 1);

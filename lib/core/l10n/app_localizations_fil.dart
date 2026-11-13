@@ -1835,4 +1835,64 @@ class AppLocalizationsFil extends AppLocalizations {
     );
     return '$_temp0';
   }
+
+  @override
+  String get schedule => 'Iskedyul';
+
+  @override
+  String get scheduleSubtitle => 'Ang iyong mga paparating na duty';
+
+  @override
+  String get onDutyNow => 'Naka-duty ngayon';
+
+  @override
+  String onDutyUntil(String time) {
+    return 'Hanggang $time';
+  }
+
+  @override
+  String get offDuty => 'Off-duty';
+
+  @override
+  String nextShiftAt(String when) {
+    return 'Susunod na duty: $when';
+  }
+
+  @override
+  String noUpcomingShifts(int days) {
+    return 'Walang nakatakdang duty sa susunod na $days araw';
+  }
+
+  @override
+  String get upcomingShifts => 'Mga Paparating na Duty';
+
+  @override
+  String get scheduleToday => 'Ngayon';
+
+  @override
+  String get scheduleTomorrow => 'Bukas';
+
+  @override
+  String get dutyExtra => 'Dagdag na duty';
+
+  @override
+  String get dutyOvertime => 'Overtime';
+
+  @override
+  String get dutyOnLeave => 'Naka-leave';
+
+  @override
+  String get dutySwappedAway => 'Napalitan';
+
+  @override
+  String get dutySwapCover => 'Kapalit na duty';
+
+  @override
+  String get personalShift => 'Personal na duty';
+
+  @override
+  String get scheduleNextDay => '+1 araw';
+
+  @override
+  String get scheduleLoadError => 'Hindi ma-load ang iskedyul. Subukang muli.';
 }
