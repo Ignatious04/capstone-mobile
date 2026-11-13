@@ -1797,4 +1797,42 @@ class AppLocalizationsFil extends AppLocalizations {
   String minimumAgeRequired(int age) {
     return 'Dapat ay hindi bababa sa $age taong gulang para makapagparehistro';
   }
+
+  @override
+  String get teams => 'Mga Team';
+
+  @override
+  String get team => 'Team';
+
+  @override
+  String get myTeam => 'Aking Team';
+
+  @override
+  String get otherTeams => 'Iba pang Team sa Inyong Istasyon';
+
+  @override
+  String get teamsSubtitle => 'Tingnan ang iyong team at ang iba pa sa inyong istasyon';
+
+  @override
+  String get noTeams => 'Wala pang team';
+
+  @override
+  String get notOnTeam => 'Wala ka pa sa anumang team.';
+
+  @override
+  String get teamLeader => 'Lider ng Team';
+
+  @override
+  String get medicalTeams => 'Mga Medical Team';
+
+  @override
+  String memberCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count miyembro',
+      one: '1 miyembro',
+    );
+    return '$_temp0';
+  }
 }

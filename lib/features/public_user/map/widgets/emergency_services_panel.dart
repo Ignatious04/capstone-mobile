@@ -14,6 +14,7 @@ import 'package:capstone/features/public_user/map/models/emergency_service_model
 import 'package:capstone/features/public_user/map/providers/emergency_service_filter_provider.dart';
 import 'package:capstone/features/public_user/map/providers/emergency_service_search_provider.dart';
 import 'package:capstone/features/public_user/map/widgets/emergency_service_card.dart';
+import 'package:capstone/features/public_user/map/widgets/service_teams_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
@@ -284,6 +285,9 @@ class _EmergencyServicesPanelState extends ConsumerState<EmergencyServicesPanel>
                         onTap: () {
                           _moveToService(LatLng(service.location.latitude, service.location.longitude));
                         },
+                        footer: service.type == ServiceTypeEnum.medical
+                            ? ServiceTeamsTile(serviceID: service.id)
+                            : null,
                       );
                     },
                   ),

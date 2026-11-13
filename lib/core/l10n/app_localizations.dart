@@ -3415,6 +3415,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'You must be at least {age} years old to register'**
   String minimumAgeRequired(int age);
+
+  /// No description provided for @teams.
+  ///
+  /// In en, this message translates to:
+  /// **'Teams'**
+  String get teams;
+
+  /// No description provided for @team.
+  ///
+  /// In en, this message translates to:
+  /// **'Team'**
+  String get team;
+
+  /// No description provided for @myTeam.
+  ///
+  /// In en, this message translates to:
+  /// **'My Team'**
+  String get myTeam;
+
+  /// No description provided for @otherTeams.
+  ///
+  /// In en, this message translates to:
+  /// **'Other Teams at Your Station'**
+  String get otherTeams;
+
+  /// No description provided for @teamsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'View your team and others at your station'**
+  String get teamsSubtitle;
+
+  /// No description provided for @noTeams.
+  ///
+  /// In en, this message translates to:
+  /// **'No teams yet'**
+  String get noTeams;
+
+  /// No description provided for @notOnTeam.
+  ///
+  /// In en, this message translates to:
+  /// **'You haven\'t been added to a team yet.'**
+  String get notOnTeam;
+
+  /// No description provided for @teamLeader.
+  ///
+  /// In en, this message translates to:
+  /// **'Team Leader'**
+  String get teamLeader;
+
+  /// No description provided for @medicalTeams.
+  ///
+  /// In en, this message translates to:
+  /// **'Medical Teams'**
+  String get medicalTeams;
+
+  /// No description provided for @memberCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count, plural, =1{1 member} other{{count} members}}'**
+  String memberCount(int count);
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

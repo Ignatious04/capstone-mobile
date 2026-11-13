@@ -19,6 +19,7 @@ class EmergencyServiceCard extends StatelessWidget {
     required this.onCallTap,
     required this.onDirectionsTap,
     required this.onTap,
+    this.footer,
   });
 
   final IconData icon;
@@ -32,6 +33,7 @@ class EmergencyServiceCard extends StatelessWidget {
   final VoidCallback onCallTap;
   final VoidCallback onDirectionsTap;
   final VoidCallback onTap;
+  final Widget? footer;
 
   @override
   Widget build(BuildContext context) {
@@ -144,6 +146,10 @@ class EmergencyServiceCard extends StatelessWidget {
                           backgroundColor: AppColors.blackTextMuted,
                         ),
                       ),
+                      if (footer != null) ...[
+                        const SizedBox(height: 10),
+                        footer!,
+                      ],
                     ],
                   ),
                 ),

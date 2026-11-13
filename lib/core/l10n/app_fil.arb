@@ -558,5 +558,15 @@
   "sendingQuickReport": "Ipinapadala ang iyong quick report...",
   "submittingGuidanceReport": "Isinusumite ang iyong report...",
   "settingUpAccount": "Sine-set up ang iyong account...",
-  "minimumAgeRequired": "Dapat ay hindi bababa sa {age} taong gulang para makapagparehistro"
+  "minimumAgeRequired": "Dapat ay hindi bababa sa {age} taong gulang para makapagparehistro",
+  "teams": "Mga Team",
+  "team": "Team",
+  "myTeam": "Aking Team",
+  "otherTeams": "Iba pang Team sa Inyong Istasyon",
+  "teamsSubtitle": "Tingnan ang iyong team at ang iba pa sa inyong istasyon",
+  "noTeams": "Wala pang team",
+  "notOnTeam": "Wala ka pa sa anumang team.",
+  "teamLeader": "Lider ng Team",
+  "medicalTeams": "Mga Medical Team",
+  "memberCount": "{count, plural, =1{1 miyembro} other{{count} miyembro}}"
 }

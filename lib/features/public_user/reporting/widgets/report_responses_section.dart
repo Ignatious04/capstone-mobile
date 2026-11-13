@@ -6,6 +6,7 @@ import 'package:capstone/core/shared/models/report_model.dart';
 import 'package:capstone/core/shared/models/response_model.dart';
 import 'package:capstone/core/shared/providers/responder_provider.dart';
 import 'package:capstone/core/shared/providers/response_repository_provider.dart';
+import 'package:capstone/core/shared/providers/team_provider.dart';
 import 'package:capstone/core/shared/widgets/custom_circular_progress_indicator.dart';
 import 'package:capstone/core/shared/widgets/section_title.dart';
 import 'package:capstone/core/shared/widgets/text/body_text.dart';
@@ -225,7 +226,25 @@ class _AssignedResponder extends ConsumerWidget {
           ? const SizedBox(height: 120, child: Center(child: CustomCircularProgressIndicator()))
           : const SizedBox.shrink();
     }
-    return ResponderCard(responder: responder, embedded: true);
+    final teams = ref.watch(teamsForMemberProvider(responderID)).value ?? const [];
+    final l10n = AppLocalizations.of(context)!;
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        ResponderCard(responder: responder, embedded: true),
+        if (teams.isNotEmpty)
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+            child: Row(
+              children: [
+                const Icon(Icons.groups, size: 25, color: AppColors.blackTextMuted),
+                const SizedBox(width: 5),
+                BodyText(value: '${l10n.team}: ${teams.first.teamName}'),
+              ],
+            ),
+          ),
+      ],
+    );
   }
 }
 

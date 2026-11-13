@@ -26,9 +26,7 @@ class TeamModel {
 
   int get memberCount => memberIDs.length;
 
-  bool hasMember(String uid) => memberIDs.contains(uid);
-
-  factory TeamModel.fromMap(Map<String, dynamic> map, {String id = ''}) {
+  factory TeamModel.fromMap(String id, Map<String, dynamic> map) {
     return TeamModel(
       id: id,
       teamName: map['teamName'] ?? '',
@@ -38,7 +36,7 @@ class TeamModel {
       ),
       serviceID: map['serviceID'] ?? '',
       teamLeaderID: map['teamLeaderID'] ?? '',
-      memberIDs: List<String>.from(map['memberIDs'] ?? const []),
+      memberIDs: (map['memberIDs'] as List<dynamic>? ?? const []).whereType<String>().toList(),
       createdBy: map['createdBy'] ?? '',
       createdAt: (map['createdAt'] as Timestamp?)?.toDate(),
       updatedAt: (map['updatedAt'] as Timestamp?)?.toDate(),

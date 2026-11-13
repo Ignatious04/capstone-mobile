@@ -1789,4 +1789,42 @@ class AppLocalizationsEn extends AppLocalizations {
   String minimumAgeRequired(int age) {
     return 'You must be at least $age years old to register';
   }
+
+  @override
+  String get teams => 'Teams';
+
+  @override
+  String get team => 'Team';
+
+  @override
+  String get myTeam => 'My Team';
+
+  @override
+  String get otherTeams => 'Other Teams at Your Station';
+
+  @override
+  String get teamsSubtitle => 'View your team and others at your station';
+
+  @override
+  String get noTeams => 'No teams yet';
+
+  @override
+  String get notOnTeam => 'You haven\'t been added to a team yet.';
+
+  @override
+  String get teamLeader => 'Team Leader';
+
+  @override
+  String get medicalTeams => 'Medical Teams';
+
+  @override
+  String memberCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count members',
+      one: '1 member',
+    );
+    return '$_temp0';
+  }
 }

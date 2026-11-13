@@ -765,5 +765,20 @@
         "type": "int"
       }
     }
+  },
+  "teams": "Teams",
+  "team": "Team",
+  "myTeam": "My Team",
+  "otherTeams": "Other Teams at Your Station",
+  "teamsSubtitle": "View your team and others at your station",
+  "noTeams": "No teams yet",
+  "notOnTeam": "You haven't been added to a team yet.",
+  "teamLeader": "Team Leader",
+  "medicalTeams": "Medical Teams",
+  "memberCount": "{count, plural, =1{1 member} other{{count} members}}",
+  "@memberCount": {
+    "placeholders": {
+      "count": { "type": "int" }
+    }
   }
 }
